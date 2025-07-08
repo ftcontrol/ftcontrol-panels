@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import "./global.css"
+  import { testVariable } from "ftc-panels/src/core"
 
   let messages: string[] = $state([])
 
@@ -37,7 +38,7 @@
 <h1>Hi!</h1>
 
 <h1>Socket Messages</h1>
-
+{testVariable}
 <ul>
   {#each messages as message}
     <li>{message}</li>

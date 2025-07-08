@@ -5,6 +5,7 @@
       "name": "web",
       "dependencies": {
         "@sveltejs/adapter-static": "^3.0.8",
+        "ftc-panels": "link:ftc-panels",
         "svelte-portal": "^2.2.1",
         "uuid": "^11.1.0",
       },
@@ -190,6 +191,8 @@
     "fdir": ["fdir@6.4.3", "", { "peerDependencies": { "picomatch": "^3 || ^4" }, "optionalPeers": ["picomatch"] }, "sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw=="],
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
+
+    "ftc-panels": ["ftc-panels@link:ftc-panels", { "bin": { "panels-cli": "src/index.ts", "create-panels-plugin": "./src/create.ts" } }],
 
     "import-meta-resolve": ["import-meta-resolve@4.1.0", "", {}, "sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw=="],
 
