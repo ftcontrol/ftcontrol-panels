@@ -29,5 +29,6 @@ object PreferencesHandler {
                 return
             }
             prefs.edit { putBoolean(KEY_AUTO_ENABLE, value) }
+            TextHandler.updateText()
         }
 }

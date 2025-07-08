@@ -7,7 +7,7 @@ import android.widget.TextView
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 import java.lang.ref.WeakReference
 
-object MenuHandler {
+object TextHandler {
     private var connectionStatusTextViewRef: WeakReference<TextView>? = null
     private var parentLayoutRef: WeakReference<LinearLayout>? = null
 

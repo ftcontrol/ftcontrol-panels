@@ -1,9 +1,7 @@
 package com.bylazar.panels
 
 import android.content.Context
-import android.view.Menu
-import com.bylazar.panels.core.MenuHandler
-import com.bylazar.panels.core.MenuManager
+import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
 import com.bylazar.panels.reflection.ClassFinder
@@ -16,7 +14,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import com.qualcomm.robotcore.util.WebHandlerManager
 import org.firstinspires.ftc.ftccommon.external.OnCreate
 import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
-import org.firstinspires.ftc.ftccommon.external.OnCreateMenu
 import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
@@ -25,7 +22,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 
 object Panels : Notifications {
     lateinit var server: StaticServer
-    var config: PanelsConfig = PanelsConfig()
+    var config = PanelsConfig()
 
     @JvmStatic
     @OpModeRegistrar
@@ -39,7 +36,7 @@ object Panels : Notifications {
     fun start(context: Context) {
         PreferencesHandler.init(context)
         enable()
-        MenuHandler.injectText()
+        TextHandler.injectText()
 
         val configs = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
@@ -59,6 +56,7 @@ object Panels : Notifications {
 
         if(config.isDisabled){
             PreferencesHandler.isEnabled = false
+            disable()
         }
     }
 
@@ -83,12 +81,6 @@ object Panels : Notifications {
     }
 
     @JvmStatic
-    @OnCreateMenu
-    fun populateMenu(context: Context, menu: Menu) {
-        MenuManager.createMenu(menu)
-    }
-
-    @JvmStatic
     @OnDestroy
     fun stop(context: Context) {
         if (!FtcRobotControllerWatchdogService.isLaunchActivity(
@@ -98,7 +90,7 @@ object Panels : Notifications {
             return
         }
 
-        MenuHandler.removeText()
+        TextHandler.removeText()
         server.stopServer()
     }
 
@@ -123,17 +115,14 @@ object Panels : Notifications {
     }
 
     fun enable() {
-        if(config.isDisabled) return
         if (PreferencesHandler.isEnabled) return
         PreferencesHandler.isEnabled = true
-        MenuHandler.updateText()
         server.startServer()
     }
 
     fun disable() {
         if (!PreferencesHandler.isEnabled) return
         PreferencesHandler.isEnabled = false
-        MenuHandler.updateText()
         server.stopServer()
     }
 }
