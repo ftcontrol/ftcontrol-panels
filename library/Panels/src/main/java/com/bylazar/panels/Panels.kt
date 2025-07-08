@@ -4,6 +4,8 @@ import android.content.Context
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
+import com.bylazar.panels.plugins.Plugin
+import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.StaticServer
@@ -40,6 +42,8 @@ object Panels : Notifications {
         enable()
         TextHandler.injectText()
 
+        //CONFIG
+
         val configs = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
             shouldKeepFilter = { clazz ->
@@ -60,6 +64,10 @@ object Panels : Notifications {
             PreferencesHandler.isEnabled = false
             disable()
         }
+
+        //PLUGINS
+
+        PluginsManager.init(context)
     }
 
     @JvmStatic

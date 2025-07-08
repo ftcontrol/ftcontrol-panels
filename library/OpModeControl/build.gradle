@@ -56,19 +56,19 @@ tasks.register('buildSvelteApp', Exec) {
 }
 
 tasks.register('clearAssets', Delete) {
-    delete 'src/main/assets/<REPLACE>VERSION</REPLACE>/*'
+    delete 'src/main/assets/com.bylazar.opmodecontrol/*'
 }
 
 tasks.register('copySvelteToAssets', Copy) {
     dependsOn buildSvelteApp
     from 'web/dist'
-    into 'src/main/assets/<REPLACE>VERSION</REPLACE>'
+    into 'src/main/assets/com.bylazar.opmodecontrol'
 }
 
 tasks.register('copyConfigToAssets', Copy) {
     dependsOn buildSvelteApp
     from 'config.json'
-    into 'src/main/assets/<REPLACE>VERSION</REPLACE>/config.json'
+    into 'src/main/assets/com.bylazar.opmodecontrol/config.json'
 }
 
 preBuild.dependsOn(clearAssets, copySvelteToAssets, copyConfigToAssets)
