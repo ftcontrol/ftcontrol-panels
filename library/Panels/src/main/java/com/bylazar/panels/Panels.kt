@@ -20,6 +20,7 @@ import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
 import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 
 
@@ -38,12 +39,6 @@ object Panels : Notifications {
     @JvmStatic
     @OnCreate
     fun start(context: Context) {
-        PreferencesHandler.init(context)
-        enable()
-        TextHandler.injectText()
-
-        //CONFIG
-
         val configs = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
             shouldKeepFilter = { clazz ->
@@ -60,12 +55,15 @@ object Panels : Notifications {
         }
         Logger.coreLog("Config is $config")
 
+        PreferencesHandler.init(context)
+
         if (config.isDisabled) {
             PreferencesHandler.isEnabled = false
             disable()
         }
 
-        //PLUGINS
+        enable()
+        TextHandler.injectText()
 
         PluginsManager.init(context)
     }
@@ -88,8 +86,9 @@ object Panels : Notifications {
 
     @JvmStatic
     @OnCreateEventLoop
-    fun attachEventLoop(context: Context, eventLoop: FtcEventLoop?) {
-
+    fun attachEventLoop(context: Context, eventLoop: FtcEventLoop) {
+        PluginsManager.plugins.values.forEach { it.onAttachEventLoop(eventLoop) }
+        PluginsManager.plugins.values.forEach { it.onOpModeManager(eventLoop.opModeManager) }
     }
 
     @JvmStatic
@@ -108,15 +107,15 @@ object Panels : Notifications {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
-
+        PluginsManager.plugins.values.forEach { it.onOpModePreInit(opMode) }
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
-
+        PluginsManager.plugins.values.forEach { it.onOpModePreStart(opMode) }
     }
 
     override fun onOpModePostStop(opMode: OpMode) {
-
+        PluginsManager.plugins.values.forEach { it.onOpModePostStop(opMode) }
     }
 
 

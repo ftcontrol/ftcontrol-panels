@@ -1,35 +1,30 @@
 package com.bylazar.panels.json
 
-import kotlinx.serialization.PolymorphicSerializer
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
-@Serializable
-sealed class SocketMessage {
-    val pluginID: String = "core"
-}
+data class SocketMessage<T>(
+    val pluginID: String,
+    val messageID: String,
+    val data: T
+) {
+    fun toJson(): String = mapper.writeValueAsString(this)
 
-@Serializable
-@SerialName("time")
-data class TimeMessage(
-    val time: String
-) : SocketMessage()
+    companion object {
+        val mapper: ObjectMapper = jacksonObjectMapper().registerKotlinModule()
 
-val json = Json {
-    serializersModule = SerializersModule {
-        polymorphic(SocketMessage::class) {
-            subclass(TimeMessage::class)
+        inline fun <reified T> fromString(json: String): SocketMessage<T> {
+            return mapper.readValue(json)
         }
     }
-    encodeDefaults = false
-    useArrayPolymorphism = false
-    classDiscriminator = "kind"
 }
 
-inline fun <reified T : SocketMessage> T.toJson(): String {
-    return json.encodeToString(PolymorphicSerializer(SocketMessage::class), this)
-}
+inline fun <reified T : Any> createSocketMessage(
+    pluginID: String,
+    messageID: String,
+    payload: T
+): SocketMessage<T> = SocketMessage(pluginID, messageID, payload)
+
+data class TimeData(val time: String)

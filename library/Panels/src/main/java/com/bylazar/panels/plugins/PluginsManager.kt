@@ -2,7 +2,7 @@ package com.bylazar.panels.plugins
 
 import android.content.Context
 import com.bylazar.panels.Logger
-import com.bylazar.panels.Panels.config
+import com.bylazar.panels.Panels
 import com.bylazar.panels.reflection.ClassFinder
 import kotlin.collections.set
 import kotlin.jvm.java
@@ -59,6 +59,11 @@ object PluginsManager {
 
             Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '$uniqueId'")
 
+        }
+
+        plugins.values.forEach {
+            it.onRegister(Panels, context)
+            it.log("Successfully registered plugin")
         }
     }
 }

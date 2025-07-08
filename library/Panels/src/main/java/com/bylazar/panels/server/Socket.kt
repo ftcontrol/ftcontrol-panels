@@ -1,6 +1,7 @@
 package com.bylazar.panels.server
 
 import com.bylazar.panels.Logger
+import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.server.tasks.TimeTask
 import fi.iki.elonen.NanoWSD
 import java.io.IOException
@@ -10,6 +11,8 @@ import java.util.TimerTask
 class Socket(
     port: Int,
 ) : NanoWSD(port) {
+
+    //TODO: messages bundling
 
     override fun openWebSocket(handshake: IHTTPSession): WebSocket {
         return ClientSocket(handshake)
@@ -28,12 +31,12 @@ class Socket(
         }
     }
 
-    private inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
+     inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
         val tasks: List<SocketTask> = listOf(
             TimeTask()
         )
 
-        fun sendString(data: String) {
+        internal fun sendString(data: String) {
             try {
                 send(data)
             } catch (e: IOException) {
@@ -53,6 +56,8 @@ class Socket(
             tasks.forEach { it.onOpen() }
 
             clients.add(this)
+
+            PluginsManager.plugins.values.forEach { it.onNewClient(this) }
 
             if (ping == null) {
                 ping = object : TimerTask() {

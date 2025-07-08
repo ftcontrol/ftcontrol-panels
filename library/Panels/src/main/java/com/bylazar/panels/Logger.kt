@@ -1,14 +1,14 @@
 package com.bylazar.panels
 
 object Logger {
-    private const val CONFIGURABLES_PREFIX = "Configurables"
-    private const val REFLECTION_PREFIX = "Reflection"
-    private const val SOCKET_PREFIX = "Socket"
-    private const val SERVER_PREFIX = "Server"
-    private const val PLUGINS_PREFIX = "Plugins"
-    private const val CORE_PREFIX = "Core"
+    const val REFLECTION_PREFIX = "Reflection"
+    const val SOCKET_PREFIX = "Socket"
+    const val SERVER_PREFIX = "Server"
+    const val PLUGINS_PREFIX = "Plugins"
+    const val CORE_PREFIX = "Core"
 
     private fun getCallerClassName(): String {
+        if(!Panels.config.enableClassCallerLogs) return "Disabled"
         return Throwable()
             .stackTrace
             .firstOrNull { !it.className.contains("com.bylazar.panels.Logger") }
@@ -18,15 +18,14 @@ object Logger {
     }
 
     fun log(prefix: String, message: String) {
+        if(!Panels.config.enableLogs) return
         println("PANELS: ${prefix.uppercase()}: (${getCallerClassName()}): $message")
     }
 
     fun error(prefix: String, message: String) {
+        if(!Panels.config.enableLogs) return
         println("PANELS: ${prefix.uppercase()}: (${getCallerClassName()}): ERROR: $message")
     }
-
-    fun configurablesLog(message: String) = log(CONFIGURABLES_PREFIX, message)
-    fun configurablesError(message: String) = error(CONFIGURABLES_PREFIX, message)
 
     fun reflectionLog(message: String) = log(REFLECTION_PREFIX, message)
     fun reflectionError(message: String) = error(REFLECTION_PREFIX, message)
