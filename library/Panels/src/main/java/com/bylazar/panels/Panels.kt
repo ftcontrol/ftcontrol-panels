@@ -6,6 +6,7 @@ import com.bylazar.panels.core.MenuManager
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
 import com.bylazar.panels.core.MenuHandler
+import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 
 
 object Panels : Notifications {
+    lateinit var server: StaticServer
 
     @JvmStatic
     @OpModeRegistrar
@@ -41,7 +43,15 @@ object Panels : Notifications {
     @JvmStatic
     @WebHandlerRegistrar
     fun attachWebServer(context: Context, manager: WebHandlerManager) {
+        try {
+            server = StaticServer(context, 8001, "web")
+        } catch (e: Exception) {
+            Logger.coreLog("Failed to start webserver: " + e.message)
+        }
 
+        if (PreferencesHandler.isEnabled) {
+            server.startServer()
+        }
     }
 
     @JvmStatic
@@ -67,6 +77,7 @@ object Panels : Notifications {
         }
 
         MenuHandler.removeText()
+        server.stopServer()
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
@@ -82,22 +93,24 @@ object Panels : Notifications {
     }
 
 
-    fun toggle(){
-        when(PreferencesHandler.isEnabled){
+    fun toggle() {
+        when (PreferencesHandler.isEnabled) {
             true -> disable()
             false -> enable()
         }
     }
 
-    fun enable(){
+    fun enable() {
         if (PreferencesHandler.isEnabled) return
         PreferencesHandler.isEnabled = true
         MenuHandler.updateText()
+        server.startServer()
     }
 
-    fun disable(){
+    fun disable() {
         if (!PreferencesHandler.isEnabled) return
         PreferencesHandler.isEnabled = false
         MenuHandler.updateText()
+        server.stopServer()
     }
 }
