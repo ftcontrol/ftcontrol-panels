@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+    %sveltekit.head%
+    <style>
+      :root {
+        --bg: black;
+        --d3: 0.25s;
+      }
+    </style>
+  </head>
+  <body
+    data-sveltekit-preload-data="hover"
+    class="dark-mode"
+    style="background-color: var(--bg); transition: background-color var(--d3)"
+  >
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

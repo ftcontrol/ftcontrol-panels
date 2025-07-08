@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="../manifest.json" />
+    
+		<link rel="modulepreload" href="../app/immutable/entry/start.C6rTh2-Q.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/weiN-Fec.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/DImaOtgy.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/B9Netn4Y.js">
+		<link rel="modulepreload" href="../app/immutable/entry/app.B7ryuZNt.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/vuGbUGSM.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/CpjUEfFn.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/CQpEsQrD.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/CyCUbHaQ.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/ExJb-yR2.js">
+		<link rel="modulepreload" href="../app/immutable/chunks/BSpBZuls.js">
+    <style>
+      :root {
+        --bg: black;
+        --d3: 0.25s;
+      }
+    </style>
+  </head>
+  <body
+    data-sveltekit-preload-data="hover"
+    class="dark-mode"
+    style="background-color: var(--bg); transition: background-color var(--d3)"
+  >
+    <div style="display: contents">
+			<script>
+				{
+					__sveltekit_1p2y6t5 = {
+						base: new URL("..", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../app/immutable/entry/start.C6rTh2-Q.js"),
+						import("../app/immutable/entry/app.B7ryuZNt.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+
+					if ('serviceWorker' in navigator) {
+						addEventListener('load', function () {
+							navigator.serviceWorker.register('../service-worker.js');
+						});
+					}
+				}
+			</script>
+		</div>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Varta:wght@300..700&display=swap");
+
+:root {
+  --bg: #f6f6f6;
+  --card: #ffffff;
+  --cardTransparent: #ffffff50;
+  --text: #1b1b1b;
+
+  --primary: #e60012;
+  --primary: #005bac;
+}
+
+body,
+html {
+  overflow: hidden;
+}
+
+body.dark-mode {
+  --bg: #1b1b1b;
+  --card: #131314;
+  --cardTransparent: #13131450;
+  --text: #c4c7c5;
+}
+body.instant {
+  --multiplier: 0;
+}
+body.fast {
+  --multiplier: 0.1;
+}
+body.normal {
+  --multiplier: 0.15;
+}
+body.slow {
+  --multiplier: 0.225;
+}
+body {
+  --d: calc(var(--multiplier) * 1s);
+  --d1: calc(var(--multiplier) * 1s);
+  --d2: calc(var(--multiplier) * 2s);
+  --d3: calc(var(--multiplier) * 3s);
+}
+
+body.blue {
+  --primary: #005bac;
+}
+body.red {
+  --primary: #e60012;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  padding: 0;
+  margin: 0;
+
+  color: var(--text);
+
+  font-family: "Varta", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+a {
+  color: var(--primary);
+}
