@@ -1,33 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import "./global.css"
-  import { testVariable } from "ftc-panels/src/core"
+  import { GlobalSocket } from "ftc-panels/src/core/socket/socket.svelte"
 
-  let messages: string[] = $state([])
-
-  let socket: WebSocket
+  let socket = new GlobalSocket()
 
   onMount(() => {
-    const host = window.location.hostname
-    const wsUrl = `ws://${host}:8002`
-
-    socket = new WebSocket(wsUrl)
-
-    socket.onopen = () => {
-      console.log("WebSocket connection opened:", wsUrl)
-    }
-
-    socket.onmessage = (event) => {
-      messages = [...messages, event.data]
-    }
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error)
-    }
-
-    socket.onclose = () => {
-      console.log("WebSocket connection closed")
-    }
+    socket.init()
 
     return () => {
       socket.close()
@@ -38,9 +17,8 @@
 <h1>Hi!</h1>
 
 <h1>Socket Messages</h1>
-{testVariable}
 <ul>
-  {#each messages as message}
+  {#each socket.log as message}
     <li>{message}</li>
   {/each}
 </ul>

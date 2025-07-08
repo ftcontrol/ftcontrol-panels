@@ -4,23 +4,18 @@
   "description": "An example of a Panels Plugin",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "build:prod": "rollup -c --environment NODE_ENV:production",
+    "build": "bunx vite build",
+    "build:prod": "bunx vite build --environment NODE_ENV:production",
     "preview": "deno run --allow-net --allow-read jsr:@std/http/file-server ."
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@std/text": "npm:@jsr/std__text@^1.0.12",
-    "rollup": "^4.40.0",
-    "rollup-plugin-css-only": "^4.5.2",
-    "rollup-plugin-svelte": "^7.2.2",
-    "svelte": "^5.27.3",
-    "svelte-preprocess": "^6.0.3"
+    "@std/text": "npm:@jsr/std__text@^1.0.12"
   },
   "dependencies": {
-    "@rollup/plugin-typescript": "^12.1.2",
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
+    "ftc-panels": "link:ftc-panels",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^7.0.3"
   }
 }

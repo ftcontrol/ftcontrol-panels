@@ -45,7 +45,7 @@ export default [
       svelte({
         compilerOptions: { runes: true },
         extensions: [".svelte"],
-        include: "src/lib/**/*.svelte",
+        include: ["src/lib/**/*.svelte"],
         preprocess: sveltePreprocess({
           typescript: {
             compilerOptions: {
