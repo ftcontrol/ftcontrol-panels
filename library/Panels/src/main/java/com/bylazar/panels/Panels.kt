@@ -2,10 +2,11 @@ package com.bylazar.panels
 
 import android.content.Context
 import android.view.Menu
+import com.bylazar.panels.core.MenuHandler
 import com.bylazar.panels.core.MenuManager
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
-import com.bylazar.panels.core.MenuHandler
+import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -24,6 +25,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 
 object Panels : Notifications {
     lateinit var server: StaticServer
+    var config: PanelsConfig = PanelsConfig()
 
     @JvmStatic
     @OpModeRegistrar
@@ -38,6 +40,26 @@ object Panels : Notifications {
         PreferencesHandler.init(context)
         enable()
         MenuHandler.injectText()
+
+        val configs = ClassFinder().findClasses(
+            apkPath = context.packageCodePath,
+            shouldKeepFilter = { clazz ->
+                PanelsConfig::class.java.isAssignableFrom(clazz) && clazz != PanelsConfig::class.java
+            }
+        )
+
+        Logger.coreLog("Found ${configs.size} configs.")
+
+        if (configs.isNotEmpty()) {
+            config = Class.forName(configs[0].className)
+                .getDeclaredConstructor()
+                .newInstance() as PanelsConfig
+        }
+        Logger.coreLog("Config is $config")
+
+        if(config.isDisabled){
+            PreferencesHandler.isEnabled = false
+        }
     }
 
     @JvmStatic
@@ -101,6 +123,7 @@ object Panels : Notifications {
     }
 
     fun enable() {
+        if(config.isDisabled) return
         if (PreferencesHandler.isEnabled) return
         PreferencesHandler.isEnabled = true
         MenuHandler.updateText()

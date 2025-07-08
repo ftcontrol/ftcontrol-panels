@@ -2,6 +2,7 @@ package com.bylazar.panels
 
 object Logger {
     private const val CONFIGURABLES_PREFIX = "Configurables"
+    private const val REFLECTION_PREFIX = "Reflection"
     private const val SOCKET_PREFIX = "Socket"
     private const val SERVER_PREFIX = "Server"
     private const val PLUGINS_PREFIX = "Plugins"
@@ -26,6 +27,9 @@ object Logger {
 
     fun configurablesLog(message: String) = log(CONFIGURABLES_PREFIX, message)
     fun configurablesError(message: String) = error(CONFIGURABLES_PREFIX, message)
+
+    fun reflectionLog(message: String) = log(REFLECTION_PREFIX, message)
+    fun reflectionError(message: String) = error(REFLECTION_PREFIX, message)
 
     fun socketLog(message: String) = log(SOCKET_PREFIX, message)
     fun socketError(message: String) = error(SOCKET_PREFIX, message)
