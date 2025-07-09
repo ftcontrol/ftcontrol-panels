@@ -20,7 +20,13 @@
 <DynamicComponent
   globalSocket={socket}
   id="com.bylazar.opmodecontrol"
-  file="opmode"
+  file="OpModes"
+/>
+
+<DynamicComponent
+  globalSocket={socket}
+  id="com.bylazar.opmodecontrol"
+  file="Counter"
 />
 
 <h1>Socket Messages</h1>
