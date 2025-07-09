@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import "./global.css"
-  import { GlobalSocket } from "ftc-panels/src/core/socket/socket.svelte"
+  import { GlobalSocket } from "ftc-panels/src/core/socket/global"
 
   let socket = new GlobalSocket()
 
