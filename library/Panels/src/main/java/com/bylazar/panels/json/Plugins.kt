@@ -36,5 +36,6 @@ data class PluginDetails(
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PanelsWidget(
     val name: String,
-    val filepath: String
+    val filepath: String,
+    var textContent: String = ""
 )

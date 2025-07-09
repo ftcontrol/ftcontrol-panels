@@ -20,6 +20,13 @@ object PluginsManager {
         }
     }
 
+    fun loadPluginWidgetFile(context: Context, id: String, file: String): String {
+        val assetManager = context.assets
+        assetManager.open("web/plugins/${id}/widgets/${file}.js").use { inputStream ->
+            return inputStream.bufferedReader().use { it.readText() }
+        }
+    }
+
     fun init(context: Context) {
         val classes = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
@@ -70,6 +77,12 @@ object PluginsManager {
                     loadPluginConfig(context, "web/plugins/${pluginInstance.id}/config.json")
 
                 pluginInstance.details = details
+
+                //get all widgets content
+
+                pluginInstance.details.widgets.forEach {
+                    it.textContent = loadPluginWidgetFile(context, pluginInstance.details.id, it.name)
+                }
 
                 plugins[uniqueId] = pluginInstance
 

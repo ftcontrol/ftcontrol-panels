@@ -24,7 +24,6 @@
 </script>
 
 <h1>Hi!</h1>
-{JSON.stringify(plugins)}
 {#each plugins as plugin}
   <h2>{plugin.details.name}</h2>
   <p>{plugin.details.id}</p>
@@ -33,8 +32,8 @@
     <DynamicComponent
       isDev={dev}
       globalSocket={socket}
+      textContent={widget.textContent}
       id={plugin.details.id}
-      file={widget.name}
     />
   {/each}
 {/each}
