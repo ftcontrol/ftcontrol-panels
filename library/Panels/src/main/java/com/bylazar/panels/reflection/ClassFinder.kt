@@ -52,7 +52,8 @@ class ClassFinder(
                 "okio",
                 "org.bouncycastle",
                 "org.conscrypt",
-                "org.jetbrains"
+                "org.jetbrains",
+                "com.fasterxml"
             )
         )
     }

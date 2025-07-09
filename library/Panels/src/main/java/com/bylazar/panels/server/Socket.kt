@@ -1,6 +1,8 @@
 package com.bylazar.panels.server
 
 import com.bylazar.panels.Logger
+import com.bylazar.panels.json.PluginData
+import com.bylazar.panels.json.createSocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.server.tasks.TimeTask
 import fi.iki.elonen.NanoWSD
@@ -56,6 +58,16 @@ class Socket(
             tasks.forEach { it.onOpen() }
 
             clients.add(this)
+
+            sendString(
+                createSocketMessage(
+                    "core",
+                    "pluginsDetails",
+                    PluginData(
+                        PluginsManager.plugins.values.map { it.toInfo() }
+                    )
+                ).toJson()
+            )
 
             PluginsManager.plugins.values.forEach { it.onNewClient(this) }
 

@@ -5,6 +5,8 @@ import android.content.Context
 import android.provider.Browser.sendString
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
+import com.bylazar.panels.json.PluginDetails
+import com.bylazar.panels.json.PluginInfo
 import com.bylazar.panels.json.createSocketMessage
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.Socket.ClientSocket
@@ -53,4 +55,11 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     abstract fun onOpModePreStart(opMode: OpMode)
     abstract fun onOpModePostStop(opMode: OpMode)
     abstract fun onNewClient(client: ClientSocket)
+
+    internal fun toInfo(): PluginInfo{
+        return PluginInfo(
+            details,
+            config
+        )
+    }
 }

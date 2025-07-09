@@ -1,10 +1,12 @@
 package com.bylazar.panels.json
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class SocketMessage<T>(
     val pluginID: String,
     val messageID: String,
@@ -28,3 +30,14 @@ inline fun <reified T : Any> createSocketMessage(
 ): SocketMessage<T> = SocketMessage(pluginID, messageID, payload)
 
 data class TimeData(val time: String)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class PluginData(
+    var plugins: List<PluginInfo>
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class PluginInfo(
+    var details: PluginDetails,
+    var config: Any,
+)

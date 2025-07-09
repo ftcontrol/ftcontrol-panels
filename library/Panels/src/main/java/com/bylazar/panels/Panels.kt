@@ -4,6 +4,8 @@ import android.content.Context
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
+import com.bylazar.panels.json.PluginData
+import com.bylazar.panels.json.createSocketMessage
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.reflection.ClassFinder
@@ -60,17 +62,10 @@ object Panels : Notifications {
         if (config.isDisabled) {
             PreferencesHandler.isEnabled = false
             disable()
+        } else {
+            enable()
         }
 
-        enable()
-        TextHandler.injectText()
-
-        PluginsManager.init(context)
-    }
-
-    @JvmStatic
-    @WebHandlerRegistrar
-    fun attachWebServer(context: Context, manager: WebHandlerManager) {
         try {
             server = StaticServer(context, 8001, "web")
             socket = Socket(8002)
@@ -82,6 +77,24 @@ object Panels : Notifications {
             server.startServer()
             socket.startServer()
         }
+        TextHandler.injectText()
+
+        PluginsManager.init(context)
+
+        socket.sendStrings(
+            createSocketMessage(
+                "core",
+                "pluginsDetails",
+                PluginData(
+                    PluginsManager.plugins.values.map { it.toInfo() }
+                )
+            ).toJson()
+        )
+    }
+
+    @JvmStatic
+    @WebHandlerRegistrar
+    fun attachWebServer(context: Context, manager: WebHandlerManager) {
     }
 
     @JvmStatic
