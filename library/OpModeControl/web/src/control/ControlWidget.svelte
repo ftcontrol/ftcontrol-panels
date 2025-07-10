@@ -16,18 +16,30 @@
       opModes = value
     })
   })
+
+  function selectedOpMode(opMode: OpMode) {
+    selectedOpModeName = opMode.name
+  }
+
+  let selectedOpModeName = $state("$Stop$Robot$")
 </script>
 
-<h1>Hi!</h1>
+<h1>{selectedOpModeName}</h1>
 
 <Overlay>
   {#snippet trigger()}
     Autos
   {/snippet}
-  {#snippet overlay()}
+  {#snippet overlay({ close })}
     {#each opModes.filter((it) => it.flavour == "AUTONOMOUS") as opMode}
       <p>{opMode.name} / {opMode.group}</p>
       <p>{opMode.flavour} / {opMode.source}</p>
+      <button
+        onclick={() => {
+          selectedOpMode(opMode)
+          close()
+        }}>Select</button
+      >
     {/each}
     {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
       <p>No OpModes found.</p>
@@ -39,10 +51,16 @@
   {#snippet trigger()}
     TeleOps
   {/snippet}
-  {#snippet overlay()}
+  {#snippet overlay({ close })}
     {#each opModes.filter((it) => it.flavour == "TELEOP") as opMode}
       <p>{opMode.name} / {opMode.group}</p>
       <p>{opMode.flavour} / {opMode.source}</p>
+      <button
+        onclick={() => {
+          selectedOpMode(opMode)
+          close()
+        }}>Select</button
+      >
     {/each}
     {#if opModes.filter((it) => it.flavour == "TELEOP").length == 0}
       <p>No OpModes found.</p>
