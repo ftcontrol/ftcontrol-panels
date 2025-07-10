@@ -6,15 +6,19 @@ export class GlobalState {
   skippedPlugins: PluginConfig[] = $state([])
   socket: GlobalSocket = new GlobalSocket()
 
+  isConnected = $state(false)
+
   async init() {
     try {
+      this.isConnected = false
       const data = await this.getPluginsUntilReady()
 
       this.plugins = JSON.parse(data).data.plugins
 
       this.skippedPlugins = JSON.parse(data).data.skippedPlugins
 
-      this.socket.init(this.plugins)
+      await this.socket.init(this.plugins)
+      this.isConnected = true
     } catch (e) {
       console.error(e)
     }

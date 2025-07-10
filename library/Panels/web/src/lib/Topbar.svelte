@@ -7,6 +7,10 @@
 <nav>
   <Panels />
 
+  <p>
+    {global.isConnected ? "Connected" : "Waiting"}
+  </p>
+
   <Overlay>
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       Plugins
