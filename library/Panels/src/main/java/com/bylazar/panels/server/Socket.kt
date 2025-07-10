@@ -1,8 +1,7 @@
 package com.bylazar.panels.server
 
 import com.bylazar.panels.Logger
-import com.bylazar.panels.json.PluginData
-import com.bylazar.panels.json.createSocketMessage
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.server.tasks.TimeTask
 import fi.iki.elonen.NanoWSD
@@ -93,6 +92,18 @@ class Socket(
             try {
                 tasks.forEach { it.onMessage(message.textPayload) }
                 tasks.forEach { it.onAdvancedMessage(message) }
+
+                val message = SocketMessage.fromJson(message.textPayload)
+
+                val pluginID = message.pluginID
+
+                val matchedPluginKey = PluginsManager.plugins.keys.find { it == pluginID }
+
+                matchedPluginKey?.let { key ->
+                    val plugin = PluginsManager.plugins[key]
+                    plugin?.onMessage(message.messageID, message.data)
+                }
+
             } catch (e: Exception) {
                 Logger.socketError("Error handling message ${message.textPayload}: ${e.message}")
                 close(

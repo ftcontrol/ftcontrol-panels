@@ -1,9 +1,7 @@
 package com.bylazar.opmodecontrol
 
-import android.R.attr.value
 import android.content.Context
 import com.bylazar.panels.Panels
-import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -54,6 +52,10 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "opModesList", OpModesList(opModeList))
+    }
+
+    override fun onMessage(type: String, data: Any?) {
+        log("Got message of type $type with data $data")
     }
 
     override fun onRegister(

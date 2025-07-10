@@ -1,13 +1,17 @@
 <script lang="ts">
-  import { increment } from "./index"
-  let count: number = $state(0)
+    import Manager from "./manager"
+
+  let {
+    manager,
+  }: {
+    manager: Manager
+  } = $props()
 </script>
 
-<p>{count}</p>
 <button
   onclick={() => {
-    count = increment(count)
-  }}>Increment</button
+    manager.socket.sendMessage("example", null)
+  }}>Send message</button
 >
 
 <style>

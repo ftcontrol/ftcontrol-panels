@@ -2,10 +2,9 @@ package com.bylazar.panels.server
 
 import android.content.Context
 import android.content.res.AssetManager
-import android.provider.Browser.sendString
 import com.bylazar.panels.Logger
 import com.bylazar.panels.json.PluginData
-import com.bylazar.panels.json.createSocketMessage
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
@@ -93,7 +92,7 @@ class StaticServer(
                 return getResponse("null", contentType = "application/json").allowCors()
             }
 
-            val jsonString = createSocketMessage(
+            val jsonString = SocketMessage(
                 "core",
                 "pluginsDetails",
                 PluginData(

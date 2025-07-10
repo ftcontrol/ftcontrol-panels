@@ -4,9 +4,6 @@ import android.content.Context
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
-import com.bylazar.panels.json.PluginData
-import com.bylazar.panels.json.createSocketMessage
-import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
@@ -22,7 +19,6 @@ import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
 import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 
 

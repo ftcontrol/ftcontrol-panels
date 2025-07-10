@@ -1,13 +1,11 @@
 package com.bylazar.panels.plugins
 
-import android.R.attr.type
 import android.content.Context
-import android.provider.Browser.sendString
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.json.PluginInfo
-import com.bylazar.panels.json.createSocketMessage
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.Socket.ClientSocket
 import com.qualcomm.ftccommon.FtcEventLoop
@@ -37,12 +35,12 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     }
 
     fun send(type: String, data: Any) {
-        val message = createSocketMessage(id, type, data)
+        val message = SocketMessage(id, type, data)
         Panels.socket.sendStrings(message.toJson())
     }
 
     fun sendClient(client: Socket.ClientSocket, type: String, data: Any) {
-        val message = createSocketMessage(id, type, data)
+        val message = SocketMessage(id, type, data)
         client.sendString(message.toJson())
     }
 
@@ -55,6 +53,7 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     abstract fun onOpModePreStart(opMode: OpMode)
     abstract fun onOpModePostStop(opMode: OpMode)
     abstract fun onNewClient(client: ClientSocket)
+    abstract fun onMessage(type: String, data: Any?)
 
     internal fun toInfo(): PluginInfo{
         return PluginInfo(

@@ -7,27 +7,23 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SocketMessage<T>(
+data class SocketMessage(
     val pluginID: String,
     val messageID: String,
-    val data: T
+    val data: Any?
 ) {
     fun toJson(): String = mapper.writeValueAsString(this)
+
+    inline fun <reified T> dataAs(): T = mapper.convertValue(data, T::class.java)
 
     companion object {
         val mapper: ObjectMapper = jacksonObjectMapper().registerKotlinModule()
 
-        inline fun <reified T> fromString(json: String): SocketMessage<T> {
+        fun fromJson(json: String): SocketMessage {
             return mapper.readValue(json)
         }
     }
 }
-
-inline fun <reified T : Any> createSocketMessage(
-    pluginID: String,
-    messageID: String,
-    payload: T
-): SocketMessage<T> = SocketMessage(pluginID, messageID, payload)
 
 data class TimeData(val time: String)
 

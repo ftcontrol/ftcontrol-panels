@@ -1,7 +1,7 @@
 package com.bylazar.panels.server.tasks
 
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.json.TimeData
-import com.bylazar.panels.json.createSocketMessage
 import com.bylazar.panels.server.SocketTask
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -36,7 +36,7 @@ class TimeTask : SocketTask() {
                     val time = SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(Date())
 
                     val payload = TimeData(time)
-                    val message = createSocketMessage("core", "time", payload)
+                    val message = SocketMessage("core", "time", payload)
 
                     send(message.toJson())
                 } catch (e: IOException) {
