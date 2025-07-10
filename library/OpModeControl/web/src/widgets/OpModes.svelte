@@ -11,7 +11,7 @@
 
   let opModes: OpMode[] = $state([])
   onMount(() => {
-    manager.onOpModesChange((value) => {
+    manager.state.onChange(manager.OPMODES_KEY, (value) => {
       opModes = value
     })
   })
