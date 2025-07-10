@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 data class PluginDetails(
     val id: String = "",
     val name: String = "",
+    val letterName: String = "",
     val description: String = "",
     val version: String = "",
     val panelsVersion: String = "",

@@ -9,48 +9,14 @@
   import type { PluginInfo } from "ftc-panels/src/core/types"
   import { dev } from "$app/environment"
   import Topbar from "$lib/Topbar.svelte"
+  import { global } from "$lib/index.svelte"
 
-  let socket: GlobalSocket
-  let plugins = $state<PluginInfo[]>([])
-
-  async function getPluginsUntilReady(): Promise<string> {
-    const url = dev ? "http://localhost:8001" : window.location.origin
-    let attempts = 0
-    let maxAttempts = 20
-
-    while (attempts < maxAttempts) {
-      try {
-        const response = await fetch(`${url}/plugins`)
-        const text = await response.text()
-
-        if (text && text.trim() != "null") {
-          return text
-        }
-      } catch (err) {
-        console.warn("Fetch failed, retrying...", err)
-      }
-
-      attempts++
-      await new Promise((resolve) => setTimeout(resolve, 500))
-    }
-
-    throw new Error("Failed to get plugins after multiple attempts.")
-  }
 
   onMount(async () => {
-    try {
-      const data = await getPluginsUntilReady()
-
-      plugins = JSON.parse(data).data.plugins
-
-      socket = new GlobalSocket()
-      socket.init(plugins)
-    } catch (e) {
-      console.error(e)
-    }
+    global.init()
 
     return () => {
-      socket?.close()
+      global.close()
     }
   })
 </script>
@@ -59,7 +25,7 @@
 
 
 <h1>Hi!</h1>
-{#each plugins as plugin}
+{#each global.plugins as plugin}
   <div
     style="background-color:var(--bgLight);padding:0.5rem;margin-bottom:1rem;"
   >
@@ -69,7 +35,7 @@
   </div>
   {#each plugin.details.widgets as widget}
     <DynamicComponent
-      globalSocket={socket}
+      globalSocket={global.socket}
       textContent={widget.textContent || ""}
       id={plugin.details.id}
     />
