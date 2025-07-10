@@ -20,18 +20,20 @@
     <h1>Hi!</h1>
     {#each global.plugins as plugin}
       <div
-        style="background-color:var(--bgLight);padding:0.5rem;margin-bottom:1rem;"
+        style="background-color:var(--bgLight);padding:var(--padding);margin-bottom:var(--padding);"
       >
         <h2>{plugin.details.name}</h2>
         <p>{plugin.details.id}</p>
         <p>{plugin.details.author}</p>
       </div>
       {#each plugin.details.widgets as widget}
-        <DynamicComponent
-          globalSocket={global.socket}
-          textContent={widget.textContent || ""}
-          id={plugin.details.id}
-        />
+        <div class="card">
+          <DynamicComponent
+            globalSocket={global.socket}
+            textContent={widget.textContent || ""}
+            id={plugin.details.id}
+          />
+        </div>
       {/each}
     {/each}
     <ThemeGenerator />
@@ -51,6 +53,11 @@
 </section>
 
 <style>
+  .card {
+    margin-bottom: var(--padding);
+    background-color: var(--bgMedium);
+    padding: var(--padding);
+  }
   section {
     overflow-y: auto;
   }
