@@ -6,7 +6,6 @@
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xml:space="preserve"
-  xmlns:serif="http://www.serif.com/"
   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
 >
   <g transform="matrix(1,0,0,1,-344.712,-9.87853)">
@@ -43,11 +42,11 @@
 </svg>
 
 <style>
-    svg{
-        height: 32px;
-        width: fit-content;
-        display: block;
-    }
+  svg {
+    height: 32px;
+    width: fit-content;
+    display: block;
+  }
   path {
     fill: var(--text);
   }

@@ -1,0 +1,75 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: '../build.dependencies.gradle'
+
+android {
+    namespace "com.bylazar.telemetry"
+
+    compileSdkVersion 35
+
+    defaultConfig {
+        minSdk 24
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+    implementation project(':Panels')
+}
+
+tasks.register('installSvelteApp', Exec) {
+    dependsOn(clearAssets)
+    workingDir 'web'
+
+    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'bun', 'install'
+    } else {
+        commandLine 'sh', '-c', 'bun install'
+    }
+}
+
+tasks.register('buildSvelteApp', Exec) {
+    dependsOn installSvelteApp
+    workingDir 'web'
+
+    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'bun', 'run', 'build'
+    } else {
+        commandLine 'sh', '-c', 'bun run build'
+    }
+}
+
+tasks.register('clearAssets', Delete) {
+    delete fileTree('src/main/assets/web/plugins/com.bylazar.telemetry/*')
+}
+
+tasks.register('copySvelteToAssets', Copy) {
+    dependsOn buildSvelteApp
+    from 'web/dist'
+    into 'src/main/assets/web/plugins/com.bylazar.telemetry'
+}
+
+tasks.register('copyConfigToAssets', Copy) {
+    dependsOn buildSvelteApp
+    from 'config.json'
+    into 'src/main/assets/web/plugins/com.bylazar.telemetry/config.json'
+}
+
+preBuild.dependsOn(copySvelteToAssets, copyConfigToAssets)

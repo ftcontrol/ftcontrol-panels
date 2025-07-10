@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 
 open class OpModeControlPluginConfig : BasePluginConfig() {
-    open var test = "test"
 }
 
 class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {

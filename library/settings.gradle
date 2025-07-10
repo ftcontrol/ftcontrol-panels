@@ -1,4 +1,6 @@
 include ':FtcRobotController'
 include ':TeamCode'
 include ':OpModeControl'
+include ':ExamplePlugin'
+include ':Telemetry'
 include ':Panels'

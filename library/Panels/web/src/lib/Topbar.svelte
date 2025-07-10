@@ -28,6 +28,8 @@
   .plugins-overlay {
     min-width: 200px;
     min-height: 100px;
+    display: flex;
+    gap: calc(var(--padding) / 2);
   }
 
   button.plugin {
@@ -37,8 +39,10 @@
     border: 1px solid blue;
     padding: calc(var(--padding) / 2);
     border-radius: 69vw;
-    width: fit-content;
-    aspect-ratio: 1 / 1;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-content: center;
   }
   nav {
     background-color: var(--bgMedium);
