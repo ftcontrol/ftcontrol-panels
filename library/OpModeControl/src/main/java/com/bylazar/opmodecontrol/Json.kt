@@ -12,8 +12,20 @@ data class OpModeDetails(
     var autoTransition: String,
 )
 
+enum class OpModeStatus {
+    INIT,
+    RUNNING,
+    STOPPED
+}
+
+
 data class OpModesList(
     val opModes: List<OpModeDetails>
+)
+
+data class ActiveOpMode(
+    val opMode: OpModeDetails,
+    val status: OpModeStatus
 )
 
 

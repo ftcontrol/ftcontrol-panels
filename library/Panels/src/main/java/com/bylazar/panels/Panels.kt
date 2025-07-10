@@ -11,6 +11,7 @@ import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier.Notifications
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import com.qualcomm.robotcore.util.WebHandlerManager
@@ -88,6 +89,9 @@ object Panels : Notifications {
     fun attachEventLoop(context: Context, eventLoop: FtcEventLoop) {
         PluginsManager.plugins.values.forEach { it.onAttachEventLoop(eventLoop) }
         PluginsManager.plugins.values.forEach { it.onOpModeManager(eventLoop.opModeManager) }
+
+        eventLoop.opModeManager.unregisterListener(this)
+        eventLoop.opModeManager.registerListener(this)
     }
 
     @JvmStatic
@@ -106,14 +110,17 @@ object Panels : Notifications {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        Logger.coreLog("Init of opMode")
         PluginsManager.plugins.values.forEach { it.onOpModePreInit(opMode) }
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
+        Logger.coreLog("Start of opMode")
         PluginsManager.plugins.values.forEach { it.onOpModePreStart(opMode) }
     }
 
     override fun onOpModePostStop(opMode: OpMode) {
+        Logger.coreLog("Stop of opMode")
         PluginsManager.plugins.values.forEach { it.onOpModePostStop(opMode) }
     }
 

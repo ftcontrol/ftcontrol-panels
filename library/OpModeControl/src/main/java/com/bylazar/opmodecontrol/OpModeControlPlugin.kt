@@ -18,12 +18,6 @@ open class OpModeControlPluginConfig : BasePluginConfig() {
 class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     override var id = "com.bylazar.opmodecontrol"
 
-    enum class OpModeStatus {
-        INIT,
-        RUNNING,
-        STOPPED
-    }
-
     var opModeList: MutableList<OpModeDetails> = mutableListOf()
         set(value) {
             field = value
@@ -41,7 +35,7 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
                 }
             }
             return OpModeDetails(
-                name = "\$Stop\$Robot\$",
+                name = "",
                 group = "",
                 flavour = OpModeMeta.Flavor.AUTONOMOUS,
                 source = OpModeMeta.Source.ANDROID_STUDIO,
@@ -56,6 +50,17 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
+        when(type){
+            "initOpMode" -> {
+                opModeManager.initOpMode(data as String)
+            }
+            "startActiveOpMode" -> {
+                opModeManager.startActiveOpMode()
+            }
+            "stopActiveOpMode" -> {
+                opModeManager.stopActiveOpMode()
+            }
+        }
     }
 
     override fun onRegister(
@@ -68,7 +73,6 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
     lateinit var opModeManager: OpModeManagerImpl
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
-
     }
 
     override fun onOpModeManager(o: OpModeManagerImpl) {
@@ -80,22 +84,36 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
         t.start()
     }
 
+    fun sendActiveOpMode() {
+        log("New active OpMode $status, ${activeOpModeInfo.name}")
+        if(activeOpModeName == "\$Stop\$Robot\$") status = OpModeStatus.STOPPED
+        send(
+            "activeOpMode", ActiveOpMode(
+                opMode = activeOpModeInfo,
+                status = status
+            )
+        )
+    }
+
     override fun onOpModePreInit(opMode: OpMode) {
         activeOpMode = opMode
         activeOpModeName = opModeManager.activeOpModeName
         status = OpModeStatus.INIT
+        sendActiveOpMode()
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
         activeOpMode = opMode
         activeOpModeName = opModeManager.activeOpModeName
         status = OpModeStatus.RUNNING
+        sendActiveOpMode()
     }
 
     override fun onOpModePostStop(opMode: OpMode) {
         activeOpMode = opMode
         activeOpModeName = opModeManager.activeOpModeName
         status = OpModeStatus.STOPPED
+        sendActiveOpMode()
     }
 
     inner class FetcherRoutine : Runnable {
