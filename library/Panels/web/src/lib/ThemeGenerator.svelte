@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+    let isShown = $state(false)
+
+    import { onMount } from 'svelte';
   import tinycolor from 'tinycolor2';
 
   let baseColor = $state('#040606');
   let textColor = $state('#ffffff');
-  let brightnessOffset = $state(10);
-  let tintColor = $state('#ff0000');
+  let brightnessOffset = $state(14);
+  let tintColor = $state('#1C1C1C');
   let generatedColors: string[] = $state([]);
 
   function applyTint(color: string, tint: string): string {
@@ -26,19 +28,28 @@
  $effect(()=>{
     generateColors(brightnessOffset, baseColor, tintColor)
  })
+
+  $effect(() => {
+    if (generatedColors.length >= 3) {
+      const root = document.documentElement.style;
+      root.setProperty('--bgDark', generatedColors[0]);
+      root.setProperty('--bgMedium', generatedColors[1]);
+      root.setProperty('--bgLight', generatedColors[2]);
+    }
+    document.documentElement.style.setProperty('--text', textColor);
+  });
 </script>
 
-<style>
-  .color-box {
-    width: 100px;
-    height: 100px;
-    display: inline-block;
-    margin: 8px;
-    border-radius: 8px;
-    border: 2px solid #333;
-  }
-</style>
+<button onclick={()=>{
+    isShown  = !isShown
+}}>
+Toggle
+</button>
 
+{#if isShown}
+    <h1>Theme Generator</h1>
+
+    
 <div>
   <label>
     Base Color:
@@ -66,3 +77,17 @@
   {/each}
     <div class="color-box" style="background-color: {textColor}" title={textColor}></div>
 </div>
+
+{/if}
+
+
+<style>
+  .color-box {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin: 8px;
+    border-radius: 8px;
+    border: 2px solid #333;
+  }
+</style>
