@@ -12,6 +12,7 @@ data class PluginDetails(
     val description: String = "",
     val version: String = "",
     val panelsVersion: String = "",
+    val pluginsCoreVersion: String = "",
     val author: String = "",
     val widgets: List<PanelsWidget> = listOf(),
     val manager: PanelsWidget = PanelsWidget()

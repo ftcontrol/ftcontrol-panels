@@ -1,6 +1,7 @@
 package com.bylazar.panels.plugins
 
 import android.content.Context
+import com.bylazar.panels.GlobalStats
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
@@ -11,6 +12,7 @@ import kotlin.jvm.java
 
 object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
+    val skippedPlugins: MutableMap<String, PluginDetails> = mutableMapOf()
     var isRegistered = false
 
     fun loadPluginConfig(context: Context, filename: String = "config.json"): PluginDetails {
@@ -90,19 +92,27 @@ object PluginsManager {
                 //get all widgets content
 
                 pluginInstance.details.widgets.forEach {
-                    it.textContent = loadPluginWidgetFile(context, pluginInstance.details.id, it.name)
+                    it.textContent =
+                        loadPluginWidgetFile(context, pluginInstance.details.id, it.name)
                 }
 
-                pluginInstance.details.manager.textContent = loadPluginManagerFile(context, pluginInstance.details.id, pluginInstance.details.manager.name)
-
-
-                plugins[uniqueId] = pluginInstance
+                pluginInstance.details.manager.textContent = loadPluginManagerFile(
+                    context,
+                    pluginInstance.details.id,
+                    pluginInstance.details.manager.name
+                )
 
                 Logger.pluginsLog("Got details or ID '$uniqueId'")
 
                 Logger.pluginsLog(pluginInstance.details.toString())
 
-                Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '$uniqueId'")
+                if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
+                    skippedPlugins[pluginInstance.id] = pluginInstance.details
+                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '$uniqueId', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                } else {
+                    plugins[uniqueId] = pluginInstance
+                    Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '$uniqueId'")
+                }
 
             } catch (t: Throwable) {
                 Logger.pluginsError("Error while loading: ${clazz.name} with ID '$uniqueId', ${t.message}")

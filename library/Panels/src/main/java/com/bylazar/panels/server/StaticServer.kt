@@ -96,7 +96,8 @@ class StaticServer(
                 "core",
                 "pluginsDetails",
                 PluginData(
-                    PluginsManager.plugins.values.map { it.toInfo() }
+                    PluginsManager.plugins.values.map { it.toInfo() },
+                    PluginsManager.skippedPlugins.values.map { it }
                 )
             ).toJson()
 

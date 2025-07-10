@@ -1,18 +1,21 @@
 import { dev } from "$app/environment"
 import { GlobalSocket } from "ftc-panels/src/core/socket/global"
-import type { PluginInfo } from "ftc-panels/src/core/types"
+import type { PluginConfig, PluginInfo } from "ftc-panels/src/core/types"
 
-class GlobalState {
+export class GlobalState {
   plugins: PluginInfo[] = $state([])
+  skippedPlugins: PluginConfig[] = $state([])
   socket: GlobalSocket = new GlobalSocket()
 
   async init() {
     try {
       const data = await this.getPluginsUntilReady()
 
-      global.plugins = JSON.parse(data).data.plugins
+      this.plugins = JSON.parse(data).data.plugins
 
-      this.socket.init(global.plugins)
+      this.skippedPlugins = JSON.parse(data).data.skippedPlugins
+
+      this.socket.init(this.plugins)
     } catch (e) {
       console.error(e)
     }
@@ -46,5 +49,3 @@ class GlobalState {
     throw new Error("Failed to get plugins after multiple attempts.")
   }
 }
-
-export const global = new GlobalState()

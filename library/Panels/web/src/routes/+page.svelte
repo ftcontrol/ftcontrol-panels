@@ -9,7 +9,7 @@
   import type { PluginInfo } from "ftc-panels/src/core/types"
   import { dev } from "$app/environment"
   import Topbar from "$lib/Topbar.svelte"
-  import { global } from "$lib/index.svelte"
+  import { global } from "$lib"
 
   import Overlay from "ftc-panels/src/core/ui/Overlay.svelte"
 

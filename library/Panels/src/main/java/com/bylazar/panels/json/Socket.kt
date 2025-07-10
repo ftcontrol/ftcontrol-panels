@@ -29,7 +29,8 @@ data class TimeData(val time: String)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginData(
-    var plugins: List<PluginInfo>
+    var plugins: List<PluginInfo>,
+    var skippedPlugins: List<PluginDetails>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
