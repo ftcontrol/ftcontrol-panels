@@ -2,8 +2,7 @@
   import { onMount } from "svelte"
   import Manager, { type OpModeStatus } from "../manager"
   import type { OpMode } from "../types"
-  import Overlay from "ftc-panels/src/core/ui/Overlay.svelte"
-  import Button from "ftc-panels/src/core/ui/Button.svelte"
+  import { Overlay, Button } from "ftc-panels"
 
   let {
     manager,

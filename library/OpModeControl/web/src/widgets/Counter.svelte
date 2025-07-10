@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { increment } from "../index"
+  function increment(n: number) {
+    return n + 1
+  }
+
   let count: number = $state(0)
 </script>
 

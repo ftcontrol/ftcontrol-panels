@@ -1,3 +1,3 @@
-import { buildPanelsPlugin } from "ftc-panels/src/build"
+import { buildPanelsPlugin } from "ftc-panels/cli"
 
 buildPanelsPlugin(__dirname)

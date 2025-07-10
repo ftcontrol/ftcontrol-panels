@@ -1,6 +1,5 @@
 import { dev } from "$app/environment"
-import { GlobalSocket } from "ftc-panels/src/core/socket/global"
-import type { PluginConfig, PluginInfo } from "ftc-panels/src/core/types"
+import { GlobalSocket, type PluginConfig, type PluginInfo } from "ftc-panels"
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])

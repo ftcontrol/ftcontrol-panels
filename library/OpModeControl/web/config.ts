@@ -1,4 +1,4 @@
-import { PluginConfig } from "ftc-panels/src/core/types"
+import { PluginConfig } from "ftc-panels"
 
 export const config: PluginConfig = {
   id: "com.bylazar.opmodecontrol",
@@ -17,10 +17,6 @@ export const config: PluginConfig = {
     {
       name: "OpModes Control",
       filepath: "src/control/ControlWidget.svelte",
-    },
-    {
-      name: "Send",
-      filepath: "src/Counter.svelte",
     },
   ],
   manager: {

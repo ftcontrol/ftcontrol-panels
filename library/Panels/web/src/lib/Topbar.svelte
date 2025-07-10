@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
   import Panels from "$lib/Panels.svelte"
-  import Overlay from "ftc-panels/src/core/ui/Overlay.svelte"
+  import { Overlay } from "ftc-panels"
   import { global } from "$lib"
 </script>
 
@@ -8,10 +8,10 @@
   <Panels />
 
   <Overlay>
-    {#snippet trigger({ isOpen })}
+    {#snippet trigger({ isOpen }: { isOpen: boolean })}
       Plugins
     {/snippet}
-    {#snippet overlay({ close })}
+    {#snippet overlay({ close }: { close: void })}
       <div class="plugins-overlay">
         {#each global.plugins as plugin}
           <button class="plugin">{plugin.details.letterName}</button>
@@ -25,12 +25,12 @@
 </nav>
 
 <style>
-  .plugins-overlay{
+  .plugins-overlay {
     min-width: 200px;
     min-height: 100px;
   }
 
-  button.plugin{
+  button.plugin {
     background-color: transparent;
     color: inherit;
     margin: 0;

@@ -1,4 +1,4 @@
-import { PluginManager } from "ftc-panels/src/core/socket/manager"
+import { PluginManager } from "ftc-panels"
 
 export type OpModeStatus = "INIT" | "RUNNING" | "STOPPED"
 
