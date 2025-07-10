@@ -4,9 +4,11 @@
   import { GlobalSocket } from "ftc-panels/src/core/socket/global"
   import DynamicComponent from "ftc-panels/src/core/ui/DynamicComponent.svelte"
   import ThemeGenerator from "$lib/ThemeGenerator.svelte"
+  import Panels from "$lib/Panels.svelte"
   import type { GenericData } from "ftc-panels/src/core/socket/types"
   import type { PluginInfo } from "ftc-panels/src/core/types"
   import { dev } from "$app/environment"
+  import Topbar from "$lib/Topbar.svelte"
 
   let socket: GlobalSocket
   let plugins = $state<PluginInfo[]>([])
@@ -53,11 +55,14 @@
   })
 </script>
 
-<ThemeGenerator />
+<Topbar />
+
 
 <h1>Hi!</h1>
 {#each plugins as plugin}
-  <div style="background-color:var(--bgLight);padding:0.5rem;margin-bottom:1rem;">
+  <div
+    style="background-color:var(--bgLight);padding:0.5rem;margin-bottom:1rem;"
+  >
     <h2>{plugin.details.name}</h2>
     <p>{plugin.details.id}</p>
     <p>{plugin.details.author}</p>
@@ -70,3 +75,4 @@
     />
   {/each}
 {/each}
+<ThemeGenerator />

@@ -1,12 +1,13 @@
 <script lang="ts">
-    let isShown = $state(false)
+  let isShown = $state(false)
 
-    import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import tinycolor from 'tinycolor2';
 
   let baseColor = $state('#040606');
   let textColor = $state('#ffffff');
   let brightnessOffset = $state(14);
+  let padding = $state(1);
   let tintColor = $state('#1C1C1C');
   let generatedColors: string[] = $state([]);
 
@@ -30,13 +31,19 @@
  })
 
   $effect(() => {
+     const root = document.documentElement.style;
     if (generatedColors.length >= 3) {
-      const root = document.documentElement.style;
+    
       root.setProperty('--bgDark', generatedColors[0]);
       root.setProperty('--bgMedium', generatedColors[1]);
       root.setProperty('--bgLight', generatedColors[2]);
     }
-    document.documentElement.style.setProperty('--text', textColor);
+    if(padding != null){
+      root.setProperty('--padding', `${padding}rem`);
+    }
+    if(textColor != null){
+      root.setProperty('--text', textColor);
+    }
   });
 </script>
 
@@ -68,6 +75,11 @@ Toggle
   <label>
     Text:
     <input type="color" bind:value={textColor} />
+  </label>
+
+  <label>
+    Padding:
+    <input type="number" bind:value={padding} />
   </label>
 </div>
 
