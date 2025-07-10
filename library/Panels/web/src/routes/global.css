@@ -1,5 +1,3 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Varta:wght@300..700&display=swap"); */
-
 :root {
   --bgDark: #040606;
   --bgMedium: #1b2020;
@@ -54,10 +52,9 @@ body {
 
   color: var(--text);
 
-  font-family: "Varta", sans-serif;
-  font-optical-sizing: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: 300;
-  font-style: normal;
 }
 
 ::-webkit-scrollbar {
