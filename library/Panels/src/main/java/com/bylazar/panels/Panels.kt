@@ -80,16 +80,6 @@ object Panels : Notifications {
         TextHandler.injectText()
 
         PluginsManager.init(context)
-
-        socket.sendStrings(
-            createSocketMessage(
-                "core",
-                "pluginsDetails",
-                PluginData(
-                    PluginsManager.plugins.values.map { it.toInfo() }
-                )
-            ).toJson()
-        )
     }
 
     @JvmStatic

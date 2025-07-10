@@ -21,4 +21,8 @@ export const config: PluginConfig = {
       filepath: "src/Counter.svelte",
     },
   ],
+  manager: {
+    name: "Manager",
+    filepath: "src/manager.ts",
+  },
 }

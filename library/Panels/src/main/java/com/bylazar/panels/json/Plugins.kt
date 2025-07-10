@@ -12,7 +12,8 @@ data class PluginDetails(
     val version: String = "",
     val panelsVersion: String = "",
     val author: String = "",
-    val widgets: List<PanelsWidget> = listOf()
+    val widgets: List<PanelsWidget> = listOf(),
+    val manager: PanelsWidget = PanelsWidget()
 ){
     override fun toString(): String {
         return buildString {
@@ -35,7 +36,7 @@ data class PluginDetails(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PanelsWidget(
-    val name: String,
-    val filepath: String,
+    val name: String = "",
+    val filepath: String = "",
     var textContent: String = ""
 )

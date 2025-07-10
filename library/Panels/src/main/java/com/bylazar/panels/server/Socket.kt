@@ -33,7 +33,7 @@ class Socket(
         }
     }
 
-     inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
+    inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
         val tasks: List<SocketTask> = listOf(
             TimeTask()
         )
@@ -58,16 +58,6 @@ class Socket(
             tasks.forEach { it.onOpen() }
 
             clients.add(this)
-
-            sendString(
-                createSocketMessage(
-                    "core",
-                    "pluginsDetails",
-                    PluginData(
-                        PluginsManager.plugins.values.map { it.toInfo() }
-                    )
-                ).toJson()
-            )
 
             PluginsManager.plugins.values.forEach { it.onNewClient(this) }
 

@@ -11,6 +11,7 @@ import kotlin.jvm.java
 
 object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
+    var isRegistered = false
 
     fun loadPluginConfig(context: Context, filename: String = "config.json"): PluginDetails {
         val assetManager = context.assets
@@ -27,7 +28,15 @@ object PluginsManager {
         }
     }
 
+    fun loadPluginManagerFile(context: Context, id: String, file: String): String {
+        val assetManager = context.assets
+        assetManager.open("web/plugins/${id}/${file}.js").use { inputStream ->
+            return inputStream.bufferedReader().use { it.readText() }
+        }
+    }
+
     fun init(context: Context) {
+        isRegistered = false
         val classes = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
             shouldKeepFilter = { clazz ->
@@ -84,6 +93,9 @@ object PluginsManager {
                     it.textContent = loadPluginWidgetFile(context, pluginInstance.details.id, it.name)
                 }
 
+                pluginInstance.details.manager.textContent = loadPluginManagerFile(context, pluginInstance.details.id, pluginInstance.details.manager.name)
+
+
                 plugins[uniqueId] = pluginInstance
 
                 Logger.pluginsLog("Got details or ID '$uniqueId'")
@@ -96,6 +108,8 @@ object PluginsManager {
                 Logger.pluginsError("Error while loading: ${clazz.name} with ID '$uniqueId', ${t.message}")
             }
         }
+
+        isRegistered = true
 
         plugins.values.forEach {
             it.onRegister(Panels, context)

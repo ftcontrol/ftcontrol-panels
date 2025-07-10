@@ -2,7 +2,11 @@ package com.bylazar.panels.server
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.provider.Browser.sendString
 import com.bylazar.panels.Logger
+import com.bylazar.panels.json.PluginData
+import com.bylazar.panels.json.createSocketMessage
+import com.bylazar.panels.plugins.PluginsManager
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -83,6 +87,22 @@ class StaticServer(
 
         val uri = session.uri.removePrefix("/").removeSuffix("/").removePrefix("index.html")
             .ifEmpty { "index.html" }
+
+        if (uri == "plugins") {
+            if (!PluginsManager.isRegistered) {
+                return getResponse("null", contentType = "application/json").allowCors()
+            }
+
+            val jsonString = createSocketMessage(
+                "core",
+                "pluginsDetails",
+                PluginData(
+                    PluginsManager.plugins.values.map { it.toInfo() }
+                )
+            ).toJson()
+
+            return getResponse(jsonString, contentType = "application/json").allowCors()
+        }
 
         return getStaticResponse(uri)
     }

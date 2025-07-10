@@ -7,18 +7,47 @@
   import type { PluginInfo } from "ftc-panels/src/core/types"
   import { dev } from "$app/environment"
 
-  let socket = new GlobalSocket()
+  let socket: GlobalSocket
   let plugins = $state<PluginInfo[]>([])
 
-  onMount(() => {
-    socket.init()
+  async function getPluginsUntilReady(): Promise<string> {
+    const url = dev ? "http://localhost:8001" : window.location.origin
+    let attempts = 0
+    let maxAttempts = 20
 
-    socket.addMessageHandler("core", "pluginsDetails", (data: GenericData) => {
-      plugins = data.plugins
-    })
+    while (attempts < maxAttempts) {
+      try {
+        const response = await fetch(`${url}/plugins`)
+        const text = await response.text()
+
+        if (text && text.trim() != "null") {
+          return text
+        }
+      } catch (err) {
+        console.warn("Fetch failed, retrying...", err)
+      }
+
+      attempts++
+      await new Promise((resolve) => setTimeout(resolve, 500))
+    }
+
+    throw new Error("Failed to get plugins after multiple attempts.")
+  }
+
+  onMount(async () => {
+    try {
+      const data = await getPluginsUntilReady()
+
+      plugins = JSON.parse(data).data.plugins
+
+      socket = new GlobalSocket()
+      socket.init(plugins)
+    } catch (e) {
+      console.error(e)
+    }
 
     return () => {
-      socket.close()
+      socket?.close()
     }
   })
 </script>
@@ -30,17 +59,9 @@
   <p>{plugin.details.author}</p>
   {#each plugin.details.widgets as widget}
     <DynamicComponent
-      isDev={dev}
       globalSocket={socket}
-      textContent={widget.textContent}
+      textContent={widget.textContent || ""}
       id={plugin.details.id}
     />
   {/each}
 {/each}
-
-<h1>Socket Messages</h1>
-<ul>
-  {#each socket.log as message}
-    <li>{message}</li>
-  {/each}
-</ul>
