@@ -4,6 +4,7 @@ import android.content.Context
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
+import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
@@ -27,6 +28,14 @@ object Panels : Notifications {
     lateinit var server: StaticServer
     lateinit var socket: Socket
     var config = PanelsConfig()
+
+    fun getPlugin(id: String): Plugin<*>? {
+        val plugin = PluginsManager.plugins[id]
+        if(plugin == null){
+            Logger.pluginsError("Plugin with id: $id not found")
+        }
+        return plugin
+    }
 
     @JvmStatic
     @OpModeRegistrar

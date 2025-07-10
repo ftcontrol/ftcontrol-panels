@@ -9,11 +9,14 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-open class ExamplePluginConfig : BasePluginConfig() {
+open class TelemetryPluginConfig : BasePluginConfig() {
+    open var telemetryUpdateInterval = 75L
 }
 
-class OpModeControlPlugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
+class TelemetryPlugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
     override var id = "com.bylazar.telemetry"
+
+    val manager = TelemetryManager(config) { lines -> send("telemetryPacket", lines) }
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }
@@ -36,6 +39,7 @@ class OpModeControlPlugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        manager.update()
     }
 
     override fun onOpModePreStart(opMode: OpMode) {

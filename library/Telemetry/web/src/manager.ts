@@ -3,5 +3,11 @@ import { PluginManager } from "ftc-panels"
 export type OpModeStatus = "INIT" | "RUNNING" | "STOPPED"
 
 export default class Manager extends PluginManager {
-  override onInit(): void {}
+  PACKETS_KEY = "packets"
+
+  override onInit(): void {
+    this.socket.addMessageHandler("telemetryPacket", (data) => {
+      this.state.update(this.PACKETS_KEY, data)
+    })
+  }
 }

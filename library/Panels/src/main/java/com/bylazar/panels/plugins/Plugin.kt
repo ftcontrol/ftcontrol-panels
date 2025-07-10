@@ -12,7 +12,6 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-
 abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     var config = baseConfig
     var details = PluginDetails()
@@ -55,7 +54,7 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     abstract fun onNewClient(client: ClientSocket)
     abstract fun onMessage(type: String, data: Any?)
 
-    internal fun toInfo(): PluginInfo{
+    internal fun toInfo(): PluginInfo {
         return PluginInfo(
             details,
             config
