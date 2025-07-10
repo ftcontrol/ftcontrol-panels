@@ -11,6 +11,7 @@
   import Topbar from "$lib/Topbar.svelte"
   import { global } from "$lib/index.svelte"
 
+  import Overlay from "ftc-panels/src/core/ui/Overlay.svelte"
 
   onMount(async () => {
     global.init()
@@ -22,7 +23,6 @@
 </script>
 
 <Topbar />
-
 
 <h1>Hi!</h1>
 {#each global.plugins as plugin}
@@ -42,3 +42,13 @@
   {/each}
 {/each}
 <ThemeGenerator />
+
+<Overlay>
+  {#snippet trigger({isOpen})}
+    Lazar: {isOpen}
+  {/snippet}
+  {#snippet overlay({close})}
+    <h1>Hi</h1>
+    <button onclick={close}>Close</button>
+  {/snippet}
+</Overlay>

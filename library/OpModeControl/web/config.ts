@@ -14,11 +14,11 @@ export const config: PluginConfig = {
       filepath: "src/widgets/Counter.svelte",
     },
     {
-      name: "OpModes",
-      filepath: "src/widgets/OpModes.svelte",
+      name: "OpModes Control",
+      filepath: "src/control/ControlWidget.svelte",
     },
     {
-      name: "Counter2",
+      name: "Send",
       filepath: "src/Counter.svelte",
     },
   ],
