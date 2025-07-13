@@ -41,6 +41,13 @@ class Manager {
 
   possibleWidgets = $state(this.widgets)
 
+  isMoving = $derived.by(() => {
+    for (const w of this.widgets) {
+      if (w.isMoving) return true
+    }
+    return false
+  })
+
   WIDTH = $state(200)
   HEIGHT = $state(100)
   MAX_GRID_WIDTH = $state(8)

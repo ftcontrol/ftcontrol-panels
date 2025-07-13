@@ -46,8 +46,15 @@
     {#each gridCells as { x, y } (x + "-" + y)}
       <Overlay {x} {y} />
     {/each}
+    {#if manager.isMoving}
+      {#each manager.possibleWidgets as widget (widget.id)}
+        <WidgetItem {widget} />
+      {/each}
+    {/if}
     {#each manager.widgets as widget (widget.id)}
-      <WidgetItem {widget} />
+      {#if !manager.isMoving || widget.isMoving}
+        <WidgetItem {widget} />
+      {/if}
     {/each}
   </div>
 </section>

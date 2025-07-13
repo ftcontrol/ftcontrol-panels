@@ -7,14 +7,12 @@
 
   let blue = $derived.by(() => {
     if (w == undefined) return true
-    if (w.isMoving) return true
+    if (w.isMoving) return false
     return false
   })
 </script>
 
-<div style="--x:{x};--y:{y};" class:blue>
-  <p>{w?.id}</p>
-</div>
+<div style="--x:{x};--y:{y};" class:blue></div>
 
 <style>
   div {

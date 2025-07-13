@@ -37,6 +37,7 @@
   }
 
   function startResize(e: MouseEvent) {
+    widget.isMoving = true
     startX = e.clientX
     startY = e.clientY
     window.addEventListener("mousemove", onResize)
@@ -51,6 +52,7 @@
   }
 
   function stopResize() {
+    widget.isMoving = false
     window.removeEventListener("mousemove", onResize)
     window.removeEventListener("mouseup", stopResize)
     manager.finishResizeWidget(widget.id, xOffset, yOffset)
