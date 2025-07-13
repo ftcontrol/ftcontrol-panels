@@ -19,7 +19,7 @@ data class UpdatedJvmFields(
 
 class GenericTypeJson(
     val id: String,
-    val className: String? = null,
+    val className: String = "",
     val fieldName: String,
     val type: BaseTypes,
     val valueString: String,

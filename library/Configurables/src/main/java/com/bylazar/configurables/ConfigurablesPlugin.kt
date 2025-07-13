@@ -1,6 +1,7 @@
 package com.bylazar.configurables
 
 import android.content.Context
+import com.bylazar.configurables.GlobalConfigurables
 import com.bylazar.configurables.GlobalConfigurables.jvmFields
 import com.bylazar.configurables.annotations.Configurable
 import com.bylazar.configurables.annotations.IgnoreConfigurable
@@ -29,8 +30,11 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
     var configurableClasses: List<ClassFinder.ClassEntry> = listOf()
     var allFields: List<GenericTypeJson> = listOf()
 
+    val allFieldsMap: Map<String, List<GenericTypeJson>>
+        get() = allFields.groupBy { it.className }
+
     override fun onNewClient(client: Socket.ClientSocket) {
-        sendClient(client, "initialConfigurables", allFields)
+        sendClient(client, "initialConfigurables", allFieldsMap)
     }
 
     override fun onMessage(type: String, data: Any?) {
@@ -87,7 +91,7 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
         allFields = jvmFields.map { it.toJsonType }
 
-        send("initialConfigurables", allFields)
+        send("initialConfigurables", allFieldsMap)
     }
 
     private fun MutableList<GenericField>.addFieldsFromClass(

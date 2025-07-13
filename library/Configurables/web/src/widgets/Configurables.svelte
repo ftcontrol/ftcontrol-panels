@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import Manager from "../manager"
+  import type { GenericTypeJson } from "../types"
 
   let {
     manager,
@@ -8,7 +9,7 @@
     manager: Manager
   } = $props()
 
-  let configurables = $state([])
+  let configurables: Record<string, GenericTypeJson[]> = $state({})
 
   onMount(() => {
     manager.state.onChange(manager.INITIAL_CONFIGURABLES_KEY, (data) => {
@@ -17,7 +18,16 @@
   })
 </script>
 
-{JSON.stringify(configurables)}
+{#each Object.entries(configurables) as [key, value]}
+  <div>
+    <h3>{key}</h3>
+    <ul>
+      {#each value as item}
+        <li>{JSON.stringify(item)}</li>
+      {/each}
+    </ul>
+  </div>
+{/each}
 
 <style>
 </style>
