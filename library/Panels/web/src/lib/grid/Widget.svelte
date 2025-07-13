@@ -1,12 +1,5 @@
 <script lang="ts">
-  import {
-    HEIGHT,
-    manager,
-    moveWidget,
-    resizeWidget,
-    WIDTH,
-    type Widget,
-  } from "./widgets.svelte"
+  import { manager, type Widget } from "./widgets.svelte"
 
   let { widget }: { widget: Widget } = $props()
 
@@ -35,17 +28,9 @@
   function stopDrag() {
     window.removeEventListener("mousemove", onDrag)
     window.removeEventListener("mouseup", stopDrag)
-
-    const dx = Math.round(xMove / WIDTH)
-    const dy = Math.round(yMove / HEIGHT)
+    manager.moveWidget(widget.id, xMove, yMove)
     xMove = 0
     yMove = 0
-    manager.widgets = moveWidget(
-      widget.id,
-      widget.x + dx,
-      widget.y + dy,
-      manager.widgets
-    )
   }
 
   function startResize(e: MouseEvent) {
@@ -64,16 +49,9 @@
   function stopResize() {
     window.removeEventListener("mousemove", onResize)
     window.removeEventListener("mouseup", stopResize)
-
-    const dw = Math.round(xOffset / WIDTH)
-    const dh = Math.round(yOffset / HEIGHT)
-    const newW = Math.min(Math.max(widget.minW, widget.w + dw), widget.maxW)
-    const newH = Math.min(Math.max(widget.minH, widget.h + dh), widget.maxH)
-
+    manager.resizeWidget(widget.id, xOffset, yOffset)
     xOffset = 0
     yOffset = 0
-
-    manager.widgets = resizeWidget(widget.id, newW, newH, manager.widgets)
   }
 </script>
 

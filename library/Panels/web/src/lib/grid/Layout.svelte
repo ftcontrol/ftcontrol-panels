@@ -1,6 +1,6 @@
 <script lang="ts">
   import WidgetItem from "./Widget.svelte"
-  import { HEIGHT, manager, WIDTH, type Widget } from "./widgets.svelte"
+  import { manager, type Widget } from "./widgets.svelte"
 
   function getSurface(widget: Widget) {
     return widget.w * widget.h
@@ -15,7 +15,7 @@
   })
 </script>
 
-<section style="--width:{WIDTH}px;--height:{HEIGHT}px;">
+<section style="--width:{manager.WIDTH}px;--height:{manager.HEIGHT}px;">
   {#each manager.widgets as widget (widget.id)}
     <WidgetItem {widget} />
   {/each}
