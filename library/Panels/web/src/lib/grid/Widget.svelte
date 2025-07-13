@@ -57,7 +57,12 @@
 
     let dataWidget = el.getAttribute("data-widget") || ""
     let dataIndex = parseInt(el.getAttribute("data-index") || "")
-    if (dataWidget != widget.id) {
+    if (
+      dataWidget != widget.id ||
+      (dataWidget == widget.id &&
+        movingIndex != dataIndex &&
+        movingIndex != dataIndex + 1)
+    ) {
       manager.tabIndex = dataIndex
       manager.tabWidgetID = dataWidget
     }
@@ -86,20 +91,28 @@
     let dataWidget = el.getAttribute("data-widget")
     let dataIndex = parseInt(el.getAttribute("data-index") || "")
 
-    if (dataWidget != widget.id) {
+    if (
+      dataWidget != widget.id ||
+      (dataWidget == widget.id &&
+        movingIndex != dataIndex &&
+        movingIndex != dataIndex + 1)
+    ) {
       console.log(el, dataWidget, dataIndex)
 
       //move
       const replaceWidget = manager.widgets.find((it) => it.id == dataWidget)
 
       if (replaceWidget != undefined && dataIndex != undefined) {
+        const movingPanel = widget.widgets[movingIndex]
+
+        widget.widgets.splice(movingIndex, 1)
+
         replaceWidget.widgets = [
           ...replaceWidget.widgets.slice(0, dataIndex + 1),
-          widget.widgets[movingIndex],
+          movingPanel,
           ...replaceWidget.widgets.slice(dataIndex + 1),
         ]
 
-        widget.widgets.splice(movingIndex, 1)
         widget.selected -= 1
         if (widget.selected < 0) {
           widget.selected = 0
