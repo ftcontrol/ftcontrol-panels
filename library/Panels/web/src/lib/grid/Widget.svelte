@@ -13,6 +13,7 @@
   let startY = $state(0)
 
   function startDrag(e: MouseEvent) {
+    widget.isMoving = true
     e.preventDefault()
     startX = e.clientX
     startY = e.clientY
@@ -23,12 +24,14 @@
   function onDrag(e: MouseEvent) {
     xMove = e.clientX - startX
     yMove = e.clientY - startY
+    manager.updateMove(widget.id, xMove, yMove)
   }
 
   function stopDrag() {
+    widget.isMoving = false
     window.removeEventListener("mousemove", onDrag)
     window.removeEventListener("mouseup", stopDrag)
-    manager.moveWidget(widget.id, xMove, yMove)
+    manager.finishMoveWidget(widget.id, xMove, yMove)
     xMove = 0
     yMove = 0
   }
@@ -44,12 +47,13 @@
     e.preventDefault()
     xOffset = e.clientX - startX
     yOffset = e.clientY - startY
+    manager.updateResize(widget.id, xOffset, yOffset)
   }
 
   function stopResize() {
     window.removeEventListener("mousemove", onResize)
     window.removeEventListener("mouseup", stopResize)
-    manager.resizeWidget(widget.id, xOffset, yOffset)
+    manager.finishResizeWidget(widget.id, xOffset, yOffset)
     xOffset = 0
     yOffset = 0
   }
@@ -62,12 +66,14 @@
     {widget.id} / {manager.isOutOfBounds(widget)} / {widget.x} / {widget.y} / {widget.x +
       widget.w} / {widget.y + widget.h}
   </p>
+  <p>{widget.isMoving}</p>
   <button onmousedown={startDrag}>M</button>
   <button class="resize" onmousedown={startResize}>R</button>
 </div>
 
 <style>
   div {
+    background-color: red;
     position: absolute;
     outline: 1px solid black;
     top: calc(var(--y) * var(--height) + var(--yMove));

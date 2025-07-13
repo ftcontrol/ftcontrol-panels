@@ -1,4 +1,5 @@
 export type Widget = {
+  isMoving: boolean
   id: string
   x: number
   y: number
@@ -13,6 +14,7 @@ export type Widget = {
 class Manager {
   widgets: Widget[] = $state([
     {
+      isMoving: false,
       id: "test1",
       x: 0,
       y: 0,
@@ -24,6 +26,7 @@ class Manager {
       maxH: 60,
     },
     {
+      isMoving: false,
       id: "test2",
       x: 1,
       y: 1,
@@ -36,6 +39,8 @@ class Manager {
     },
   ])
 
+  possibleWidgets = $state(this.widgets)
+
   WIDTH = $state(200)
   HEIGHT = $state(100)
   MAX_GRID_WIDTH = $state(8)
@@ -47,6 +52,12 @@ class Manager {
       a.x >= b.x + b.w ||
       a.y + a.h <= b.y ||
       a.y >= b.y + b.h
+    )
+  }
+
+  getWidget(x: number, y: number, widgets: Widget[]): Widget | undefined {
+    return widgets.find(
+      (w) => x >= w.x && x < w.x + w.w && y >= w.y && y < w.y + w.h
     )
   }
 
@@ -89,8 +100,9 @@ class Manager {
       }
     }
 
-    if ([moved, ...updated].some((w) => this.isOutOfBounds(w))) return
-    this.widgets = updated
+    if ([moved, ...updated].some((w) => this.isOutOfBounds(w)))
+      return this.widgets
+    return updated
   }
 
   willCollide(test: Widget, widgets: Widget[], excludeId: string): boolean {
@@ -106,22 +118,47 @@ class Manager {
     )
   }
 
-  moveWidget(id: string, xMove: number, yMove: number) {
+  updateMove(id: string, xMove: number, yMove: number) {
+    this.possibleWidgets = this.moveWidget(id, xMove, yMove, this.widgets)
+  }
+
+  updateResize(id: string, xOffset: number, yOffset: number) {
+    this.possibleWidgets = this.resizeWidget(id, xOffset, yOffset, this.widgets)
+  }
+
+  finishMoveWidget(id: string, xMove: number, yMove: number) {
+    this.widgets = this.moveWidget(id, xMove, yMove, this.widgets)
+  }
+  finishResizeWidget(id: string, xOffset: number, yOffset: number) {
+    this.widgets = this.resizeWidget(id, xOffset, yOffset, this.widgets)
+  }
+
+  moveWidget(
+    id: string,
+    xMove: number,
+    yMove: number,
+    widgets: Widget[]
+  ): Widget[] {
     const dx = Math.round(xMove / this.WIDTH)
     const dy = Math.round(yMove / this.HEIGHT)
 
-    const updated = this.widgets.map((w) =>
+    const updated = widgets.map((w) =>
       w.id === id ? { ...w, x: w.x + dx, y: w.y + dy } : { ...w }
     )
     const moved = updated.find((w) => w.id === id)!
-    this.resolveCollisions(moved, updated)
+    return this.resolveCollisions(moved, updated)
   }
 
-  resizeWidget(id: string, xOffset: number, yOffset: number) {
+  resizeWidget(
+    id: string,
+    xOffset: number,
+    yOffset: number,
+    widgets: Widget[]
+  ) {
     const dw = Math.round(xOffset / this.WIDTH)
     const dh = Math.round(yOffset / this.HEIGHT)
 
-    const updated = this.widgets.map((w) =>
+    const updated = widgets.map((w) =>
       w.id === id
         ? {
             ...w,
@@ -131,7 +168,7 @@ class Manager {
         : { ...w }
     )
     const resized = updated.find((w) => w.id === id)!
-    this.resolveCollisions(resized, updated)
+    return this.resolveCollisions(resized, updated)
   }
 }
 
