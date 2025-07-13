@@ -23,6 +23,17 @@ class Manager {
       minH: 1,
       maxH: 6,
     },
+    {
+      id: "test2",
+      x: 1,
+      y: 1,
+      w: 1,
+      h: 1,
+      minW: 1,
+      maxW: 6,
+      minH: 1,
+      maxH: 6,
+    },
   ])
 }
 
@@ -54,7 +65,23 @@ export function resolveCollisions(moved: Widget, widgets: Widget[]): Widget[] {
     }
   }
 
+  if ([moved, ...updated].some(isOutOfBounds)) {
+    return manager.widgets
+  }
+
   return updated
+}
+
+const MAX_GRID_WIDTH = 6
+const MAX_GRID_HEIGHT = 6
+
+function isOutOfBounds(widget: Widget): boolean {
+  return (
+    widget.x < 0 ||
+    widget.y < 0 ||
+    widget.x + widget.w > MAX_GRID_WIDTH ||
+    widget.y + widget.h > MAX_GRID_HEIGHT
+  )
 }
 
 export function moveWidget(

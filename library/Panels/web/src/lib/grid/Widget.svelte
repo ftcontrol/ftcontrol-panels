@@ -2,6 +2,7 @@
   import {
     HEIGHT,
     manager,
+    moveWidget,
     resizeWidget,
     WIDTH,
     type Widget,
@@ -12,8 +13,40 @@
   let xOffset = $state(0)
   let yOffset = $state(0)
 
+  let xMove = $state(0)
+  let yMove = $state(0)
+
   let startX = $state(0)
   let startY = $state(0)
+
+  function startDrag(e: MouseEvent) {
+    e.preventDefault()
+    startX = e.clientX
+    startY = e.clientY
+    window.addEventListener("mousemove", onDrag)
+    window.addEventListener("mouseup", stopDrag)
+  }
+
+  function onDrag(e: MouseEvent) {
+    xMove = e.clientX - startX
+    yMove = e.clientY - startY
+  }
+
+  function stopDrag() {
+    window.removeEventListener("mousemove", onDrag)
+    window.removeEventListener("mouseup", stopDrag)
+
+    const dx = Math.round(xMove / WIDTH)
+    const dy = Math.round(yMove / HEIGHT)
+    xMove = 0
+    yMove = 0
+    manager.widgets = moveWidget(
+      widget.id,
+      widget.x + dx,
+      widget.y + dy,
+      manager.widgets
+    )
+  }
 
   function startResize(e: MouseEvent) {
     startX = e.clientX
@@ -45,21 +78,21 @@
 </script>
 
 <div
-  style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;"
+  style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;--xMove:{xMove}px;--yMove:{yMove}px;"
 >
   <p>
     {widget.id}
   </p>
-  <button>M</button>
+  <button onmousedown={startDrag}>M</button>
   <button class="resize" onmousedown={startResize}>R</button>
 </div>
 
 <style>
   div {
-    position: relative;
+    position: absolute;
     outline: 1px solid black;
-    top: calc(var(--y) * var(--height));
-    left: calc(var(--x) * var(--width));
+    top: calc(var(--y) * var(--height) + var(--yMove));
+    left: calc(var(--x) * var(--width) + var(--xMove));
     height: calc(var(--h) * var(--height) + var(--yOffset));
     width: calc(var(--w) * var(--width) + var(--xOffset));
   }
