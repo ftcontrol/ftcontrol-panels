@@ -59,7 +59,8 @@
   style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;--xMove:{xMove}px;--yMove:{yMove}px;"
 >
   <p>
-    {widget.id}
+    {widget.id} / {manager.isOutOfBounds(widget)} / {widget.x} / {widget.y} / {widget.x +
+      widget.w} / {widget.y + widget.h}
   </p>
   <button onmousedown={startDrag}>M</button>
   <button class="resize" onmousedown={startResize}>R</button>

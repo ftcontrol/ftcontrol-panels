@@ -21,7 +21,7 @@ class Manager {
       minW: 1,
       maxW: 6,
       minH: 1,
-      maxH: 6,
+      maxH: 60,
     },
     {
       id: "test2",
@@ -32,14 +32,14 @@ class Manager {
       minW: 1,
       maxW: 6,
       minH: 1,
-      maxH: 6,
+      maxH: 60,
     },
   ])
 
   WIDTH = 200
   HEIGHT = 100
-  MAX_GRID_WIDTH = 6
-  MAX_GRID_HEIGHT = 6
+  MAX_GRID_WIDTH = 8
+  MAX_GRID_HEIGHT = 8
 
   isColliding(a: Widget, b: Widget): boolean {
     return !(
@@ -50,25 +50,51 @@ class Manager {
     )
   }
 
-  resolveCollisions(moved: Widget, widgets: Widget[]): Widget[] {
+  resolveCollisions(moved: Widget, widgets: Widget[]) {
     const updated = widgets.map((w) => ({ ...w }))
     const queue = [moved]
 
     while (queue.length > 0) {
       const current = queue.pop()!
-      for (let widget of updated) {
-        if (widget.id !== current.id && this.isColliding(current, widget)) {
+
+      for (const widget of updated) {
+        if (widget.id === current.id) continue
+        if (!this.isColliding(current, widget)) continue
+
+        const directions = [
+          { dx: 0, dy: current.y + current.h }, // down
+          { dx: current.x + current.w, dy: current.y }, // right
+          { dx: current.x - widget.w, dy: current.y }, // left
+        ]
+
+        let movedSuccessfully = false
+        for (const dir of directions) {
+          const trial = { ...widget, x: dir.dx, y: dir.dy }
+          if (
+            !this.isOutOfBounds(trial) &&
+            !this.willCollide(trial, updated, widget.id)
+          ) {
+            widget.x = trial.x
+            widget.y = trial.y
+            queue.push(widget)
+            movedSuccessfully = true
+            break
+          }
+        }
+
+        if (!movedSuccessfully) {
           widget.y = current.y + current.h
           queue.push(widget)
         }
       }
     }
 
-    if ([moved, ...updated].some((w) => this.isOutOfBounds(w))) {
-      return this.widgets
-    }
+    if ([moved, ...updated].some((w) => this.isOutOfBounds(w))) return
+    this.widgets = updated
+  }
 
-    return updated
+  willCollide(test: Widget, widgets: Widget[], excludeId: string): boolean {
+    return widgets.some((w) => w.id !== excludeId && this.isColliding(test, w))
   }
 
   isOutOfBounds(widget: Widget): boolean {
@@ -88,7 +114,7 @@ class Manager {
       w.id === id ? { ...w, x: w.x + dx, y: w.y + dy } : { ...w }
     )
     const moved = updated.find((w) => w.id === id)!
-    this.widgets = this.resolveCollisions(moved, updated)
+    this.resolveCollisions(moved, updated)
   }
 
   resizeWidget(id: string, xOffset: number, yOffset: number) {
@@ -105,7 +131,7 @@ class Manager {
         : { ...w }
     )
     const resized = updated.find((w) => w.id === id)!
-    this.widgets = this.resolveCollisions(resized, updated)
+    this.resolveCollisions(resized, updated)
   }
 }
 
