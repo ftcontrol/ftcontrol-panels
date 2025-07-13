@@ -36,10 +36,10 @@ class Manager {
     },
   ])
 
-  WIDTH = 200
-  HEIGHT = 100
-  MAX_GRID_WIDTH = 8
-  MAX_GRID_HEIGHT = 8
+  WIDTH = $state(200)
+  HEIGHT = $state(100)
+  MAX_GRID_WIDTH = $state(8)
+  MAX_GRID_HEIGHT = $state(8)
 
   isColliding(a: Widget, b: Widget): boolean {
     return !(
