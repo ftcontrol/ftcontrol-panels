@@ -8,9 +8,11 @@
 
   onMount(() => {
     global.init()
-    console.log(
-      global.plugins.map((it) => it.details.widgets.map((w) => w.name))
-    )
+    setTimeout(() => {
+      console.log(
+        global.plugins.map((it) => it.details.widgets.map((w) => w.name))
+      )
+    }, 1000)
   })
 
   onDestroy(() => {

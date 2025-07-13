@@ -8,12 +8,16 @@
     isPossible,
   }: { widget: Widget; isPossible: boolean } = $props()
 
+  let selected = $state(0)
+
+  let selectedPanel = $derived(widget.widgets[selected])
+
   let plugin = $derived(
-    global.plugins.find((it) => it.details.id == widget.pluginID)
+    global.plugins.find((it) => it.details.id == selectedPanel.pluginID)
   )
 
   let pluginWidget = $derived(
-    plugin?.details.widgets.find((it) => it.name == widget.widgetID)
+    plugin?.details.widgets.find((it) => it.name == selectedPanel.widgetID)
   )
 
   let xOffset = $state(0)
@@ -88,23 +92,23 @@
   <p>{widget.isMoving}</p> -->
   <nav>
     <button onmousedown={startDrag}>M</button>
-    <Overlay>
-      {#snippet trigger({ isOpen }: { isOpen: boolean })}
-        Lazar: {isOpen}
-      {/snippet}
-      {#snippet overlay({ close }: { close: () => void })}
-        <h1>Hi</h1>
-        <button onclick={close}>Close</button>
-      {/snippet}
-    </Overlay>
+    {#each widget.widgets as w, index}
+      <button
+        onmousedown={() => {
+          selected = index
+        }}>{w.widgetID}</button
+      >
+    {/each}
   </nav>
 
   <section>
-    <DynamicComponent
-      globalSocket={global.socket}
-      textContent={pluginWidget.textContent || ""}
-      id={plugin.details.id}
-    />
+    {#key selected}
+      <DynamicComponent
+        globalSocket={global.socket}
+        textContent={pluginWidget.textContent || ""}
+        id={plugin.details.id}
+      />
+    {/key}
   </section>
   <button class="resize" onmousedown={startResize}>R</button>
 </div>
