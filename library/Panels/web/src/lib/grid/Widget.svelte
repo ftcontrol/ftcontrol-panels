@@ -2,23 +2,24 @@
   import { DynamicComponent, Overlay } from "ftc-panels"
   import { manager, type Widget } from "./widgets.svelte"
   import { global } from "$lib"
+  import plugin from "@sveltejs/adapter-static"
 
   let {
     widget = $bindable(),
     isPossible,
   }: { widget: Widget; isPossible: boolean } = $props()
 
-  let selected = $state(0)
+  let movingIndex = $state(0)
 
-  let selectedPanel = $derived(widget.widgets[selected])
+  //   let selectedPanel = $derived(widget.widgets[widget.selected])
 
-  let plugin = $derived(
-    global.plugins.find((it) => it.details.id == selectedPanel.pluginID)
-  )
+  //   let plugin = $derived(
+  //     global.plugins.find((it) => it.details.id == selectedPanel.pluginID)
+  //   )
 
-  let pluginWidget = $derived(
-    plugin?.details.widgets.find((it) => it.name == selectedPanel.widgetID)
-  )
+  //   let pluginWidget = $derived(
+  //     plugin?.details.widgets.find((it) => it.name == selectedPanel.widgetID)
+  //   )
 
   let xOffset = $state(0)
   let yOffset = $state(0)
@@ -28,6 +29,61 @@
 
   let startX = $state(0)
   let startY = $state(0)
+
+  function startMove(e: MouseEvent) {
+    if (isPossible) return
+    console.log("Started move of", movingIndex)
+    widget.widgets[movingIndex].isMoving = true
+    window.addEventListener("mousemove", onMove)
+    startX = e.clientX
+    startY = e.clientY
+    window.addEventListener("mouseup", stopMove)
+  }
+
+  function onMove(e: MouseEvent) {}
+  function stopMove(e: MouseEvent) {
+    console.log("Stopped move of", movingIndex)
+    widget.widgets[movingIndex].isMoving = false
+
+    const elements = document.elementsFromPoint(e.clientX, e.clientY)
+    const el = elements.filter(
+      (el) =>
+        el instanceof HTMLElement &&
+        el.hasAttribute("data-widget") &&
+        el.hasAttribute("data-index")
+    )[0]
+
+    let dataWidget = el.getAttribute("data-widget")
+    let dataIndex = parseInt(el.getAttribute("data-index") || "")
+
+    if (dataWidget != widget.id) {
+      console.log(el, dataWidget, dataIndex)
+
+      //move
+      const replaceWidget = manager.widgets.find((it) => it.id == dataWidget)
+
+      if (replaceWidget != undefined && dataIndex != undefined) {
+        replaceWidget.widgets = [
+          ...replaceWidget.widgets.slice(0, dataIndex + 1),
+          widget.widgets[movingIndex],
+          ...replaceWidget.widgets.slice(dataIndex + 1),
+        ]
+
+        widget.widgets.splice(movingIndex, 1)
+        widget.selected -= 1
+        if (widget.selected < 0) {
+          widget.selected = 0
+        }
+      }
+    } else {
+      if (dataIndex == movingIndex) {
+        widget.selected = movingIndex
+      }
+    }
+
+    window.removeEventListener("mousemove", onMove)
+    window.removeEventListener("mouseup", stopMove)
+  }
 
   function startDrag(e: MouseEvent) {
     if (isPossible) return
@@ -85,30 +141,42 @@
   class:transparent={widget.isMoving && !isPossible}
   style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;--xMove:{xMove}px;--yMove:{yMove}px;"
 >
-  <!-- <p>
-    {widget.id} / {manager.isOutOfBounds(widget)} / {widget.x} / {widget.y} / {widget.x +
-      widget.w} / {widget.y + widget.h}
-  </p>
-  <p>{widget.isMoving}</p> -->
   <nav>
     <button onmousedown={startDrag}>M</button>
     {#each widget.widgets as w, index}
       <button
-        onmousedown={() => {
-          selected = index
+        data-widget={widget.id}
+        data-index={index}
+        class:moving={w.isMoving}
+        onmousedown={(e: MouseEvent) => {
+          movingIndex = index
+          startMove(e)
         }}>{w.widgetID}</button
       >
     {/each}
+    {#if widget.widgets.length == 0}
+      <button data-widget={widget.id} data-index={-1}>MOVE</button>
+    {/if}
   </nav>
 
   <section>
-    {#key selected}
-      <DynamicComponent
-        globalSocket={global.socket}
-        textContent={pluginWidget.textContent || ""}
-        id={plugin.details.id}
-      />
-    {/key}
+    {#if widget.widgets.length > 0}
+      {#key widget.selected}
+        <DynamicComponent
+          globalSocket={global.socket}
+          textContent={global.plugins
+            .find(
+              (it) => it.details.id == widget.widgets[widget.selected].pluginID
+            )
+            ?.details.widgets.find(
+              (it) => it.name == widget.widgets[widget.selected].widgetID
+            )?.textContent}
+          id={widget.widgets[widget.selected].pluginID}
+        />
+      {/key}
+    {:else}
+      <p>No widgets found</p>
+    {/if}
   </section>
   <button class="resize" onmousedown={startResize}>R</button>
 </div>
@@ -141,5 +209,9 @@
     position: absolute;
     right: 0;
     bottom: 0;
+  }
+
+  .moving {
+    opacity: 0.25;
   }
 </style>

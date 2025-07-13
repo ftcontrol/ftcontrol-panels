@@ -1,4 +1,5 @@
 export type Widget = {
+  selected: number
   isMoving: boolean
   id: string
   widgets: Panel[]
@@ -13,6 +14,7 @@ export type Widget = {
 }
 
 export type Panel = {
+  isMoving: boolean
   pluginID: string
   widgetID: string
 }
@@ -20,18 +22,22 @@ export type Panel = {
 class Manager {
   widgets: Widget[] = $state([
     {
+      selected: 0,
       isMoving: false,
       id: Math.random().toString(),
       widgets: [
         {
+          isMoving: false,
           pluginID: "com.bylazar.opmodecontrol",
           widgetID: "OpModes Control",
         },
         {
+          isMoving: false,
           pluginID: "com.bylazar.exampleplugin",
           widgetID: "Counter",
         },
         {
+          isMoving: false,
           pluginID: "com.bylazar.configurables",
           widgetID: "Configurables",
         },
@@ -46,10 +52,12 @@ class Manager {
       maxH: 60,
     },
     {
+      selected: 0,
       isMoving: false,
       id: Math.random().toString(),
       widgets: [
         {
+          isMoving: false,
           pluginID: "com.bylazar.telemetry",
           widgetID: "Telemetry",
         },
