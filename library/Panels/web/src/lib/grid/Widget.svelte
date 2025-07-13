@@ -111,9 +111,8 @@
 
 <style>
   div {
-    background-color: black;
+    background-color: var(--bgMedium);
     position: absolute;
-    outline: 1px solid black;
     top: calc(var(--y) * var(--height) + var(--yMove));
     left: calc(var(--x) * var(--width) + var(--xMove));
     height: calc(var(--h) * var(--height) + var(--yOffset));

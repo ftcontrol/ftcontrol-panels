@@ -5,8 +5,6 @@
   import Layout from "$lib/grid/Layout.svelte"
 </script>
 
-<h1>Panels</h1>
-
 <Layout />
 
 <!-- 

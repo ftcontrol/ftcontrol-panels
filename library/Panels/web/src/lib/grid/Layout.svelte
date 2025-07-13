@@ -52,10 +52,10 @@
   style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
 >
   <div>
-    {#each gridCells as { x, y } (x + "-" + y)}
-      <Overlay {x} {y} />
-    {/each}
     {#if manager.isMoving}
+      {#each gridCells as { x, y } (x + "-" + y)}
+        <Overlay {x} {y} />
+      {/each}
       {#each manager.possibleWidgets as widget (widget.id)}
         <WidgetItem isPossible={true} {widget} />
       {/each}
@@ -71,7 +71,6 @@
 <style>
   section {
     position: relative;
-    background-color: red;
     width: 100%;
     height: 100%;
     overflow: hidden;
