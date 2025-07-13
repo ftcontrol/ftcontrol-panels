@@ -33,7 +33,7 @@
   function startMove(e: MouseEvent) {
     if (isPossible) return
     console.log("Started move of", movingIndex)
-    widget.widgets[movingIndex].isMoving = true
+
     window.addEventListener("mousemove", onMove)
     startX = e.clientX
     startY = e.clientY
@@ -41,6 +41,12 @@
   }
 
   function onMove(e: MouseEvent) {
+    if (
+      Math.abs(e.clientX - startX) >= 1 &&
+      Math.abs(e.clientY - startY) >= 1
+    ) {
+      widget.widgets[movingIndex].isMoving = true
+    }
     const elements = document.elementsFromPoint(e.clientX, e.clientY)
     const el = elements.filter(
       (el) =>
@@ -99,7 +105,6 @@
     ) {
       console.log(el, dataWidget, dataIndex)
 
-      //move
       const replaceWidget = manager.widgets.find((it) => it.id == dataWidget)
 
       if (replaceWidget != undefined && dataIndex != undefined) {
