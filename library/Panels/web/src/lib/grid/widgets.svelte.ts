@@ -1,6 +1,8 @@
 export type Widget = {
   isMoving: boolean
   id: string
+  pluginID: string
+  widgetID: string
   x: number
   y: number
   w: number
@@ -15,7 +17,9 @@ class Manager {
   widgets: Widget[] = $state([
     {
       isMoving: false,
-      id: "test1",
+      id: Math.random().toString(),
+      pluginID: "com.bylazar.opmodecontrol",
+      widgetID: "OpModes Control",
       x: 0,
       y: 0,
       w: 1,
@@ -27,7 +31,9 @@ class Manager {
     },
     {
       isMoving: false,
-      id: "test2",
+      id: Math.random().toString(),
+      pluginID: "com.bylazar.telemetry",
+      widgetID: "Telemetry",
       x: 1,
       y: 1,
       w: 1,

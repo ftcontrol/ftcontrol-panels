@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onDestroy, onMount } from "svelte"
   import WidgetItem from "./Widget.svelte"
   import { manager, type Widget } from "./widgets.svelte"
   import Overlay from "./Overlay.svelte"
@@ -26,13 +26,22 @@
     return list
   })
 
-  onMount(() => {
+  function updateGridSize() {
     const bounding = section.getBoundingClientRect()
     const width = bounding.width
     const height = bounding.height
 
     manager.WIDTH = width / manager.MAX_GRID_WIDTH
     manager.HEIGHT = height / manager.MAX_GRID_HEIGHT
+  }
+
+  onMount(() => {
+    updateGridSize()
+    window.addEventListener("resize", updateGridSize)
+  })
+
+  onDestroy(() => {
+    window.removeEventListener("resize", updateGridSize)
   })
 
   let section: HTMLElement
@@ -48,12 +57,12 @@
     {/each}
     {#if manager.isMoving}
       {#each manager.possibleWidgets as widget (widget.id)}
-        <WidgetItem {widget} />
+        <WidgetItem isPossible={true} {widget} />
       {/each}
     {/if}
-    {#each manager.widgets as widget (widget.id)}
+    {#each manager.widgets as widget, index}
       {#if !manager.isMoving || widget.isMoving}
-        <WidgetItem {widget} />
+        <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
       {/if}
     {/each}
   </div>
@@ -63,10 +72,8 @@
   section {
     position: relative;
     background-color: red;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-  }
-  div {
   }
 </style>
