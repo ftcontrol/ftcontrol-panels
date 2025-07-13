@@ -87,6 +87,9 @@ class Manager {
   MAX_GRID_WIDTH = $state(8)
   MAX_GRID_HEIGHT = $state(8)
 
+  tabIndex = $state(0)
+  tabWidgetID = $state("")
+
   isColliding(a: Widget, b: Widget): boolean {
     return !(
       a.x + a.w <= b.x ||

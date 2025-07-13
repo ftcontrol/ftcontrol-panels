@@ -40,10 +40,34 @@
     window.addEventListener("mouseup", stopMove)
   }
 
-  function onMove(e: MouseEvent) {}
+  function onMove(e: MouseEvent) {
+    const elements = document.elementsFromPoint(e.clientX, e.clientY)
+    const el = elements.filter(
+      (el) =>
+        el instanceof HTMLElement &&
+        el.hasAttribute("data-widget") &&
+        el.hasAttribute("data-index")
+    )[0]
+
+    if (el == undefined) {
+      manager.tabIndex = 0
+      manager.tabWidgetID = ""
+      return
+    }
+
+    let dataWidget = el.getAttribute("data-widget") || ""
+    let dataIndex = parseInt(el.getAttribute("data-index") || "")
+    if (dataWidget != widget.id) {
+      manager.tabIndex = dataIndex
+      manager.tabWidgetID = dataWidget
+    }
+  }
   function stopMove(e: MouseEvent) {
     console.log("Stopped move of", movingIndex)
     widget.widgets[movingIndex].isMoving = false
+
+    manager.tabIndex = 0
+    manager.tabWidgetID = ""
 
     const elements = document.elementsFromPoint(e.clientX, e.clientY)
     const el = elements.filter(
@@ -52,6 +76,12 @@
         el.hasAttribute("data-widget") &&
         el.hasAttribute("data-index")
     )[0]
+
+    if (el == undefined) {
+      window.removeEventListener("mousemove", onMove)
+      window.removeEventListener("mouseup", stopMove)
+      return
+    }
 
     let dataWidget = el.getAttribute("data-widget")
     let dataIndex = parseInt(el.getAttribute("data-index") || "")
@@ -153,6 +183,9 @@
           startMove(e)
         }}>{w.widgetID}</button
       >
+      {#if manager.tabWidgetID == widget.id && manager.tabIndex == index}
+        <button>SOMETHING</button>
+      {/if}
     {/each}
     {#if widget.widgets.length == 0}
       <button data-widget={widget.id} data-index={-1}>MOVE</button>
