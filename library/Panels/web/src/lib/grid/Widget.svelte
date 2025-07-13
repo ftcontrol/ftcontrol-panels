@@ -207,19 +207,19 @@
 
   <section>
     {#if widget.widgets.length > 0}
-      {#key widget.selected}
-        <DynamicComponent
-          globalSocket={global.socket}
-          textContent={global.plugins
-            .find(
-              (it) => it.details.id == widget.widgets[widget.selected].pluginID
-            )
-            ?.details.widgets.find(
-              (it) => it.name == widget.widgets[widget.selected].widgetID
-            )?.textContent}
-          id={widget.widgets[widget.selected].pluginID}
-        />
-      {/key}
+      {#each widget.widgets, index}
+        <div class="w" class:selected={index == widget.selected}>
+          <DynamicComponent
+            globalSocket={global.socket}
+            textContent={global.plugins
+              .find((it) => it.details.id == widget.widgets[index].pluginID)
+              ?.details.widgets.find(
+                (it) => it.name == widget.widgets[index].widgetID
+              )?.textContent}
+            id={widget.widgets[index].pluginID}
+          />
+        </div>
+      {/each}
     {:else}
       <p>No widgets found</p>
     {/if}
@@ -228,7 +228,14 @@
 </div>
 
 <style>
-  div {
+  .w {
+    display: none;
+  }
+
+  .w.selected {
+    display: block;
+  }
+  .item {
     background-color: var(--bgMedium);
     position: absolute;
     top: calc(var(--y) * var(--height) + var(--yMove));
