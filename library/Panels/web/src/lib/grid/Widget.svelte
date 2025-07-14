@@ -5,6 +5,7 @@
   import plugin from "@sveltejs/adapter-static"
   import Resize from "$lib/icons/Resize.svelte"
   import Move from "$lib/icons/Move.svelte"
+  import WidgetContent from "./WidgetContent.svelte"
 
   let {
     widget = $bindable(),
@@ -12,16 +13,6 @@
   }: { widget: Widget; isPossible: boolean } = $props()
 
   let movingIndex = $state(0)
-
-  //   let selectedPanel = $derived(widget.widgets[widget.selected])
-
-  //   let plugin = $derived(
-  //     global.plugins.find((it) => it.details.id == selectedPanel.pluginID)
-  //   )
-
-  //   let pluginWidget = $derived(
-  //     plugin?.details.widgets.find((it) => it.name == selectedPanel.widgetID)
-  //   )
 
   let xOffset = $state(0)
   let yOffset = $state(0)
@@ -229,14 +220,9 @@
       {#if widget.widgets.length > 0}
         {#each widget.widgets, index}
           <div class="w" class:selected={index == widget.selected}>
-            <DynamicComponent
-              globalSocket={global.socket}
-              textContent={global.plugins
-                .find((it) => it.details.id == widget.widgets[index].pluginID)
-                ?.details.widgets.find(
-                  (it) => it.name == widget.widgets[index].widgetID
-                )?.textContent}
-              id={widget.widgets[index].pluginID}
+            <WidgetContent
+              pluginID={widget.widgets[index].pluginID}
+              widgetID={widget.widgets[index].widgetID}
             />
           </div>
         {/each}
@@ -288,7 +274,7 @@
   }
 
   .transparent {
-    opacity: 0.25;
+    opacity: 0.5;
   }
   p {
     margin: 0;

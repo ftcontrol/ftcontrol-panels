@@ -67,7 +67,7 @@ class Manager {
       w: 1,
       h: 1,
       minW: 1,
-      maxW: 6,
+      maxW: 60,
       minH: 1,
       maxH: 60,
     },
@@ -84,8 +84,8 @@ class Manager {
 
   WIDTH = $state(200)
   HEIGHT = $state(100)
-  MAX_GRID_WIDTH = $state(8)
-  MAX_GRID_HEIGHT = $state(6)
+  MAX_GRID_WIDTH = $state(16)
+  MAX_GRID_HEIGHT = $state(12)
 
   tabIndex = $state(0)
   tabWidgetID = $state("")

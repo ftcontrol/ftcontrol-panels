@@ -6,7 +6,9 @@
 </script>
 
 <nav>
-  <Panels />
+  <a href="/">
+    <Panels />
+  </a>
 
   <p>
     {global.isConnected ? "Connected" : "Waiting"}
@@ -60,6 +62,7 @@
     height: 32px;
     display: grid;
     place-content: center;
+    cursor: pointer;
   }
   nav {
     background-color: var(--bgMedium);

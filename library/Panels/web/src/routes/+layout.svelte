@@ -5,19 +5,6 @@
   import { global } from "$lib"
 
   let { children }: { children?: Snippet } = $props()
-
-  onMount(() => {
-    global.init()
-    setTimeout(() => {
-      console.log(
-        global.plugins.map((it) => it.details.widgets.map((w) => w.name))
-      )
-    }, 1000)
-  })
-
-  onDestroy(() => {
-    global.close()
-  })
 </script>
 
 <section>
