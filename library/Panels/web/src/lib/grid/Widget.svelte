@@ -27,6 +27,8 @@
     if (isPossible) return
     console.log("Started move of", movingIndex)
 
+    manager.tabName = widget.widgets[movingIndex].widgetID
+
     window.addEventListener("mousemove", onMove)
     startX = e.clientX
     startY = e.clientY
@@ -213,11 +215,17 @@
             }}>{w.widgetID}</button
           >
           {#if manager.tabWidgetID == widget.id && manager.tabIndex == index}
-            <button class="tab">SOMETHING</button>
+            <button class="tab moving">{manager.tabName}</button>
           {/if}
         {/each}
         {#if widget.widgets.length == 0}
-          <button data-widget={widget.id} data-index={-1}>MOVE</button>
+          <button class="tab" data-widget={widget.id} data-index={-1}>
+            {#if manager.tabWidgetID == widget.id && manager.tabIndex == -1}
+              {manager.tabName}
+            {:else}
+              EMPTY
+            {/if}
+          </button>
         {/if}
       </div>
     </nav>

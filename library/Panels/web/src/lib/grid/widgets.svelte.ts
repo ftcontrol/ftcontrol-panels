@@ -90,6 +90,7 @@ class Manager {
 
   tabIndex = $state(0)
   tabWidgetID = $state("")
+  tabName = $state("")
 
   isValid = $state(true)
 

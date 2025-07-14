@@ -82,6 +82,9 @@
   let section: HTMLElement
 </script>
 
+{manager.tabIndex}
+{manager.tabWidgetID}
+{manager.tabName}
 <section
   bind:this={section}
   onmousemove={onMouseMove}
