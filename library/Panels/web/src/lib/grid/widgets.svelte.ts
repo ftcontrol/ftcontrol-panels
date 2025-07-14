@@ -79,6 +79,7 @@ class Manager {
     for (const w of this.widgets) {
       if (w.isMoving) return true
     }
+    if (this.placeStart != null) return true
     return false
   })
 
@@ -89,6 +90,8 @@ class Manager {
 
   tabIndex = $state(0)
   tabWidgetID = $state("")
+
+  isValid = $state(true)
 
   isColliding(a: Widget, b: Widget): boolean {
     return !(
@@ -105,8 +108,8 @@ class Manager {
     )
   }
 
-  placeStart: { x: number; y: number } | null = null
-  placeEnd: { x: number; y: number } | null = null
+  placeStart: { x: number; y: number } | null = $state(null)
+  placeEnd: { x: number; y: number } | null = $state(null)
   place: { x: number; y: number; w: number; h: number } | null = $state(null)
 
   startPlace(x: number, y: number) {
@@ -118,6 +121,7 @@ class Manager {
       w: 1,
       h: 1,
     }
+    this.updatePlace(x, y)
   }
   updatePlace(uX: number, uY: number) {
     if (this.placeStart == null) return
@@ -136,20 +140,8 @@ class Manager {
     let y = Math.min(startY, endY)
 
     this.place = { x, y, w, h }
-  }
-  endPlace(x: number, y: number) {
-    console.log("End", x, y)
 
-    this.updatePlace(x, y)
-
-    this.addWidget(this.place.x, this.place.y, this.place.w, this.place.h)
-
-    this.placeStart = null
-    this.placeEnd = null
-    this.place = null
-  }
-  addWidget(x: number, y: number, w: number, h: number) {
-    this.widgets.push({
+    const dummyWidget = {
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
@@ -162,7 +154,36 @@ class Manager {
       maxW: 60,
       minH: 1,
       maxH: 60,
-    })
+    }
+    this.possibleWidgets = this.resolveCollisions(dummyWidget, this.widgets)
+  }
+  endPlace(x: number, y: number) {
+    console.log("End", x, y)
+
+    this.updatePlace(x, y)
+
+    const dummyWidget = {
+      selected: 0,
+      isMoving: false,
+      id: Math.random().toString(),
+      widgets: [],
+      x: this.place.x,
+      y: this.place.y,
+      w: this.place.w,
+      h: this.place.h,
+      minW: 1,
+      maxW: 60,
+      minH: 1,
+      maxH: 60,
+    }
+    this.widgets = this.resolveCollisions(dummyWidget, [
+      ...this.widgets,
+      dummyWidget,
+    ])
+
+    this.placeStart = null
+    this.placeEnd = null
+    this.place = null
   }
 
   resolveCollisions(moved: Widget, widgets: Widget[]) {
@@ -177,9 +198,10 @@ class Manager {
         if (!this.isColliding(current, widget)) continue
 
         const directions = [
-          { dx: 0, dy: current.y + current.h }, // down
-          { dx: current.x + current.w, dy: current.y }, // right
-          { dx: current.x - widget.w, dy: current.y }, // left
+          { dx: widget.x, dy: current.y + current.h },
+          { dx: current.x + current.w, dy: current.y },
+          { dx: current.x - widget.w, dy: current.y },
+          { dx: widget.x, dy: current.y - widget.h },
         ]
 
         let movedSuccessfully = false
@@ -204,8 +226,11 @@ class Manager {
       }
     }
 
-    if ([moved, ...updated].some((w) => this.isOutOfBounds(w)))
+    if ([moved, ...updated].some((w) => this.isOutOfBounds(w))) {
+      this.isValid = false
       return this.widgets
+    }
+    this.isValid = true
     return updated
   }
 

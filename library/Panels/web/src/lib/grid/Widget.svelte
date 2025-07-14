@@ -182,7 +182,13 @@
   class:transparent={widget.isMoving && !isPossible}
   style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;--xMove:{xMove}px;--yMove:{yMove}px;"
 >
-  <div class="content">
+  <div
+    class="content"
+    class:invalid={!manager.isValid &&
+      !isPossible &&
+      manager.isMoving &&
+      manager.placeStart == null}
+  >
     <nav>
       <button class="icon" onmousedown={startDrag}><Move /></button>
       <div class="tabs">
@@ -271,6 +277,10 @@
     flex-direction: column;
 
     border-radius: 1rem;
+  }
+
+  .content.invalid {
+    background-color: red;
   }
 
   .transparent {

@@ -107,7 +107,7 @@
       {/if}
     {/each}
 
-    {#if mouseGridPos}
+    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null)}
       <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
     {/if}
   </div>
