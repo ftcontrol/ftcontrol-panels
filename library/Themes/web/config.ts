@@ -2,7 +2,7 @@ import { PluginConfig } from "ftc-panels"
 
 export const config: PluginConfig = {
   id: "com.bylazar.themes",
-  name: "Themes Plugin",
+  name: "Themes",
   letterName: "T",
   description: "Themes for Panels",
   version: "0.1.0",

@@ -31,10 +31,14 @@
   >
     <WidgetTopBar bind:widget bind:isPossible />
 
-    <section class="i">
+    <section>
       {#if widget.widgets.length > 0}
         {#each widget.widgets, index}
-          <div class="w" class:selected={index == widget.selected}>
+          <div
+            style={index == widget.selected
+              ? "display:block;"
+              : "display:none;"}
+          >
             {#if widget.widgets[index].pluginID != "" && widget.widgets[index].widgetID != ""}
               <WidgetContent
                 pluginID={widget.widgets[index].pluginID}
@@ -51,17 +55,15 @@
           </div>
         {/each}
       {:else}
-        <p>No widgets found</p>
-
-        <Button
-          onclick={() => {
+        <WidgetChoose
+          set={(pID, wID) => {
             widget.widgets.push({
               isMoving: false,
-              pluginID: "",
-              widgetID: "",
+              pluginID: pID,
+              widgetID: wID,
             })
-          }}>Insert Empty Widget</Button
-        >
+          }}
+        />
       {/if}
     </section>
     <WidgetResize bind:widget bind:isPossible />
@@ -69,17 +71,10 @@
 </div>
 
 <style>
-  .i {
-    padding: 0 var(--padding) var(--padding) var(--padding);
+  section {
+    padding: var(--padding);
     overflow: auto;
     flex-grow: 1;
-  }
-  .w {
-    display: none;
-  }
-
-  .w.selected {
-    display: block;
   }
   .item {
     position: absolute;
@@ -87,8 +82,6 @@
     left: calc(var(--x) * var(--width) + var(--xMove));
     height: calc(var(--h) * var(--height) + var(--yOffset));
     width: calc(var(--w) * var(--width) + var(--xOffset));
-  }
-  .item {
     display: flex;
     flex-direction: column;
     padding: var(--spacing);
@@ -104,15 +97,10 @@
 
     border-radius: 1rem;
   }
-
   .content.invalid {
     background-color: red;
   }
-
   .transparent {
     opacity: 0.5;
-  }
-  p {
-    margin: 0;
   }
 </style>

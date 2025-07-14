@@ -30,6 +30,20 @@
         >Remove Widget</Button
       >
       <Button
+        onclick={() => {
+          if (widget.selected >= 0 && widget.widgets.length > 0) {
+            widget.widgets[widget.selected] = {
+              isMoving: false,
+              pluginID: "",
+              widgetID: "",
+            }
+          }
+          close()
+        }}
+        disabled={widget.selected < 0 || widget.widgets.length <= 0}
+        >Clear Widget</Button
+      >
+      <Button
         onclick={async () => {
           widget.widgets.push({
             isMoving: false,
