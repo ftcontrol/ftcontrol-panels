@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Move from "$lib/icons/Move.svelte"
   import Resize from "$lib/icons/Resize.svelte"
   import { manager, type Widget } from "../widgets.svelte"
   let {

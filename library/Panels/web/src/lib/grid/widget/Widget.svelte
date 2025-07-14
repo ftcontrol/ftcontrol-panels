@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { Button, DynamicComponent, Overlay } from "ftc-panels"
+  import { Button, Overlay } from "ftc-panels"
   import { manager, type Widget } from "../widgets.svelte"
   import { global } from "$lib"
   import WidgetContent from "../WidgetContent.svelte"
   import PreviewBox from "../PreviewBox.svelte"
   import WidgetTopBar from "./WidgetTopBar.svelte"
   import WidgetResize from "./WidgetResize.svelte"
+  import WidgetChoose from "./WidgetChoose.svelte"
 
   let {
     widget = $bindable(),
@@ -40,36 +41,12 @@
                 widgetID={widget.widgets[index].widgetID}
               />
             {:else}
-              <Overlay>
-                {#snippet trigger()}
-                  <Button>Choose</Button>
-                {/snippet}
-                {#snippet overlay({ close }: { close: () => void })}
-                  <div class="possibilities">
-                    {#each global.plugins as p}
-                      {#each p.details.widgets as w}
-                        <button
-                          class="choose"
-                          onclick={() => {
-                            close()
-                            widget.widgets[index].pluginID = p.details.id
-                            widget.widgets[index].widgetID = w.name
-                          }}
-                        >
-                          <p>{p.details.name}</p>
-                          <p>{w.name}</p>
-                          <PreviewBox scale={0.5}>
-                            <WidgetContent
-                              pluginID={p.details.id}
-                              widgetID={w.name}
-                            />
-                          </PreviewBox>
-                        </button>
-                      {/each}
-                    {/each}
-                  </div>
-                {/snippet}
-              </Overlay>
+              <WidgetChoose
+                set={(pID, wID) => {
+                  widget.widgets[index].pluginID = pID
+                  widget.widgets[index].widgetID = wID
+                }}
+              />
             {/if}
           </div>
         {/each}
@@ -92,18 +69,6 @@
 </div>
 
 <style>
-  .possibilities {
-    display: flex;
-    gap: 1rem;
-  }
-  button.choose {
-    all: unset;
-    cursor: pointer;
-    background-color: var(--bgLight);
-    padding: 0.5em;
-    border-radius: 0.8rem;
-  }
-
   .i {
     padding: 0 var(--padding) var(--padding) var(--padding);
     overflow: auto;
