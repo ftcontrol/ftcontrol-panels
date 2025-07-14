@@ -6,6 +6,7 @@
   import Resize from "$lib/icons/Resize.svelte"
   import Move from "$lib/icons/Move.svelte"
   import WidgetContent from "./WidgetContent.svelte"
+  import Portal from "svelte-portal"
 
   let {
     widget = $bindable(),
@@ -23,6 +24,9 @@
   let startX = $state(0)
   let startY = $state(0)
 
+  let tabX = $state(0)
+  let tabY = $state(0)
+
   function startMove(e: MouseEvent) {
     if (isPossible) return
     console.log("Started move of", movingIndex)
@@ -30,12 +34,29 @@
     manager.tabName = widget.widgets[movingIndex].widgetID
 
     window.addEventListener("mousemove", onMove)
-    startX = e.clientX
-    startY = e.clientY
+
+    const tab = document.querySelector(
+      `[data-widget="${widget.id}"][data-index="${movingIndex}"]`
+    ) as HTMLElement
+
+    startX = 0
+    startY = 0
+
+    const rect = tab?.getBoundingClientRect()
+
+    if (rect) {
+      startX = e.clientX - rect.left
+      startY = e.clientY - rect.top
+    }
+
+    tabX = e.clientX
+    tabY = e.clientY
     window.addEventListener("mouseup", stopMove)
   }
 
   function onMove(e: MouseEvent) {
+    tabX = e.clientX
+    tabY = e.clientY
     if (
       Math.abs(e.clientX - startX) >= 1 &&
       Math.abs(e.clientY - startY) >= 1
@@ -74,6 +95,7 @@
 
     manager.tabIndex = 0
     manager.tabWidgetID = ""
+    manager.tabName = ""
 
     const elements = document.elementsFromPoint(e.clientX, e.clientY)
     const el = elements.filter(
@@ -179,6 +201,16 @@
   }
 </script>
 
+{#if widget.widgets?.[movingIndex]?.isMoving}
+  <Portal>
+    <button
+      class="tab absolute"
+      style="--x:{tabX - startX}px;--y:{tabY - startY}px;"
+      >{manager.tabName}</button
+    >
+  </Portal>
+{/if}
+
 <div
   class="item"
   class:transparent={widget.isMoving && !isPossible}
@@ -223,7 +255,7 @@
             {#if manager.tabWidgetID == widget.id && manager.tabIndex == -1}
               {manager.tabName}
             {:else}
-              EMPTY
+              Empty
             {/if}
           </button>
         {/if}
@@ -251,6 +283,11 @@
 </div>
 
 <style>
+  .tab.absolute {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+  }
   .i {
     padding: 0 var(--padding) var(--padding) var(--padding);
     overflow: auto;

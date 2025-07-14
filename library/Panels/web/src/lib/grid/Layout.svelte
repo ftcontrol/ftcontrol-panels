@@ -82,9 +82,6 @@
   let section: HTMLElement
 </script>
 
-{manager.tabIndex}
-{manager.tabWidgetID}
-{manager.tabName}
 <section
   bind:this={section}
   onmousemove={onMouseMove}
@@ -110,7 +107,7 @@
       {/if}
     {/each}
 
-    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null)}
+    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
       <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
     {/if}
   </div>

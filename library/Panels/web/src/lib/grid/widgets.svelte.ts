@@ -159,6 +159,7 @@ class Manager {
     this.possibleWidgets = this.resolveCollisions(dummyWidget, this.widgets)
   }
   endPlace(x: number, y: number) {
+    if (this.placeStart == null) return
     console.log("End", x, y)
 
     this.updatePlace(x, y)
