@@ -19,10 +19,11 @@
     border-radius: 8px;
     pointer-events: none;
     position: relative;
-    padding: var(--padding);
   }
 
   .scaled-preview {
+    padding: calc(var(--padding) / var(--scale) / 2);
+    background-color: var(--bgMedium);
     transform: scale(var(--scale));
     transform-origin: top left;
     width: calc(100% / var(--scale));
