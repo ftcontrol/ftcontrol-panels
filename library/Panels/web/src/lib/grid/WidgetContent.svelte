@@ -11,7 +11,7 @@
   } = $props()
 </script>
 
-{#key `${pluginID}-${widgetID}`}
+{#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
   <DynamicComponent
     globalSocket={global.socket}
     textContent={global.plugins

@@ -5,6 +5,8 @@ import {
   type PluginConfig,
   type PluginInfo,
 } from "ftc-panels"
+import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
+import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
@@ -14,57 +16,83 @@ export class GlobalState {
 
   isConnected = $state(false)
 
-  private async getJsonFromServer(
-    serverURL: string,
-    path: string
-  ): Promise<any> {
+  private async getFromServer(serverURL: string, path: string): Promise<any> {
     const url = `${serverURL.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`
 
-    try {
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch JSON: ${response.status} ${response.statusText}`
-        )
+    const timeout = 5000
+    const interval = 500
+    const maxAttempts = Math.ceil(timeout / interval)
+    let attempt = 0
+
+    while (attempt < maxAttempts) {
+      try {
+        const response = await fetch(url)
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch: ${response.status} ${response.statusText}`
+          )
+        }
+
+        const data = await response.text()
+        return data
+      } catch (err) {
+        attempt++
+        if (attempt >= maxAttempts) {
+          console.error(`Failed after ${attempt} attempts:`, err)
+          throw err
+        }
+        await new Promise((res) => setTimeout(res, interval))
       }
-      const data = await response.json()
-      return data
-    } catch (err) {
-      console.error(`[getJsonFromServer] Error fetching ${url}:`, err)
-      throw err
     }
+
+    throw new Error(`Unexpected error while fetching ${url}`)
   }
 
   interval: ReturnType<typeof setInterval> | null = null
+  reloadIndexes: Record<string, number> = $state({})
 
   private async updateDevPlugins() {
-    console.log("Updating plugins")
     for (const dev of this.devServers) {
       for (const plugin of this.plugins) {
         if (dev.pluginID == plugin.details.id) {
           try {
-            const details = await this.getJsonFromServer(
-              dev.devURL,
-              "/config.json"
+            let details = JSON.parse(
+              await this.getFromServer(dev.devURL, "/config.json")
             )
 
-            const manager = await this.getJsonFromServer(
-              dev.devURL,
-              "/Manager.js"
-            )
+            const manager = await this.getFromServer(dev.devURL, "/Manager.js")
 
             details.manager.textContent = manager
 
-            details.widgets.forEach(async (widget: any, index: number) => {
-              const data = await this.getJsonFromServer(
-                dev.devURL,
-                `widgets/${widget.name}.js`
+            await Promise.all(
+              details.widgets.map(async (widget: any) => {
+                const data = await this.getFromServer(
+                  dev.devURL,
+                  `widgets/${widget.name}.js`
+                )
+                widget.textContent = data
+              })
+            )
+
+            if (JSON.stringify(details) != JSON.stringify(plugin.details)) {
+              const { default: Manager } = await importFromSource(
+                details.manager.textContent || ""
               )
-              details.widgets[index].textContent = data
-            })
-            plugin.details = details
+
+              this.socket.pluginManagers[details.id] = new Manager(
+                new PluginSocket(details.id, this.socket)
+              )
+
+              this.socket.pluginManagers[details.id]?.onInit()
+
+              plugin.details = details
+
+              this.reloadIndexes[details.id]++
+
+              console.log("Reloaded plugin", dev.pluginID)
+            }
           } catch (e) {
-            console.error("Failed to refresh plugin", dev.pluginID)
+            console.error("Failed to refresh plugin", dev.pluginID, e)
           }
         }
       }
@@ -77,6 +105,10 @@ export class GlobalState {
       const data = await this.getPluginsUntilReady()
 
       this.plugins = JSON.parse(data).data.plugins
+
+      this.plugins.forEach((item) => {
+        this.reloadIndexes[item.details.id] = 0
+      })
 
       this.skippedPlugins = JSON.parse(data).data.skippedPlugins
 
