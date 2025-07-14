@@ -40,7 +40,7 @@
     background-color: transparent;
     color: inherit;
     margin: 0;
-    border: 1px solid blue;
+    border: 1px solid var(--bgLight);
     padding: calc(var(--padding) / 2);
     border-radius: 69vw;
     width: 32px;
@@ -50,10 +50,14 @@
   }
   nav {
     background-color: var(--bgMedium);
-    padding: var(--padding);
+    padding: 0 var(--padding);
 
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    border-radius: 1rem;
+    margin: 0.5rem;
+    margin-bottom: 0;
   }
 </style>

@@ -27,6 +27,6 @@
 
 <style>
   p {
-    color: red;
+    padding-block: 0.25rem;
   }
 </style>

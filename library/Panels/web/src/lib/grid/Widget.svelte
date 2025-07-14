@@ -3,6 +3,8 @@
   import { manager, type Widget } from "./widgets.svelte"
   import { global } from "$lib"
   import plugin from "@sveltejs/adapter-static"
+  import Resize from "$lib/icons/Resize.svelte"
+  import Move from "$lib/icons/Move.svelte"
 
   let {
     widget = $bindable(),
@@ -189,50 +191,71 @@
   class:transparent={widget.isMoving && !isPossible}
   style="--x:{widget.x};--y:{widget.y};--w:{widget.w};--h:{widget.h};--xOffset:{xOffset}px;--yOffset:{yOffset}px;--xMove:{xMove}px;--yMove:{yMove}px;"
 >
-  <nav>
-    <button onmousedown={startDrag}>M</button>
-    {#each widget.widgets as w, index}
-      <button
-        data-widget={widget.id}
-        data-index={index}
-        class:moving={w.isMoving}
-        onmousedown={(e: MouseEvent) => {
-          movingIndex = index
-          startMove(e)
-        }}>{w.widgetID}</button
-      >
-      {#if manager.tabWidgetID == widget.id && manager.tabIndex == index}
-        <button>SOMETHING</button>
-      {/if}
-    {/each}
-    {#if widget.widgets.length == 0}
-      <button data-widget={widget.id} data-index={-1}>MOVE</button>
-    {/if}
-  </nav>
+  <div class="content">
+    <nav>
+      <button class="icon" onmousedown={startDrag}><Move /></button>
+      <div class="tabs">
+        {#each widget.widgets as w, index}
+          <button
+            class="tab"
+            data-widget={widget.id}
+            data-index={index}
+            class:moving={w.isMoving}
+            onmousedown={(e: MouseEvent) => {
+              movingIndex = index
 
-  <section>
-    {#if widget.widgets.length > 0}
-      {#each widget.widgets, index}
-        <div class="w" class:selected={index == widget.selected}>
-          <DynamicComponent
-            globalSocket={global.socket}
-            textContent={global.plugins
-              .find((it) => it.details.id == widget.widgets[index].pluginID)
-              ?.details.widgets.find(
-                (it) => it.name == widget.widgets[index].widgetID
-              )?.textContent}
-            id={widget.widgets[index].pluginID}
-          />
-        </div>
-      {/each}
-    {:else}
-      <p>No widgets found</p>
-    {/if}
-  </section>
-  <button class="resize" onmousedown={startResize}>R</button>
+              startMove(e)
+
+              const element = e.currentTarget as HTMLElement
+
+              element.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+              })
+            }}>{w.widgetID}</button
+          >
+          {#if manager.tabWidgetID == widget.id && manager.tabIndex == index}
+            <button class="tab">SOMETHING</button>
+          {/if}
+        {/each}
+        {#if widget.widgets.length == 0}
+          <button data-widget={widget.id} data-index={-1}>MOVE</button>
+        {/if}
+      </div>
+    </nav>
+
+    <section class="i">
+      {#if widget.widgets.length > 0}
+        {#each widget.widgets, index}
+          <div class="w" class:selected={index == widget.selected}>
+            <DynamicComponent
+              globalSocket={global.socket}
+              textContent={global.plugins
+                .find((it) => it.details.id == widget.widgets[index].pluginID)
+                ?.details.widgets.find(
+                  (it) => it.name == widget.widgets[index].widgetID
+                )?.textContent}
+              id={widget.widgets[index].pluginID}
+            />
+          </div>
+        {/each}
+      {:else}
+        <p>No widgets found</p>
+      {/if}
+    </section>
+    <button class="icon resize" onmousedown={startResize}>
+      <Resize />
+    </button>
+  </div>
 </div>
 
 <style>
+  .i {
+    padding: 0 1rem 1rem 1rem;
+    overflow: auto;
+    flex-grow: 1;
+  }
   .w {
     display: none;
   }
@@ -241,7 +264,6 @@
     display: block;
   }
   .item {
-    background-color: var(--bgMedium);
     position: absolute;
     top: calc(var(--y) * var(--height) + var(--yMove));
     left: calc(var(--x) * var(--width) + var(--xMove));
@@ -251,23 +273,65 @@
   .item {
     display: flex;
     flex-direction: column;
+    padding: var(--spacing);
   }
-  section {
-    overflow: hidden;
+  .content {
+    position: relative;
     flex-grow: 1;
+    background-color: var(--bgMedium);
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 1rem;
   }
+
   .transparent {
     opacity: 0.25;
   }
   p {
     margin: 0;
   }
+
+  .icon {
+    all: unset;
+    cursor: pointer;
+    width: fit-content;
+    display: flex;
+  }
+
   .resize {
     position: absolute;
     right: 0;
     bottom: 0;
   }
 
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* padding: 0.5rem 1rem; */
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    /* overflow: hidden; */
+  }
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-y: auto;
+  }
+  .tab {
+    all: unset;
+    cursor: pointer;
+    padding: 0.25em 0.5em;
+    border: 1px solid currentColor;
+    border-radius: 0.25rem;
+    text-wrap: nowrap;
+  }
   .moving {
     opacity: 0.25;
   }

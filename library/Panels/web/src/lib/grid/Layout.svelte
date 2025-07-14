@@ -70,9 +70,11 @@
 
 <style>
   section {
+    --spacing: 0.25rem;
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 2 * var(--spacing));
+    height: calc(100% - 2 * var(--spacing));
     overflow: hidden;
+    margin: var(--spacing);
   }
 </style>

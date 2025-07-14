@@ -7,8 +7,7 @@
 
 <Layout />
 
-<!-- 
-<h1>Hi!</h1>
+<!-- <h1>Hi!</h1>
 {#each global.plugins as plugin}
   <div
     style="background-color:var(--bgLight);padding:var(--padding);margin-bottom:var(--padding);"

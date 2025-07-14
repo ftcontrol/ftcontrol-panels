@@ -17,7 +17,7 @@
 <style>
   div {
     position: absolute;
-    outline: 1px solid currentColor;
+    outline: 1px solid var(--bgLight);
     top: calc(var(--y) * var(--height));
     left: calc(var(--x) * var(--width));
     height: calc(var(--height));
