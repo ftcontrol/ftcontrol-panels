@@ -5,7 +5,11 @@
   import Overlay from "./Overlay.svelte"
   import PlaceOverlay from "./PlaceOverlay.svelte"
 
-  let mouseGridPos = $state<{ x: number; y: number } | null>(null)
+  let mouseGridPos = $state<{
+    x: number
+    y: number
+    isInsideWidget: boolean
+  } | null>(null)
 
   function onMouseMove(e: MouseEvent) {
     if (!section) return
@@ -20,11 +24,15 @@
     const clampedY = Math.min(Math.max(y, 0), manager.MAX_GRID_HEIGHT - 1)
 
     if (manager.getWidget(clampedX, clampedY, manager.widgets) != undefined) {
-      mouseGridPos = null
+      if (manager.placeStart != null) {
+        mouseGridPos = { x: clampedX, y: clampedY, isInsideWidget: true }
+      } else {
+        mouseGridPos = null
+      }
       return
     }
 
-    mouseGridPos = { x: clampedX, y: clampedY }
+    mouseGridPos = { x: clampedX, y: clampedY, isInsideWidget: false }
   }
 
   function onMouseLeave() {
@@ -92,14 +100,16 @@
       {/each}
     {/if}
     <PlaceOverlay />
-    {#if mouseGridPos}
-      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
-    {/if}
+
     {#each manager.widgets as widget, index}
       {#if !manager.isMoving || widget.isMoving}
         <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
       {/if}
     {/each}
+
+    {#if mouseGridPos}
+      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+    {/if}
   </div>
 </section>
 
