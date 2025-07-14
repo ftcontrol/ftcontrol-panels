@@ -2,6 +2,7 @@
   import Panels from "$lib/Panels.svelte"
   import { Overlay } from "ftc-panels"
   import { global } from "$lib"
+  import { goto } from "$app/navigation"
 </script>
 
 <nav>
@@ -15,13 +16,24 @@
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       Plugins
     {/snippet}
-    {#snippet overlay({ close }: { close: void })}
+    {#snippet overlay({ close }: { close: () => void })}
+      <a href="/plugins" onclick={close}>Details</a>
       <div class="plugins-overlay">
         {#each global.plugins as plugin}
-          <button class="plugin">{plugin.details.letterName}</button>
+          <button
+            class="plugin"
+            onclick={() => {
+              goto(`/plugins/${plugin.details.id}`)
+              close()
+            }}
+          >
+            {plugin.details.letterName}
+          </button>
         {/each}
         {#each global.skippedPlugins as details}
-          <button class="plugin" disabled>{details.letterName}</button>
+          <button class="plugin" disabled onclick={close}>
+            {details.letterName}
+          </button>
         {/each}
       </div>
     {/snippet}
@@ -34,6 +46,7 @@
     min-height: 100px;
     display: flex;
     gap: calc(var(--padding) / 2);
+    margin-top: 0.5rem;
   }
 
   button.plugin {
