@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Button } from "ftc-panels"
+
   function increment(n: number) {
     return n + 1
   }
@@ -7,11 +9,13 @@
 </script>
 
 <p>{count}</p>
-<button
+<Button
   onclick={() => {
     count = increment(count)
-  }}>Increment</button
+  }}
 >
+  Increment
+</Button>
 
 <style>
   p {
