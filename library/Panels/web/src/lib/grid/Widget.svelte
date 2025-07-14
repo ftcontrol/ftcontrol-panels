@@ -238,7 +238,7 @@
 
 <style>
   .i {
-    padding: 0 1rem 1rem 1rem;
+    padding: 0 var(--padding) var(--padding) var(--padding);
     overflow: auto;
     flex-grow: 1;
   }
@@ -297,12 +297,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    /* padding: 0.5rem 1rem; */
-    padding-left: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 0.5rem;
+    padding-left: var(--padding);
+    padding-top: var(--padding);
+    padding-bottom: calc(var(--padding) / 2);
     width: 100%;
-    /* overflow: hidden; */
   }
   .tabs {
     display: flex;

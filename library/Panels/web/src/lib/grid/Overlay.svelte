@@ -1,7 +1,11 @@
 <script lang="ts">
   import { manager, type Widget } from "./widgets.svelte"
 
-  let { x, y }: { x: number; y: number } = $props()
+  let {
+    x,
+    y,
+    isMouse = false,
+  }: { x: number; y: number; isMouse?: boolean } = $props()
 
   let w = $derived(manager.getWidget(x, y, manager.possibleWidgets))
 
@@ -12,15 +16,35 @@
   })
 </script>
 
-<div style="--x:{x};--y:{y};"></div>
+{#if isMouse}
+  <button
+    onmousedown={() => {
+      manager.startPlace(x, y)
+    }}
+    onmouseup={() => {
+      manager.endPlace(x, y)
+    }}
+    onmousemove={() => {
+      manager.updatePlace(x, y)
+    }}
+    style="--x:{x};--y:{y};">+</button
+  >
+{:else}
+  <div style="--x:{x};--y:{y};"></div>
+{/if}
 
 <style>
-  div {
+  div,
+  button {
     position: absolute;
-    outline: 1px solid var(--bgLight);
+    background-color: transparent;
+    color: inherit;
+    border: 1px solid var(--bgLight);
     top: calc(var(--y) * var(--height));
     left: calc(var(--x) * var(--width));
     height: calc(var(--height));
     width: calc(var(--width));
+    display: grid;
+    place-content: center;
   }
 </style>

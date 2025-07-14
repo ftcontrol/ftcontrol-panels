@@ -3,6 +3,33 @@
   import WidgetItem from "./Widget.svelte"
   import { manager, type Widget } from "./widgets.svelte"
   import Overlay from "./Overlay.svelte"
+  import PlaceOverlay from "./PlaceOverlay.svelte"
+
+  let mouseGridPos = $state<{ x: number; y: number } | null>(null)
+
+  function onMouseMove(e: MouseEvent) {
+    if (!section) return
+    const rect = section.getBoundingClientRect()
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+
+    const x = Math.floor(mouseX / manager.WIDTH)
+    const y = Math.floor(mouseY / manager.HEIGHT)
+
+    const clampedX = Math.min(Math.max(x, 0), manager.MAX_GRID_WIDTH - 1)
+    const clampedY = Math.min(Math.max(y, 0), manager.MAX_GRID_HEIGHT - 1)
+
+    if (manager.getWidget(clampedX, clampedY, manager.widgets) != undefined) {
+      mouseGridPos = null
+      return
+    }
+
+    mouseGridPos = { x: clampedX, y: clampedY }
+  }
+
+  function onMouseLeave() {
+    mouseGridPos = null
+  }
 
   function getSurface(widget: Widget) {
     return widget.w * widget.h
@@ -49,6 +76,10 @@
 
 <section
   bind:this={section}
+  onmousemove={onMouseMove}
+  onmouseleave={onMouseLeave}
+  role="grid"
+  tabindex="0"
   style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
 >
   <div>
@@ -59,6 +90,10 @@
       {#each manager.possibleWidgets as widget (widget.id)}
         <WidgetItem isPossible={true} {widget} />
       {/each}
+    {/if}
+    <PlaceOverlay />
+    {#if mouseGridPos}
+      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
     {/if}
     {#each manager.widgets as widget, index}
       {#if !manager.isMoving || widget.isMoving}

@@ -47,7 +47,7 @@ class Manager {
       w: 3,
       h: 2,
       minW: 1,
-      maxW: 6,
+      maxW: 60,
       minH: 1,
       maxH: 60,
     },
@@ -103,6 +103,66 @@ class Manager {
     return widgets.find(
       (w) => x >= w.x && x < w.x + w.w && y >= w.y && y < w.y + w.h
     )
+  }
+
+  placeStart: { x: number; y: number } | null = null
+  placeEnd: { x: number; y: number } | null = null
+  place: { x: number; y: number; w: number; h: number } | null = $state(null)
+
+  startPlace(x: number, y: number) {
+    console.log("Start", x, y)
+    this.placeStart = { x, y }
+    this.place = {
+      x,
+      y,
+      w: 1,
+      h: 1,
+    }
+  }
+  updatePlace(uX: number, uY: number) {
+    if (this.placeStart == null) return
+    console.log("Update", uX, uY)
+    this.placeEnd = { x: uX, y: uY }
+
+    let startX = this.placeStart.x
+    let startY = this.placeStart.y
+    let endX = this.placeEnd.x
+    let endY = this.placeEnd.y
+
+    let w = Math.abs(endX - startX) + 1
+    let h = Math.abs(endY - startY) + 1
+
+    let x = Math.min(startX, endX)
+    let y = Math.min(startY, endY)
+
+    this.place = { x, y, w, h }
+  }
+  endPlace(x: number, y: number) {
+    console.log("End", x, y)
+
+    this.updatePlace(x, y)
+
+    this.addWidget(this.place.x, this.place.y, this.place.w, this.place.h)
+
+    this.placeStart = null
+    this.placeEnd = null
+    this.place = null
+  }
+  addWidget(x: number, y: number, w: number, h: number) {
+    this.widgets.push({
+      selected: 0,
+      isMoving: false,
+      id: Math.random().toString(),
+      widgets: [],
+      x: x,
+      y: y,
+      w: w,
+      h: h,
+      minW: 1,
+      maxW: 60,
+      minH: 1,
+      maxH: 60,
+    })
   }
 
   resolveCollisions(moved: Widget, widgets: Widget[]) {

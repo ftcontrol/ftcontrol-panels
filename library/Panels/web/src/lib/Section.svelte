@@ -11,7 +11,7 @@
 <style>
   section {
     background-color: var(--bgMedium);
-    padding: 1rem;
+    padding: var(--padding);
     border-radius: 1rem;
     overflow: auto;
   }
