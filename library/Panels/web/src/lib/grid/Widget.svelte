@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DynamicComponent, Overlay } from "ftc-panels"
+  import { Button, DynamicComponent, Overlay } from "ftc-panels"
   import { manager, type Widget } from "./widgets.svelte"
   import { global } from "$lib"
   import plugin from "@sveltejs/adapter-static"
@@ -7,6 +7,7 @@
   import Move from "$lib/icons/Move.svelte"
   import WidgetContent from "./WidgetContent.svelte"
   import Portal from "svelte-portal"
+  import PreviewBox from "./PreviewBox.svelte"
 
   let {
     widget = $bindable(),
@@ -244,7 +245,7 @@
                 block: "nearest",
                 inline: "center",
               })
-            }}>{w.widgetID}</button
+            }}>{w.widgetID || "Empty"}</button
           >
           {#if manager.tabWidgetID == widget.id && manager.tabIndex == index}
             <button class="tab moving">{manager.tabName}</button>
@@ -266,14 +267,57 @@
       {#if widget.widgets.length > 0}
         {#each widget.widgets, index}
           <div class="w" class:selected={index == widget.selected}>
-            <WidgetContent
-              pluginID={widget.widgets[index].pluginID}
-              widgetID={widget.widgets[index].widgetID}
-            />
+            {#if widget.widgets[index].pluginID != "" && widget.widgets[index].widgetID != ""}
+              <WidgetContent
+                pluginID={widget.widgets[index].pluginID}
+                widgetID={widget.widgets[index].widgetID}
+              />
+            {:else}
+              <Overlay>
+                {#snippet trigger()}
+                  <Button>Choose</Button>
+                {/snippet}
+                {#snippet overlay({ close }: { close: () => void })}
+                  <div class="possibilities">
+                    {#each global.plugins as p}
+                      {#each p.details.widgets as w}
+                        <button
+                          class="choose"
+                          onclick={() => {
+                            close()
+                            widget.widgets[index].pluginID = p.details.id
+                            widget.widgets[index].widgetID = w.name
+                          }}
+                        >
+                          <p>{p.details.name}</p>
+                          <p>{w.name}</p>
+                          <PreviewBox scale={0.5}>
+                            <WidgetContent
+                              pluginID={p.details.id}
+                              widgetID={w.name}
+                            />
+                          </PreviewBox>
+                        </button>
+                      {/each}
+                    {/each}
+                  </div>
+                {/snippet}
+              </Overlay>
+            {/if}
           </div>
         {/each}
       {:else}
         <p>No widgets found</p>
+
+        <Button
+          onclick={() => {
+            widget.widgets.push({
+              isMoving: false,
+              pluginID: "",
+              widgetID: "",
+            })
+          }}>Insert Empty Widget</Button
+        >
       {/if}
     </section>
     <button class="icon resize" onmousedown={startResize}>
@@ -283,6 +327,17 @@
 </div>
 
 <style>
+  .possibilities {
+    display: flex;
+    gap: 1rem;
+  }
+  button.choose {
+    all: unset;
+    cursor: pointer;
+    background-color: var(--bgLight);
+    padding: 0.5em;
+    border-radius: 0.8rem;
+  }
   .tab.absolute {
     position: absolute;
     top: var(--y);

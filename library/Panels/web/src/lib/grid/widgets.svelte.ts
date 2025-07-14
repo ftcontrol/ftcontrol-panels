@@ -61,6 +61,11 @@ class Manager {
           pluginID: "com.bylazar.telemetry",
           widgetID: "Telemetry",
         },
+        {
+          isMoving: false,
+          pluginID: "",
+          widgetID: "",
+        },
       ],
       x: 1,
       y: 2,
