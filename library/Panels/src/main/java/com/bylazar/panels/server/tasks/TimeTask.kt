@@ -18,7 +18,7 @@ class TimeTask : SocketTask() {
     }
 
     override fun onException() {
-        startSendingTime()
+        stopTimer()
     }
 
     override fun onClose() {
