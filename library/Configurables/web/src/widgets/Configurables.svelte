@@ -2,6 +2,7 @@
   import { onMount } from "svelte"
   import Manager from "../manager"
   import type { GenericTypeJson } from "../types"
+  import Field from "./Field.svelte"
 
   let {
     manager,
@@ -21,11 +22,9 @@
 {#each Object.entries(configurables) as [key, value]}
   <div>
     <h3>{key}</h3>
-    <ul>
-      {#each value as item}
-        <li>{JSON.stringify(item)}</li>
-      {/each}
-    </ul>
+    {#each value as item}
+      <Field {item} />
+    {/each}
   </div>
 {/each}
 

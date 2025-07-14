@@ -27,10 +27,10 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
     var fieldsMap = mutableMapOf<String, MyField>()
     var configurableClasses: List<ClassFinder.ClassEntry> = listOf()
-    var allFields: List<GenericTypeJson> = listOf()
+    var allFields: MutableList<GenericTypeJson> = mutableListOf()
 
     val allFieldsMap: Map<String, List<GenericTypeJson>>
-        get() = allFields.groupBy { it.className }
+        get() = allFields.groupBy { it.className }.toSortedMap()
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "initialConfigurables", allFieldsMap)
@@ -38,6 +38,32 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
+    }
+
+    fun refreshClass(className: String) {
+        allFields.removeAll { it.className == className }
+
+        val fields: MutableList<GenericField> = mutableListOf()
+
+        try {
+            val clazz = Class.forName(className)
+            log("Inspecting class $className")
+            fields.addFieldsFromClass(clazz, className)
+            try {
+                val companionClazz = Class.forName("${className}\$Companion")
+                fields.addFieldsFromClass(companionClazz, className)
+            } catch (e: ClassNotFoundException) {
+                // no companion found
+            }
+        } catch (e: Exception) {
+            error("Error inspecting class ${className}: ${e.message}")
+        }
+
+        val newFields = fields.map { it.toJsonType }.toMutableList()
+
+        allFields.addAll(newFields)
+
+        send("initialConfigurables", allFieldsMap)
     }
 
     override fun onRegister(
@@ -88,7 +114,7 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
         log("Configurable fields: ${fields.map { it.name }}")
 
-        allFields = jvmFields.map { it.toJsonType }
+        allFields = jvmFields.map { it.toJsonType }.toMutableList()
 
         send("initialConfigurables", allFieldsMap)
     }
