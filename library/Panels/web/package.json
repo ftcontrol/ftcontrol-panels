@@ -25,8 +25,6 @@
   "dependencies": {
     "@sveltejs/adapter-static": "^3.0.8",
     "ftc-panels": "link:ftc-panels",
-    "svelte-portal": "^2.2.1",
-    "tinycolor2": "^1.6.0",
     "uuid": "^11.1.0"
   }
 }

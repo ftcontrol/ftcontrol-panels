@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ThemeGenerator from "$lib/ThemeGenerator.svelte"
   import { global } from "$lib"
   import Section from "$lib/Section.svelte"
 </script>
@@ -15,7 +14,6 @@
     </Section>
   {/each}
 </div>
-<ThemeGenerator />
 
 <style>
   div {

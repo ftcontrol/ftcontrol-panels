@@ -44,4 +44,5 @@ dependencies {
     implementation project(':ExamplePlugin')
     implementation project(':Telemetry')
     implementation project(':Configurables')
+    implementation project(':Themes')
 }

@@ -19,9 +19,13 @@
 <h3>Widgets</h3>
 {#each plugin.details.widgets as widget}
   <Section>
+    <h4>{widget.name}</h4>
     <WidgetContent pluginID={plugin.details.id} widgetID={widget.name} />
   </Section>
 {/each}
 
 <style>
+  h4 {
+    margin: 0;
+  }
 </style>
