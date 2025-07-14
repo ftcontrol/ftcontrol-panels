@@ -254,7 +254,6 @@
   }
   section {
     overflow: hidden;
-    background-color: green;
     flex-grow: 1;
   }
   .transparent {

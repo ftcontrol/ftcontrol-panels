@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DynamicComponent, Overlay } from "ftc-panels"
+  import { Button, DynamicComponent, Overlay } from "ftc-panels"
   import ThemeGenerator from "$lib/ThemeGenerator.svelte"
   import { global } from "$lib"
   import Layout from "$lib/grid/Layout.svelte"

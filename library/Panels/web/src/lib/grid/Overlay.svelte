@@ -12,18 +12,15 @@
   })
 </script>
 
-<div style="--x:{x};--y:{y};" class:blue></div>
+<div style="--x:{x};--y:{y};"></div>
 
 <style>
   div {
     position: absolute;
-    outline: 1px solid black;
+    outline: 1px solid currentColor;
     top: calc(var(--y) * var(--height));
     left: calc(var(--x) * var(--width));
     height: calc(var(--height));
     width: calc(var(--width));
-  }
-  .blue {
-    background-color: blue;
   }
 </style>

@@ -3,6 +3,7 @@
   import Manager, { type OpModeStatus } from "../manager"
   import type { OpMode } from "../types"
   import { Overlay, Button } from "ftc-panels"
+  import Arrow from "./Arrow.svelte"
 
   let {
     manager,
@@ -59,48 +60,53 @@
   })
 </script>
 
-<Overlay>
-  {#snippet trigger()}
-    Autos
-  {/snippet}
-  {#snippet overlay({ close }: { close: () => void })}
-    {#each opModes.filter((it) => it.flavour == "AUTONOMOUS") as opMode}
-      <p>{opMode.name} / {opMode.group}</p>
-      <p>{opMode.flavour} / {opMode.source}</p>
-      <button
-        onclick={() => {
-          selectOpMode(opMode)
-          close()
-        }}>Select</button
-      >
-    {/each}
-    {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
-      <p>No OpModes found.</p>
-    {/if}
-  {/snippet}
-</Overlay>
+<div class="top">
+  <Overlay>
+    {#snippet trigger()}
+      <Button transparent={true}>Autos <Arrow /></Button>
+    {/snippet}
+    {#snippet overlay({ close }: { close: () => void })}
+      {#each opModes.filter((it) => it.flavour == "AUTONOMOUS") as opMode}
+        <div class="list">
+          <p>{opMode.name} / {opMode.group}</p>
+          <p>{opMode.flavour} / {opMode.source}</p>
+          <button
+            onclick={() => {
+              selectOpMode(opMode)
+              close()
+            }}>Select</button
+          >
+        </div>
+      {/each}
+      {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
+        <p>No OpModes found.</p>
+      {/if}
+    {/snippet}
+  </Overlay>
 
-<Overlay>
-  {#snippet trigger()}
-    TeleOps
-  {/snippet}
-  {#snippet overlay({ close }: { close: () => void })}
-    {#each opModes.filter((it) => it.flavour == "TELEOP") as opMode}
-      <p>{opMode.name} / {opMode.group}</p>
-      <p>{opMode.flavour} / {opMode.source}</p>
-      <button
-        onclick={() => {
-          selectOpMode(opMode)
-          close()
-        }}>Select</button
-      >
-    {/each}
-    {#if opModes.filter((it) => it.flavour == "TELEOP").length == 0}
-      <p>No OpModes found.</p>
-    {/if}
-  {/snippet}
-</Overlay>
-
+  <Overlay>
+    {#snippet trigger()}
+      <Button transparent={true}>TeleOps <Arrow /></Button>
+    {/snippet}
+    {#snippet overlay({ close }: { close: () => void })}
+      {#each opModes.filter((it) => it.flavour == "TELEOP") as opMode}
+        <div class="list">
+          <p>{opMode.name} / {opMode.group}</p>
+          <p>{opMode.flavour} / {opMode.source}</p>
+          <button
+            onclick={() => {
+              selectOpMode(opMode)
+              close()
+            }}>Select</button
+          >
+        </div>
+      {/each}
+      {#if opModes.filter((it) => it.flavour == "TELEOP").length == 0}
+        <p>No OpModes found.</p>
+      {/if}
+    {/snippet}
+  </Overlay>
+</div>
 {#if selectedOpModeName == ""}
   <p class="title">Nothing selected</p>
 {:else}
@@ -140,6 +146,11 @@
 </div>
 
 <style>
+  .top {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
   .flex {
     display: flex;
     gap: 1rem;
@@ -166,5 +177,10 @@
     left: 50%;
     transform: translate(-50%, 0);
     bottom: -1rem;
+  }
+
+  .list {
+    max-height: 500px;
+    overflow-y: auto;
   }
 </style>

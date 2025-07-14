@@ -16,7 +16,6 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import java.lang.reflect.Modifier
-import java.util.Map.entry
 import kotlin.jvm.java
 
 open class ConfigurablesPluginConfig : BasePluginConfig() {
