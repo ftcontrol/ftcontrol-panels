@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte"
-  import WidgetItem from "./Widget.svelte"
+  import WidgetItem from "./widget/Widget.svelte"
   import { manager, type Widget } from "./widgets.svelte"
   import Overlay from "./Overlay.svelte"
   import PlaceOverlay from "./PlaceOverlay.svelte"
@@ -66,14 +66,8 @@
     const width = bounding.width
     const height = bounding.height
 
-    const spacingInPixels =
-      parseFloat(getComputedStyle(section).getPropertyValue("--spacing")) *
-      parseFloat(getComputedStyle(document.documentElement).fontSize)
-
-    console.log(spacingInPixels)
-
     manager.WIDTH = width / manager.MAX_GRID_WIDTH
-    manager.HEIGHT = height / manager.MAX_GRID_HEIGHT - spacingInPixels / 2.5
+    manager.HEIGHT = height / manager.MAX_GRID_HEIGHT
   }
 
   onMount(() => {
@@ -101,8 +95,11 @@
       {#each gridCells as { x, y } (x + "-" + y)}
         <Overlay {x} {y} />
       {/each}
-      {#each manager.possibleWidgets as widget (widget.id)}
-        <WidgetItem isPossible={true} {widget} />
+      {#each manager.possibleWidgets as widget, index}
+        <WidgetItem
+          isPossible={true}
+          bind:widget={manager.possibleWidgets[index]}
+        />
       {/each}
     {/if}
     <PlaceOverlay />

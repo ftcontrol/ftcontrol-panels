@@ -1,4 +1,12 @@
 export type Widget = {
+  offset: {
+    x: number
+    y: number
+  }
+  move: {
+    x: number
+    y: number
+  }
   selected: number
   isMoving: boolean
   id: string
@@ -22,6 +30,14 @@ export type Panel = {
 class Manager {
   widgets: Widget[] = $state([
     {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      move: {
+        x: 0,
+        y: 0,
+      },
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
@@ -44,14 +60,22 @@ class Manager {
       ],
       x: 0,
       y: 0,
-      w: 3,
-      h: 2,
+      w: 5,
+      h: 3,
       minW: 1,
       maxW: 60,
       minH: 1,
       maxH: 60,
     },
     {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      move: {
+        x: 0,
+        y: 0,
+      },
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
@@ -67,8 +91,8 @@ class Manager {
           widgetID: "",
         },
       ],
-      x: 1,
-      y: 2,
+      x: 4,
+      y: 4,
       w: 1,
       h: 1,
       minW: 1,
@@ -152,6 +176,14 @@ class Manager {
     this.place = { x, y, w, h }
 
     const dummyWidget = {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      move: {
+        x: 0,
+        y: 0,
+      },
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
@@ -176,7 +208,17 @@ class Manager {
 
     this.updatePlace(x, y)
 
+    if (this.place == null) return
+
     const dummyWidget = {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      move: {
+        x: 0,
+        y: 0,
+      },
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
@@ -261,45 +303,45 @@ class Manager {
     )
   }
 
-  updateMove(id: string, xMove: number, yMove: number) {
-    this.possibleWidgets = this.moveWidget(id, xMove, yMove, this.widgets)
+  updateMove(id: string) {
+    this.possibleWidgets = this.moveWidget(id, this.widgets)
   }
 
-  updateResize(id: string, xOffset: number, yOffset: number) {
-    this.possibleWidgets = this.resizeWidget(id, xOffset, yOffset, this.widgets)
+  updateResize(id: string) {
+    this.possibleWidgets = this.resizeWidget(id, this.widgets)
   }
 
-  finishMoveWidget(id: string, xMove: number, yMove: number) {
-    this.widgets = this.moveWidget(id, xMove, yMove, this.widgets)
+  finishMoveWidget(id: string) {
+    this.widgets = this.moveWidget(id, this.widgets)
   }
-  finishResizeWidget(id: string, xOffset: number, yOffset: number) {
-    this.widgets = this.resizeWidget(id, xOffset, yOffset, this.widgets)
+  finishResizeWidget(id: string) {
+    this.widgets = this.resizeWidget(id, this.widgets)
   }
 
-  moveWidget(
-    id: string,
-    xMove: number,
-    yMove: number,
-    widgets: Widget[]
-  ): Widget[] {
-    const dx = Math.round(xMove / this.WIDTH)
-    const dy = Math.round(yMove / this.HEIGHT)
+  getWidgetById(id: string, widgets: Widget[]): Widget | undefined {
+    return widgets.find((it) => it.id == id)
+  }
+
+  moveWidget(id: string, widgets: Widget[]): Widget[] {
+    const widget = this.getWidgetById(id, widgets)
+    if (widget == undefined) return this.widgets
+    const dx = Math.round(widget.move.x / this.WIDTH)
+    const dy = Math.round(widget.move.y / this.HEIGHT)
 
     const updated = widgets.map((w) =>
-      w.id === id ? { ...w, x: w.x + dx, y: w.y + dy } : { ...w }
+      w.id === id
+        ? { ...w, x: w.x + dx, y: w.y + dy, move: { x: 0, y: 0 } }
+        : { ...w }
     )
     const moved = updated.find((w) => w.id === id)!
     return this.resolveCollisions(moved, updated)
   }
 
-  resizeWidget(
-    id: string,
-    xOffset: number,
-    yOffset: number,
-    widgets: Widget[]
-  ) {
-    const dw = Math.round(xOffset / this.WIDTH)
-    const dh = Math.round(yOffset / this.HEIGHT)
+  resizeWidget(id: string, widgets: Widget[]) {
+    const widget = this.getWidgetById(id, widgets)
+    if (widget == undefined) return this.widgets
+    const dw = Math.round(widget.offset.x / this.WIDTH)
+    const dh = Math.round(widget.offset.y / this.HEIGHT)
 
     const updated = widgets.map((w) =>
       w.id === id
@@ -307,6 +349,7 @@ class Manager {
             ...w,
             w: clamp(w.minW, w.w + dw, w.maxW),
             h: clamp(w.minH, w.h + dh, w.maxH),
+            offset: { x: 0, y: 0 },
           }
         : { ...w }
     )
