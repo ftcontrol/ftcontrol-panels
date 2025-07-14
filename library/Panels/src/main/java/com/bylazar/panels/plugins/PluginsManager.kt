@@ -7,6 +7,7 @@ import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import java.lang.ref.WeakReference
 import kotlin.collections.set
 import kotlin.jvm.java
 
@@ -14,6 +15,8 @@ object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
     val skippedPlugins: MutableMap<String, PluginDetails> = mutableMapOf()
     var isRegistered = false
+
+    lateinit var contextRef: WeakReference<Context>
 
     fun loadPluginConfig(context: Context, filename: String = "config.json"): PluginDetails {
         val assetManager = context.assets
@@ -37,7 +40,35 @@ object PluginsManager {
         }
     }
 
+    fun updateDetails() {
+        if(!isRegistered) return
+        val context = contextRef.get()
+        if (context == null) return
+        try {
+            plugins.keys.forEach { id ->
+                val details: PluginDetails =
+                    loadPluginConfig(context, "web/plugins/${id}/config.json")
+                plugins[id]?.let {
+                    it.details = details
+                    it.details.widgets.forEach {
+                        it.textContent = loadPluginWidgetFile(context, id, it.name)
+                    }
+                    it.details.manager.textContent = loadPluginManagerFile(
+                        context,
+                        id,
+                        it.details.manager.name
+                    )
+                }
+            }
+
+        } catch (t: Throwable) {
+            Logger.pluginsError("Error while fetching details: $t")
+        }
+    }
+
     fun init(context: Context) {
+        contextRef = WeakReference(context)
+
         isRegistered = false
         val classes = ClassFinder().findClasses(
             apkPath = context.packageCodePath,

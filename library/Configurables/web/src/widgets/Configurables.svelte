@@ -18,6 +18,7 @@
   })
 </script>
 
+<h1>Test 3</h1>
 {#each Object.entries(configurables) as [key, value]}
   <div>
     <h3>{key}</h3>
