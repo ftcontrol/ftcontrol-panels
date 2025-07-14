@@ -27,7 +27,7 @@
 
 <style>
   svg {
-    height: 16px;
+    width: 5px;
   }
   circle {
     fill: currentColor;

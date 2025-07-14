@@ -108,6 +108,10 @@ class Manager {
     )
   }
 
+  removeWidget(id: string) {
+    this.widgets = this.widgets.filter((it) => it.id != id)
+  }
+
   getWidget(x: number, y: number, widgets: Widget[]): Widget | undefined {
     return widgets.find(
       (w) => x >= w.x && x < w.x + w.w && y >= w.y && y < w.y + w.h
@@ -161,7 +165,10 @@ class Manager {
       minH: 1,
       maxH: 60,
     }
-    this.possibleWidgets = this.resolveCollisions(dummyWidget, this.widgets)
+    this.possibleWidgets = this.resolveCollisions(dummyWidget, [
+      dummyWidget,
+      ...this.widgets,
+    ])
   }
   endPlace(x: number, y: number) {
     if (this.placeStart == null) return

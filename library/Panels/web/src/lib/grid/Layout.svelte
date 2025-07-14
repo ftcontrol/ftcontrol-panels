@@ -66,8 +66,14 @@
     const width = bounding.width
     const height = bounding.height
 
+    const spacingInPixels =
+      parseFloat(getComputedStyle(section).getPropertyValue("--spacing")) *
+      parseFloat(getComputedStyle(document.documentElement).fontSize)
+
+    console.log(spacingInPixels)
+
     manager.WIDTH = width / manager.MAX_GRID_WIDTH
-    manager.HEIGHT = height / manager.MAX_GRID_HEIGHT
+    manager.HEIGHT = height / manager.MAX_GRID_HEIGHT - spacingInPixels / 2.5
   }
 
   onMount(() => {
@@ -117,8 +123,8 @@
   section {
     --spacing: 0.25rem;
     position: relative;
-    width: calc(100% - 2 * var(--spacing));
-    height: calc(100% - 2 * var(--spacing));
+
+    flex-grow: 1;
     overflow: hidden;
     margin: var(--spacing);
   }
