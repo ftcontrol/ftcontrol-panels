@@ -6,6 +6,7 @@
   import { Toggle } from "ftc-panels"
 
   import { setContext } from "svelte"
+  import Arrow from "./Arrow.svelte"
 
   let {
     manager,
@@ -27,7 +28,10 @@
 {#each Object.entries(configurables) as [key, value]}
   <Toggle>
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
-      <h3>{key.split(".")[key.split(".").length - 1]}</h3>
+      <h3>
+        <Arrow {isOpen} />
+        {key.split(".")[key.split(".").length - 1]}
+      </h3>
     {/snippet}
     {#snippet content({ close }: { close: () => void })}
       <div class="container">
