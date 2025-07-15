@@ -2,6 +2,7 @@
   import type Manager from "../manager"
   import { Types, type GenericTypeJson } from "../types"
   import FieldHelper from "./FieldHelper.svelte"
+  import OptionInput from "./OptionInput.svelte"
   import StringInput from "./StringInput.svelte"
   import { anyValidator } from "./validators"
 
@@ -36,6 +37,20 @@
       bind:newValue={item.newValueString}
       bind:isValid={item.isValid}
       validate={anyValidator(item.type)}
+    />
+  {/if}
+  {#if item.possibleValues != undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
+    <button onclick={sendFieldUpdate} disabled={!item.isValid}>Update</button>
+    <OptionInput
+      bind:value={item.value}
+      bind:startValue={item.valueString}
+      bind:newValue={item.newValueString}
+      bind:isValid={item.isValid}
+      bind:possibleValues={item.possibleValues}
+      validate={(value: string) => {
+        if (item.possibleValues == null) return false
+        return item.possibleValues.includes(value)
+      }}
     />
   {/if}
 </div>

@@ -108,6 +108,7 @@ object PluginsManager {
             Logger.pluginsLog("Found ${configs.size} configs.")
 
             if (configs.isNotEmpty()) {
+                val clazz = Class.forName(configs[0].className)
                 val newConfig = clazz.getDeclaredConstructor().newInstance()
                 pluginInstance.setConfig(newConfig)
                 Logger.pluginsLog("Set new config.")

@@ -11,17 +11,21 @@ class TestConfigurablesValues : OpMode() {
     companion object {
         @JvmField
         var lazar = "test"
+        @JvmField
+        var lazarBool = false
     }
 
     val telemetry = PanelsTelemetry.getTelemetry()
 
     override fun init() {
         telemetry.debug("Value of $lazar")
+        telemetry.debug("Value of $lazarBool")
         telemetry.update()
     }
 
     override fun loop() {
         telemetry.debug("Value of $lazar")
+        telemetry.debug("Value of $lazarBool")
         telemetry.update()
     }
 

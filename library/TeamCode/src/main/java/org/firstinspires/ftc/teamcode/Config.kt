@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode
 
 import com.bylazar.panels.DevPluginEntry
 import com.bylazar.panels.PanelsConfig
+import com.bylazar.telemetry.TelemetryPluginConfig
 
 class Config : PanelsConfig() {
     override var isDisabled = false
@@ -11,4 +12,8 @@ class Config : PanelsConfig() {
             devURL = "http://localhost:3000"
         )
     )
+}
+
+class TelemetryConfig: TelemetryPluginConfig(){
+    override var telemetryUpdateInterval = 100L
 }
