@@ -13,7 +13,9 @@
     validate: (value: string) => boolean
   } = $props()
 
-  $effect(() => {
+  import { onMount } from "svelte"
+
+  onMount(() => {
     if (value != "") return
     value = startValue
     newValue = startValue

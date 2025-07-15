@@ -26,7 +26,7 @@
 
 <style>
   svg {
-    height: 10px;
+    height: 8px;
     width: fit-content;
   }
   path {
