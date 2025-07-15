@@ -69,8 +69,16 @@
 <Button
   onclick={() => {
     manager.reset()
-  }}>Reset</Button
+    baseColor = manager.theme.baseColor
+    textColor = manager.theme.textColor
+    brightnessOffset = manager.theme.brightnessOffset
+    padding = manager.theme.padding
+    tintColor = manager.theme.tintColor
+    generatedColors = manager.generatedColors
+  }}
 >
+  Reset
+</Button>
 
 <style>
   .color-box {

@@ -32,13 +32,13 @@
   })
 </script>
 
-{JSON.stringify({
+<!-- {JSON.stringify({
   value,
   startValue,
   newValue,
   isValid,
   possibleValues,
-})}
+})} -->
 
 <Overlay>
   {#snippet trigger()}

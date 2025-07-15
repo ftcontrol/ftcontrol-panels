@@ -28,12 +28,12 @@
   })
 </script>
 
-{JSON.stringify({
+<!-- {JSON.stringify({
   value,
   startValue,
   newValue,
   isValid,
-})}
+})} -->
 <input type="text" class:invalid={!isValid} bind:value />
 
 <style>

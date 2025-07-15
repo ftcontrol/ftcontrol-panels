@@ -27,9 +27,9 @@
 </script>
 
 <!-- <p style="--indent: {indent};">{JSON.stringify(item)}</p> -->
-<div style="--indent: {indent};">
-  <p>{item.fieldName}</p>
-  {#if [Types.INT, Types.LONG, Types.DOUBLE, Types.FLOAT, Types.STRING].includes(item.type)}
+{#if [Types.INT, Types.LONG, Types.DOUBLE, Types.FLOAT, Types.STRING].includes(item.type)}
+  <div style="--indent: {indent};">
+    <p>{item.fieldName}</p>
     <button onclick={sendFieldUpdate} disabled={!item.isValid}>Update</button>
     <StringInput
       bind:value={item.value}
@@ -38,8 +38,11 @@
       bind:isValid={item.isValid}
       validate={anyValidator(item.type)}
     />
-  {/if}
-  {#if item.possibleValues != undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
+  </div>
+{/if}
+{#if item.possibleValues != undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
+  <div style="--indent: {indent};">
+    <p>{item.fieldName}</p>
     <button onclick={sendFieldUpdate} disabled={!item.isValid}>Update</button>
     <OptionInput
       bind:value={item.value}
@@ -52,16 +55,22 @@
         return item.possibleValues.includes(value)
       }}
     />
-  {/if}
-</div>
+  </div>
+{/if}
+
 {#if item.customValues}
+  <p>{item.fieldName}</p>
   {#each item.customValues as value}
     <FieldHelper item={value} indent={indent + 1} />
   {/each}
 {/if}
 
 <style>
+  p {
+    margin: 0;
+  }
   div {
     margin-left: calc(var(--indent) * 16px);
+    display: flex;
   }
 </style>

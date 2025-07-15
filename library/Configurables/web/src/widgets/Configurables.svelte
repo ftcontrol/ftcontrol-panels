@@ -3,6 +3,7 @@
   import Manager from "../manager"
   import type { GenericTypeJson } from "../types"
   import Field from "./Field.svelte"
+  import { Toggle } from "ftc-panels"
 
   import { setContext } from "svelte"
 
@@ -24,13 +25,29 @@
 </script>
 
 {#each Object.entries(configurables) as [key, value]}
-  <div>
-    <h3>{key}</h3>
-    {#each value as item}
-      <Field {item} />
-    {/each}
-  </div>
+  <Toggle>
+    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+      <h3>{key.split(".")[key.split(".").length - 1]}</h3>
+    {/snippet}
+    {#snippet content({ close }: { close: () => void })}
+      <div class="container">
+        {#each value as item}
+          <Field {item} />
+        {/each}
+      </div>
+    {/snippet}
+  </Toggle>
 {/each}
 
 <style>
+  h3 {
+    margin: 0;
+    margin-bottom: var(--padding);
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding);
+    margin-bottom: var(--padding);
+  }
 </style>
