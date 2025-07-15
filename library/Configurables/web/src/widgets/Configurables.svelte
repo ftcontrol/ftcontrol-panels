@@ -4,11 +4,15 @@
   import type { GenericTypeJson } from "../types"
   import Field from "./Field.svelte"
 
+  import { setContext } from "svelte"
+
   let {
     manager,
   }: {
     manager: Manager
   } = $props()
+
+  setContext("manager", manager)
 
   let configurables: Record<string, GenericTypeJson[]> = $state({})
 

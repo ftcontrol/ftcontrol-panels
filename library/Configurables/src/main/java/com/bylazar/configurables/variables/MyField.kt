@@ -2,6 +2,7 @@ package com.bylazar.configurables.variables
 
 import com.bylazar.configurables.ConfigurablesLogger
 import com.bylazar.configurables.GenericTypeJson
+import com.bylazar.configurables.GlobalConfigurables
 import com.bylazar.configurables.variables.generics.GenericVariable
 import java.lang.reflect.Field
 import java.lang.reflect.Type
@@ -30,7 +31,7 @@ class MyField(
 
     init {
         if (ref != null) ref.isAccessible = true
-//        ConfigurablesManager.fieldsMap[id] = this
+        GlobalConfigurables.fieldsMap[id] = this
     }
 
     fun getValue(recursionDepth: Int = 0): Any? {

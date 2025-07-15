@@ -14,13 +14,15 @@ data class SocketMessage(
 ) {
     fun toJson(): String = mapper.writeValueAsString(this)
 
-    inline fun <reified T> dataAs(): T = mapper.convertValue(data, T::class.java)
-
     companion object {
         val mapper: ObjectMapper = jacksonObjectMapper().registerKotlinModule()
 
         fun fromJson(json: String): SocketMessage {
             return mapper.readValue(json)
+        }
+
+        inline fun <reified T> convertData(data: Any?): T {
+            return mapper.convertValue(data, object : com.fasterxml.jackson.core.type.TypeReference<T>() {})
         }
     }
 }

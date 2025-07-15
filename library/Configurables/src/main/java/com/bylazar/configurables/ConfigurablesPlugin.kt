@@ -8,6 +8,7 @@ import com.bylazar.configurables.annotations.IgnoreConfigurable
 import com.bylazar.configurables.variables.MyField
 import com.bylazar.configurables.variables.generics.GenericField
 import com.bylazar.panels.Panels
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.reflection.ClassFinder
@@ -38,6 +39,27 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
+        if (type == "updatedConfigurable") {
+            val changes = try {
+                SocketMessage.convertData<List<ChangeJson>>(data)
+            } catch (e: Exception) {
+                log("Failed to convert data: ${e.message}")
+                emptyList()
+            }
+
+//            var toSendChanges: MutableList<ChangeJson> = mutableListOf()
+
+            changes.forEach {
+                val generalRef = GlobalConfigurables.fieldsMap[it.id] ?: return
+                log("Field id: ${it.id}, New value: ${it.newValueString}")
+                generalRef.setValue(it.newValueString)
+                allFields.find { field -> field.id == it.id }?.value = it.newValueString
+
+//                toSendChanges.add(ChangeJson(it.id, it.newValueString))
+            }
+
+            send("newConfigurables", changes)
+        }
     }
 
     fun refreshClass(className: String) {
@@ -75,6 +97,7 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
         configurableClasses = listOf()
 
         GlobalConfigurables.jvmFields = mutableListOf()
+        GlobalConfigurables.fieldsMap = mutableMapOf()
 
         configurableClasses = ClassFinder().findClasses(
             apkPath = context.packageCodePath,
