@@ -1,3 +1,5 @@
+import { global } from "$lib"
+
 export type Widget = {
   offset: {
     x: number
@@ -61,7 +63,7 @@ class Manager {
       x: 0,
       y: 0,
       w: 5,
-      h: 3,
+      h: 4,
       minW: 1,
       maxW: 60,
       minH: 1,
@@ -91,10 +93,38 @@ class Manager {
           widgetID: "",
         },
       ],
-      x: 4,
+      x: 0,
       y: 4,
-      w: 1,
-      h: 1,
+      w: 5,
+      h: 4,
+      minW: 1,
+      maxW: 60,
+      minH: 1,
+      maxH: 60,
+    },
+    {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      move: {
+        x: 0,
+        y: 0,
+      },
+      selected: 0,
+      isMoving: false,
+      id: Math.random().toString(),
+      widgets: [
+        {
+          isMoving: false,
+          pluginID: "com.bylazar.configurables",
+          widgetID: "Configurables",
+        },
+      ],
+      x: 5,
+      y: 0,
+      w: 10,
+      h: 12,
       minW: 1,
       maxW: 60,
       minH: 1,
@@ -301,6 +331,15 @@ class Manager {
       widget.x + widget.w > this.MAX_GRID_WIDTH ||
       widget.y + widget.h > this.MAX_GRID_HEIGHT
     )
+  }
+
+  exists(pluginID: string, widgetID: string): boolean {
+    if (!global.isConnected) return true
+    const plugin = global.plugins.find((it) => it.details.id == pluginID)
+    if (plugin == undefined) return false
+    const widget = plugin.details.widgets.find((it) => it.name == widgetID)
+    if (widget == undefined) return false
+    return true
   }
 
   updateMove(id: string) {

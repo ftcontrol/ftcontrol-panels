@@ -39,7 +39,7 @@
               ? "display:block;"
               : "display:none;"}
           >
-            {#if widget.widgets[index].pluginID != "" && widget.widgets[index].widgetID != ""}
+            {#if widget.widgets[index].pluginID != "" && widget.widgets[index].widgetID != "" && manager.exists(widget.widgets[index].pluginID, widget.widgets[index].widgetID)}
               <WidgetContent
                 pluginID={widget.widgets[index].pluginID}
                 widgetID={widget.widgets[index].widgetID}
