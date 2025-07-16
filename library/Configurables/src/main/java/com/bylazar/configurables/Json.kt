@@ -13,7 +13,6 @@ class GenericTypeJson(
     var isValid: Boolean = true,
     var possibleValues: List<String>? = null,
     var customValues: List<GenericTypeJson>? = null,
-    var isOpened: Boolean? = null
 )
 
 class ChangeJson(

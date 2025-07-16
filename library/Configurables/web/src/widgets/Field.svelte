@@ -69,20 +69,22 @@
 {/if}
 
 {#if item.customValues}
-  <Toggle>
-    {#snippet trigger({ isOpen }: { isOpen: boolean })}
-      <div style="--indent: {indent};">
-        <p><Arrow {isOpen} /> {item.fieldName}</p>
-      </div>
-    {/snippet}
-    {#snippet content({ close }: { close: () => void })}
-      <div class="container">
-        {#each item.customValues || [] as value}
-          <FieldHelper item={value} indent={indent + 1} />
-        {/each}
-      </div>
-    {/snippet}
-  </Toggle>
+  {#if item.customValues.length}
+    <Toggle>
+      {#snippet trigger({ isOpen }: { isOpen: boolean })}
+        <div style="--indent: {indent};">
+          <p><Arrow {isOpen} /> {item.fieldName}</p>
+        </div>
+      {/snippet}
+      {#snippet content({ close }: { close: () => void })}
+        <div class="container">
+          {#each item.customValues || [] as value}
+            <FieldHelper item={value} indent={indent + 1} />
+          {/each}
+        </div>
+      {/snippet}
+    </Toggle>
+  {/if}
 {/if}
 
 <style>

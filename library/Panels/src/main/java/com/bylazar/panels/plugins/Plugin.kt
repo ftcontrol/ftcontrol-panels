@@ -6,13 +6,11 @@ import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.json.PluginInfo
 import com.bylazar.panels.json.SocketMessage
-import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.Socket.ClientSocket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
-import kotlin.jvm.java
 
 abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     var config = baseConfig

@@ -36,9 +36,62 @@
   newValue,
   isValid,
 })} -->
-<input type="text" class:invalid={!isValid} bind:value />
+<div class="container">
+  <input
+    type="text"
+    class:invalid={!isValid}
+    placeholder={startValue}
+    bind:value
+  />
+  <div class="text">
+    <div class="bg"></div>
+    <span class="base">int</span>
+    <span class="shown">int</span>
+  </div>
+</div>
 
 <style>
+  div.container {
+    position: relative;
+    border: 1px solid currentColor;
+    border-radius: 0.25rem;
+  }
+
+  input {
+    all: unset;
+    border: none;
+    padding: 0.25em;
+    position: relative;
+    color: inherit;
+    background-color: transparent;
+  }
+  .text {
+    text-transform: uppercase;
+    position: absolute;
+    top: -55%;
+    left: 0.5rem;
+    color: inherit;
+  }
+  .bg {
+    background-color: var(--bgMedium);
+    position: absolute;
+    width: 100%;
+    top: 60%;
+    height: 15%;
+    left: 0;
+  }
+  span {
+    padding-inline: 0.15rem;
+  }
+  .base {
+    opacity: 0;
+  }
+  .shown {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
   input.invalid {
     opacity: 0.5;
   }
