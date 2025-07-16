@@ -40,24 +40,38 @@
   possibleValues,
 })} -->
 
-<Overlay>
+<Overlay disablePadding={false}>
   {#snippet trigger()}
     <button>{value}</button>
   {/snippet}
   {#snippet overlay({ close }: { close: () => void })}
-    {#each possibleValues.filter((it) => it != value) as v}
-      <button
-        onclick={() => {
-          value = v
-          close()
-        }}>{v}</button
-      >
-    {/each}
+    <div>
+      {#each possibleValues.filter((it) => it != value) as v}
+        <button
+          onclick={() => {
+            value = v
+            close()
+          }}>{v}</button
+        >
+      {/each}
+    </div>
   {/snippet}
 </Overlay>
 
 <style>
-  input.invalid {
-    opacity: 0.5;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  button {
+    all: unset;
+    padding: 0.25em;
+    position: relative;
+    cursor: pointer;
+    color: inherit;
+    background-color: transparent;
+    border: 1px solid currentColor;
+    border-radius: 0.25rem;
   }
 </style>

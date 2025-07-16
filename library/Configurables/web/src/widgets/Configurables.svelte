@@ -51,7 +51,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    gap: var(--padding);
+    gap: calc(var(--padding) / 1.5);
     margin-bottom: var(--padding);
   }
 </style>

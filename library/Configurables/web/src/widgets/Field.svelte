@@ -5,6 +5,7 @@
   import FieldHelper from "./FieldHelper.svelte"
   import OptionInput from "./OptionInput.svelte"
   import StringInput from "./StringInput.svelte"
+  import UpdateIcon from "./UpdateIcon.svelte"
   import { anyValidator } from "./validators"
   import { Toggle } from "ftc-panels"
 
@@ -28,32 +29,29 @@
   }
 </script>
 
-<p style="--indent: {indent};">{JSON.stringify(item)}</p>
+<!-- <p style="--indent: {indent};">{JSON.stringify(item)}</p> -->
 {#if [Types.INT, Types.LONG, Types.DOUBLE, Types.FLOAT, Types.STRING].includes(item.type)}
   <div style="--indent: {indent};">
-    <p>{item.fieldName}</p>
-    <button
-      onclick={sendFieldUpdate}
-      disabled={!item.isValid || item.valueString == item.newValueString}
-      >Update</button
-    >
+    <p style="margin-top: 0.75rem;">{item.fieldName}</p>
     <StringInput
       bind:value={item.value}
       bind:startValue={item.valueString}
       bind:newValue={item.newValueString}
       bind:isValid={item.isValid}
+      type={item.type}
       validate={anyValidator(item.type)}
     />
+    <button
+      onclick={sendFieldUpdate}
+      disabled={!item.isValid || item.valueString == item.newValueString}
+    >
+      <UpdateIcon />
+    </button>
   </div>
 {/if}
 {#if item.possibleValues != undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
   <div style="--indent: {indent};">
     <p>{item.fieldName}</p>
-    <button
-      onclick={sendFieldUpdate}
-      disabled={!item.isValid || item.valueString == item.newValueString}
-      >Update</button
-    >
     <OptionInput
       bind:value={item.value}
       bind:startValue={item.valueString}
@@ -65,6 +63,12 @@
         return item.possibleValues.includes(value)
       }}
     />
+    <button
+      onclick={sendFieldUpdate}
+      disabled={!item.isValid || item.valueString == item.newValueString}
+    >
+      <UpdateIcon />
+    </button>
   </div>
 {/if}
 
@@ -88,12 +92,21 @@
 {/if}
 
 <style>
+  button {
+    all: unset;
+  }
+  button:disabled {
+    opacity: 0.5;
+  }
   p {
     margin: 0;
+    margin-top: 0.25rem;
   }
   div {
     margin-left: calc(var(--indent) * 16px + 24px);
-    display: flex;
+    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 32px;
   }
   .container {
     display: flex;

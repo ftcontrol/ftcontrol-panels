@@ -4,12 +4,14 @@
     newValue = $bindable(),
     value = $bindable(),
     isValid = $bindable(),
+    type = "",
     validate = (value: string) => true,
   }: {
     startValue: string
     newValue: string
     value: string
     isValid: Boolean
+    type?: string
     validate: (value: string) => boolean
   } = $props()
 
@@ -43,11 +45,13 @@
     placeholder={startValue}
     bind:value
   />
-  <div class="text">
-    <div class="bg"></div>
-    <span class="base">int</span>
-    <span class="shown">int</span>
-  </div>
+  {#if type != ""}
+    <div class="text">
+      <div class="bg"></div>
+      <span class="base">{type}</span>
+      <span class="shown">{type}</span>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -55,6 +59,8 @@
     position: relative;
     border: 1px solid currentColor;
     border-radius: 0.25rem;
+    margin-top: 0.5rem;
+    max-width: 120px;
   }
 
   input {
@@ -68,7 +74,7 @@
   .text {
     text-transform: uppercase;
     position: absolute;
-    top: -55%;
+    top: -45%;
     left: 0.5rem;
     color: inherit;
   }
@@ -76,7 +82,7 @@
     background-color: var(--bgMedium);
     position: absolute;
     width: 100%;
-    top: 60%;
+    top: 55%;
     height: 15%;
     left: 0;
   }
