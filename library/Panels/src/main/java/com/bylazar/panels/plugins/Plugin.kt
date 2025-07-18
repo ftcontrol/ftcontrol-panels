@@ -53,6 +53,8 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     abstract fun onOpModePostStop(opMode: OpMode)
     abstract fun onNewClient(client: ClientSocket)
     abstract fun onMessage(type: String, data: Any?)
+    abstract fun onEnablePanels()
+    abstract fun onDisablePanels()
 
     internal fun toInfo(): PluginInfo {
         return PluginInfo(

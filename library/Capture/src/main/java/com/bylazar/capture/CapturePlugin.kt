@@ -43,4 +43,11 @@ class CapturePlugin : Plugin<CaptureConfig>(CaptureConfig()) {
 
     override fun onOpModePostStop(opMode: OpMode) {
     }
+
+
+    override fun onEnablePanels() {
+    }
+
+    override fun onDisablePanels() {
+    }
 }

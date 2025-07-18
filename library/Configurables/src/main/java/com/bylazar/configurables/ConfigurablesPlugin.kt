@@ -201,4 +201,11 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
     override fun onOpModePostStop(opMode: OpMode) {
     }
+
+
+    override fun onEnablePanels() {
+    }
+
+    override fun onDisablePanels() {
+    }
 }

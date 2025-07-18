@@ -140,4 +140,11 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
             log("OpModes: ${opModeList.joinToString(", ")}")
         }
     }
+
+
+    override fun onEnablePanels() {
+    }
+
+    override fun onDisablePanels() {
+    }
 }

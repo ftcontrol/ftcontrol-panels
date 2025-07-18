@@ -47,4 +47,11 @@ class TelemetryPlugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
 
     override fun onOpModePostStop(opMode: OpMode) {
     }
+
+
+    override fun onEnablePanels() {
+    }
+
+    override fun onDisablePanels() {
+    }
 }

@@ -46,4 +46,5 @@ dependencies {
     implementation project(':Configurables')
     implementation project(':Themes')
     implementation project(':Capture')
+    implementation project(':LimelightProxy')
 }
