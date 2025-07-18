@@ -147,7 +147,13 @@ class Manager {
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
-      widgets: [],
+      widgets: [
+        {
+          isMoving: false,
+          pluginID: "com.bylazar.capture",
+          widgetID: "Capture",
+        },
+      ],
       x: 11,
       y: 0,
       w: 5,
