@@ -32,6 +32,7 @@ dependencies {
     api project(':Themes')
     api project(':Capture')
     api project(':LimelightProxy')
+    api project(':Field')
 }
 
 afterEvaluate {

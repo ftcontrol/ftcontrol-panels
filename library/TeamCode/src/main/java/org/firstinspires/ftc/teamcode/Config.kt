@@ -20,9 +20,13 @@ class Config : PanelsConfig() {
 //            pluginID = "com.bylazar.capture",
 //            devURL = "http://localhost:3002"
 //        ),
+//        DevPluginEntry(
+//            pluginID = "com.bylazar.limelightproxy",
+//            devURL = "http://localhost:3003"
+//        ),
         DevPluginEntry(
-            pluginID = "com.bylazar.limelightproxy",
-            devURL = "http://localhost:3003"
+            pluginID = "com.bylazar.field",
+            devURL = "http://localhost:3004"
         )
     )
 }

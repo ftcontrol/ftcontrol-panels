@@ -8,5 +8,6 @@ include ':Configurables'
 include ':Themes'
 include ':Capture'
 include ':LimelightProxy'
+include ':Field'
 include ':Panels'
 
