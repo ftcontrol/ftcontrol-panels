@@ -39,12 +39,5 @@ repositories {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation project(':Panels')
-    implementation project(':OpModeControl')
-    implementation project(':ExamplePlugin')
-    implementation project(':Telemetry')
-    implementation project(':Configurables')
-    implementation project(':Themes')
-    implementation project(':Capture')
-    implementation project(':LimelightProxy')
+    implementation project(':Combined')
 }

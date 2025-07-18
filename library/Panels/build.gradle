@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.0'
 }
 
 android {
@@ -34,20 +33,20 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.15.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'com.google.android.material:material:1.12.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
-    implementation 'org.firstinspires.ftc:Inspection:10.2.0'
-    implementation 'org.firstinspires.ftc:Blocks:10.2.0'
-    implementation 'org.firstinspires.ftc:RobotCore:10.2.0'
-    implementation 'org.firstinspires.ftc:RobotServer:10.2.0'
-    implementation 'org.firstinspires.ftc:OnBotJava:10.2.0'
-    implementation 'org.firstinspires.ftc:Hardware:10.2.0'
-    implementation 'org.firstinspires.ftc:FtcCommon:10.2.0'
-    implementation 'org.firstinspires.ftc:Vision:10.2.0'
+    compileOnly 'org.firstinspires.ftc:Inspection:10.3.0'
+    compileOnly 'org.firstinspires.ftc:Blocks:10.3.0'
+    compileOnly 'org.firstinspires.ftc:RobotCore:10.3.0'
+    compileOnly 'org.firstinspires.ftc:RobotServer:10.3.0'
+    compileOnly 'org.firstinspires.ftc:OnBotJava:10.3.0'
+    compileOnly 'org.firstinspires.ftc:Hardware:10.3.0'
+    compileOnly 'org.firstinspires.ftc:FtcCommon:10.3.0'
+    compileOnly 'org.firstinspires.ftc:Vision:10.3.0'
 
     implementation("org.nanohttpd:nanohttpd-websocket:2.3.1") {
         exclude module: "nanohttpd"
@@ -92,52 +91,35 @@ tasks.register('copySvelteToAssets', Copy) {
 
 preBuild.dependsOn(copySvelteToAssets)
 
-tasks.register('androidSourcesJar', Jar) {
-    archiveClassifier = "sources"
-    from android.sourceSets.main.java.srcDirs
-}
-publishing {
-    repositories {
-        maven {
-            name = "panels"
-            url = "https://mymaven.bylazar.com/releases"
-            credentials(PasswordCredentials)
-            authentication {
-                basic(BasicAuthentication)
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.bylazar'
+                artifactId = 'panels'
+                version = '0.0.2'
+
+                pom {
+                    description = "All in one toolbox dashboard for FTC."
+                    name = "Panels"
+                    url = "https://panels.bylazar.com"
+                    developers {
+                        developer {
+                            id = "lazar"
+                            name = "Lazar Dragos George"
+                            email = "hi@bylazar.com"
+                        }
+                    }
+                }
             }
         }
-    }
-    publications {
-        maven(MavenPublication) {
-            groupId = "com.bylazar"
-            artifactId = "panels"
 
-            version = "0.6.8-dev2"
-
-            pom {
-                description = "All in one toolbox for FTC."
-                name = "FTControl"
-                url = "https://ftcontrol.bylazar.com"
-
-                licenses {
-                    license {
-                        name = "The MIT License"
-                        url = "https://opensource.org/licenses/MIT"
-                        distribution = "repo"
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = "lazar"
-                        name = "Lazar Dragos George"
-                        email = "hi@bylazar.com"
-                    }
-                }
-            }
-
-            afterEvaluate {
-                from components.release
+        repositories {
+            maven {
+                name = "localDevRepo"
+                url = uri("file://C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
             }
         }
     }
