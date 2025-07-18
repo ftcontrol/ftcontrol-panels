@@ -45,4 +45,5 @@ dependencies {
     implementation project(':Telemetry')
     implementation project(':Configurables')
     implementation project(':Themes')
+    implementation project(':Capture')
 }

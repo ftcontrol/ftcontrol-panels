@@ -1,5 +1,12 @@
 <script lang="ts">
   import { Button } from "ftc-panels"
+  import type Manager from "../manager"
+
+  let {
+    manager,
+  }: {
+    manager: Manager
+  } = $props()
 
   function increment(n: number) {
     return n + 1

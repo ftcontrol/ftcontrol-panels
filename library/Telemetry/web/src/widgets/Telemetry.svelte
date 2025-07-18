@@ -13,6 +13,10 @@
 
   onMount(() => {
     manager.state.onChange(manager.PACKETS_KEY, (newValue) => {
+      if (newValue == null) {
+        lines = []
+        return
+      }
       lines = newValue
     })
   })
