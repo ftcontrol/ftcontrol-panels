@@ -33,8 +33,11 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
     val allFieldsMap: Map<String, List<GenericTypeJson>>
         get() = allFields.groupBy { it.className }.toSortedMap()
 
+    var initialAFieldsMap: Map<String, List<GenericTypeJson>> = mapOf()
+
     override fun onNewClient(client: Socket.ClientSocket) {
-        sendClient(client, "initialConfigurables", allFieldsMap)
+        sendClient(client, "initialConfigurables", initialAFieldsMap)
+        sendClient(client, "configurables", allFieldsMap)
     }
 
     override fun onMessage(type: String, data: Any?) {
@@ -83,7 +86,7 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
         allFields.addAll(newFields)
 
-        send("initialConfigurables", allFieldsMap)
+        send("configurables", allFieldsMap)
     }
 
     override fun onRegister(
@@ -137,7 +140,10 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
 
         allFields = jvmFields.map { it.toJsonType }.toMutableList()
 
-        send("initialConfigurables", allFieldsMap)
+        initialAFieldsMap = allFieldsMap
+
+        send("initialConfigurables", initialAFieldsMap)
+        send("configurables", allFieldsMap)
     }
 
     private fun MutableList<GenericField>.addFieldsFromClass(

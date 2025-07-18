@@ -3,6 +3,7 @@ package com.bylazar.panels.server
 import android.content.Context
 import android.content.res.AssetManager
 import com.bylazar.panels.Logger
+import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginData
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
@@ -97,7 +98,8 @@ class StaticServer(
                 "pluginsDetails",
                 PluginData(
                     PluginsManager.plugins.values.map { it.toInfo() },
-                    PluginsManager.skippedPlugins.values.map { it }
+                    PluginsManager.skippedPlugins.values.map { it },
+                    Panels.config.devPlugins
                 )
             ).toJson()
 

@@ -1,23 +1,19 @@
 <script lang="ts">
-  import Manager from "../manager"
-  import type { ChangeJson, ExtendedType, GenericTypeJson } from "../types"
-  import Field from "./Field.svelte"
   import { Button, Toggle } from "ftc-panels"
 
   import { onMount, setContext } from "svelte"
-  import Arrow from "./Arrow.svelte"
+  import { ExtendedType, GenericTypeJson } from "../../types"
+  import Manager from "../../manager"
+  import Arrow from "../Arrow.svelte"
+  import Field from "./Field.svelte"
 
-  let {
-    manager,
-  }: {
-    manager: Manager
-  } = $props()
+  let { manager }: { manager: Manager } = $props()
 
   setContext("manager", manager)
 
   onMount(() => {
     manager.state.onChange(
-      manager.INITIAL_CONFIGURABLES_KEY,
+      manager.CONFIGURABLES_KEY,
       (data: Record<string, GenericTypeJson[]>) => {
         const newConfigurables: Record<string, ExtendedType[]> = {}
 
@@ -28,12 +24,22 @@
           newConfigurables[key] = incomingArray.map((incomingItem, index) => {
             const existingItem = existingArray[index]
 
-            return {
-              ...incomingItem,
-              isValid: existingItem?.isValid ?? true,
-              valueString: incomingItem.value,
-              newValueString: incomingItem.value,
+            const extendItem = (
+              item: GenericTypeJson,
+              existing?: ExtendedType
+            ): ExtendedType => {
+              return {
+                ...item,
+                isValid: existing?.isValid ?? true,
+                valueString: item.value,
+                newValueString: item.value,
+                customValues: item.customValues?.map((subItem, subIndex) =>
+                  extendItem(subItem, existing?.customValues?.[subIndex])
+                ),
+              }
             }
+
+            return extendItem(incomingItem, existingItem)
           })
         }
 
@@ -42,22 +48,7 @@
     )
   })
 
-  let configurables: Record<string, ExtendedType[]> = $state(
-    {}
-    // manager.state.get(manager.INITIAL_CONFIGURABLES_KEY)
-    // .map((it: GenericTypeJson) => {
-    //   return {
-    //     ...it,
-    //     isValid: true,
-    //     valueString: it.value,
-    //     newValueString: it.value,
-    //   }
-    // })
-  )
-
-  // $effect(() => {
-  //   manager.state.update(manager.INITIAL_CONFIGURABLES_KEY, configurables)
-  // })
+  let configurables: Record<string, ExtendedType[]> = $state({})
 
   let changes = $derived.by(() => {
     var result: ChangeJson[] = []

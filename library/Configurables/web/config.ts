@@ -12,7 +12,11 @@ export const config: PluginConfig = {
   widgets: [
     {
       name: "Configurables",
-      filepath: "src/widgets/Configurables.svelte",
+      filepath: "src/widgets/configurables/Configurables.svelte",
+    },
+    {
+      name: "ChangedConfigurables",
+      filepath: "src/widgets/changed/ChangedConfigurables.svelte",
     },
   ],
   manager: {

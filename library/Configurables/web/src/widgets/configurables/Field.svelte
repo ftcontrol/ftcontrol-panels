@@ -1,13 +1,13 @@
 <script lang="ts">
   import type Manager from "../manager"
-  import { Types, type ExtendedType, type GenericTypeJson } from "../types"
-  import Arrow from "./Arrow.svelte"
+  import { Types, type ExtendedType, type GenericTypeJson } from "../../types"
   import FieldHelper from "./FieldHelper.svelte"
   import OptionInput from "./OptionInput.svelte"
   import StringInput from "./StringInput.svelte"
   import UpdateIcon from "./UpdateIcon.svelte"
-  import { anyValidator } from "./validators"
   import { Toggle } from "ftc-panels"
+  import { anyValidator } from "../validators"
+  import Arrow from "../Arrow.svelte"
 
   import { getContext } from "svelte"
   const manager = getContext("manager") as Manager
@@ -22,9 +22,6 @@
         newValueString: item.newValueString,
       },
     ])
-
-    // item.valueString = item.newValueString
-    // item.value = item.newValueString
   }
 </script>
 

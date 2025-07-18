@@ -3,7 +3,6 @@ package com.bylazar.panels.server
 import com.bylazar.panels.Logger
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
-import com.bylazar.panels.server.tasks.DevModeTask
 import com.bylazar.panels.server.tasks.TimeTask
 import fi.iki.elonen.NanoWSD
 import java.io.IOException
@@ -36,7 +35,6 @@ class Socket(
     inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
         val tasks: List<SocketTask> = listOf(
             TimeTask(),
-            DevModeTask()
         )
 
         internal fun sendString(data: String) {

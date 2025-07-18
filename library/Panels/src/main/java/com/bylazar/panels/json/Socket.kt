@@ -1,5 +1,6 @@
 package com.bylazar.panels.json
 
+import com.bylazar.panels.DevPluginEntry
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -32,7 +33,8 @@ data class TimeData(val time: String)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginData(
     var plugins: List<PluginInfo>,
-    var skippedPlugins: List<PluginDetails>
+    var skippedPlugins: List<PluginDetails>,
+    var devServers:  List<DevPluginEntry>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)

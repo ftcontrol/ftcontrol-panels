@@ -37,3 +37,9 @@ export type ChangeJson = {
   id: string
   newValueString: string
 }
+
+export type FieldWithValues = Omit<GenericTypeJson, "customValues"> & {
+  initialValue: any
+  currentValue: any
+  customValues?: FieldWithValues[]
+}

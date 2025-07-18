@@ -51,7 +51,7 @@ export class GlobalState {
   interval: ReturnType<typeof setInterval> | null = null
   reloadIndexes: Record<string, number> = $state({})
 
-  private async updateDevPlugins() {
+  private async updateDevPlugins(reloadManager = false) {
     for (const dev of this.devServers) {
       for (const plugin of this.plugins) {
         if (dev.pluginID == plugin.details.id) {
@@ -75,20 +75,22 @@ export class GlobalState {
             )
 
             if (JSON.stringify(details) != JSON.stringify(plugin.details)) {
-              const { default: Manager } = await importFromSource(
-                details.manager.textContent || ""
-              )
+              if (reloadManager) {
+                const { default: Manager } = await importFromSource(
+                  details.manager.textContent || ""
+                )
 
-              const oldStateData =
-                this.socket.pluginManagers[details.id].state.data
+                const oldStateData =
+                  this.socket.pluginManagers[details.id].state.data
 
-              this.socket.pluginManagers[details.id] = new Manager(
-                new PluginSocket(details.id, this.socket)
-              )
+                this.socket.pluginManagers[details.id] = new Manager(
+                  new PluginSocket(details.id, this.socket)
+                )
 
-              this.socket.pluginManagers[details.id].state.data = oldStateData
+                this.socket.pluginManagers[details.id].state.data = oldStateData
 
-              this.socket.pluginManagers[details.id]?.onInit()
+                this.socket.pluginManagers[details.id]?.onInit()
+              }
 
               plugin.details = details
 
@@ -117,16 +119,19 @@ export class GlobalState {
 
       this.skippedPlugins = JSON.parse(data).data.skippedPlugins
 
+      this.devServers = JSON.parse(data).data.devServers
+
+      if (this.devServers.length) {
+        this.updateDevPlugins(false)
+      }
+
       await this.socket.init(this.plugins)
 
-      this.socket.addMessageHandler("core", "devServers", (data) => {
-        this.devServers = data
-        if (this.devServers.length) {
-          this.interval = setInterval(() => {
-            this.updateDevPlugins()
-          }, 1000)
-        }
-      })
+      if (this.devServers.length) {
+        this.interval = setInterval(() => {
+          this.updateDevPlugins(true)
+        }, 1000)
+      }
 
       this.isConnected = true
     } catch (e) {
