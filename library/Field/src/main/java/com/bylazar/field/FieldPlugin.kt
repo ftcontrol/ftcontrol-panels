@@ -2,6 +2,7 @@ package com.bylazar.field
 
 import android.content.Context
 import com.bylazar.panels.Panels
+import com.bylazar.panels.core.OpModeHandler.manager
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -16,6 +17,8 @@ open class FieldPluginConfig : BasePluginConfig() {
 class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     override var id = "com.bylazar.exampleplugin"
 
+    lateinit var manager: FieldManager
+
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 
@@ -27,7 +30,7 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-
+        manager = FieldManager(config) { canvas -> send("canvasPacket", canvas) }
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
@@ -37,6 +40,7 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        manager.update()
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
