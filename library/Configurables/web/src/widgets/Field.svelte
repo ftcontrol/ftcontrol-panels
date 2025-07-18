@@ -1,6 +1,6 @@
 <script lang="ts">
   import type Manager from "../manager"
-  import { Types, type GenericTypeJson } from "../types"
+  import { Types, type ExtendedType, type GenericTypeJson } from "../types"
   import Arrow from "./Arrow.svelte"
   import FieldHelper from "./FieldHelper.svelte"
   import OptionInput from "./OptionInput.svelte"
@@ -12,8 +12,7 @@
   import { getContext } from "svelte"
   const manager = getContext("manager") as Manager
 
-  let { item, indent = 0 }: { item: GenericTypeJson; indent?: number } =
-    $props()
+  let { item, indent = 0 }: { item: ExtendedType; indent?: number } = $props()
 
   function sendFieldUpdate() {
     if (!item.isValid) return
@@ -82,9 +81,11 @@
       {/snippet}
       {#snippet content({ close }: { close: () => void })}
         <div class="container">
-          {#each item.customValues || [] as value}
-            <FieldHelper item={value} indent={indent + 1} />
-          {/each}
+          {#if item.customValues}
+            {#each item.customValues as value}
+              <FieldHelper item={value} indent={indent + 1} />
+            {/each}
+          {/if}
         </div>
       {/snippet}
     </Toggle>

@@ -73,8 +73,7 @@ class MyField(
                 className = className,
                 fieldName = name,
                 type = myType,
-                valueString = value,
-                newValueString = value,
+                value = value,
                 possibleValues = possibleValues
             )
         }

@@ -7,10 +7,7 @@ class GenericTypeJson(
     var className: String = "",
     var fieldName: String,
     var type: BaseTypes,
-    var valueString: String,
-    var newValueString: String,
     var value: String = "",
-    var isValid: Boolean = true,
     var possibleValues: List<String>? = null,
     var customValues: List<GenericTypeJson>? = null,
 )

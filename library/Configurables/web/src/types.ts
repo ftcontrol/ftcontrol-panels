@@ -16,19 +16,21 @@ export enum Types {
   GENERIC_NO_ANNOTATION = "GENERIC_NO_ANNOTATION",
 }
 
-export interface GenericTypeJson {
+export type GenericTypeJson = {
   className: string
   fieldName: string
   type: Types
-  valueString: string
   id: string
-  newValueString: string
-  isValid: boolean
   value: any
   isShown: boolean
   possibleValues?: string[]
   customValues?: GenericTypeJson[]
-  isOpened?: boolean
+}
+
+export type ExtendedType = GenericTypeJson & {
+  isValid: boolean
+  valueString: string
+  newValueString: string
 }
 
 export type ChangeJson = {

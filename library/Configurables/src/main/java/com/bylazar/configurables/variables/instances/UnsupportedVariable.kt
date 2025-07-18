@@ -14,7 +14,6 @@ class UnsupportedVariable(
             className = className,
             fieldName = name,
             type = BaseTypes.UNSUPPORTED,
-            valueString = "",
-            newValueString = "",
+            value = "",
         )
 }

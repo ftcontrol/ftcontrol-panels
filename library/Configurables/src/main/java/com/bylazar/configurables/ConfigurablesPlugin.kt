@@ -47,15 +47,13 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
                 emptyList()
             }
 
-//            var toSendChanges: MutableList<ChangeJson> = mutableListOf()
-
             changes.forEach {
                 val generalRef = GlobalConfigurables.fieldsMap[it.id] ?: return
                 log("Field id: ${it.id}, New value: ${it.newValueString}")
                 generalRef.setValue(it.newValueString)
-                allFields.find { field -> field.id == it.id }?.value = it.newValueString
+                it.newValueString = generalRef.getValue().toString()
 
-//                toSendChanges.add(ChangeJson(it.id, it.newValueString))
+                allFields = jvmFields.map { it.toJsonType }.toMutableList()
             }
 
             send("newConfigurables", changes)

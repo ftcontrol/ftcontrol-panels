@@ -14,7 +14,6 @@ class JSONErrorVariable(
             className = className,
             fieldName = name,
             type = BaseTypes.JSON_ERROR,
-            valueString = "",
-            newValueString = "",
+            value = "",
         )
 }

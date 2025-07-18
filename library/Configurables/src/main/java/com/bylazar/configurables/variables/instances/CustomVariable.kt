@@ -26,8 +26,7 @@ class CustomVariable(
                 className = className,
                 fieldName = fieldName,
                 type = type,
-                valueString = "",
-                newValueString = "",
+                value = "",
                 customValues = valuesList
             )
         }

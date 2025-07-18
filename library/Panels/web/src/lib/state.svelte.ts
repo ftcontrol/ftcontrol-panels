@@ -79,9 +79,14 @@ export class GlobalState {
                 details.manager.textContent || ""
               )
 
+              const oldStateData =
+                this.socket.pluginManagers[details.id].state.data
+
               this.socket.pluginManagers[details.id] = new Manager(
                 new PluginSocket(details.id, this.socket)
               )
+
+              this.socket.pluginManagers[details.id].state.data = oldStateData
 
               this.socket.pluginManagers[details.id]?.onInit()
 

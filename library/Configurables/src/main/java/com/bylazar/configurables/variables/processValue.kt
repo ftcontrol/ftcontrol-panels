@@ -15,7 +15,7 @@ import java.lang.reflect.Array
 import kotlin.collections.get
 import kotlin.jvm.java
 
-const val MAX_RECURSION_DEPTH = 32
+const val MAX_RECURSION_DEPTH = 64
 
 class RecursionDetectedException(val fieldName: String) : RuntimeException()
 

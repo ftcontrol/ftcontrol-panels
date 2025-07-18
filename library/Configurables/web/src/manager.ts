@@ -19,8 +19,6 @@ export default class Manager extends PluginManager {
               for (const item of itemList) {
                 if (item.id === change.id) {
                   console.log("Got change", item)
-                  item.valueString = change.newValueString
-                  item.newValueString = change.newValueString
                   item.value = change.newValueString
                 }
               }

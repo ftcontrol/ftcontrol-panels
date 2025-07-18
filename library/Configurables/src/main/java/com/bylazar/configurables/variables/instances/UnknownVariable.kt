@@ -14,7 +14,6 @@ class UnknownVariable(
             className = className,
             fieldName = name,
             type = BaseTypes.UNKNOWN,
-            valueString = "",
-            newValueString = "",
+            value = "",
         )
 }

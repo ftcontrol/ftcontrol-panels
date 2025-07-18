@@ -17,13 +17,6 @@
 
   import { onMount } from "svelte"
 
-  onMount(() => {
-    if (value != "") return
-    value = startValue
-    newValue = startValue
-    isValid = validate(startValue)
-  })
-
   $effect(() => {
     isValid = validate(value)
     if (value == newValue) return

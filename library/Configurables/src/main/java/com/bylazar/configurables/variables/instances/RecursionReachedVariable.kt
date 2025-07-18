@@ -14,7 +14,6 @@ class RecursionReachedVariable(
             className = className,
             fieldName = name,
             type = BaseTypes.RECURSION_REACHED,
-            valueString = "",
-            newValueString = "",
+            value = "",
         )
 }
