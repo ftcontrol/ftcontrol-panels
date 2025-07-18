@@ -102,9 +102,12 @@
       const initialMap = new Map(
         (initialField?.customValues ?? []).map((f) => [f.id, f])
       )
-      customValues = field.customValues!.map((sub) =>
-        convertToFieldWithValues(sub, initialMap.get(sub.id))
-      )
+      customValues = field
+        .customValues!.filter((sub) => {
+          const initialSub = initialMap.get(sub.id)
+          return isChangedField(sub, initialSub)
+        })
+        .map((sub) => convertToFieldWithValues(sub, initialMap.get(sub.id)))
     }
 
     return {

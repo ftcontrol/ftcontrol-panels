@@ -120,6 +120,11 @@ class Manager {
           pluginID: "com.bylazar.configurables",
           widgetID: "Configurables",
         },
+        {
+          isMoving: false,
+          pluginID: "com.bylazar.configurables",
+          widgetID: "ChangedConfigurables",
+        },
       ],
       x: 5,
       y: 0,
@@ -142,13 +147,7 @@ class Manager {
       selected: 0,
       isMoving: false,
       id: Math.random().toString(),
-      widgets: [
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.configurables",
-          widgetID: "ChangedConfigurables",
-        },
-      ],
+      widgets: [],
       x: 11,
       y: 0,
       w: 5,
