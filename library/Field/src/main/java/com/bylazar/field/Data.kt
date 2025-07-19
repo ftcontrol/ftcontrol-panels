@@ -1,7 +1,8 @@
 package com.bylazar.field
 
-import org.opencv.imgproc.Imgproc.line
+import java.util.UUID
 
+sealed interface Drawable
 
 enum class CanvasRotation {
     DEG_0,
@@ -25,7 +26,7 @@ data class Circle(
     val y: Double,
     val r: Double,
     val style: Style
-)
+) : Drawable
 
 data class Rectangle(
     val x: Double,
@@ -33,7 +34,7 @@ data class Rectangle(
     val w: Double,
     val h: Double,
     val style: Style
-)
+) : Drawable
 
 data class Line(
     val x1: Double,
@@ -41,20 +42,25 @@ data class Line(
     val x2: Double,
     val y2: Double,
     val style: Style
-)
+) : Drawable
+
+data class Image(
+    val x: Double,
+    val y: Double,
+    val w: Double,
+    val h: Double,
+    val id: UUID
+) : Drawable
 
 data class Canvas(
     var offsetX: Double = 0.0,
     var offsetY: Double = 0.0,
     var rotation: CanvasRotation = CanvasRotation.DEG_0,
-    var circles: MutableList<Circle> = mutableListOf(),
-    var rectangles: MutableList<Rectangle> = mutableListOf(),
-    var lines: MutableList<Line> = mutableListOf(),
+    var items: MutableList<Drawable> = mutableListOf(),
+    var bgID: UUID? = null
 ) {
 
     fun reset() {
-        circles = mutableListOf()
-        rectangles = mutableListOf()
-        lines = mutableListOf()
+        items.clear()
     }
 }

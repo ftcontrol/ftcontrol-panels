@@ -1,10 +1,24 @@
 package com.bylazar.field
 
+import android.R.attr.value
+import java.util.UUID
+
 class FieldManager(
     val config: FieldPluginConfig,
-    private val sendCanvas: (canvas: Canvas) -> Unit
+    private val sendCanvas: (canvas: Canvas) -> Unit,
+    private val sendImages: (images: MutableMap<UUID, String>) -> Unit
 ) {
+    val updateInterval = config.canvasUpdateInterval
+    var lastUpdate = 0L
+    val timeSinceLastUpdate: Long
+        get() = System.currentTimeMillis() - lastUpdate
+    val shouldUpdateCanvas: Boolean
+        get() = timeSinceLastUpdate >= updateInterval
+
+
     var canvas = Canvas()
+    var lastCanvas = Canvas()
+    var images: MutableMap<UUID, String> = mutableMapOf()
 
     var cursorX = 0.0
     var cursorY = 0.0
@@ -60,7 +74,7 @@ class FieldManager(
     }
 
     fun circle(r: Double) {
-        canvas.circles.add(
+        canvas.items.add(
             Circle(
                 cursorX,
                 cursorY,
@@ -71,7 +85,7 @@ class FieldManager(
     }
 
     fun line(x2: Double, y2: Double) {
-        canvas.lines.add(
+        canvas.items.add(
             Line(
                 cursorX,
                 cursorY,
@@ -83,7 +97,7 @@ class FieldManager(
     }
 
     fun rect(w: Double, h: Double) {
-        canvas.rectangles.add(
+        canvas.items.add(
             Rectangle(
                 cursorX,
                 cursorY,
@@ -93,8 +107,48 @@ class FieldManager(
         )
     }
 
+    fun registerImage(base64: String): UUID {
+        val existingEntry = images.entries.find { it.value == base64 }
+        if (existingEntry != null) return existingEntry.key
+
+        val id = UUID.randomUUID()
+        images[id] = base64
+
+        sendImages(images)
+
+        return id
+    }
+
+    fun img(w: Double, h: Double, id: UUID) {
+        canvas.items.add(
+            Image(
+                cursorX,
+                cursorY,
+                w, h,
+                id
+            )
+        )
+    }
+
+    fun setBackground(base64: String){
+        val id = registerImage(base64)
+        setBackground(id)
+    }
+
+    fun setBackground(id: UUID){
+        canvas.bgID = id
+    }
+
+    fun setBackground(image: ImagePreset){
+        setBackground(image.get())
+    }
+
     fun update() {
-        sendCanvas(canvas)
+        if (shouldUpdateCanvas) {
+            sendCanvas(canvas)
+            lastUpdate = System.currentTimeMillis()
+        }
+        lastCanvas = canvas
         canvas.reset()
         cursorX = 0.0
         cursorY = 0.0

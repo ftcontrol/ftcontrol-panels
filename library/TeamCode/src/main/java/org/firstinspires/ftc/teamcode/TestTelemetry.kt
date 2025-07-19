@@ -16,6 +16,8 @@ class TestTelemetry : OpMode() {
     val field = PanelsField.getField()
 
     override fun init() {
+        field.setBackground(PanelsField.images.INTO_THE_DEEP.DARK)
+
         telemetry.debug("Init was ran")
         telemetry.update()
 

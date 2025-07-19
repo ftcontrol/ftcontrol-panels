@@ -2,18 +2,18 @@ export type Packet = {
   offsetX: number
   offsetY: number
   rotation: "DEG_0" | "DEG_90" | "DEG_180" | "DEG_270"
-  circles: Circle[]
-  rectangles: Rectangle[]
-  lines: Line[]
+  items: Drawable[]
+  bgID: string | null
 }
+
+export type Drawable = Circle | Rectangle | Line | Image
 
 export const emptyPacket: Packet = {
   offsetX: 0,
   offsetY: 0,
   rotation: "DEG_0",
-  circles: [],
-  rectangles: [],
-  lines: [],
+  items: [],
+  bgID: null,
 }
 
 export type Circle = {
@@ -37,6 +37,14 @@ export type Line = {
   x2: number
   y2: number
   style: Style
+}
+
+export type Image = {
+  x: number
+  y: number
+  w: number
+  h: number
+  id: string
 }
 
 export type Style = {

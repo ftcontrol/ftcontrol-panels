@@ -21,4 +21,6 @@ object PanelsField {
     val BLACK = "black"
     val RED = "red"
     val BLUE = "blue"
+
+    val images = FieldImages()
 }

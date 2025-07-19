@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class FieldPluginConfig : BasePluginConfig() {
+    open var canvasUpdateInterval = 100L
 }
 
 class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
@@ -19,6 +20,8 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     lateinit var manager: FieldManager
 
     override fun onNewClient(client: Socket.ClientSocket) {
+        sendClient(client, "canvasPacket", manager.lastCanvas)
+        sendClient(client, "canvasImages", manager.images)
     }
 
     override fun onMessage(type: String, data: Any?) {
@@ -29,7 +32,11 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-        manager = FieldManager(config) { send("canvasPacket", manager.canvas) }
+        manager = FieldManager(
+            config,
+            { send("canvasPacket", manager.canvas) },
+            { send("canvasImages", manager.images) }
+        )
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
