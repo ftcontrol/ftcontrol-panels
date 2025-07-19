@@ -19,7 +19,13 @@
       Plugins
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      <a href="/plugins" onclick={close}>Details</a>
+      <a
+        href="/plugins"
+        onclick={() => {
+          goto("/plugins")
+          close()
+        }}>Details</a
+      >
       <div class="plugins-overlay">
         {#each global.plugins as plugin}
           <button

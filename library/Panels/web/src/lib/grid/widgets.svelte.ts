@@ -153,6 +153,11 @@ class Manager {
           pluginID: "com.bylazar.capture",
           widgetID: "Capture",
         },
+        {
+          isMoving: false,
+          pluginID: "com.bylazar.field",
+          widgetID: "Field",
+        },
       ],
       x: 11,
       y: 0,

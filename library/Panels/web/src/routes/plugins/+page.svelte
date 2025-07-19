@@ -4,7 +4,6 @@
 </script>
 
 <h1>Plugins</h1>
-{JSON.stringify(global.devServers.map((it) => it.pluginID))}
 <div>
   {#each global.plugins as plugin}
     <Section>
@@ -19,6 +18,20 @@
       <p>{plugin.details.id}</p>
       <p>{plugin.details.author}</p>
       <a href="/plugins/{plugin.details.id}">Details</a>
+    </Section>
+  {/each}
+
+  {#each global.skippedPlugins as plugin}
+    <Section>
+      <h2>
+        {plugin.name}
+        {#if global.devServers.map((it) => it.pluginID).includes(plugin.id)}
+          DEV
+        {/if}
+        SKIPPED
+      </h2>
+      <p>{plugin.id}</p>
+      <p>{plugin.author}</p>
     </Section>
   {/each}
 </div>

@@ -11,11 +11,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class FieldPluginConfig : BasePluginConfig() {
-    open var test = "test"
 }
 
 class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
-    override var id = "com.bylazar.exampleplugin"
+    override var id = "com.bylazar.field"
 
     lateinit var manager: FieldManager
 
@@ -30,7 +29,7 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-        manager = FieldManager(config) { canvas -> send("canvasPacket", canvas) }
+        manager = FieldManager(config) { send("canvasPacket", manager.canvas) }
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
