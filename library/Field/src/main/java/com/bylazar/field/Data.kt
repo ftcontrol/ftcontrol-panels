@@ -2,7 +2,16 @@ package com.bylazar.field
 
 import java.util.UUID
 
-sealed interface Drawable
+enum class DrawablesTypes{
+    CIRCLE,
+    RECTANGLE,
+    LINE,
+    IMAGE
+}
+
+sealed class Drawable(
+    var type: DrawablesTypes
+)
 
 enum class CanvasRotation {
     DEG_0,
@@ -26,7 +35,7 @@ data class Circle(
     val y: Double,
     val r: Double,
     val style: Style
-) : Drawable
+) : Drawable(DrawablesTypes.CIRCLE)
 
 data class Rectangle(
     val x: Double,
@@ -34,7 +43,7 @@ data class Rectangle(
     val w: Double,
     val h: Double,
     val style: Style
-) : Drawable
+) : Drawable(DrawablesTypes.RECTANGLE)
 
 data class Line(
     val x1: Double,
@@ -42,7 +51,7 @@ data class Line(
     val x2: Double,
     val y2: Double,
     val style: Style
-) : Drawable
+) : Drawable(DrawablesTypes.LINE)
 
 data class Image(
     val x: Double,
@@ -50,7 +59,7 @@ data class Image(
     val w: Double,
     val h: Double,
     val id: UUID
-) : Drawable
+) : Drawable(DrawablesTypes.IMAGE)
 
 data class Canvas(
     var offsetX: Double = 0.0,

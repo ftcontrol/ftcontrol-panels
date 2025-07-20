@@ -154,7 +154,7 @@ object PluginsManager {
         isRegistered = true
 
         plugins.values.forEach {
-            it.onRegister(Panels, context)
+            it.registerInternal(Panels, context)
             it.log("Successfully registered plugin")
         }
     }

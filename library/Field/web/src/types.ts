@@ -1,7 +1,21 @@
+export enum DrawablesTypes {
+  CIRCLE = "CIRCLE",
+  RECTANGLE = "RECTANGLE",
+  LINE = "LINE",
+  IMAGE = "IMAGE",
+}
+
+export enum CanvasRotation {
+  DEG_0 = "DEG_0",
+  DEG_90 = "DEG_90",
+  DEG_180 = "DEG_180",
+  DEG_270 = "DEG_270",
+}
+
 export type Packet = {
   offsetX: number
   offsetY: number
-  rotation: "DEG_0" | "DEG_90" | "DEG_180" | "DEG_270"
+  rotation: CanvasRotation
   items: Drawable[]
   bgID: string | null
 }
@@ -11,12 +25,13 @@ export type Drawable = Circle | Rectangle | Line | Image
 export const emptyPacket: Packet = {
   offsetX: 0,
   offsetY: 0,
-  rotation: "DEG_0",
+  rotation: CanvasRotation.DEG_0,
   items: [],
   bgID: null,
 }
 
 export type Circle = {
+  type: DrawablesTypes.CIRCLE
   x: number
   y: number
   r: number
@@ -24,6 +39,7 @@ export type Circle = {
 }
 
 export type Rectangle = {
+  type: DrawablesTypes.RECTANGLE
   x: number
   y: number
   w: number
@@ -32,6 +48,7 @@ export type Rectangle = {
 }
 
 export type Line = {
+  type: DrawablesTypes.LINE
   x1: number
   y1: number
   x2: number
@@ -40,6 +57,7 @@ export type Line = {
 }
 
 export type Image = {
+  type: DrawablesTypes.IMAGE
   x: number
   y: number
   w: number

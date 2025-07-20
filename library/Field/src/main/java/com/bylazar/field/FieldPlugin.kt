@@ -9,9 +9,11 @@ import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
+import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 
 open class FieldPluginConfig : BasePluginConfig() {
     open var canvasUpdateInterval = 100L
+    open var defaultBg: ImagePreset = PanelsField.images.INTO_THE_DEEP.DARK
 }
 
 class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
@@ -34,18 +36,23 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     ) {
         manager = FieldManager(
             config,
-            { send("canvasPacket", manager.canvas) },
-            { send("canvasImages", manager.images) }
+            { canvas -> send("canvasPacket", canvas) },
+            { images -> send("canvasImages", images) }
         )
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
     }
 
+    lateinit var opModeManager: OpModeManagerImpl
+
     override fun onOpModeManager(o: OpModeManagerImpl) {
+        this.opModeManager = o
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        if (opModeManager.activeOpModeName == "\$Stop\$Robot\$") return
+        manager.canvas.bgID = manager.defaultBgID
         manager.update()
     }
 

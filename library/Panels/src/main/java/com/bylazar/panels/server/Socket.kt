@@ -58,7 +58,7 @@ class Socket(
 
             clients.add(this)
 
-            PluginsManager.plugins.values.forEach { it.onNewClient(this) }
+            PluginsManager.plugins.values.forEach { it.newClientInternal(this) }
 
             if (ping == null) {
                 ping = object : TimerTask() {

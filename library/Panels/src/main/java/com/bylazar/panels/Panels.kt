@@ -83,6 +83,7 @@ object Panels : Notifications {
             server.startServer()
             socket.startServer()
         }
+
         TextHandler.injectText()
 
         PluginsManager.init(context)
@@ -120,17 +121,17 @@ object Panels : Notifications {
 
     override fun onOpModePreInit(opMode: OpMode) {
         Logger.coreLog("Init of opMode")
-        PluginsManager.plugins.values.forEach { it.onOpModePreInit(opMode) }
+        PluginsManager.plugins.values.forEach { it.preInitInternal(opMode) }
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
         Logger.coreLog("Start of opMode")
-        PluginsManager.plugins.values.forEach { it.onOpModePreStart(opMode) }
+        PluginsManager.plugins.values.forEach { it.preStartInternal(opMode) }
     }
 
     override fun onOpModePostStop(opMode: OpMode) {
         Logger.coreLog("Stop of opMode")
-        PluginsManager.plugins.values.forEach { it.onOpModePostStop(opMode) }
+        PluginsManager.plugins.values.forEach { it.postStopInternal(opMode) }
     }
 
 

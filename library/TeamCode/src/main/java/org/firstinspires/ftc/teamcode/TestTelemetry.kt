@@ -16,7 +16,13 @@ class TestTelemetry : OpMode() {
     val field = PanelsField.getField()
 
     override fun init() {
-        field.setBackground(PanelsField.images.INTO_THE_DEEP.DARK)
+        field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
+
+        field.goto(0.0, 0.0)
+        field.setStyle(PanelsField.RED, PanelsField.BLUE, 0.1)
+        field.circle(6.5)
+
+        field.update()
 
         telemetry.debug("Init was ran")
         telemetry.update()
@@ -28,8 +34,8 @@ class TestTelemetry : OpMode() {
         telemetry.debug("Loop of ${System.currentTimeMillis()}")
         telemetry.update()
         field.goto(0.0, 0.0)
-        field.setStyle(PanelsField.WHITE, PanelsField.BLUE, 0.1)
-        field.circle(4.0)
+        field.setStyle(PanelsField.RED, PanelsField.BLUE, 0.1)
+        field.circle(6.5)
         field.update()
     }
 }

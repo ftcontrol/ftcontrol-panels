@@ -1,13 +1,17 @@
 package com.bylazar.field
 
-import android.R.attr.value
 import java.util.UUID
 
 class FieldManager(
-    val config: FieldPluginConfig,
+    config: FieldPluginConfig,
     private val sendCanvas: (canvas: Canvas) -> Unit,
     private val sendImages: (images: MutableMap<UUID, String>) -> Unit
 ) {
+    var images: MutableMap<UUID, String> = mutableMapOf()
+
+    var disableDefaultBg = false
+    val defaultBgID = registerImage(config.defaultBg)
+
     val updateInterval = config.canvasUpdateInterval
     var lastUpdate = 0L
     val timeSinceLastUpdate: Long
@@ -18,7 +22,13 @@ class FieldManager(
 
     var canvas = Canvas()
     var lastCanvas = Canvas()
-    var images: MutableMap<UUID, String> = mutableMapOf()
+
+    init {
+        if (!disableDefaultBg){
+            canvas.bgID = defaultBgID
+            lastCanvas.bgID = defaultBgID
+        }
+    }
 
     var cursorX = 0.0
     var cursorY = 0.0
@@ -107,6 +117,10 @@ class FieldManager(
         )
     }
 
+    fun registerImage(preset: ImagePreset): UUID {
+        return registerImage(preset.get())
+    }
+
     fun registerImage(base64: String): UUID {
         val existingEntry = images.entries.find { it.value == base64 }
         if (existingEntry != null) return existingEntry.key
@@ -130,25 +144,34 @@ class FieldManager(
         )
     }
 
-    fun setBackground(base64: String){
+    fun setBackground(base64: String) {
         val id = registerImage(base64)
         setBackground(id)
     }
 
-    fun setBackground(id: UUID){
+    fun setBackground(id: UUID) {
         canvas.bgID = id
     }
 
-    fun setBackground(image: ImagePreset){
+    fun setBackground(image: ImagePreset) {
         setBackground(image.get())
     }
 
     fun update() {
+        if (!disableDefaultBg && canvas.bgID == null) {
+            canvas.bgID = defaultBgID
+        }
         if (shouldUpdateCanvas) {
             sendCanvas(canvas)
             lastUpdate = System.currentTimeMillis()
+
+            lastCanvas.bgID = canvas.bgID
+            lastCanvas.items = canvas.items.toList().toMutableList()
+            lastCanvas.offsetX = canvas.offsetX
+            lastCanvas.offsetY = canvas.offsetY
+            lastCanvas.rotation = canvas.rotation
         }
-        lastCanvas = canvas
+
         canvas.reset()
         cursorX = 0.0
         cursorY = 0.0

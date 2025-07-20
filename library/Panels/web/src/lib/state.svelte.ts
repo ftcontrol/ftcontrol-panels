@@ -89,6 +89,14 @@ export class GlobalState {
 
                 this.socket.pluginManagers[details.id].state.data = oldStateData
 
+                for (const item of Object.values(
+                  this.socket.pluginManagers[details.id].state.data
+                )) {
+                  for (const callback of item.callbacks) {
+                    callback(item.value)
+                  }
+                }
+
                 this.socket.pluginManagers[details.id]?.onInit()
               }
 
