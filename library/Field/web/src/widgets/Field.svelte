@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onMount, tick } from "svelte"
   import Manager from "../manager"
   import {
     drawBase64Image,
@@ -10,7 +10,7 @@
     init,
   } from "./core"
   import { DrawablesTypes, emptyPacket, type Packet } from "../types"
-  import { Distance, FIELD_HEIGHT, FIELD_WIDTH } from "./primitives"
+  import { Distance } from "./primitives"
 
   let canvas: HTMLCanvasElement
 
@@ -25,17 +25,24 @@
     manager.state.get(manager.IMAGES_KEY)
   )
 
-  function render() {
+  async function render() {
+    console.log("rendering full")
+
     init(canvas, new Distance(packet.offsetX), new Distance(packet.offsetY))
     if (packet.bgID != null) {
-      const image = images[packet.bgID]
-      if (image != null) {
-        console.log("Drawing field")
-        drawFieldImage(packet.bgID, image)
+      if (packet.bgID in images) {
+        const image = images[packet.bgID]
+        if (image != null && image !== undefined) {
+          console.log("Drawing field")
+          await drawFieldImage(packet.bgID, image)
+        }
+      } else {
+        console.warn(`Background ID ${packet.bgID} not found in images`)
       }
     }
     for (const item of packet.items) {
       if (item.type == DrawablesTypes.CIRCLE) {
+        console.log("rendering circle", item)
         drawCircle(
           new Distance(item.x),
           new Distance(item.y),
@@ -45,6 +52,8 @@
           new Distance(item.style.outlineWidth)
         )
       } else if (item.type == DrawablesTypes.RECTANGLE) {
+        console.log("rendering rect", item)
+
         drawRectangle(
           new Distance(item.x),
           new Distance(item.y),
@@ -55,6 +64,8 @@
           new Distance(item.style.outlineWidth)
         )
       } else if (item.type == DrawablesTypes.LINE) {
+        console.log("rendering line", item)
+
         drawLine(
           new Distance(item.x1),
           new Distance(item.y1),
@@ -64,6 +75,8 @@
           new Distance(item.style.outlineWidth)
         )
       } else if (item.type == DrawablesTypes.IMAGE) {
+        console.log("rendering image", item)
+
         drawBase64Image(
           item.id,
           images[item.id],
@@ -77,16 +90,16 @@
   }
 
   onMount(async () => {
-    manager.state.onChange(manager.PACKETS_KEY, (newValue) => {
+    manager.state.onChange(manager.PACKETS_KEY, async (newValue) => {
       packet = newValue
-      render()
+      await render()
     })
-    manager.state.onChange(manager.IMAGES_KEY, (newValue) => {
+    manager.state.onChange(manager.IMAGES_KEY, async (newValue) => {
       images = newValue
-      render()
+      await render()
     })
 
-    render()
+    await render()
   })
 </script>
 

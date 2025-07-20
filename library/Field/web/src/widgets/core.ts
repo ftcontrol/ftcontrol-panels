@@ -18,7 +18,8 @@ export function init(
   if (
     isInitialized &&
     appliedOffsetX.inches == offsetX.inches &&
-    appliedOffsetY.inches == offsetY.inches
+    appliedOffsetY.inches == offsetY.inches &&
+    ctx != null
   ) {
     return
   }
@@ -34,13 +35,12 @@ export function init(
   canvas.height = height
 
   ctx = canvas.getContext("2d")
-  if (ctx) {
-    ctx.scale(dpr, dpr)
-  }
 
   //24 inch > 1TILE > 1/6FIELD
 
   if (ctx) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+    ctx.scale(dpr, dpr)
     ctx.translate(
       FIELD_WIDTH.pixels / 2 + offsetX.pixels,
       FIELD_HEIGHT.pixels / 2 + offsetY.pixels
@@ -60,15 +60,18 @@ export async function drawBase64Image(
 ) {
   if (ctx == null) return
 
-  const hasPrefix = base64.startsWith("data:image/png;base64,")
-  const src = hasPrefix ? base64 : `data:image/png;base64,${base64}`
-
   let img: HTMLImageElement
 
   if (imageCache.has(key)) {
     img = imageCache.get(key)!
   } else {
     img = new Image()
+
+    if (base64 == undefined) return
+
+    const hasPrefix = base64.startsWith("data:image/png;base64,")
+    const src = hasPrefix ? base64 : `data:image/png;base64,${base64}`
+
     img.src = src
     await img.decode()
     imageCache.set(key, img)
@@ -80,8 +83,8 @@ export async function drawBase64Image(
   ctx.restore()
 }
 
-export function drawFieldImage(key: string, base64: string) {
-  drawBase64Image(
+export async function drawFieldImage(key: string, base64: string) {
+  await drawBase64Image(
     key,
     base64,
     new Distance(-24 * 3 + appliedOffsetX.inches),
@@ -101,6 +104,7 @@ export function drawCircle(
 ) {
   if (fillColor == "") fillColor = "transparent"
   if (ctx == null) return
+
   ctx.beginPath()
   ctx.arc(x.pixels, y.pixels, radius.pixels, 0, 2 * Math.PI)
 

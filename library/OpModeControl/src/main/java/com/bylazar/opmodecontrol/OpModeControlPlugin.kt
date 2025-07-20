@@ -45,6 +45,12 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "opModesList", OpModesList(opModeList))
+        sendClient(
+            client, "activeOpMode", ActiveOpMode(
+                opMode = activeOpModeInfo,
+                status = status
+            )
+        )
     }
 
     override fun onMessage(type: String, data: Any?) {
@@ -135,7 +141,7 @@ class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()
                 }
             }
 
-            opModeList = list
+            opModeList = list.sortedWith(compareBy({ it.group }, { it.name })).toMutableList()
 
             log("OpModes: ${opModeList.joinToString(", ")}")
         }

@@ -51,9 +51,6 @@ class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
-        if (opModeManager.activeOpModeName == "\$Stop\$Robot\$") return
-        manager.canvas.bgID = manager.defaultBgID
-        manager.update()
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
