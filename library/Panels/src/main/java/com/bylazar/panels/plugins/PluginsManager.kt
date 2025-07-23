@@ -6,6 +6,7 @@ import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
+import com.bylazar.panels.reflection.ClassFinder.apkPath
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.lang.ref.WeakReference
 import kotlin.collections.set
@@ -41,7 +42,7 @@ object PluginsManager {
     }
 
     fun updateDetails() {
-        if(!isRegistered) return
+        if (!isRegistered) return
         val context = contextRef.get()
         if (context == null) return
         try {
@@ -70,9 +71,8 @@ object PluginsManager {
         contextRef = WeakReference(context)
 
         isRegistered = false
-        val classes = ClassFinder().findClasses(
-            apkPath = context.packageCodePath,
-            shouldKeepFilter = { clazz ->
+        val classes = ClassFinder.findClasses(
+            { clazz ->
                 Plugin::class.java.isAssignableFrom(clazz) && clazz != Plugin::class.java
             }
         )
@@ -98,9 +98,8 @@ object PluginsManager {
             Logger.pluginsLog("Got ${pluginInstance.id}.")
 
             //CONFIG
-            val configs = ClassFinder().findClasses(
-                apkPath = context.packageCodePath,
-                shouldKeepFilter = { clazz ->
+            val configs = ClassFinder.findClasses(
+                { clazz ->
                     pluginInstance.config::class.java.isAssignableFrom(clazz) && clazz != pluginInstance.config::class.java
                 }
             )

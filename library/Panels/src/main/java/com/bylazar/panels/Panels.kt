@@ -47,9 +47,10 @@ object Panels : Notifications {
     @JvmStatic
     @OnCreate
     fun start(context: Context) {
-        val configs = ClassFinder().findClasses(
-            apkPath = context.packageCodePath,
-            shouldKeepFilter = { clazz ->
+        ClassFinder.init(context.packageCodePath)
+
+        val configs = ClassFinder.findClasses(
+            { clazz ->
                 PanelsConfig::class.java.isAssignableFrom(clazz) && clazz != PanelsConfig::class.java
             }
         )

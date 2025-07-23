@@ -100,9 +100,8 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
         GlobalConfigurables.jvmFields = mutableListOf()
         GlobalConfigurables.fieldsMap = mutableMapOf()
 
-        configurableClasses = ClassFinder().findClasses(
-            apkPath = context.packageCodePath,
-            shouldKeepFilter = { clazz ->
+        configurableClasses = ClassFinder.findClasses(
+            { clazz ->
                 val hasConfigurable =
                     clazz.isAnnotationPresent(Configurable::class.java)
                 val hasIgnoreConfigurable =
