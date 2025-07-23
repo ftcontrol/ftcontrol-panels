@@ -104,9 +104,10 @@
 </script>
 
 <canvas bind:this={canvas}></canvas>
-<p>{JSON.stringify(packet)}</p>
 
-<p>{JSON.stringify(images)}</p>
+<!-- <p>{JSON.stringify(packet)}</p>
+
+<p>{JSON.stringify(images)}</p> -->
 
 <style>
   p {
