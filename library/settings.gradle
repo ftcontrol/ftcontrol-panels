@@ -9,5 +9,6 @@ include ':Themes'
 include ':Capture'
 include ':LimelightProxy'
 include ':Field'
+include ':Gamepad'
 include ':Panels'
 

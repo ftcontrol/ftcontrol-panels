@@ -27,6 +27,10 @@ class Config : PanelsConfig() {
         DevPluginEntry(
             pluginID = "com.bylazar.field",
             devURL = "http://localhost:3004"
+        ),
+        DevPluginEntry(
+            pluginID = "com.bylazar.gamepad",
+            devURL = "http://localhost:3005"
         )
     )
 }

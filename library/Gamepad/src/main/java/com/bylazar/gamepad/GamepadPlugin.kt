@@ -1,4 +1,4 @@
-package com.bylazar.exampleplugin
+package com.bylazar.gamepad
 
 import android.content.Context
 import com.bylazar.panels.Panels
@@ -9,12 +9,11 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-open class ExamplePluginConfig : BasePluginConfig() {
-    open var test = "test"
+open class GamepadPluginConfig : BasePluginConfig() {
 }
 
-class ExamplePlugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
-    override var id = "com.bylazar.exampleplugin"
+class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
+    override var id = "com.bylazar.gamepad"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }
