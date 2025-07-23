@@ -51,7 +51,9 @@ object ClassFinder {
             "org.bouncycastle",
             "org.conscrypt",
             "org.jetbrains",
-            "com.fasterxml"
+            "com.fasterxml",
+            "okhttp3.internal",
+            "kotlinx.coroutines"
         )
     )
 

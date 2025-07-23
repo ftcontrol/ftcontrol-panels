@@ -11,8 +11,8 @@ export const config: PluginConfig = {
   author: "Lazar",
   widgets: [
     {
-      name: "Counter",
-      filepath: "src/widgets/Counter.svelte",
+      name: "Gamepad",
+      filepath: "src/widgets/Gamepad.svelte",
     },
   ],
   manager: {
