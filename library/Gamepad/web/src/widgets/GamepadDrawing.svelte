@@ -8,134 +8,117 @@
   import front from "../controller/front.png"
   import top from "../controller/top.png"
   import l1 from "../controller/l1.png"
+  import l2 from "../controller/l2.png"
+  import r1 from "../controller/r1.png"
+  import r2 from "../controller/r2.png"
+  import left from "../controller/left.png"
+  import right from "../controller/right.png"
+  import left2 from "../controller/left2.png"
+  import right2 from "../controller/right2.png"
+
+  import cross from "../controller/cross.png"
+  import circle from "../controller/circle.png"
+  import square from "../controller/square.png"
+  import triangle from "../controller/triangle.png"
+
+  import dpad_up from "../controller/dpad_up.png"
+  import dpad_left from "../controller/dpad_left.png"
+  import dpad_down from "../controller/dpad_down.png"
+  import dpad_right from "../controller/dpad_right.png"
+
+  import touchpad from "../controller/touchpad.png"
+  import options from "../controller/options.png"
+  import share from "../controller/share.png"
+  import ps from "../controller/ps.png"
+
   import type { Gamepad } from "../types"
 </script>
 
 <div class="photo reversed">
   <img src={front} alt="" />
   <img class="overlay" src={l1} alt="" style="--value:{gamepad.l1};" />
-  <!--
-  <img
-    class="overlay"
-    src="/controller/l2.png"
-    alt=""
-    style="--value:{gamepad.buttons[6].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/r1.png"
-    alt=""
-    style="--value:{gamepad.buttons[5].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/r2.png"
-    alt=""
-    style="--value:{gamepad.buttons[7].value};"
-  /> -->
+  <img class="overlay" src={l2} alt="" style="--value:{gamepad.l2};" />
+  <img class="overlay" src={r1} alt="" style="--value:{gamepad.r1};" />
+  <img class="overlay" src={r2} alt="" style="--value:{gamepad.r2};" />
 </div>
 <div class="photo">
   <img src={top} alt="" />
-  <!-- <img
+  <img
     class="stick"
-    src="/controller/left.png"
+    src={left}
     alt=""
-    style="--offsetX:{gamepad.axes[0]};--offsetY:{gamepad.axes[1]};"
+    style="--offsetX:{gamepad.leftStick.x};--offsetY:{gamepad.leftStick.y};"
   />
   <img
     class="stick"
-    src="/controller/right.png"
+    src={right}
     alt=""
-    style="--offsetX:{gamepad.axes[2]};--offsetY:{gamepad.axes[3]};"
+    style="--offsetX:{gamepad.rightStick.x};--offsetY:{gamepad.rightStick.y};"
   />
   <img
     class="stick overlay"
-    src="/controller/left2.png"
+    src={left2}
     alt=""
-    style="--offsetX:{gamepad.axes[0]};--offsetY:{gamepad
-      .axes[1]};--value:{gamepad.buttons[10].value};"
+    style="--offsetX:{gamepad.leftStick.x};--offsetY:{gamepad.leftStick
+      .y};--value:{gamepad.leftStick.value};"
   />
   <img
     class="stick overlay"
-    src="/controller/right2.png"
+    src={right2}
     alt=""
-    style="--offsetX:{gamepad.axes[2]};--offsetY:{gamepad
-      .axes[3]};--value:{gamepad.buttons[11].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/touchpad.png"
-    alt=""
-    style="--value:{gamepad.buttons[17].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/options.png"
-    alt=""
-    style="--value:{gamepad.buttons[9].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/share.png"
-    alt=""
-    style="--value:{gamepad.buttons[8].value};"
+    style="--offsetX:{gamepad.rightStick.x};--offsetY:{gamepad.rightStick
+      .y};--value:{gamepad.rightStick.value};"
   />
 
   <img
     class="overlay"
-    src="/controller/dpad_up.png"
+    src={touchpad}
     alt=""
-    style="--value:{gamepad.buttons[12].value};"
+    style="--value:{gamepad.touchpad};"
   />
   <img
     class="overlay"
-    src="/controller/dpad_down.png"
+    src={options}
     alt=""
-    style="--value:{gamepad.buttons[13].value};"
+    style="--value:{gamepad.options};"
   />
-  <img
-    class="overlay"
-    src="/controller/dpad_left.png"
-    alt=""
-    style="--value:{gamepad.buttons[14].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/dpad_right.png"
-    alt=""
-    style="--value:{gamepad.buttons[15].value};"
-  />
-  <img
-    class="overlay"
-    src="/controller/ps.png"
-    alt=""
-    style="--value:{gamepad.buttons[16].value};"
-  />
+  <img class="overlay" src={share} alt="" style="--value:{gamepad.share};" />
+  <img class="overlay" src={ps} alt="" style="--value:{gamepad.ps};" />
 
   <img
     class="overlay"
-    src="/controller/cross.png"
+    src={dpad_up}
     alt=""
-    style="--value:{gamepad.buttons[0].value};"
+    style="--value:{gamepad.dpad_up};"
   />
   <img
     class="overlay"
-    src="/controller/circle.png"
+    src={dpad_down}
     alt=""
-    style="--value:{gamepad.buttons[1].value};"
+    style="--value:{gamepad.dpad_down};"
   />
   <img
     class="overlay"
-    src="/controller/square.png"
+    src={dpad_left}
     alt=""
-    style="--value:{gamepad.buttons[2].value};"
+    style="--value:{gamepad.dpad_left};"
   />
   <img
     class="overlay"
-    src="/controller/triangle.png"
+    src={dpad_right}
     alt=""
-    style="--value:{gamepad.buttons[3].value};"
-  /> -->
+    style="--value:{gamepad.dpad_left};"
+  />
+
+  <img class="overlay" src={cross} alt="" style="--value:{gamepad.cross};" />
+  <img class="overlay" src={circle} alt="" style="--value:{gamepad.circle};" />
+  <img class="overlay" src={square} alt="" style="--value:{gamepad.square};" />
+  <img
+    class="overlay"
+    src={triangle}
+    alt=""
+    style="--value:{gamepad.triangle};"
+  />
 </div>
 
 <style>
