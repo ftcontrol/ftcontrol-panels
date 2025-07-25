@@ -56,7 +56,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.23"
 
-    implementation 'com.aayushatharva.brotli4j:brotli4j:1.7.2'
+    implementation 'org.tukaani:xz:1.9'
 }
 
 tasks.register('clearAssets', Delete) {
