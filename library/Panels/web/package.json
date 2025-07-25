@@ -25,7 +25,6 @@
   "dependencies": {
     "@sveltejs/adapter-static": "^3.0.8",
     "ftc-panels": "link:ftc-panels",
-    "pako": "^2.1.0",
     "svelte-portal": "^2.2.1",
     "uuid": "^11.1.0"
   }

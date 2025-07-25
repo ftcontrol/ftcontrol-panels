@@ -7,8 +7,7 @@ import {
 } from "ftc-panels"
 import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
-import pako from "pako"
-
+import LZMA from "./lzma"
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
   devServers: DevPluginEntry[] = $state([])
@@ -181,13 +180,35 @@ export class GlobalState {
         const response = await fetch(`${url}/plugins`)
 
         const buffer = await response.arrayBuffer()
+        const uint8Array = new Uint8Array(buffer)
 
-        const decompressed = pako.ungzip(new Uint8Array(buffer), {
-          to: "string",
-        })
+        function decompressLzma(compressedData: Uint8Array): Promise<string> {
+          return new Promise((resolve, reject) => {
+            LZMA.decompress(
+              compressedData,
+              (result: string | Uint8Array | Error) => {
+                if (result instanceof Error) {
+                  reject(result)
+                } else if (typeof result === "string") {
+                  resolve(result)
+                } else {
+                  const decoder = new TextDecoder("utf-8")
+                  resolve(decoder.decode(result))
+                }
+              }
+            )
+          })
+        }
 
-        if (decompressed && decompressed.trim() != "null") {
-          return decompressed
+        const startTime = performance.now()
+        const text = await decompressLzma(uint8Array)
+        const endTime = performance.now()
+        console.log(
+          `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
+        )
+
+        if (text && text.trim() != "null") {
+          return text
         }
       } catch (err) {
         console.warn("Fetch failed, retrying...", err)

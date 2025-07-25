@@ -88,6 +88,8 @@ object Panels : Notifications {
         TextHandler.injectText()
 
         PluginsManager.init(context)
+
+        server.precompressData()
     }
 
     @JvmStatic
