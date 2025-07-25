@@ -10,10 +10,8 @@ import com.bylazar.panels.plugins.PluginsManager
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
 import java.lang.ref.WeakReference
-import org.tukaani.xz.LZMA2Options
-import org.tukaani.xz.LZMAOutputStream
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
+import java.nio.charset.StandardCharsets
 
 class StaticServer(
     context: Context,
@@ -83,18 +81,16 @@ class StaticServer(
         ).allowCors()
     }
 
-    fun lzmaCompress(input: String): ByteArray {
-        val inputBytes = input.toByteArray(Charsets.UTF_8)
-        val baos = ByteArrayOutputStream()
-        val options = LZMA2Options()
-        options.setPreset(3)
-        LZMAOutputStream(baos, options, -1).use { lzmaOut ->
-            lzmaOut.write(inputBytes)
-        }
-        return baos.toByteArray()
+
+
+    fun brotliCompress(input: String): ByteArray {
+        Brotli4jLoader.ensureAvailability()
+
+        val inputBytes = input.toByteArray(StandardCharsets.UTF_8)
+        return BrotliEncoder.compress(inputBytes)
     }
 
-    var response = lzmaCompress("null")
+    var response = brotliCompress("null")
 
     fun precompressData(){
         val t0 = System.currentTimeMillis()
@@ -112,7 +108,7 @@ class StaticServer(
         ).toJson()
         val t4 = System.currentTimeMillis()
 
-        val compressed = lzmaCompress(jsonString)
+        val compressed = brotliCompress(jsonString)
 
         val t5 = System.currentTimeMillis()
 
