@@ -8,8 +8,12 @@ import com.bylazar.panels.json.PluginData
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import fi.iki.elonen.NanoHTTPD
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.lang.ref.WeakReference
+import java.util.zip.GZIPOutputStream
+import android.util.Base64
+import java.io.ByteArrayInputStream
 
 class StaticServer(
     context: Context,
@@ -93,17 +97,50 @@ class StaticServer(
                 return getResponse("null", contentType = "application/json").allowCors()
             }
 
+            val t0 = System.currentTimeMillis()
+            val pluginInfos = PluginsManager.plugins.values.map { it.toInfo() }
+            val t1 = System.currentTimeMillis()
+            val skipped = PluginsManager.skippedPlugins.values.toList()
+            val t2 = System.currentTimeMillis()
+            val dev = Panels.config.devPlugins
+            val t3 = System.currentTimeMillis()
+
             val jsonString = SocketMessage(
                 "core",
                 "pluginsDetails",
-                PluginData(
-                    PluginsManager.plugins.values.map { it.toInfo() },
-                    PluginsManager.skippedPlugins.values.map { it },
-                    Panels.config.devPlugins
-                )
+                PluginData(pluginInfos, skipped, dev)
             ).toJson()
+            val t4 = System.currentTimeMillis()
 
-            return getResponse(jsonString, contentType = "application/json").allowCors()
+            Logger.serverLog("toInfo() took ${t1 - t0}ms")
+            Logger.serverLog("skippedPlugins took ${t2 - t1}ms")
+            Logger.serverLog("devPlugins took ${t3 - t2}ms")
+            Logger.serverLog("toJson() took ${t4 - t3}ms")
+            Logger.serverLog("Total time: ${t4 - t0}ms")
+
+            Logger.serverLog("Sending ${jsonString.length} characters (~${jsonString.toByteArray().size / 1024} KB)")
+
+            fun compressGzip(input: String): ByteArray {
+                val bos = ByteArrayOutputStream()
+                GZIPOutputStream(bos).bufferedWriter(Charsets.UTF_8).use { it.write(input) }
+                return bos.toByteArray()
+            }
+
+            val compressed = compressGzip(jsonString)
+
+            Logger.serverLog("Sending compressed ${compressed.size} bytes (~${compressed.size / 1024} KB)")
+
+            val inputStream = ByteArrayInputStream(compressed)
+
+            return newFixedLengthResponse(
+                Response.Status.OK,
+                "application/json",
+                inputStream,
+                compressed.size.toLong()
+            ).allowCors()
+                .also {
+                    it.addHeader("Content-Encoding", "gzip")   // Important for compressed data!
+                }
         }
 
         return getStaticResponse(uri)

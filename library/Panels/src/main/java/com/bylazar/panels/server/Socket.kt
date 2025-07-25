@@ -54,24 +54,46 @@ class Socket(
         private var ping: TimerTask? = null
 
         override fun onOpen() {
-            tasks.forEach { it.onOpen() }
+            Logger.socketLog("onOpen: Connection opened.")
 
+            val startTime = System.currentTimeMillis()
+
+            Logger.socketLog("onOpen: Running task onOpen() callbacks...")
+            tasks.forEach {
+                Logger.socketLog("onOpen: Task ${it.javaClass.simpleName} onOpen()")
+                it.onOpen()
+            }
+
+            Logger.socketLog("onOpen: Adding client to list...")
             clients.add(this)
 
-            PluginsManager.plugins.values.forEach { it.newClientInternal(this) }
+            Logger.socketLog("onOpen: Notifying plugins (${PluginsManager.plugins.size} found)...")
+            PluginsManager.plugins.values.forEach { plugin ->
+                Logger.socketLog("onOpen: Notifying plugin ${plugin.javaClass.simpleName}")
+                plugin.newClientInternal(this)
+            }
 
             if (ping == null) {
+                Logger.socketLog("onOpen: Setting up ping timer...")
                 ping = object : TimerTask() {
                     override fun run() {
                         try {
                             ping("LAZAR".toByteArray())
                         } catch (e: IOException) {
+                            Logger.socketError("ping: IOException occurred. Cancelling ping. Error: ${e.message}")
                             ping!!.cancel()
                         }
                     }
                 }
+
                 Timer().schedule(ping, 1000, 2000)
+                Logger.socketLog("onOpen: Ping timer scheduled (start in 1s, interval 2s).")
+            } else {
+                Logger.socketLog("onOpen: Ping already set.")
             }
+
+            val endTime = System.currentTimeMillis()
+            Logger.socketLog("onOpen: Completed in ${endTime - startTime} ms.")
         }
 
         override fun onClose(

@@ -7,6 +7,7 @@ import {
 } from "ftc-panels"
 import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
+import pako from "pako"
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
@@ -115,35 +116,52 @@ export class GlobalState {
   }
 
   async init() {
+    const startTime = Date.now()
+    console.log(`[init] Starting initialization...`)
+
     try {
       this.isConnected = false
+
+      const t0 = Date.now()
       const data = await this.getPluginsUntilReady()
+      console.log(`[init] getPluginsUntilReady() took ${Date.now() - t0}ms`)
 
-      this.plugins = JSON.parse(data).data.plugins
+      const parsed = JSON.parse(data)
+      this.plugins = parsed.data.plugins
 
+      console.log(`[init] Loaded ${this.plugins.length} plugins`)
       this.plugins.forEach((item) => {
         this.reloadIndexes[item.details.id] = 0
       })
 
-      this.skippedPlugins = JSON.parse(data).data.skippedPlugins
+      this.skippedPlugins = parsed.data.skippedPlugins
+      console.log(`[init] Skipped ${this.skippedPlugins.length} plugins`)
 
-      this.devServers = JSON.parse(data).data.devServers
+      this.devServers = parsed.data.devServers
+      console.log(`[init] Found ${this.devServers.length} dev servers`)
 
       if (this.devServers.length) {
+        console.log(`[init] Updating dev plugins (initial)...`)
         this.updateDevPlugins(false)
       }
 
+      const t1 = Date.now()
       await this.socket.init(this.plugins)
+      console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
       if (this.devServers.length) {
         this.interval = setInterval(() => {
           this.updateDevPlugins(true)
         }, 1000)
+        console.log(`[init] Dev plugin interval set up`)
       }
 
       this.isConnected = true
+      console.log(
+        `[init] Initialization complete in ${Date.now() - startTime}ms`
+      )
     } catch (e) {
-      console.error(e)
+      console.error(`[init] Error during initialization:`, e)
     }
   }
 
@@ -161,10 +179,15 @@ export class GlobalState {
     while (attempts < maxAttempts) {
       try {
         const response = await fetch(`${url}/plugins`)
-        const text = await response.text()
 
-        if (text && text.trim() != "null") {
-          return text
+        const buffer = await response.arrayBuffer()
+
+        const decompressed = pako.ungzip(new Uint8Array(buffer), {
+          to: "string",
+        })
+
+        if (decompressed && decompressed.trim() != "null") {
+          return decompressed
         }
       } catch (err) {
         console.warn("Fetch failed, retrying...", err)
