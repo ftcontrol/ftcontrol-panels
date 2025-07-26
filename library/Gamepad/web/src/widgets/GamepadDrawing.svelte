@@ -1,6 +1,6 @@
 <script lang="ts">
   let {
-    gamepad,
+    gamepad = $bindable(),
   }: {
     gamepad: Gamepad
   } = $props()
@@ -32,119 +32,147 @@
   import ps from "../controller/ps.png"
 
   import type { Gamepad } from "../types"
+  import SimpleButton from "./SimpleButton.svelte"
+  import SimpleStick from "./SimpleStick.svelte"
 </script>
 
-<div class="photo reversed">
+<div class="reversed">
   <img src={front} alt="" />
-  <img class="overlay" src={l1} alt="" style="--value:{gamepad.l1};" />
-  <img class="overlay" src={l2} alt="" style="--value:{gamepad.l2};" />
-  <img class="overlay" src={r1} alt="" style="--value:{gamepad.r1};" />
-  <img class="overlay" src={r2} alt="" style="--value:{gamepad.r2};" />
+  <SimpleButton text={"L1"} top={35} left={30.5} bind:value={gamepad.l1} />
+  <SimpleButton text={"L2"} top={46.4} left={30.9} bind:value={gamepad.l2} />
+  <SimpleButton
+    text={"R1"}
+    top={35}
+    left={100 - 30.5}
+    bind:value={gamepad.r1}
+  />
+  <SimpleButton
+    text={"R2"}
+    top={46.4}
+    left={100 - 30.9}
+    bind:value={gamepad.r2}
+  />
 </div>
-<div class="photo">
+<div class="normal">
   <img src={top} alt="" />
-  <img
-    class="stick"
-    src={left}
-    alt=""
-    style="--offsetX:{gamepad.leftStick.x};--offsetY:{gamepad.leftStick.y};"
+  <SimpleButton
+    text={"dpad up"}
+    top={25.8}
+    left={30}
+    bind:value={gamepad.dpad_up}
   />
-  <img
-    class="stick"
-    src={right}
-    alt=""
-    style="--offsetX:{gamepad.rightStick.x};--offsetY:{gamepad.rightStick.y};"
+  <SimpleButton
+    text={"dpad down"}
+    top={36.9}
+    left={30}
+    bind:value={gamepad.dpad_down}
   />
-  <img
-    class="stick overlay"
-    src={left2}
-    alt=""
-    style="--offsetX:{gamepad.leftStick.x};--offsetY:{gamepad.leftStick
-      .y};--value:{gamepad.leftStick.value};"
+  <SimpleButton
+    text={"dpad left"}
+    top={30.9}
+    left={26.4}
+    bind:value={gamepad.dpad_left}
   />
-  <img
-    class="stick overlay"
-    src={right2}
-    alt=""
-    style="--offsetX:{gamepad.rightStick.x};--offsetY:{gamepad.rightStick
-      .y};--value:{gamepad.rightStick.value};"
+  <SimpleButton
+    text={"dpad right"}
+    top={30.9}
+    left={33.4}
+    bind:value={gamepad.dpad_right}
   />
 
-  <img
-    class="overlay"
-    src={touchpad}
-    alt=""
-    style="--value:{gamepad.touchpad};"
+  <SimpleButton
+    text={"triangle"}
+    top={25.8 - 3.1}
+    left={100 - 30}
+    bind:value={gamepad.triangle}
   />
-  <img
-    class="overlay"
-    src={options}
-    alt=""
-    style="--value:{gamepad.options};"
+  <SimpleButton
+    text={"cross"}
+    top={36.9 + 2.9}
+    left={100 - 30}
+    bind:value={gamepad.cross}
   />
-  <img class="overlay" src={share} alt="" style="--value:{gamepad.share};" />
-  <img class="overlay" src={ps} alt="" style="--value:{gamepad.ps};" />
-
-  <img
-    class="overlay"
-    src={dpad_up}
-    alt=""
-    style="--value:{gamepad.dpad_up};"
+  <SimpleButton
+    text={"circle"}
+    top={30.9 + 0.1}
+    left={100 - 26.4 + 1.2}
+    bind:value={gamepad.square}
   />
-  <img
-    class="overlay"
-    src={dpad_down}
-    alt=""
-    style="--value:{gamepad.dpad_down};"
-  />
-  <img
-    class="overlay"
-    src={dpad_left}
-    alt=""
-    style="--value:{gamepad.dpad_left};"
-  />
-  <img
-    class="overlay"
-    src={dpad_right}
-    alt=""
-    style="--value:{gamepad.dpad_left};"
+  <SimpleButton
+    text={"square"}
+    top={30.9 + 0.1}
+    left={100 - 33.4 - 1.6 + 0.3}
+    bind:value={gamepad.circle}
   />
 
-  <img class="overlay" src={cross} alt="" style="--value:{gamepad.cross};" />
-  <img class="overlay" src={circle} alt="" style="--value:{gamepad.circle};" />
-  <img class="overlay" src={square} alt="" style="--value:{gamepad.square};" />
-  <img
-    class="overlay"
-    src={triangle}
-    alt=""
-    style="--value:{gamepad.triangle};"
+  <SimpleButton
+    text={"touchpad"}
+    top={23.9}
+    left={50}
+    bind:value={gamepad.touchpad}
+  />
+
+  <SimpleButton text={"ps"} top={47.9} left={50} bind:value={gamepad.ps} />
+
+  <SimpleButton
+    text={"share"}
+    top={19.7}
+    left={37}
+    bind:value={gamepad.share}
+  />
+  <SimpleButton
+    text={"options"}
+    top={19.7}
+    left={100 - 37}
+    bind:value={gamepad.options}
+  />
+
+  <SimpleButton
+    text={"left stick"}
+    top={60}
+    left={40}
+    bind:value={gamepad.leftStick.value}
+  />
+  <SimpleButton
+    text={"right stick"}
+    top={60}
+    left={100 - 40}
+    bind:value={gamepad.rightStick.value}
+  />
+
+  <SimpleStick
+    text={"left stick"}
+    top={45}
+    left={40}
+    bind:x={gamepad.leftStick.x}
+    bind:y={gamepad.leftStick.y}
+  />
+
+  <SimpleStick
+    text={"right stick"}
+    top={45}
+    left={100 - 40}
+    bind:x={gamepad.rightStick.x}
+    bind:y={gamepad.rightStick.y}
   />
 </div>
 
 <style>
-  .photo.reversed {
-    transform: scaleX(-1) translateX(calc(1920 / 1080 * -1 * 200px));
-    height: 120px;
-  }
-  .photo {
-    height: 200px;
+  div {
     position: relative;
-    width: fit-content;
+    aspect-ratio: 1920 / 1080;
+    height: auto;
+  }
+  .normal {
+  }
+  .reversed {
+    /* transform: scaleX(-1); */
+    margin-bottom: -20%;
+    margin-top: -15%;
   }
   img {
-    height: 200px;
-    aspect-ratio: 1920 / 1080;
+    width: 100%;
+    height: 100%;
     position: absolute;
-  }
-  .stick {
-    --offsetX: 0;
-    --offsetY: 0;
-
-    left: calc(var(--offsetX) * 10px);
-    top: calc(var(--offsetY) * 10px);
-  }
-  .overlay {
-    --value: 0;
-    opacity: var(--value);
   }
 </style>

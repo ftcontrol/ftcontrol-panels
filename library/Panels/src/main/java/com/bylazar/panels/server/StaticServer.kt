@@ -103,6 +103,7 @@ class StaticServer(
     }
 
     var response = lzmaCompress("null")
+    var jsonString = "null"
     var lastSha = "null"
 
     fun precompressData() {
@@ -114,7 +115,7 @@ class StaticServer(
         val dev = Panels.config.devPlugins
         val t3 = System.currentTimeMillis()
 
-        val jsonString = SocketMessage(
+        jsonString = SocketMessage(
             "core",
             "pluginsDetails",
             PluginData(pluginInfos, skipped, dev)
@@ -153,6 +154,9 @@ class StaticServer(
                 ByteArrayInputStream(response),
                 response.size.toLong()
             ).allowCors()
+        }
+        if (uri == "plugins-json") {
+            return getResponse(jsonString, "application/json").allowCors()
         }
         if (uri == "sha256") {
             return getResponse(lastSha).allowCors()
