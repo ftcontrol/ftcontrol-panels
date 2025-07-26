@@ -3,7 +3,6 @@ package com.bylazar.panels.json
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginDetails(
     val id: String = "",
@@ -15,8 +14,9 @@ data class PluginDetails(
     val pluginsCoreVersion: String = "",
     val author: String = "",
     val widgets: List<PanelsWidget> = listOf(),
-    val manager: PanelsWidget = PanelsWidget()
-){
+    val manager: PanelsWidget = PanelsWidget(),
+    val docs: PanelsDocs = PanelsDocs()
+) {
     override fun toString(): String {
         return buildString {
             appendLine("PluginDetails(")
@@ -41,4 +41,10 @@ data class PanelsWidget(
     val name: String = "",
     val filepath: String = "",
     var textContent: String = ""
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class PanelsDocs(
+    val homepage: PanelsWidget = PanelsWidget(),
+    val chapters: List<PanelsWidget> = listOf()
 )

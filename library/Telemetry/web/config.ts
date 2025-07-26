@@ -19,4 +19,16 @@ export const config: PluginConfig = {
     name: "Manager",
     filepath: "src/manager.ts",
   },
+  docs: {
+    homepage: {
+      name: "Homepage",
+      filepath: "src/docs/Homepage.svelte",
+    },
+    chapters: [
+      {
+        name: "DocsPage1",
+        filepath: "src/docs/DocsPage1.svelte",
+      },
+    ],
+  },
 }

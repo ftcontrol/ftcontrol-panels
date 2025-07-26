@@ -14,6 +14,8 @@
     {global.isConnected ? "Connected" : "Waiting"}
   </p>
 
+  <a href="/docs">Docs</a>
+
   <Overlay>
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       Plugins
@@ -50,6 +52,10 @@
 </nav>
 
 <style>
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
   .plugins-overlay {
     min-width: 200px;
     min-height: 100px;

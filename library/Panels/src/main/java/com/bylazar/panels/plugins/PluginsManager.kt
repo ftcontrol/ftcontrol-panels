@@ -34,6 +34,13 @@ object PluginsManager {
         }
     }
 
+    fun loadPluginDocsFile(context: Context, id: String, file: String): String {
+        val assetManager = context.assets
+        assetManager.open("web/plugins/${id}/docs/${file}.js").use { inputStream ->
+            return inputStream.bufferedReader().use { it.readText() }
+        }
+    }
+
     fun loadPluginManagerFile(context: Context, id: String, file: String): String {
         val assetManager = context.assets
         assetManager.open("web/plugins/${id}/${file}.js").use { inputStream ->
@@ -131,6 +138,17 @@ object PluginsManager {
                     context,
                     pluginInstance.details.id,
                     pluginInstance.details.manager.name
+                )
+
+                pluginInstance.details.docs.chapters.forEach {
+                    it.textContent =
+                        loadPluginDocsFile(context, pluginInstance.details.id, it.name)
+                }
+
+                pluginInstance.details.docs.homepage.textContent = loadPluginDocsFile(
+                    context,
+                    pluginInstance.details.id,
+                    pluginInstance.details.docs.homepage.name
                 )
 
                 Logger.pluginsLog("Got details or ID '$uniqueId'")
