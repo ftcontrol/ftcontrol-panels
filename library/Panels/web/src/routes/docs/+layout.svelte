@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Snippet } from "svelte"
+  import { onMount, type Snippet } from "svelte"
   import { global } from "$lib"
   import { Toggle } from "ftc-panels"
 
@@ -8,10 +8,66 @@
   let coreDocs = $derived(
     global.plugins.find((it) => it.details.id != "com.bylazar.docs")
   )
+  let navShown = $state(false)
+  let hoveringEdge = $state(false)
+  let navHovered = $state(false)
+
+  function closeNav() {
+    navShown = false
+  }
+
+  function handleNavEnter() {
+    navHovered = true
+    navShown = true
+  }
+
+  function handleNavLeave(e: MouseEvent) {
+    navHovered = false
+    if (!hoveringEdge) {
+      navShown = false
+    }
+  }
+
+  onMount(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      hoveringEdge = e.clientX <= 16
+      if (hoveringEdge) {
+        navShown = true
+      } else if (!navHovered) {
+        navShown = false
+      }
+    }
+
+    const onMouseLeave = (e: MouseEvent) => {
+      if (e.clientX <= 0) {
+        navShown = true
+      }
+    }
+
+    const onMouseEnter = (e: MouseEvent) => {
+      if (e.clientX <= 16) {
+        navShown = true
+      }
+    }
+
+    window.addEventListener("mousemove", onMouseMove)
+    window.addEventListener("mouseleave", onMouseLeave)
+    window.addEventListener("mouseenter", onMouseEnter)
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove)
+      window.removeEventListener("mouseleave", onMouseLeave)
+      window.removeEventListener("mouseenter", onMouseEnter)
+    }
+  })
 </script>
 
 <section>
-  <nav>
+  <nav
+    class:shown={navShown}
+    onmouseenter={handleNavEnter}
+    onmouseleave={handleNavLeave}
+  >
     {#if coreDocs != undefined}
       <Toggle defaultOpen={true}>
         {#snippet trigger({ isOpen }: { isOpen: boolean })}
@@ -19,11 +75,13 @@
         {/snippet}
         {#snippet content({ close }: { close: () => void })}
           <div>
-            <a href="/docs/{coreDocs.details.id}"
+            <a href="/docs/{coreDocs.details.id}" onclick={closeNav}
               >{coreDocs.details.docs.homepage.name}</a
             >
             {#each coreDocs.details.docs.chapters as c}
-              <a href="/docs/{coreDocs.details.id}/{c.name}">{c.name}</a>
+              <a href="/docs/{coreDocs.details.id}/{c.name}" onclick={closeNav}
+                >{c.name}</a
+              >
             {/each}
           </div>
         {/snippet}
@@ -36,11 +94,13 @@
         {/snippet}
         {#snippet content({ close }: { close: () => void })}
           <div>
-            <a href="/docs/{plugin.details.id}"
+            <a href="/docs/{plugin.details.id}" onclick={closeNav}
               >{plugin.details.docs.homepage.name}</a
             >
             {#each plugin.details.docs.chapters as c}
-              <a href="/docs/{plugin.details.id}/{c.name}">{c.name}</a>
+              <a href="/docs/{plugin.details.id}/{c.name}" onclick={closeNav}
+                >{c.name}</a
+              >
             {/each}
           </div>
         {/snippet}
@@ -69,6 +129,16 @@
     height: 80vh;
     width: fit-content;
     border-radius: 1rem;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%);
+    transition: transform 250ms;
+    transition-delay: 250ms;
+  }
+  nav.shown {
+    transform: translateY(-50%) translateX(0%);
+    transition-delay: 0ms;
   }
   section {
     margin: 0.5rem;
