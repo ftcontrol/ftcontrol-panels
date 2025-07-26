@@ -1,6 +1,6 @@
 <script lang="ts">
   import Panels from "$lib/Panels.svelte"
-  import { Overlay } from "ftc-panels"
+  import { Button, Overlay } from "ftc-panels"
   import { global } from "$lib"
   import { goto } from "$app/navigation"
 </script>
@@ -19,25 +19,26 @@
       Plugins
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      <a
-        href="/plugins"
-        onclick={() => {
-          goto("/plugins")
-          close()
-        }}>Details</a
-      >
       <div class="plugins-overlay">
-        {#each global.plugins as plugin}
-          <button
-            class="plugin"
-            onclick={() => {
-              goto(`/plugins/${plugin.details.id}`)
-              close()
-            }}
-          >
-            {plugin.details.letterName}
-          </button>
-        {/each}
+        <Button
+          onclick={() => {
+            goto("/plugins")
+            close()
+          }}>Details</Button
+        >
+        <div class="grid">
+          {#each global.plugins as plugin}
+            <button
+              class="plugin"
+              onclick={() => {
+                goto(`/plugins/${plugin.details.id}`)
+                close()
+              }}
+            >
+              {plugin.details.letterName}
+            </button>
+          {/each}
+        </div>
         {#each global.skippedPlugins as details}
           <button class="plugin" disabled onclick={close}>
             {details.letterName}
@@ -52,9 +53,15 @@
   .plugins-overlay {
     min-width: 200px;
     min-height: 100px;
-    display: flex;
-    gap: calc(var(--padding) / 2);
+
+    padding: calc(var(--padding) / 2);
+  }
+  .grid {
     margin-top: 0.5rem;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(32px, auto));
+    gap: calc(var(--padding) / 2);
   }
 
   button.plugin {

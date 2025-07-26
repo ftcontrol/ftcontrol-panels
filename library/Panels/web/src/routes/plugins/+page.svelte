@@ -1,12 +1,15 @@
 <script lang="ts">
+  import { goto } from "$app/navigation"
   import { global } from "$lib"
   import Section from "$lib/Section.svelte"
+  import { Button } from "ftc-panels"
 </script>
 
 <h1>Plugins</h1>
 <div>
   {#each global.plugins as plugin}
     <Section>
+      <p>{plugin.details.id}</p>
       <h2>
         {plugin.details.name}
         {#if global.devServers
@@ -15,9 +18,15 @@
           DEV
         {/if}
       </h2>
-      <p>{plugin.details.id}</p>
-      <p>{plugin.details.author}</p>
-      <a href="/plugins/{plugin.details.id}">Details</a>
+      <p>by {plugin.details.author}</p>
+      <br />
+      <p>{plugin.details.description}</p>
+      <br />
+      <Button
+        onclick={() => {
+          goto(`/plugins/${plugin.details.id}`)
+        }}>Details</Button
+      >
     </Section>
   {/each}
 
@@ -37,6 +46,13 @@
 </div>
 
 <style>
+  h2,
+  p {
+    margin: 0;
+  }
+  p {
+    margin: 0.25rem;
+  }
   div {
     display: grid;
     gap: 1rem;
