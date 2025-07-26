@@ -34,6 +34,7 @@ dependencies {
     api project(':LimelightProxy')
     api project(':Gamepad')
     api project(':Field')
+    api project(':Docs')
 }
 
 afterEvaluate {

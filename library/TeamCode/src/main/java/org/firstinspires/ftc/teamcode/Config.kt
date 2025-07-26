@@ -35,6 +35,10 @@ class Config : PanelsConfig() {
         DevPluginEntry(
             pluginID = "com.bylazar.opmodecontrol",
             devURL = "http://localhost:3006"
+        ),
+        DevPluginEntry(
+            pluginID = "com.bylazar.docs",
+            devURL = "http://localhost:3007"
         )
     )
 }

@@ -1,0 +1,29 @@
+import { PluginConfig } from "ftc-panels"
+
+export const config: PluginConfig = {
+  id: "com.bylazar.docs",
+  name: "Docs",
+  letterName: "D",
+  description: "Docs Plugin for Panels",
+  version: "0.1.0",
+  panelsVersion: "0.0.1",
+  pluginsCoreVersion: "0.0.1",
+  author: "Lazar",
+  widgets: [],
+  manager: {
+    name: "Manager",
+    filepath: "src/manager.ts",
+  },
+  docs: {
+    homepage: {
+      name: "Homepage",
+      filepath: "src/docs/Homepage.svelte",
+    },
+    chapters: [
+      {
+        name: "DocsPage1",
+        filepath: "src/docs/DocsPage1.svelte",
+      },
+    ],
+  },
+}

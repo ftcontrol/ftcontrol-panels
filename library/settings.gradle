@@ -10,5 +10,6 @@ include ':Capture'
 include ':LimelightProxy'
 include ':Field'
 include ':Gamepad'
+include ':Docs'
 include ':Panels'
 

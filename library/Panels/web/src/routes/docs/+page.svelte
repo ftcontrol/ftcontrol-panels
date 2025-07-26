@@ -1,13 +1,22 @@
 <script lang="ts">
-  import { goto } from "$app/navigation"
   import { global } from "$lib"
-  import Section from "$lib/Section.svelte"
-  import { Button } from "ftc-panels"
+
+  let coreDocs = $derived(
+    global.plugins.find((it) => it.details.id != "com.bylazar.docs")
+  )
 </script>
 
 <h1>Docs</h1>
 <div>
-  {#each global.plugins as plugin}
+  {#if coreDocs != undefined}
+    <p>Core</p>
+    <p>{coreDocs.details.docs.homepage.name}</p>
+    {#each coreDocs.details.docs.chapters as c}
+      <p>{c.name}</p>
+    {/each}
+    <p>---</p>
+  {/if}
+  {#each global.plugins.filter((it) => it.details.id != "com.bylazar.docs") as plugin}
     <p>{plugin.details.name}</p>
     <p>{plugin.details.docs.homepage.name}</p>
     {#each plugin.details.docs.chapters as c}
