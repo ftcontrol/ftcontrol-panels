@@ -188,29 +188,34 @@ export class GlobalState {
   }
 
   private async getPluginsUntilReady(): Promise<string> {
+    var currentSha = await this.getSha()
+
     var cachedSha = await readValue("sha256")
     var cachedText = await readValue("plugins")
-    if (cachedText) {
+
+    if (currentSha == cachedSha && cachedText) {
       setTimeout(async () => {
-        const extraText = await this.getPlugins(cachedSha)
+        const extraText = await this.getPlugins()
 
         if (extraText == null) return
         if (extraText == cachedText) return
+        await storeValue("sha256", currentSha)
+        await storeValue("plugins", extraText)
         window.location.reload()
       }, 100)
       return cachedText
     }
 
-    cachedSha = null
+    await storeValue("sha256", currentSha)
 
-    const text = await this.getPlugins(cachedSha)
+    const text = await this.getPlugins()
 
-    if (text == null) throw new Error("Failed to get plugins.")
+    await storeValue("plugins", text)
 
     return text
   }
 
-  private async getPlugins(cachedSha: string | null): Promise<string | null> {
+  private async getSha(): Promise<string> {
     const url = dev ? "http://localhost:8001" : window.location.origin
 
     let attempts = 0
@@ -223,25 +228,7 @@ export class GlobalState {
         const sha = await response.text()
 
         if (sha && sha.trim() != "null") {
-          if (cachedSha != sha) {
-            const response = await fetch(`${url}/plugins`)
-
-            const buffer = await response.arrayBuffer()
-            const uint8Array = new Uint8Array(buffer)
-
-            const startTime = performance.now()
-            const text = await decompressLzma(uint8Array)
-            const endTime = performance.now()
-            console.log(
-              `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
-            )
-
-            await storeValue("sha256", sha)
-            await storeValue("plugins", text)
-
-            return text
-          }
-          return null
+          return sha
         }
       } catch (err) {
         console.warn("Fetch failed, retrying...", err)
@@ -251,6 +238,24 @@ export class GlobalState {
       await new Promise((resolve) => setTimeout(resolve, 500))
     }
 
-    throw new Error("Failed to get plugins after multiple attempts.")
+    throw new Error("Failed to get sha after multiple attempts.")
+  }
+
+  private async getPlugins(): Promise<string> {
+    const url = dev ? "http://localhost:8001" : window.location.origin
+
+    const response = await fetch(`${url}/plugins`)
+
+    const buffer = await response.arrayBuffer()
+    const uint8Array = new Uint8Array(buffer)
+
+    const startTime = performance.now()
+    const text = await decompressLzma(uint8Array)
+    const endTime = performance.now()
+    console.log(
+      `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
+    )
+
+    return text
   }
 }
