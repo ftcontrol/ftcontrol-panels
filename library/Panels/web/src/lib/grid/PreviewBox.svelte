@@ -19,6 +19,7 @@
     border-radius: 8px;
     pointer-events: none;
     position: relative;
+    margin: 0 auto;
   }
 
   .scaled-preview {

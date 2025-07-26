@@ -12,7 +12,9 @@
     <button class="icon"><Options /></button>
   {/snippet}
   {#snippet overlay({ close }: { close: () => void })}
-    <div style="display: flex;flex-direction: column; gap: var(--padding);">
+    <div
+      style="display: flex;flex-direction: column; gap: var(--padding);padding: var(--padding);"
+    >
       <Button
         onclick={() => {
           manager.removeWidget(widget.id)

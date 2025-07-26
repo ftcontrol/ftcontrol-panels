@@ -22,7 +22,7 @@
               set(p.details.id, w.name)
             }}
           >
-            <p>{p.details.name}</p>
+            <h4>{p.details.name}</h4>
             <p>{w.name}</p>
             <PreviewBox scale={0.5}>
               <WidgetContent pluginID={p.details.id} widgetID={w.name} />
@@ -35,9 +35,20 @@
 </Overlay>
 
 <style>
+  h4,
+  p {
+    margin: 0;
+    text-align: center;
+  }
+  p {
+    margin-bottom: var(--padding);
+  }
   .possibilities {
-    display: flex;
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, auto));
     gap: 1rem;
+    padding: var(--padding);
   }
   button.choose {
     all: unset;

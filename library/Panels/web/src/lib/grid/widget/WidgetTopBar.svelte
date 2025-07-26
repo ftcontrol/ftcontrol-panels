@@ -21,7 +21,7 @@
     if (isPossible) return
     console.log("Started move of", movingIndex)
 
-    manager.tabName = widget.widgets[movingIndex].widgetID
+    manager.tabName = widget.widgets[movingIndex].widgetID || "Empty"
 
     window.addEventListener("mousemove", onMove)
 
@@ -53,6 +53,7 @@
     ) {
       widget.widgets[movingIndex].isMoving = true
     }
+
     const elements = document.elementsFromPoint(e.clientX, e.clientY)
     const el = elements.filter(
       (el) =>
@@ -100,6 +101,12 @@
       window.removeEventListener("mouseup", stopMove)
       return
     }
+
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    })
 
     let dataWidget = el.getAttribute("data-widget")
     let dataIndex = parseInt(el.getAttribute("data-index") || "")
@@ -161,6 +168,7 @@
         data-index={index}
         class:moving={w.isMoving}
         onmousedown={(e: MouseEvent) => {
+          if (widget.widgets.length == 1 && w.widgetID == "") return
           movingIndex = index
 
           startMove(e)

@@ -18,10 +18,13 @@
 
 {#if isMouse}
   <button
-    onmousedown={() => {
+    oncontextmenu={(e) => e.preventDefault()}
+    onmousedown={(e) => {
+      if (e.button != 0) return
       manager.startPlace(x, y)
     }}
-    onmouseup={() => {
+    onmouseup={(e) => {
+      if (e.button != 0) return
       manager.endPlace(x, y)
     }}
     onmousemove={() => {
