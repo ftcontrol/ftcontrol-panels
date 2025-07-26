@@ -39,24 +39,23 @@
 
   function handleMouseMove(e: MouseEvent) {
     if (!isMoving) return
-    x = Math.max(-24, Math.min(startX - e.clientX, 24)) / 24
-    y = Math.max(-24, Math.min(startY - e.clientY, 24)) / 24
+    x = Math.max(-12, Math.min(startX - e.clientX, 12)) / 12
+    y = Math.max(-12, Math.min(startY - e.clientY, 12)) / 12
   }
 </script>
 
 <button
   onmousedown={handleMouseDown}
-  class="overlay"
+  class:selected={isMoving}
   style="--offsetX:{x}px;--offsetY:{y}px;--top:{top}%;--left:{left}%;"
   aria-label={text}
 ></button>
 
 <style>
-  .overlay {
+  button {
     all: unset;
     cursor: pointer;
-    --value: 0;
-    opacity: calc(0.5 + var(--value) / 2);
+    opacity: 0.5;
     position: absolute;
 
     background-color: var(--primary);
@@ -68,7 +67,10 @@
     --offsetX: 0;
     --offsetY: 0;
 
-    top: calc(var(--top) - var(--offsetY) * 24);
-    left: calc(var(--left) - var(--offsetX) * 24);
+    top: calc(var(--top) - var(--offsetY) * 12);
+    left: calc(var(--left) - var(--offsetX) * 12);
+  }
+  button.selected {
+    opacity: 1;
   }
 </style>

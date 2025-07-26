@@ -22,14 +22,13 @@
   onmouseleave={() => {
     value = false
   }}
-  class="overlay"
   style="--value: {value ? 1 : 0};--top:{top}%;--left:{left}%;"
   aria-label={text}
 >
 </button>
 
 <style>
-  .overlay {
+  button {
     all: unset;
     cursor: pointer;
     --value: 0;

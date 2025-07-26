@@ -7,29 +7,6 @@
 
   import front from "../controller/front.png"
   import top from "../controller/top.png"
-  import l1 from "../controller/l1.png"
-  import l2 from "../controller/l2.png"
-  import r1 from "../controller/r1.png"
-  import r2 from "../controller/r2.png"
-  import left from "../controller/left.png"
-  import right from "../controller/right.png"
-  import left2 from "../controller/left2.png"
-  import right2 from "../controller/right2.png"
-
-  import cross from "../controller/cross.png"
-  import circle from "../controller/circle.png"
-  import square from "../controller/square.png"
-  import triangle from "../controller/triangle.png"
-
-  import dpad_up from "../controller/dpad_up.png"
-  import dpad_left from "../controller/dpad_left.png"
-  import dpad_down from "../controller/dpad_down.png"
-  import dpad_right from "../controller/dpad_right.png"
-
-  import touchpad from "../controller/touchpad.png"
-  import options from "../controller/options.png"
-  import share from "../controller/share.png"
-  import ps from "../controller/ps.png"
 
   import type { Gamepad } from "../types"
   import SimpleButton from "./SimpleButton.svelte"
@@ -37,7 +14,7 @@
 </script>
 
 <div class="reversed">
-  <img src={front} alt="" />
+  <img src={front} alt="" draggable="false" />
   <SimpleButton text={"L1"} top={35} left={30.5} bind:value={gamepad.l1} />
   <SimpleButton text={"L2"} top={46.4} left={30.9} bind:value={gamepad.l2} />
   <SimpleButton
@@ -54,7 +31,7 @@
   />
 </div>
 <div class="normal">
-  <img src={top} alt="" />
+  <img src={top} alt="" draggable="false" />
   <SimpleButton
     text={"dpad up"}
     top={25.8}

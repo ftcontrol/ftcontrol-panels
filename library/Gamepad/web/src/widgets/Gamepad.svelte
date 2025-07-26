@@ -40,7 +40,6 @@
   })
 </script>
 
-<p>{JSON.stringify(g, null, 2)}</p>
 <GamepadDrawing bind:gamepad={g} />
 
 <style>
