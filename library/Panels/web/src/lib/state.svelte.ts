@@ -162,7 +162,9 @@ export class GlobalState {
       }
 
       const t1 = Date.now()
-      await this.socket.init(this.plugins)
+      await this.socket.init(this.plugins, () => {
+        window.location.reload()
+      })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
       if (this.devServers.length) {
@@ -178,6 +180,7 @@ export class GlobalState {
       )
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
+      window.location.reload()
     }
   }
 
@@ -215,36 +218,64 @@ export class GlobalState {
     return text
   }
 
-  private async getSha(): Promise<string> {
+  private fetchWithTimeout(url: string, options = {}, timeout = 5000) {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), timeout)
+
+    return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+      clearTimeout(timer)
+    )
+  }
+
+  private fetchWithRetry(
+    url: string,
+    options = {},
+    retries = 3,
+    timeout = 1000,
+    delay = 250
+  ): Promise<Response> {
+    return this.fetchWithTimeout(url, options, timeout).catch((error) => {
+      if (retries > 0) {
+        console.warn(`Retrying... (${retries} left), Error: ${error.message}`)
+        return new Promise((resolve) => setTimeout(resolve, delay)).then(() =>
+          this.fetchWithRetry(url, options, retries - 1, timeout, delay * 2)
+        )
+      }
+      throw error
+    })
+  }
+
+  private async getSha(attempts = 0): Promise<string> {
+    if (attempts > 5) {
+      throw Error("Tried too many times.")
+    }
     const url = dev ? "http://localhost:8001" : window.location.origin
 
-    let attempts = 0
-    let maxAttempts = 20
+    try {
+      const response = await this.fetchWithRetry(`${url}/sha256`, {})
 
-    while (attempts < maxAttempts) {
-      try {
-        const response = await fetch(`${url}/sha256`)
+      const sha = await response.text()
 
-        const sha = await response.text()
-
-        if (sha && sha.trim() != "null") {
-          return sha
-        }
-      } catch (err) {
-        console.warn("Fetch failed, retrying...", err)
+      if (sha && sha.trim() != "null") {
+        return sha
       }
-
-      attempts++
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      return this.getSha(attempts + 1)
+    } catch (err) {
+      console.warn("Fetch failed, retrying...", err)
+      throw err
     }
-
-    throw new Error("Failed to get sha after multiple attempts.")
   }
 
   private async getPlugins(): Promise<string> {
     const url = dev ? "http://localhost:8001" : window.location.origin
 
-    const response = await fetch(`${url}/plugins`)
+    const response = await this.fetchWithRetry(
+      `${url}/plugins`,
+      {},
+      5,
+      4000,
+      500
+    )
 
     const buffer = await response.arrayBuffer()
     const uint8Array = new Uint8Array(buffer)
