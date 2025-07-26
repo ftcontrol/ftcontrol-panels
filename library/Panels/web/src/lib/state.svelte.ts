@@ -188,7 +188,31 @@ export class GlobalState {
   }
 
   private async getPluginsUntilReady(): Promise<string> {
+    var cachedSha = await readValue("sha256")
+    var cachedText = await readValue("plugins")
+    if (cachedText) {
+      setTimeout(async () => {
+        const extraText = await this.getPlugins(cachedSha)
+
+        if (extraText == null) return
+        if (extraText == cachedText) return
+        window.location.reload()
+      }, 100)
+      return cachedText
+    }
+
+    cachedSha = null
+
+    const text = await this.getPlugins(cachedSha)
+
+    if (text == null) throw new Error("Failed to get plugins.")
+
+    return text
+  }
+
+  private async getPlugins(cachedSha: string | null): Promise<string | null> {
     const url = dev ? "http://localhost:8001" : window.location.origin
+
     let attempts = 0
     let maxAttempts = 20
 
@@ -199,17 +223,14 @@ export class GlobalState {
         const sha = await response.text()
 
         if (sha && sha.trim() != "null") {
-          const oldSha = await readValue("sha256")
-          var text = await readValue("plugins")
-
-          if (oldSha != sha || text == null) {
+          if (cachedSha != sha) {
             const response = await fetch(`${url}/plugins`)
 
             const buffer = await response.arrayBuffer()
             const uint8Array = new Uint8Array(buffer)
 
             const startTime = performance.now()
-            text = await decompressLzma(uint8Array)
+            const text = await decompressLzma(uint8Array)
             const endTime = performance.now()
             console.log(
               `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
@@ -217,9 +238,10 @@ export class GlobalState {
 
             await storeValue("sha256", sha)
             await storeValue("plugins", text)
-          }
 
-          return text
+            return text
+          }
+          return null
         }
       } catch (err) {
         console.warn("Fetch failed, retrying...", err)
