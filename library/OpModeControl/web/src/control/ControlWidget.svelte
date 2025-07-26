@@ -67,21 +67,21 @@
       <Button transparent={true}>Autos <Arrow /></Button>
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      {#each opModes.filter((it) => it.flavour == "AUTONOMOUS") as opMode}
-        <div class="list">
-          <p>{opMode.name} / {opMode.group}</p>
-          <p>{opMode.flavour} / {opMode.source}</p>
-          <button
-            onclick={() => {
-              selectOpMode(opMode)
-              close()
-            }}>Select</button
-          >
-        </div>
-      {/each}
-      {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
-        <p>No OpModes found.</p>
-      {/if}
+      <section class="items">
+        {#each opModes.filter((it) => it.flavour == "AUTONOMOUS") as opMode}
+          <div>
+            <button
+              onclick={() => {
+                selectOpMode(opMode)
+                close()
+              }}>{opMode.name} / {opMode.group}</button
+            >
+          </div>
+        {/each}
+        {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
+          <p>No OpModes found.</p>
+        {/if}
+      </section>
     {/snippet}
   </Overlay>
 
@@ -90,21 +90,21 @@
       <Button transparent={true}>TeleOps <Arrow /></Button>
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      {#each opModes.filter((it) => it.flavour == "TELEOP") as opMode}
-        <div class="list">
-          <p>{opMode.name} / {opMode.group}</p>
-          <p>{opMode.flavour} / {opMode.source}</p>
-          <button
-            onclick={() => {
-              selectOpMode(opMode)
-              close()
-            }}>Select</button
-          >
-        </div>
-      {/each}
-      {#if opModes.filter((it) => it.flavour == "TELEOP").length == 0}
-        <p>No OpModes found.</p>
-      {/if}
+      <section class="items">
+        {#each opModes.filter((it) => it.flavour == "TELEOP") as opMode}
+          <div>
+            <button
+              onclick={() => {
+                selectOpMode(opMode)
+                close()
+              }}>{opMode.name} / {opMode.group}</button
+            >
+          </div>
+        {/each}
+        {#if opModes.filter((it) => it.flavour == "TELEOP").length == 0}
+          <p>No OpModes found.</p>
+        {/if}
+      </section>
     {/snippet}
   </Overlay>
 </div>
@@ -179,9 +179,15 @@
     transform: translate(-50%, 0);
     bottom: -1rem;
   }
-
-  .list {
+  .items {
     max-height: 500px;
     overflow-y: auto;
+    padding: var(--padding);
+  }
+
+  button {
+    all: unset;
+    cursor: pointer;
+    margin-bottom: calc(var(--padding) / 2);
   }
 </style>

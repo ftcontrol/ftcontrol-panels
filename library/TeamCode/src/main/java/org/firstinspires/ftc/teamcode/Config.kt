@@ -31,6 +31,10 @@ class Config : PanelsConfig() {
         DevPluginEntry(
             pluginID = "com.bylazar.gamepad",
             devURL = "http://localhost:3005"
+        ),
+        DevPluginEntry(
+            pluginID = "com.bylazar.opmodecontrol",
+            devURL = "http://localhost:3006"
         )
     )
 }
