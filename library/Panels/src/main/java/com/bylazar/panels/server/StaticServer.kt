@@ -14,6 +14,7 @@ import org.tukaani.xz.LZMA2Options
 import org.tukaani.xz.LZMAOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.security.MessageDigest
 
 class StaticServer(
     context: Context,
@@ -94,9 +95,17 @@ class StaticServer(
         return baos.toByteArray()
     }
 
-    var response = lzmaCompress("null")
 
-    fun precompressData(){
+    fun ByteArray.sha256Hex(): String {
+        return MessageDigest.getInstance("SHA-256")
+            .digest(this)
+            .joinToString("") { "%02x".format(it) }
+    }
+
+    var response = lzmaCompress("null")
+    var lastSha = "null"
+
+    fun precompressData() {
         val t0 = System.currentTimeMillis()
         val pluginInfos = PluginsManager.plugins.values.map { it.toInfo() }
         val t1 = System.currentTimeMillis()
@@ -126,6 +135,7 @@ class StaticServer(
         Logger.serverLog("Sending ${jsonString.length} characters (~${jsonString.toByteArray().size / 1024} KB)")
         Logger.serverLog("Sending compressed (~${compressed.size / 1024} KB)")
         response = compressed
+        lastSha = compressed.sha256Hex()
     }
 
     override fun serve(session: IHTTPSession): Response {
@@ -143,6 +153,9 @@ class StaticServer(
                 ByteArrayInputStream(response),
                 response.size.toLong()
             ).allowCors()
+        }
+        if (uri == "sha256") {
+            return getResponse(lastSha).allowCors()
         }
 
         return getStaticResponse(uri)

@@ -8,6 +8,23 @@ import {
 import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
 import LZMA from "./lzma"
+import { readValue, storeValue } from "./indexedDB"
+
+function decompressLzma(compressedData: Uint8Array): Promise<string> {
+  return new Promise((resolve, reject) => {
+    LZMA.decompress(compressedData, (result: string | Uint8Array | Error) => {
+      if (result instanceof Error) {
+        reject(result)
+      } else if (typeof result === "string") {
+        resolve(result)
+      } else {
+        const decoder = new TextDecoder("utf-8")
+        resolve(decoder.decode(result))
+      }
+    })
+  })
+}
+
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
   devServers: DevPluginEntry[] = $state([])
@@ -177,37 +194,31 @@ export class GlobalState {
 
     while (attempts < maxAttempts) {
       try {
-        const response = await fetch(`${url}/plugins`)
+        const response = await fetch(`${url}/sha256`)
 
-        const buffer = await response.arrayBuffer()
-        const uint8Array = new Uint8Array(buffer)
+        const sha = await response.text()
 
-        function decompressLzma(compressedData: Uint8Array): Promise<string> {
-          return new Promise((resolve, reject) => {
-            LZMA.decompress(
-              compressedData,
-              (result: string | Uint8Array | Error) => {
-                if (result instanceof Error) {
-                  reject(result)
-                } else if (typeof result === "string") {
-                  resolve(result)
-                } else {
-                  const decoder = new TextDecoder("utf-8")
-                  resolve(decoder.decode(result))
-                }
-              }
+        if (sha && sha.trim() != "null") {
+          const oldSha = await readValue("sha256")
+          var text = await readValue("plugins")
+
+          if (oldSha != sha || text == null) {
+            const response = await fetch(`${url}/plugins`)
+
+            const buffer = await response.arrayBuffer()
+            const uint8Array = new Uint8Array(buffer)
+
+            const startTime = performance.now()
+            text = await decompressLzma(uint8Array)
+            const endTime = performance.now()
+            console.log(
+              `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
             )
-          })
-        }
 
-        const startTime = performance.now()
-        const text = await decompressLzma(uint8Array)
-        const endTime = performance.now()
-        console.log(
-          `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
-        )
+            await storeValue("sha256", sha)
+            await storeValue("plugins", text)
+          }
 
-        if (text && text.trim() != "null") {
           return text
         }
       } catch (err) {
