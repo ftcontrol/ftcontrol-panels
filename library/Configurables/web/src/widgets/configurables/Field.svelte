@@ -36,6 +36,7 @@
       bind:isValid={item.isValid}
       type={item.type}
       validate={anyValidator(item.type)}
+      submit={sendFieldUpdate}
     />
     <button
       onclick={sendFieldUpdate}

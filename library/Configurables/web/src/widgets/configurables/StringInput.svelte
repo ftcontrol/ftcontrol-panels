@@ -6,6 +6,7 @@
     isValid = $bindable(),
     type = "",
     validate = (value: string) => true,
+    submit = () => {},
   }: {
     startValue: string
     newValue: string
@@ -13,9 +14,8 @@
     isValid: Boolean
     type?: string
     validate: (value: string) => boolean
+    submit?: (e: SubmitEvent) => void
   } = $props()
-
-  import { onMount } from "svelte"
 
   $effect(() => {
     isValid = validate(value)
@@ -31,7 +31,11 @@
   newValue,
   isValid,
 })} -->
-<div class="container">
+<form
+  onsubmit={() => {
+    submit()
+  }}
+>
   <input
     type="text"
     class:invalid={!isValid}
@@ -45,10 +49,10 @@
       <span class="shown">{type}</span>
     </div>
   {/if}
-</div>
+</form>
 
 <style>
-  div.container {
+  form {
     position: relative;
     border: 1px solid currentColor;
     border-radius: 0.25rem;
