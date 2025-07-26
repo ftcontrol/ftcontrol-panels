@@ -19,9 +19,11 @@
         {/snippet}
         {#snippet content({ close }: { close: () => void })}
           <div>
-            <p>{coreDocs.details.docs.homepage.name}</p>
+            <a href="/docs/{coreDocs.details.id}"
+              >{coreDocs.details.docs.homepage.name}</a
+            >
             {#each coreDocs.details.docs.chapters as c}
-              <p>{c.name}</p>
+              <a href="/docs/{coreDocs.details.id}/{c.name}">{c.name}</a>
             {/each}
           </div>
         {/snippet}
@@ -34,9 +36,11 @@
         {/snippet}
         {#snippet content({ close }: { close: () => void })}
           <div>
-            <p>{plugin.details.docs.homepage.name}</p>
+            <a href="/docs/{plugin.details.id}"
+              >{plugin.details.docs.homepage.name}</a
+            >
             {#each plugin.details.docs.chapters as c}
-              <p>{c.name}</p>
+              <a href="/docs/{plugin.details.id}/{c.name}">{c.name}</a>
             {/each}
           </div>
         {/snippet}
@@ -49,13 +53,22 @@
 <style>
   p {
     margin: 0;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
   }
   nav {
     padding: var(--padding);
     overflow-y: auto;
-    background-color: red;
+    background-color: var(--bgMedium);
+    border-radius: var();
     height: 80vh;
     width: fit-content;
+    border-radius: 1rem;
   }
   section {
     margin: 0.5rem;
