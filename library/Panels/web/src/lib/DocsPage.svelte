@@ -18,16 +18,20 @@
     (it) => it.details.id == pluginID
   ) as PluginInfo
 
-  const widget = plugin.details.widgets.find(
-    (it) => it.name == widgetID
-  ) as PanelsWidget
+  const docs = plugin.details.docs
+
+  const isHomepage = widgetID === docs.homepage.name
+
+  const content = isHomepage
+    ? docs.homepage
+    : (docs.chapters.find((it) => it.name == widgetID) as PanelsWidget)
 </script>
 
 {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
   <DynamicComponent
     globalSocket={global.socket}
     info={plugin}
-    textContent={widget.textContent}
+    textContent={content.textContent}
     id={pluginID}
   />
 {/key}

@@ -2,6 +2,7 @@
   import { global } from "$lib"
   import type { PanelsWidget, PluginInfo } from "ftc-panels"
   import type { PageProps } from "./$types"
+  import DocsPage from "$lib/DocsPage.svelte"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -18,7 +19,8 @@
   {data.id}
   {data.page}
 </p>
-<p>{page}</p>
+
+<DocsPage pluginID={plugin.details.id} widgetID={page.name} />
 
 <style>
 </style>

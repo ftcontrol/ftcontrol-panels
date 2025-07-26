@@ -133,7 +133,7 @@
     position: absolute;
     left: 0;
     top: 50%;
-    transform: translateY(-50%) translateX(-100%);
+    transform: translateY(-50%) translateX(-95%);
     transition: transform 250ms;
     transition-delay: 250ms;
   }

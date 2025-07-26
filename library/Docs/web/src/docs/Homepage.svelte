@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { PluginConfig } from "ftc-panels"
+  import type { PluginInfo } from "ftc-panels"
   import { Title, Paragraph } from "ftc-panels/docs"
   let {
-    config,
+    info,
   }: {
-    config: PluginConfig
+    info: PluginInfo
   } = $props()
 </script>
 
-<Title>{config.name}</Title>
-<Paragraph>{config.description}</Paragraph>
+<Title>{info.details.name}</Title>
+<Paragraph>{info.details.description}</Paragraph>
