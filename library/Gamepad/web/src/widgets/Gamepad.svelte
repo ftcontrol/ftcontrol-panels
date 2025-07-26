@@ -42,5 +42,75 @@
 
 <GamepadDrawing bind:gamepad={g} />
 
+<section>
+  {#if g.l1}
+    <div>L1</div>
+  {/if}
+  {#if g.l2}
+    <div>L2</div>
+  {/if}
+  {#if g.r1}
+    <div>R1</div>
+  {/if}
+  {#if g.r2}
+    <div>R2</div>
+  {/if}
+
+  {#if g.dpad_left}
+    <div>←</div>
+  {/if}
+  {#if g.dpad_right}
+    <div>→</div>
+  {/if}
+  {#if g.dpad_up}
+    <div>↑</div>
+  {/if}
+  {#if g.dpad_down}
+    <div>↓</div>
+  {/if}
+
+  {#if g.circle}
+    <div>●</div>
+  {/if}
+  {#if g.cross}
+    <div>✚</div>
+  {/if}
+  {#if g.triangle}
+    <div>▲</div>
+  {/if}
+  {#if g.square}
+    <div>■</div>
+  {/if}
+
+  {#if g.share}
+    <div>SHR</div>
+  {/if}
+  {#if g.options}
+    <div>OPTS</div>
+  {/if}
+  {#if g.ps}
+    <div>PS</div>
+  {/if}
+  {#if g.touchpad}
+    <div>touchpad</div>
+  {/if}
+
+  {#if g.leftStick.value || g.leftStick.x || g.leftStick.y}
+    <div>L STICK</div>
+  {/if}
+  {#if g.rightStick.value || g.rightStick.x || g.rightStick.y}
+    <div>R STICK</div>
+  {/if}
+</section>
+
 <style>
+  div {
+    outline: 1px solid currentColor;
+    padding: 0.5em 0.75em;
+  }
+  section {
+    position: absolute;
+    left: var(--padding);
+    bottom: var(--padding);
+  }
 </style>

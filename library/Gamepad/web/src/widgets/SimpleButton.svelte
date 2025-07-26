@@ -32,7 +32,7 @@
     all: unset;
     cursor: pointer;
     --value: 0;
-    opacity: calc(0.5 + var(--value) / 2);
+    opacity: calc(0.25 + var(--value) / 2);
     position: absolute;
     top: var(--top);
     left: var(--left);

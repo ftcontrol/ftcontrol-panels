@@ -55,7 +55,7 @@
   button {
     all: unset;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.25;
     position: absolute;
 
     background-color: var(--primary);

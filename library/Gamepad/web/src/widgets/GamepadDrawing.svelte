@@ -73,13 +73,13 @@
     text={"circle"}
     top={30.9 + 0.1}
     left={100 - 26.4 + 1.2}
-    bind:value={gamepad.square}
+    bind:value={gamepad.circle}
   />
   <SimpleButton
     text={"square"}
     top={30.9 + 0.1}
     left={100 - 33.4 - 1.6 + 0.3}
-    bind:value={gamepad.circle}
+    bind:value={gamepad.square}
   />
 
   <SimpleButton
