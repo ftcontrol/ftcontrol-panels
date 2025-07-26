@@ -14,17 +14,19 @@
     widgetID: string
   } = $props()
 
-  const plugin = global.plugins.find(
-    (it) => it.details.id == pluginID
-  ) as PluginInfo
+  const plugin = $derived(
+    global.plugins.find((it) => it.details.id == pluginID) as PluginInfo
+  )
 
-  const docs = plugin.details.docs
+  const docs = $derived(plugin.details.docs)
 
-  const isHomepage = widgetID === docs.homepage.name
+  const isHomepage = $derived(widgetID == docs.homepage.name)
 
-  const content = isHomepage
-    ? docs.homepage
-    : (docs.chapters.find((it) => it.name == widgetID) as PanelsWidget)
+  const content = $derived(
+    isHomepage
+      ? docs.homepage
+      : (docs.chapters.find((it) => it.name == widgetID) as PanelsWidget)
+  )
 </script>
 
 {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}

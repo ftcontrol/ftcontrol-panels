@@ -14,13 +14,13 @@
     widgetID: string
   } = $props()
 
-  const plugin = global.plugins.find(
-    (it) => it.details.id == pluginID
-  ) as PluginInfo
+  const plugin = $derived(
+    global.plugins.find((it) => it.details.id == pluginID) as PluginInfo
+  )
 
-  const widget = plugin.details.widgets.find(
-    (it) => it.name == widgetID
-  ) as PanelsWidget
+  const widget = $derived(
+    plugin.details.widgets.find((it) => it.name == widgetID) as PanelsWidget
+  )
 </script>
 
 {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
