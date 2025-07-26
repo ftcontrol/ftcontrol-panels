@@ -1,12 +1,33 @@
 <script lang="ts">
+  import { onMount } from "svelte"
   import type Manager from "../manager"
   import GamepadDrawing from "./GamepadDrawing.svelte"
+  import type { Gamepad } from "../types"
 
   let {
     manager,
   }: {
     manager: Manager
   } = $props()
+
+  function hasChange(g: Gamepad) {
+    if (g.options) return true
+    return false
+  }
+
+  onMount(() => {
+    const interval = setInterval(() => {
+      if (!hasChange(g)) return
+      manager.socket.sendMessage("gamepad", g)
+    }, 50)
+
+    return () => clearInterval(interval)
+  })
+
+  $effect(() => {
+    if (!hasChange(g)) return
+    manager.socket.sendMessage("gamepad", g)
+  })
 
   let g = $state({
     l1: false,

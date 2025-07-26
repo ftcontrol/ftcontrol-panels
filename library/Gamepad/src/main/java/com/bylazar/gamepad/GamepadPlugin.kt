@@ -2,6 +2,7 @@ package com.bylazar.gamepad
 
 import android.content.Context
 import com.bylazar.panels.Panels
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -15,11 +16,23 @@ open class GamepadPluginConfig : BasePluginConfig() {
 class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
     override var id = "com.bylazar.gamepad"
 
+    val manager = GamepadManager()
+
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
+        if(type == "gamepad"){
+            val changes = try {
+                SocketMessage.convertData<Gamepad>(data)
+            } catch (e: Exception) {
+                log("Failed to convert data: ${e.message}")
+                Gamepad()
+            }
+
+            if(changes.options) manager.setOptions()
+        }
     }
 
     override fun onRegister(
