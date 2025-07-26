@@ -108,9 +108,9 @@ class StaticServer(
 
     fun precompressData() {
         val t0 = System.currentTimeMillis()
-        val pluginInfos = PluginsManager.plugins.values.map { it.toInfo() }
+        val pluginInfos = PluginsManager.plugins.values.map { it.toInfo() }.sortedBy { it.details.id }
         val t1 = System.currentTimeMillis()
-        val skipped = PluginsManager.skippedPlugins.values.toList()
+        val skipped = PluginsManager.skippedPlugins.values.toList().sortedBy { it.id }
         val t2 = System.currentTimeMillis()
         val dev = Panels.config.devPlugins
         val t3 = System.currentTimeMillis()
