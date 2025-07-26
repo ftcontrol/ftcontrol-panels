@@ -5,9 +5,29 @@
 
   let { children }: { children?: Snippet } = $props()
 
-  let coreDocs = $derived(
-    global.plugins.find((it) => it.details.id != "com.bylazar.docs")
-  )
+  let orderedPlugins = $derived.by(() => {
+    const docsPlugin = global.plugins.find(
+      (it) => it.details.id === "com.bylazar.docs"
+    )
+    const otherPlugins = global.plugins.filter(
+      (it) => it.details.id !== "com.bylazar.docs"
+    )
+
+    if (!docsPlugin) {
+      return otherPlugins
+    }
+
+    const renamedDocsPlugin = {
+      ...docsPlugin,
+      details: {
+        ...docsPlugin.details,
+        name: "Core",
+      },
+    }
+
+    return [renamedDocsPlugin, ...otherPlugins]
+  })
+
   let navShown = $state(false)
   let hoveringEdge = $state(false)
   let navHovered = $state(false)
@@ -68,27 +88,8 @@
     onmouseenter={handleNavEnter}
     onmouseleave={handleNavLeave}
   >
-    {#if coreDocs != undefined}
-      <Toggle defaultOpen={true}>
-        {#snippet trigger({ isOpen }: { isOpen: boolean })}
-          <p>Core</p>
-        {/snippet}
-        {#snippet content({ close }: { close: () => void })}
-          <div>
-            <a href="/docs/{coreDocs.details.id}" onclick={closeNav}
-              >{coreDocs.details.docs.homepage.name}</a
-            >
-            {#each coreDocs.details.docs.chapters as c}
-              <a href="/docs/{coreDocs.details.id}/{c.name}" onclick={closeNav}
-                >{c.name}</a
-              >
-            {/each}
-          </div>
-        {/snippet}
-      </Toggle>
-    {/if}
-    {#each global.plugins.filter((it) => it.details.id != "com.bylazar.docs") as plugin}
-      <Toggle>
+    {#each orderedPlugins as plugin}
+      <Toggle defaultOpen={plugin.details.id == "com.bylazar.docs"}>
         {#snippet trigger({ isOpen }: { isOpen: boolean })}
           <p>{plugin.details.name}</p>
         {/snippet}
