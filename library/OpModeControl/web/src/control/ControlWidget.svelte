@@ -46,6 +46,7 @@
   let disableInit = $derived.by(() => {
     if (selectedOpModeName == "") return true
     if (activeStatus == "INIT") return true
+    if (activeStatus == "RUNNING") return true
     return false
   })
   let disablePlay = $derived.by(() => {
