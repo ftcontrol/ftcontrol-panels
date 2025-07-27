@@ -36,14 +36,15 @@ class Config : PanelsConfig() {
 //            pluginID = "com.bylazar.opmodecontrol",
 //            devURL = "http://localhost:3006"
 //        ),
-//        DevPluginEntry(
-//            pluginID = "com.bylazar.docs",
-//            devURL = "http://localhost:3007"
-//        ),
+        DevPluginEntry(
+            pluginID = "com.bylazar.docs",
+            devURL = "http://localhost:3007"
+        ),
         DevPluginEntry(
             pluginID = "com.bylazar.battery",
             devURL = "http://localhost:3008"
-        )
+        ),
+
     )
 }
 

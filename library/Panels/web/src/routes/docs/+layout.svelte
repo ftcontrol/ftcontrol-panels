@@ -71,14 +71,11 @@
     height: 100%;
   }
   p {
-    margin: 0;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    margin-top: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--padding);
+    font-weight: 700;
   }
   a {
     color: inherit;
@@ -90,9 +87,13 @@
     padding: var(--padding);
     overflow-y: auto;
     background-color: var(--bgMedium);
-    border-radius: var();
-    width: fit-content;
     border-radius: 1rem;
+  }
+  .content {
+    background-color: var(--bgMedium);
+    border-radius: 1rem;
+    padding: var(--padding);
+    width: 100%;
   }
   p.disabled {
     opacity: 0.5;
