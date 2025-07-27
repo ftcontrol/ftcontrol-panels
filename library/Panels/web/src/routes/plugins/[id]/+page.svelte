@@ -4,6 +4,7 @@
   import type { PageProps } from "./$types"
   import WidgetContent from "$lib/grid/WidgetContent.svelte"
   import Section from "$lib/Section.svelte"
+  import NavletContent from "$lib/NavletContent.svelte"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -21,6 +22,14 @@
   <Section>
     <h4>{widget.name}</h4>
     <WidgetContent pluginID={plugin.details.id} widgetID={widget.name} />
+  </Section>
+{/each}
+
+<h3>Navlets</h3>
+{#each plugin.details.navlets as navlet}
+  <Section>
+    <h4>{navlet.name}</h4>
+    <NavletContent pluginID={plugin.details.id} widgetID={navlet.name} />
   </Section>
 {/each}
 

@@ -34,6 +34,13 @@ object PluginsManager {
         }
     }
 
+    fun loadPluginNavletFile(context: Context, id: String, file: String): String {
+        val assetManager = context.assets
+        assetManager.open("web/plugins/${id}/navlets/${file}.js").use { inputStream ->
+            return inputStream.bufferedReader().use { it.readText() }
+        }
+    }
+
     fun loadPluginDocsFile(context: Context, id: String, file: String): String {
         val assetManager = context.assets
         assetManager.open("web/plugins/${id}/docs/${file}.js").use { inputStream ->
@@ -45,32 +52,6 @@ object PluginsManager {
         val assetManager = context.assets
         assetManager.open("web/plugins/${id}/${file}.js").use { inputStream ->
             return inputStream.bufferedReader().use { it.readText() }
-        }
-    }
-
-    fun updateDetails() {
-        if (!isRegistered) return
-        val context = contextRef.get()
-        if (context == null) return
-        try {
-            plugins.keys.forEach { id ->
-                val details: PluginDetails =
-                    loadPluginConfig(context, "web/plugins/${id}/config.json")
-                plugins[id]?.let {
-                    it.details = details
-                    it.details.widgets.forEach {
-                        it.textContent = loadPluginWidgetFile(context, id, it.name)
-                    }
-                    it.details.manager.textContent = loadPluginManagerFile(
-                        context,
-                        id,
-                        it.details.manager.name
-                    )
-                }
-            }
-
-        } catch (t: Throwable) {
-            Logger.pluginsError("Error while fetching details: $t")
         }
     }
 
@@ -132,6 +113,11 @@ object PluginsManager {
                 pluginInstance.details.widgets.forEach {
                     it.textContent =
                         loadPluginWidgetFile(context, pluginInstance.details.id, it.name)
+                }
+
+                pluginInstance.details.navlets.forEach {
+                    it.textContent =
+                        loadPluginNavletFile(context, pluginInstance.details.id, it.name)
                 }
 
                 pluginInstance.details.manager.textContent = loadPluginManagerFile(

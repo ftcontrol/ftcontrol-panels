@@ -14,6 +14,7 @@ data class PluginDetails(
     val pluginsCoreVersion: String = "",
     val author: String = "",
     val widgets: List<PanelsWidget> = listOf(),
+    val navlets: List<PanelsWidget> = listOf(),
     val manager: PanelsWidget = PanelsWidget(),
     val docs: PanelsDocs = PanelsDocs()
 ) {

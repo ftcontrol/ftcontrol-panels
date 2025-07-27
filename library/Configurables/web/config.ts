@@ -19,6 +19,7 @@ export const config: PluginConfig = {
       filepath: "src/widgets/changed/ChangedConfigurables.svelte",
     },
   ],
+  navlets: [],
   manager: {
     name: "Manager",
     filepath: "src/manager.ts",

@@ -15,11 +15,6 @@
   )
 </script>
 
-<p>
-  {data.id}
-  {data.page}
-</p>
-
 <DocsPage pluginID={plugin.details.id} widgetID={page.name} />
 
 <style>

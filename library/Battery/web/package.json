@@ -1,0 +1,23 @@
+{
+  "name": "panels-plugin",
+  "version": "0.0.1",
+  "description": "An example of a Panels Plugin",
+  "type": "module",
+  "scripts": {
+    "build": "bun /build.ts",
+    "dev": "bun /builddev.ts"
+  },
+  "devDependencies": {
+    "@std/text": "npm:@jsr/std__text@^1.0.12"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
+    "@types/node": "^24.0.12",
+    "fs": "^0.0.1-security",
+    "ftc-panels": "link:ftc-panels",
+    "path": "^0.12.7",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.3"
+  }
+}

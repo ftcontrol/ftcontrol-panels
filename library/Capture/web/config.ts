@@ -15,6 +15,7 @@ export const config: PluginConfig = {
       filepath: "src/widgets/Capture.svelte",
     },
   ],
+  navlets: [],
   manager: {
     name: "Manager",
     filepath: "src/manager.ts",

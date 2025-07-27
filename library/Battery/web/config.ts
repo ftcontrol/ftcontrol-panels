@@ -1,16 +1,21 @@
 import { PluginConfig } from "ftc-panels"
 
 export const config: PluginConfig = {
-  id: "com.bylazar.docs",
-  name: "Docs",
-  letterName: "D",
-  description: "Docs Plugin for Panels",
+  id: "com.bylazar.battery",
+  name: "Battery",
+  letterName: "B",
+  description: "Battery Utils for Panels",
   version: "0.1.0",
   panelsVersion: "0.0.1",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [],
-  navlets: [],
+  navlets: [
+    {
+      name: "Battery",
+      filepath: "src/widgets/Battery.svelte",
+    },
+  ],
   manager: {
     name: "Manager",
     filepath: "src/manager.ts",

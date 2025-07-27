@@ -35,6 +35,8 @@ dependencies {
     api project(':Gamepad')
     api project(':Field')
     api project(':Docs')
+    api project(':Battery')
+
 }
 
 afterEvaluate {

@@ -11,5 +11,6 @@ include ':LimelightProxy'
 include ':Field'
 include ':Gamepad'
 include ':Docs'
+include ':Battery'
 include ':Panels'
 

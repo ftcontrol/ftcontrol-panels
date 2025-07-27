@@ -10,8 +10,6 @@
   )
 </script>
 
-<h3>Plugin {plugin.details.name}</h3>
-
 <DocsPage
   pluginID={plugin.details.id}
   widgetID={plugin.details.docs.homepage.name}
