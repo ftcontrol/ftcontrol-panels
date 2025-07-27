@@ -1,3 +1,3 @@
 import { devServer } from "ftc-panels/cli"
 
-devServer(__dirname, 3001)
+devServer(__dirname, 3008)

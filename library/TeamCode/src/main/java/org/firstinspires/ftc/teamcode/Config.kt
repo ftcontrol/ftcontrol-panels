@@ -39,6 +39,10 @@ class Config : PanelsConfig() {
         DevPluginEntry(
             pluginID = "com.bylazar.docs",
             devURL = "http://localhost:3007"
+        ),
+        DevPluginEntry(
+            pluginID = "com.bylazar.battery",
+            devURL = "http://localhost:3008"
         )
     )
 }

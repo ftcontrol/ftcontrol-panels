@@ -3,6 +3,8 @@
   import { Button, Overlay } from "ftc-panels"
   import { global } from "$lib"
   import { goto } from "$app/navigation"
+  import NavletContent from "./navlets/NavletContent.svelte"
+  import Navlets from "./navlets/Navlets.svelte"
 </script>
 
 <nav>
@@ -13,6 +15,8 @@
   <p>
     {global.isConnected ? "Connected" : "Waiting"}
   </p>
+
+  <Navlets />
 
   <a href="/docs">Docs</a>
 
@@ -94,5 +98,7 @@
     border-radius: 1rem;
     margin: 0.5rem;
     margin-bottom: 0;
+
+    gap: var(--padding);
   }
 </style>

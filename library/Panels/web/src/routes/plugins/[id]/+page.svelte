@@ -4,7 +4,7 @@
   import type { PageProps } from "./$types"
   import WidgetContent from "$lib/grid/WidgetContent.svelte"
   import Section from "$lib/Section.svelte"
-  import NavletContent from "$lib/NavletContent.svelte"
+  import NavletContent from "$lib/navlets/NavletContent.svelte"
 
   let { data }: PageProps = $props()
   let plugin = $derived(

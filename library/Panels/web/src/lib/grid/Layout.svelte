@@ -43,14 +43,6 @@
     return widget.w * widget.h
   }
 
-  let emptyCells = $derived.by(() => {
-    let cells = 6 * 6
-    for (const w of manager.widgets) {
-      cells -= getSurface(w)
-    }
-    return cells
-  })
-
   let gridCells = $derived.by(() => {
     let list = []
     for (let y = 0; y < manager.MAX_GRID_HEIGHT; y++) {

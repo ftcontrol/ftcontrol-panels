@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { Button, Overlay } from "ftc-panels"
   import { manager, type Widget } from "../widgets.svelte"
-  import { global } from "$lib"
   import WidgetContent from "../WidgetContent.svelte"
-  import PreviewBox from "../PreviewBox.svelte"
   import WidgetTopBar from "./WidgetTopBar.svelte"
   import WidgetResize from "./WidgetResize.svelte"
   import WidgetChoose from "./WidgetChoose.svelte"
