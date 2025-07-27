@@ -8,7 +8,7 @@
   } = $props()
 </script>
 
-<p>Battery</p>
+<p>Battery 12.5V</p>
 
 <style>
   p {

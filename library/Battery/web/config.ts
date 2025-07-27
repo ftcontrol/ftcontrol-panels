@@ -13,7 +13,7 @@ export const config: PluginConfig = {
   navlets: [
     {
       name: "Battery",
-      filepath: "src/widgets/Battery.svelte",
+      filepath: "src/navlets/Battery.svelte",
     },
   ],
   manager: {
