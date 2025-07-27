@@ -1,17 +1,26 @@
 <script lang="ts">
   import type Manager from "../manager"
+  import { onMount } from "svelte"
 
   let {
     manager,
   }: {
     manager: Manager
   } = $props()
+
+  let battery = $state(-1)
+
+  onMount(() => {
+    manager.state.onChange(manager.BATTERY_KEY, (data: number) => {
+      battery = data
+    })
+  })
 </script>
 
-<p>Battery 12.5V</p>
+<p>Battery {battery}V</p>
 
 <style>
   p {
-    color: red;
+    text-wrap: nowrap;
   }
 </style>

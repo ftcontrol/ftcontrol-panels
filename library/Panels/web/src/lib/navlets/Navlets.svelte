@@ -69,12 +69,12 @@
 
 <style>
   .main {
-    flex-grow: 1;
     display: flex;
-    gap: calc(var(--padding) / 2);
+    flex-grow: 1;
+    max-width: calc(100vw - var(--padding) - 410px);
+    overflow-x: auto;
   }
   section {
-    background-color: green;
     height: 100%;
     flex-grow: 1;
 
@@ -86,5 +86,6 @@
   }
   .navlet {
     padding-inline: var(--padding);
+    flex: 0 0 auto;
   }
 </style>

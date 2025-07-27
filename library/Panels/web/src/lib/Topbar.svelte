@@ -100,5 +100,6 @@
     margin-bottom: 0;
 
     gap: var(--padding);
+    max-width: 100%;
   }
 </style>

@@ -1,5 +1,10 @@
 import { PluginManager } from "ftc-panels"
 
 export default class Manager extends PluginManager {
-  override onInit(): void {}
+  BATTERY_KEY = "battery"
+  override onInit(): void {
+    this.socket.addMessageHandler("battery", (data) => {
+      this.state.update(this.BATTERY_KEY, data)
+    })
+  }
 }

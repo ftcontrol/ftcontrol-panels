@@ -24,7 +24,7 @@
           >
             <h4>{p.details.name}</h4>
             <p>{w.name}</p>
-            <PreviewBox scale={0.5}>
+            <PreviewBox scale={1.75}>
               <NavletContent pluginID={p.details.id} widgetID={w.name} />
             </PreviewBox>
           </button>

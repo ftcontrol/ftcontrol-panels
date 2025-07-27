@@ -2,6 +2,7 @@ import { dev } from "$app/environment"
 import {
   GlobalSocket,
   type DevPluginEntry,
+  type PanelsWidget,
   type PluginConfig,
   type PluginInfo,
 } from "ftc-panels"
@@ -82,12 +83,39 @@ export class GlobalState {
             details.manager.textContent = manager
 
             await Promise.all(
-              details.widgets.map(async (widget: any) => {
+              details.widgets.map(async (widget: PanelsWidget) => {
                 const data = await this.getFromServer(
                   dev.devURL,
                   `widgets/${widget.name}.js`
                 )
                 widget.textContent = data
+              })
+            )
+
+            await Promise.all(
+              details.navlets.map(async (navlet: PanelsWidget) => {
+                const data = await this.getFromServer(
+                  dev.devURL,
+                  `navlets/${navlet.name}.js`
+                )
+                navlet.textContent = data
+              })
+            )
+
+            const homepage = await this.getFromServer(
+              dev.devURL,
+              `/docs/${details.docs.homepage.name}.js`
+            )
+
+            details.docs.homepage.textContent = homepage
+
+            await Promise.all(
+              details.docs.chapters.map(async (chapter: PanelsWidget) => {
+                const data = await this.getFromServer(
+                  dev.devURL,
+                  `docs/${chapter.name}.js`
+                )
+                chapter.textContent = data
               })
             )
 
