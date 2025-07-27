@@ -5,6 +5,7 @@
   import WidgetContent from "$lib/grid/WidgetContent.svelte"
   import Section from "$lib/Section.svelte"
   import NavletContent from "$lib/navlets/NavletContent.svelte"
+  import DocsPage from "$lib/DocsPage.svelte"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -23,6 +24,8 @@
     <h4>{widget.name}</h4>
     <WidgetContent pluginID={plugin.details.id} widgetID={widget.name} />
   </Section>
+{:else}
+  <p>No widgets found</p>
 {/each}
 
 <h3>Navlets</h3>
@@ -31,6 +34,27 @@
     <h4>{navlet.name}</h4>
     <NavletContent pluginID={plugin.details.id} widgetID={navlet.name} />
   </Section>
+{:else}
+  <p>No navlets found</p>
+{/each}
+
+<h3>Docs Homepage</h3>
+<Section>
+  <h4>{plugin.details.docs.homepage.name}</h4>
+  <DocsPage
+    pluginID={plugin.details.id}
+    widgetID={plugin.details.docs.homepage.name}
+  />
+</Section>
+
+<h3>Docs Chapters</h3>
+{#each plugin.details.docs.chapters as chapter}
+  <Section>
+    <h4>{chapter.name}</h4>
+    <DocsPage pluginID={plugin.details.id} widgetID={chapter.name} />
+  </Section>
+{:else}
+  <p>No chapters found</p>
 {/each}
 
 <style>

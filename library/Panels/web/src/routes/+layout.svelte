@@ -23,7 +23,4 @@
     display: flex;
     flex-direction: column;
   }
-  div {
-    background-color: yellow;
-  }
 </style>

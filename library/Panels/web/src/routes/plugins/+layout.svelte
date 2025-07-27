@@ -11,5 +11,6 @@
 <style>
   section {
     margin: 0.5rem;
+    overflow-y: auto;
   }
 </style>

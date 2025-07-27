@@ -62,7 +62,7 @@
     display: flex;
     gap: calc(var(--padding) / 2);
     margin: 0.5rem;
-    height: 100%;
+    overflow-y: auto;
   }
   p {
     margin: 0;
