@@ -88,6 +88,7 @@
     overflow-y: auto;
     background-color: var(--bgMedium);
     border-radius: 1rem;
+    min-width: 200px;
   }
   .content {
     background-color: var(--bgMedium);

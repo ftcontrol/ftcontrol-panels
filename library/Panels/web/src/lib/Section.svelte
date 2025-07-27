@@ -14,5 +14,6 @@
     padding: var(--padding);
     border-radius: 1rem;
     overflow: auto;
+    margin-bottom: calc(var(--padding) / 2);
   }
 </style>

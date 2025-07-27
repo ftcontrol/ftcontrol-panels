@@ -17,10 +17,14 @@ export const config: PluginConfig = {
   },
   docs: {
     homepage: {
-      name: "Homepage",
-      filepath: "src/docs/Homepage.svelte",
+      name: "Overview",
+      filepath: "src/docs/Overview.svelte",
     },
     chapters: [
+      {
+        name: "Prerequisites",
+        filepath: "src/docs/Prerequisites.svelte",
+      },
       {
         name: "DocsPage1",
         filepath: "src/docs/DocsPage1.svelte",
