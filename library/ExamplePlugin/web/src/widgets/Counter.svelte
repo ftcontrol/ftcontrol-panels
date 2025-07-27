@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { Button } from "ftc-panels"
+  import { Button, type PluginInfo } from "ftc-panels"
   import type Manager from "../manager"
 
   let {
+    info,
     manager,
   }: {
+    info: PluginInfo
     manager: Manager
   } = $props()
 
