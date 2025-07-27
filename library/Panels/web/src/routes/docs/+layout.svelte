@@ -2,6 +2,7 @@
   import { onMount, type Snippet } from "svelte"
   import { global } from "$lib"
   import { Toggle } from "ftc-panels"
+  import Arrow from "$lib/icons/Arrow.svelte"
 
   let { children }: { children?: Snippet } = $props()
 
@@ -32,9 +33,12 @@
 <section>
   <nav>
     {#each orderedPlugins as plugin}
-      <Toggle defaultOpen={true}>
+      <Toggle defaultOpen={plugin.details.id == "com.bylazar.docs"}>
         {#snippet trigger({ isOpen }: { isOpen: boolean })}
-          <p>{plugin.details.name}</p>
+          <p>
+            {plugin.details.name}
+            <Arrow {isOpen} />
+          </p>
         {/snippet}
         {#snippet content({ close }: { close: () => void })}
           <div class="item">
@@ -47,6 +51,7 @@
           </div>
         {/snippet}
       </Toggle>
+      <div class="divider"></div>
     {/each}
     {#each global.skippedPlugins as plugin}
       <p class="disabled">{plugin.name}</p>
@@ -63,12 +68,17 @@
     gap: calc(var(--padding) / 2);
     margin: 0.5rem;
     overflow-y: auto;
+    height: 100%;
   }
   p {
     margin: 0;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 0.25rem;
     margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--padding);
   }
   a {
     color: inherit;
@@ -84,10 +94,14 @@
     width: fit-content;
     border-radius: 1rem;
   }
-  .item {
-    margin-left: calc(var(--padding));
-  }
   p.disabled {
+    opacity: 0.5;
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    margin-block: 1rem;
     opacity: 0.5;
   }
 </style>
