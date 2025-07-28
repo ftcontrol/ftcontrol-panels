@@ -11,6 +11,7 @@ open class SvelteAssetsPluginExtension {
     var webAppPath: String = "web"
     var buildDirPath: String = "build"
     var assetsPath: String = "web"
+    var useNpm: Boolean = false
 }
 
 class SvelteAssetsPlugin : Plugin<Project> {
@@ -40,6 +41,7 @@ class SvelteAssetsPlugin : Plugin<Project> {
         println("   webAppPath: ${extension.webAppPath}")
         println("   buildDirPath: ${extension.buildDirPath}")
         println("   assetsPath: ${extension.assetsPath}")
+        println("   useNpm: ${extension.useNpm}")
         println("   webDir: ${webDir.absolutePath}")
         println("   outputDir: ${outputDir.absolutePath}")
 
@@ -47,24 +49,30 @@ class SvelteAssetsPlugin : Plugin<Project> {
             delete(outputDir.listFiles())
         }
 
+        val installCmd = when {
+            extension.useNpm && isWindows -> listOf("cmd", "/c", "npm", "install")
+            extension.useNpm -> listOf("sh", "-c", "npm install")
+            !extension.useNpm && isWindows -> listOf("cmd", "/c", "bun", "install")
+            else -> listOf("sh", "-c", "bun install")
+        }
+
+        val buildCmd = when {
+            extension.useNpm && isWindows -> listOf("cmd", "/c", "npm", "run", "build")
+            extension.useNpm -> listOf("sh", "-c", "npm run build")
+            !extension.useNpm && isWindows -> listOf("cmd", "/c", "bun", "run", "build")
+            else -> listOf("sh", "-c", "bun run build")
+        }
+
         val installSvelteApp = project.tasks.register("installSvelteApp", Exec::class.java) {
             dependsOn(clearAssets)
             workingDir = webDir
-            commandLine = if (isWindows) {
-                listOf("cmd", "/c", "bun", "install")
-            } else {
-                listOf("sh", "-c", "bun install")
-            }
+            commandLine = installCmd
         }
 
         val buildSvelteApp = project.tasks.register("buildSvelteApp", Exec::class.java) {
             dependsOn(installSvelteApp)
             workingDir = webDir
-            commandLine = if (isWindows) {
-                listOf("cmd", "/c", "bun", "run", "build")
-            } else {
-                listOf("sh", "-c", "bun run build")
-            }
+            commandLine = buildCmd
         }
 
         val copySvelteToAssets = project.tasks.register("copySvelteToAssets", Copy::class.java) {
