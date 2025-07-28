@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "bun /build.ts",
-    "dev": "bun /builddev.ts"
+    "dev": "bun /builddev.ts",
+    "check": "bun /check.ts"
   },
   "devDependencies": {
     "@std/text": "npm:@jsr/std__text@^1.0.12"
