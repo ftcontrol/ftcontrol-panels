@@ -218,36 +218,6 @@ export class GlobalState {
     this.socket.close()
   }
 
-  private async getIsCombined(): Promise<boolean> {
-    const url = dev ? "http://localhost:8001" : window.location.origin
-
-    try {
-      const response = await this.fetchWithRetry(`${url}/combined`, {})
-
-      const isCombined = await response.text()
-
-      return isCombined == "true"
-    } catch (err) {
-      console.warn("IsCombined fetch failed", err)
-      throw err
-    }
-  }
-
-  private async getLatestVersion(): Promise<string> {
-    const url = dev ? "http://localhost:8001" : window.location.origin
-
-    try {
-      const response = await this.fetchWithRetry(`${url}/version`, {})
-
-      const version = await response.text()
-
-      return version
-    } catch (err) {
-      console.warn("Version fetch failed", err)
-      throw err
-    }
-  }
-
   private async getPluginsUntilReady(): Promise<string> {
     var currentSha = await this.getSha()
 

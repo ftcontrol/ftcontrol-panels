@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.AssetManager
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
-import com.bylazar.panels.PanelsGlobalStats
 import com.bylazar.panels.json.PluginData
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
@@ -161,12 +160,6 @@ class StaticServer(
         }
         if (uri == "sha256") {
             return getResponse(lastSha).allowCors()
-        }
-        if (uri == "combined") {
-            return getResponse(PanelsGlobalStats.isCombined.toString()).allowCors()
-        }
-        if (uri == "version") {
-            return getResponse(PanelsGlobalStats.version).allowCors()
         }
 
         return getStaticResponse(uri)
