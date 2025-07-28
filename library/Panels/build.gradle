@@ -60,7 +60,7 @@ dependencies {
 }
 
 tasks.register('clearAssets', Delete) {
-    delete fileTree('src/main/assets/web')
+    delete(file("src/main/assets/web").listFiles())
 }
 
 tasks.register('installSvelteApp', Exec) {
