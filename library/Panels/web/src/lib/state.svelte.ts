@@ -9,6 +9,8 @@ import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/s
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
 import LZMA from "./lzma"
 import { readValue, storeValue } from "./indexedDB"
+import { notifications } from "$lib"
+import { goto } from "$app/navigation"
 
 function decompressLzma(compressedData: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -415,7 +417,18 @@ export class GlobalState {
 
       if (hasVersion) {
         this.lastVersionNotificationTime[id] = Date.now()
-        alert(`Plugin ${id} has a new version: ${version}`)
+        notifications.addAction(`Plugin ${id} has a new version: ${version}`, [
+          {
+            text: "Check Website",
+            task: () => {
+              window.open(plugin.details.websiteURL, "_blank")
+            },
+          },
+          {
+            text: "Remind me later",
+            task: () => {},
+          },
+        ])
       } else {
         console.log(`Plugin ${id} is latest`)
       }
@@ -430,7 +443,18 @@ export class GlobalState {
       const version = await this.getLatestVersion()
       if (version != this.panelsVersion && version != "") {
         this.lastVersionNotificationTime["panels"] = Date.now()
-        alert(`Panels has a new version: ${version}`)
+        notifications.addAction(`Panels has a new version: ${version}`, [
+          {
+            text: "Check Website",
+            task: () => {
+              window.open("https://panels.bylazar.com", "_blank")
+            },
+          },
+          {
+            text: "Remind me later",
+            task: () => {},
+          },
+        ])
       } else {
         alert(`Panels is latest`)
       }
