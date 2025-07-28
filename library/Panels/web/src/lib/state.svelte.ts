@@ -28,7 +28,7 @@ function decompressLzma(compressedData: Uint8Array): Promise<string> {
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
-  devServers: DevPluginEntry[] = $state([])
+  devServers: string[] = $state([])
   skippedPlugins: PluginConfig[] = $state([])
   socket: GlobalSocket = new GlobalSocket()
 
@@ -73,22 +73,26 @@ export class GlobalState {
   lastVersionNotificationTime: Record<string, number> = $state({})
 
   private async updateDevPlugins(reloadManager = false) {
-    for (const dev of this.devServers) {
+    for (const id of this.devServers) {
       for (const plugin of this.plugins) {
-        if (dev.pluginID == plugin.details.id) {
+        if (id == plugin.details.id) {
+          if (plugin.details.devURL == "") return
           try {
             let details = JSON.parse(
-              await this.getFromServer(dev.devURL, "/config.json")
+              await this.getFromServer(plugin.details.devURL, "/config.json")
             )
 
-            const manager = await this.getFromServer(dev.devURL, "/Manager.js")
+            const manager = await this.getFromServer(
+              plugin.details.devURL,
+              "/Manager.js"
+            )
 
             details.manager.textContent = manager
 
             await Promise.all(
               details.widgets.map(async (widget: PanelsWidget) => {
                 const data = await this.getFromServer(
-                  dev.devURL,
+                  plugin.details.devURL,
                   `widgets/${widget.name}.js`
                 )
                 widget.textContent = data
@@ -98,7 +102,7 @@ export class GlobalState {
             await Promise.all(
               details.navlets.map(async (navlet: PanelsWidget) => {
                 const data = await this.getFromServer(
-                  dev.devURL,
+                  plugin.details.devURL,
                   `navlets/${navlet.name}.js`
                 )
                 navlet.textContent = data
@@ -106,7 +110,7 @@ export class GlobalState {
             )
 
             const homepage = await this.getFromServer(
-              dev.devURL,
+              plugin.details.devURL,
               `/docs/${details.docs.homepage.name}.js`
             )
 
@@ -115,7 +119,7 @@ export class GlobalState {
             await Promise.all(
               details.docs.chapters.map(async (chapter: PanelsWidget) => {
                 const data = await this.getFromServer(
-                  dev.devURL,
+                  plugin.details.devURL,
                   `docs/${chapter.name}.js`
                 )
                 chapter.textContent = data
@@ -153,10 +157,10 @@ export class GlobalState {
 
               this.reloadIndexes[details.id]++
 
-              console.log("Reloaded plugin", dev.pluginID)
+              console.log("Reloaded plugin", id)
             }
           } catch (e) {
-            console.error("Failed to refresh plugin", dev.pluginID, e)
+            console.error("Failed to refresh plugin", id, e)
           }
         }
       }
@@ -200,26 +204,16 @@ export class GlobalState {
       this.skippedPlugins = parsed.data.skippedPlugins
       console.log(`[init] Skipped ${this.skippedPlugins.length} plugins`)
 
-      this.devServers = parsed.data.devServers
-      console.log(`[init] Found ${this.devServers.length} dev servers`)
-
-      if (this.devServers.length) {
-        console.log(`[init] Updating dev plugins (initial)...`)
-        this.updateDevPlugins(false)
-      }
-
       const t1 = Date.now()
       await this.socket.init(this.plugins, () => {
         window.location.reload()
       })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
-      if (this.devServers.length) {
-        this.interval = setInterval(() => {
-          this.updateDevPlugins(true)
-        }, 1000)
-        console.log(`[init] Dev plugin interval set up`)
-      }
+      this.interval = setInterval(() => {
+        this.updateDevPlugins(true)
+      }, 1000)
+      console.log(`[init] Dev plugin interval set up`)
 
       if (this.updateInterval !== null) {
         clearInterval(this.updateInterval)

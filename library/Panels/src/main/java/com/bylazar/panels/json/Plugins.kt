@@ -10,6 +10,7 @@ data class PluginDetails(
     val letterName: String = "",
     val description: String = "",
     val websiteURL: String = "",
+    val devURL: String = "",
     val version: String = "",
     val pluginsCoreVersion: String = "",
     val author: String = "",

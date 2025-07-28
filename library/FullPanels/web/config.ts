@@ -6,6 +6,7 @@ export const config: PluginConfig = {
   letterName: "FP",
   description: "Full Panels Installation",
   websiteURL: "",
+  devURL: "",
   version: "0.0.3",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",

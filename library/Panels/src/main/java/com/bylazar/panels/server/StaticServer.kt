@@ -112,26 +112,23 @@ class StaticServer(
         val t1 = System.currentTimeMillis()
         val skipped = PluginsManager.skippedPlugins.values.toList().sortedBy { it.id }
         val t2 = System.currentTimeMillis()
-        val dev = Panels.config.devPlugins
-        val t3 = System.currentTimeMillis()
 
         jsonString = SocketMessage(
             "core",
             "pluginsDetails",
-            PluginData(pluginInfos, skipped, dev)
+            PluginData(pluginInfos, skipped)
         ).toJson()
-        val t4 = System.currentTimeMillis()
+        val t3 = System.currentTimeMillis()
 
         val compressed = lzmaCompress(jsonString)
 
-        val t5 = System.currentTimeMillis()
+        val t4 = System.currentTimeMillis()
 
         Logger.serverLog("toInfo() took ${t1 - t0}ms")
         Logger.serverLog("skippedPlugins took ${t2 - t1}ms")
-        Logger.serverLog("devPlugins took ${t3 - t2}ms")
-        Logger.serverLog("toJson() took ${t4 - t3}ms")
-        Logger.serverLog("Compression took ${t5 - t4}ms")
-        Logger.serverLog("Total time: ${t5 - t0}ms")
+        Logger.serverLog("toJson() took ${t3 - t2}ms")
+        Logger.serverLog("Compression took ${t4 - t3}ms")
+        Logger.serverLog("Total time: ${t4 - t0}ms")
 
         Logger.serverLog("Sending ${jsonString.length} characters (~${jsonString.toByteArray().size / 1024} KB)")
         Logger.serverLog("Sending compressed (~${compressed.size / 1024} KB)")
