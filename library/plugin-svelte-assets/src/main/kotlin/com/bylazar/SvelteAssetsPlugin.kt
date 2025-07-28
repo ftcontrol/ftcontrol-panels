@@ -18,18 +18,30 @@ class SvelteAssetsPlugin : Plugin<Project> {
         val extension = project.extensions.create("svelteAssets", SvelteAssetsPluginExtension::class.java)
 
         project.plugins.withId("com.android.library") {
-            configure(project)
+            configureAfterEvaluate(project, extension)
         }
         project.plugins.withId("com.android.application") {
-            configure(project)
+            configureAfterEvaluate(project, extension)
         }
     }
 
-    private fun configure(project: Project) {
-        val extension = project.extensions.getByType(SvelteAssetsPluginExtension::class.java)
+    private fun configureAfterEvaluate(project: Project, extension: SvelteAssetsPluginExtension) {
+        project.afterEvaluate {
+            configure(project, extension)
+        }
+    }
+
+    private fun configure(project: Project, extension: SvelteAssetsPluginExtension) {
         val isWindows = System.getProperty("os.name").lowercase().contains("windows")
         val webDir = File(project.projectDir, extension.webAppPath)
         val outputDir = File(project.projectDir, "src/main/assets/${extension.assetsPath}")
+
+        println("🔧 Configuring SvelteAssetsPlugin with:")
+        println("   webAppPath: ${extension.webAppPath}")
+        println("   buildDirPath: ${extension.buildDirPath}")
+        println("   assetsPath: ${extension.assetsPath}")
+        println("   webDir: ${webDir.absolutePath}")
+        println("   outputDir: ${outputDir.absolutePath}")
 
         val clearAssets = project.tasks.register("clearAssets", Delete::class.java) {
             delete(outputDir.listFiles())
