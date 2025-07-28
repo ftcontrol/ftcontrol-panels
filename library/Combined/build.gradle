@@ -36,7 +36,6 @@ dependencies {
     api project(':Field')
     api project(':Docs')
     api project(':Battery')
-    api project(':ReleaseNotifier')
 }
 
 afterEvaluate {
