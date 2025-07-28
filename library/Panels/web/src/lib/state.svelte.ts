@@ -1,7 +1,6 @@
 import { dev } from "$app/environment"
 import {
   GlobalSocket,
-  type DevPluginEntry,
   type PanelsWidget,
   type PluginConfig,
   type PluginInfo,
@@ -73,9 +72,11 @@ export class GlobalState {
   lastVersionNotificationTime: Record<string, number> = $state({})
 
   private async updateDevPlugins(reloadManager = false) {
+    console.log("Dev for plugins", this.devServers)
     for (const id of this.devServers) {
       for (const plugin of this.plugins) {
         if (id == plugin.details.id) {
+          console.log("Dev for plugin", id, "and URL", plugin.details.devURL)
           if (plugin.details.devURL == "") return
           try {
             let details = JSON.parse(
@@ -125,6 +126,10 @@ export class GlobalState {
                 chapter.textContent = data
               })
             )
+
+            if (details.devURL != plugin.details.devURL) {
+              details.devURL = plugin.details.devURL
+            }
 
             if (JSON.stringify(details) != JSON.stringify(plugin.details)) {
               if (reloadManager) {
@@ -209,6 +214,10 @@ export class GlobalState {
         window.location.reload()
       })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
+
+      if (this.interval !== null) {
+        clearInterval(this.interval)
+      }
 
       this.interval = setInterval(() => {
         this.updateDevPlugins(true)
