@@ -13,7 +13,7 @@ export const config: PluginConfig = {
   navlets: [
     {
       name: "Version Checker",
-      filepath: "src/navlets/Version.ts",
+      filepath: "src/navlets/Version.svelte",
     },
   ],
   manager: {

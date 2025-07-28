@@ -1,4 +1,4 @@
-package com.bylazar.exampleplugin
+package com.bylazar.notifier
 
 import android.content.Context
 import com.bylazar.panels.Panels
@@ -9,12 +9,8 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-open class ExamplePluginConfig : BasePluginConfig() {
-    open var test = "test"
-}
-
-class ExamplePlugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
-    override var id = "com.bylazar.exampleplugin"
+class ReleaseNotifierPlugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
+    override var id = "com.bylazar.notifier"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

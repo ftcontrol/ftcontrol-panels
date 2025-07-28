@@ -1,12 +1,11 @@
 package com.bylazar.panels.plugins
 
 import android.content.Context
-import com.bylazar.panels.GlobalStats
+import com.bylazar.panels.PanelsGlobalStats
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
-import com.bylazar.panels.reflection.ClassFinder.apkPath
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.lang.ref.WeakReference
 import kotlin.collections.set
@@ -141,9 +140,9 @@ object PluginsManager {
 
                 Logger.pluginsLog(pluginInstance.details.toString())
 
-                if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
+                if (pluginInstance.details.pluginsCoreVersion != PanelsGlobalStats.pluginsCoreVersion) {
                     skippedPlugins[pluginInstance.id] = pluginInstance.details
-                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '$uniqueId', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '$uniqueId', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${PanelsGlobalStats.pluginsCoreVersion}")
                 } else {
                     plugins[uniqueId] = pluginInstance
                     Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '$uniqueId'")
