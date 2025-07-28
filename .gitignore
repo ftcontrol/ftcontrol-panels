@@ -10,3 +10,4 @@ library/replay_pid62272.log
 library/hs_err_pid62272.log
 /library/Combined/build
 *.log
+/library/plugin-svelte-assets/build

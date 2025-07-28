@@ -1,3 +1,12 @@
+pluginManagement {
+    includeBuild("./plugin-svelte-assets")
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
 include ':FtcRobotController'
 include ':TeamCode'
 include ':OpModeControl'
@@ -13,4 +22,3 @@ include ':Docs'
 include ':Battery'
 include ':FullPanels'
 include ':Panels'
-

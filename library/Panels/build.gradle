@@ -2,13 +2,20 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+    id 'com.bylazar.svelte-assets'
+}
+
+svelteAssets {
+    webAppPath = "web"
+    buildDirPath = "build"
+    assetsPath = "web"
 }
 
 android {
     namespace 'com.bylazar.panels'
-    compileSdk 35
 
     defaultConfig {
+        compileSdk 35
         minSdk 24
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -58,40 +65,6 @@ dependencies {
 
     implementation 'org.tukaani:xz:1.9'
 }
-
-tasks.register('clearAssets', Delete) {
-    delete(file("src/main/assets/web").listFiles())
-}
-
-tasks.register('installSvelteApp', Exec) {
-    dependsOn clearAssets
-    workingDir 'web'
-
-    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-        commandLine 'cmd', '/c', 'bun', 'install'
-    } else {
-        commandLine 'sh', '-c', 'bun install'
-    }
-}
-
-tasks.register('buildSvelteApp', Exec) {
-    dependsOn installSvelteApp
-    workingDir 'web'
-
-    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-        commandLine 'cmd', '/c', 'bun', 'run', 'build'
-    } else {
-        commandLine 'sh', '-c', 'bun run build'
-    }
-}
-
-tasks.register('copySvelteToAssets', Copy) {
-    dependsOn buildSvelteApp
-    from 'web/build'
-    into 'src/main/assets/web'
-}
-
-preBuild.dependsOn(copySvelteToAssets)
 
 afterEvaluate {
     publishing {
