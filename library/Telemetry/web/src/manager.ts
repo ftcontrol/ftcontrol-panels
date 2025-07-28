@@ -11,4 +11,8 @@ export default class Manager extends PluginManager {
       this.state.update(this.PACKETS_KEY, data)
     })
   }
+
+  override hasNewVersion(currentVersion: string): boolean {
+    return false
+  }
 }

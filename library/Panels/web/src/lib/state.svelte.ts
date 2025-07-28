@@ -129,7 +129,8 @@ export class GlobalState {
                   this.socket.pluginManagers[details.id].state.data
 
                 this.socket.pluginManagers[details.id] = new Manager(
-                  new PluginSocket(details.id, this.socket)
+                  new PluginSocket(details.id, this.socket),
+                  details
                 )
 
                 this.socket.pluginManagers[details.id].state.data = oldStateData

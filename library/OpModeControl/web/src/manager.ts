@@ -17,4 +17,8 @@ export default class Manager extends PluginManager {
       this.state.update(this.ACTIVE_OPMODE_STATUS_KEY, data.status)
     })
   }
+
+  override hasNewVersion(currentVersion: string): boolean {
+    return false
+  }
 }

@@ -95,4 +95,8 @@ export default class Manager extends PluginManager {
     this.saveToCookies()
     this.apply()
   }
+
+  override hasNewVersion(currentVersion: string): boolean {
+    return false
+  }
 }

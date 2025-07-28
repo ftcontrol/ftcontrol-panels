@@ -15,4 +15,8 @@ export default class Manager extends PluginManager {
       this.state.update(this.IMAGES_KEY, data)
     })
   }
+
+  override hasNewVersion(currentVersion: string): boolean {
+    return false
+  }
 }
