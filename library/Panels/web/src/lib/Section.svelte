@@ -1,10 +1,11 @@
 <script lang="ts">
   import type { Snippet } from "svelte"
 
-  let { children }: { children?: Snippet } = $props()
+  let { children, margin = false }: { children?: Snippet; margin?: boolean } =
+    $props()
 </script>
 
-<section>
+<section class:margin>
   {@render children?.()}
 </section>
 
@@ -14,6 +15,8 @@
     padding: var(--padding);
     border-radius: 1rem;
     overflow: auto;
+  }
+  section.margin {
     margin-bottom: calc(var(--padding) / 2);
   }
 </style>

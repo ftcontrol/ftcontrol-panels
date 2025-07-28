@@ -24,14 +24,37 @@ data class PluginDetails(
             appendLine("PluginDetails(")
             appendLine("  id='$id',")
             appendLine("  name='$name',")
+            appendLine("  letterName='$letterName',")
             appendLine("  description='$description',")
+            appendLine("  websiteURL='$websiteURL',")
+            appendLine("  devURL='$devURL',")
             appendLine("  version='$version',")
+            appendLine("  pluginsCoreVersion='$pluginsCoreVersion',")
             appendLine("  author='$author',")
+
             appendLine("  widgets=[")
             widgets.forEach { widget ->
-                appendLine("    PanelsWidget(name='${widget.name}', filepath='${widget.filepath}'),")
+                appendLine("    PanelsWidget(name='${widget.name}', filepath='${widget.filepath}', textContent='${widget.textContent}'),")
             }
-            appendLine("  ]")
+            appendLine("  ],")
+
+            appendLine("  navlets=[")
+            navlets.forEach { navlet ->
+                appendLine("    PanelsWidget(name='${navlet.name}', filepath='${navlet.filepath}', textContent='${navlet.textContent}'),")
+            }
+            appendLine("  ],")
+
+            appendLine("  manager=PanelsWidget(name='${manager.name}', filepath='${manager.filepath}', textContent='${manager.textContent}'),")
+
+            appendLine("  docs=PanelsDocs(")
+            appendLine("    homepage=PanelsWidget(name='${docs.homepage.name}', filepath='${docs.homepage.filepath}', textContent='${docs.homepage.textContent}'),")
+            appendLine("    chapters=[")
+            docs.chapters.forEach { chapter ->
+                appendLine("      PanelsWidget(name='${chapter.name}', filepath='${chapter.filepath}', textContent='${chapter.textContent}'),")
+            }
+            appendLine("    ]")
+            appendLine("  )")
+
             append(")")
         }
     }

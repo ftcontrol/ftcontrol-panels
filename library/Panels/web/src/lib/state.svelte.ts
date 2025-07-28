@@ -456,7 +456,7 @@ export class GlobalState {
           },
         ])
       } else {
-        alert(`Panels is latest`)
+        console.log(`Panels is latest`)
       }
     }
   }

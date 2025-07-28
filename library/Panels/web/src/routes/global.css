@@ -74,5 +74,6 @@ body {
 }
 
 a {
-  color: var(--primary);
+  color: currentColor;
+  display: block;
 }

@@ -8,6 +8,7 @@ import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.reflection.ClassFinder.apkPath
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.lang.ref.WeakReference
 import kotlin.collections.set
 import kotlin.jvm.java
@@ -22,8 +23,11 @@ object PluginsManager {
     fun loadPluginConfig(context: Context, filename: String = "config.json"): PluginDetails {
         val assetManager = context.assets
         assetManager.open(filename).use { inputStream ->
+            val raw = inputStream.bufferedReader().readText()
+            Logger.pluginsLog("JSON is $raw")
             val mapper = jacksonObjectMapper()
-            return mapper.readValue(inputStream, PluginDetails::class.java)
+            mapper.registerKotlinModule()
+            return mapper.readValue(raw, PluginDetails::class.java)
         }
     }
 
@@ -108,6 +112,8 @@ object PluginsManager {
 
                 pluginInstance.details = details
 
+                Logger.pluginsLog(pluginInstance.details.toString())
+
                 //get all widgets content
 
                 pluginInstance.details.widgets.forEach {
@@ -138,8 +144,6 @@ object PluginsManager {
                 )
 
                 Logger.pluginsLog("Got details or ID '$uniqueId'")
-
-                Logger.pluginsLog(pluginInstance.details.toString())
 
                 if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
                     skippedPlugins[pluginInstance.id] = pluginInstance.details

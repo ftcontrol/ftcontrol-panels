@@ -66,10 +66,4 @@ tasks.register('copySvelteToAssets', Copy) {
     into 'src/main/assets/web/plugins/com.bylazar.telemetry'
 }
 
-tasks.register('copyConfigToAssets', Copy) {
-    dependsOn buildSvelteApp
-    from 'config.json'
-    into 'src/main/assets/web/plugins/com.bylazar.telemetry/config.json'
-}
-
-preBuild.dependsOn(copySvelteToAssets, copyConfigToAssets)
+preBuild.dependsOn(copySvelteToAssets)
