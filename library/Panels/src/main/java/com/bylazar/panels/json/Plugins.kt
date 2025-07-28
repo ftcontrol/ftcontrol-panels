@@ -11,7 +11,6 @@ data class PluginDetails(
     val description: String = "",
     val websiteURL: String = "",
     val version: String = "",
-    val panelsVersion: String = "",
     val pluginsCoreVersion: String = "",
     val author: String = "",
     val widgets: List<PanelsWidget> = listOf(),
@@ -26,7 +25,6 @@ data class PluginDetails(
             appendLine("  name='$name',")
             appendLine("  description='$description',")
             appendLine("  version='$version',")
-            appendLine("  panelsVersion='$panelsVersion',")
             appendLine("  author='$author',")
             appendLine("  widgets=[")
             widgets.forEach { widget ->
