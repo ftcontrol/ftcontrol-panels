@@ -5,17 +5,17 @@
  */
 
 buildscript {
-    ext {
-        kotlin_version = '2.1.20'
-    }
+    val kotlin_version by extra("2.1.20")
+
     repositories {
         mavenCentral()
         google()
     }
+
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
-        classpath 'com.android.tools.build:gradle:8.7.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.android.tools.build:gradle:8.7.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
