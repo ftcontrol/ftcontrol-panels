@@ -33,7 +33,6 @@ class FullPanelsPlugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()
     }
 
     override fun onOpModeManager(o: OpModeManagerImpl) {
-
     }
 
     override fun onOpModePreInit(opMode: OpMode) {

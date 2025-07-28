@@ -404,11 +404,15 @@ export class GlobalState {
 
       console.log("Checking plugin version", id, manager.config.version)
 
-      const hasVersion = await manager.hasNewVersion(manager.config.version)
+      const version = await manager.getNewVersion()
+      var hasVersion = version != manager.config.version
+      if (version == "") {
+        hasVersion = false
+      }
 
       if (hasVersion) {
         this.lastVersionNotificationTime[id] = Date.now()
-        alert(`Plugin ${id} has a new version`)
+        alert(`Plugin ${id} has a new version: ${version}`)
       } else {
         console.log(`Plugin ${id} is latest`)
       }
@@ -421,9 +425,9 @@ export class GlobalState {
       )
         return
       const version = await this.getLatestVersion()
-      if (version != this.panelsVersion) {
+      if (version != this.panelsVersion && version != "") {
         this.lastVersionNotificationTime["panels"] = Date.now()
-        alert(`Panels has a new version`)
+        alert(`Panels has a new version: ${version}`)
       } else {
         alert(`Panels is latest`)
       }

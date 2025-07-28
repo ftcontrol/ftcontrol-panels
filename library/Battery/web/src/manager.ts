@@ -8,7 +8,7 @@ export default class Manager extends PluginManager {
     })
   }
 
-  override hasNewVersion(currentVersion: string): boolean {
-    return false
+  override getNewVersion(): string {
+    return ""
   }
 }
