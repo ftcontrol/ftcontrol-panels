@@ -12,5 +12,6 @@ include ':Field'
 include ':Gamepad'
 include ':Docs'
 include ':Battery'
+include ':FullPanels'
 include ':Panels'
 

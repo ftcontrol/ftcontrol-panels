@@ -39,5 +39,5 @@ repositories {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation project(':Combined')
+    implementation project(':FullPanels')
 }

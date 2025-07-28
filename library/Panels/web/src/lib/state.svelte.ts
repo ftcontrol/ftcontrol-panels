@@ -34,6 +34,8 @@ export class GlobalState {
 
   isConnected = $state(false)
 
+  updateInterval: ReturnType<typeof setInterval> | null = null
+
   private async getFromServer(serverURL: string, path: string): Promise<any> {
     const url = `${serverURL.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`
 
@@ -68,6 +70,7 @@ export class GlobalState {
 
   interval: ReturnType<typeof setInterval> | null = null
   reloadIndexes: Record<string, number> = $state({})
+  lastVersionNotificationTime: Record<string, number> = $state({})
 
   private async updateDevPlugins(reloadManager = false) {
     for (const dev of this.devServers) {
@@ -160,6 +163,20 @@ export class GlobalState {
     }
   }
 
+  async hasInternetConnection(): Promise<boolean> {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/lazarcloud/ftcontrol-maven/refs/heads/main/dev/com/bylazar/panels/maven-metadata.xml",
+        {
+          cache: "no-cache",
+        }
+      )
+      return response.ok
+    } catch (e) {
+      return false
+    }
+  }
+
   async init() {
     const startTime = Date.now()
     console.log(`[init] Starting initialization...`)
@@ -177,6 +194,7 @@ export class GlobalState {
       console.log(`[init] Loaded ${this.plugins.length} plugins`)
       this.plugins.forEach((item) => {
         this.reloadIndexes[item.details.id] = 0
+        this.lastVersionNotificationTime[item.details.id] = 0
       })
 
       this.skippedPlugins = parsed.data.skippedPlugins
@@ -202,6 +220,17 @@ export class GlobalState {
         }, 1000)
         console.log(`[init] Dev plugin interval set up`)
       }
+
+      if (this.updateInterval !== null) {
+        clearInterval(this.updateInterval)
+      }
+
+      this.updateInterval = setInterval(async () => {
+        const hasInternet = await this.hasInternetConnection()
+        if (!hasInternet) return
+        console.log("Has internet")
+        await this.checkVersions()
+      }, 1000)
 
       this.isConnected = true
       console.log(
@@ -317,5 +346,87 @@ export class GlobalState {
     )
 
     return text
+  }
+
+  panelsVersion = "0.0.2"
+
+  async getLatestVersion(): Promise<string> {
+    try {
+      const response = await fetch(
+        `https://raw.githubusercontent.com/lazarcloud/ftcontrol-maven/refs/heads/main/dev/com/bylazar/panels/maven-metadata.xml`
+      )
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+
+      const xmlText = await response.text()
+      const parser = new DOMParser()
+      const xmlDoc = parser.parseFromString(xmlText, "application/xml")
+
+      const latestVersion = xmlDoc.querySelector("latest")?.textContent
+
+      return latestVersion || ""
+    } catch (error) {
+      return ""
+    }
+  }
+
+  async checkVersions() {
+    const combinedPlugins = [
+      "com.bylazar.battery",
+      "com.bylazar.capture",
+      "com.bylazar.configurables",
+      "com.bylazar.docs",
+      "com.bylazar.exampleplugin",
+      "com.bylazar.field",
+      "com.bylazar.gamepad",
+      "com.bylazar.limelightproxy",
+      "com.bylazar.opmodecontrol",
+      "com.bylazar.telemetry",
+      "com.bylazar.themes",
+      //TODO: fill here
+    ]
+    var isCombined = false
+    for (const plugin of this.plugins) {
+      if (plugin.details.id == "com.bylazar.fullpanels") {
+        isCombined = true
+      }
+    }
+
+    console.log("isCombined", isCombined)
+
+    for (const plugin of this.plugins) {
+      const id = plugin.details.id
+
+      if (Date.now() - this.lastVersionNotificationTime[id] < 15 * 60 * 1000)
+        return
+
+      if (isCombined && combinedPlugins.includes(id)) continue
+      const manager = this.socket.pluginManagers[id]
+
+      console.log("Checking plugin version", id, manager.config.version)
+
+      const hasVersion = await manager.hasNewVersion(manager.config.version)
+
+      if (hasVersion) {
+        this.lastVersionNotificationTime[id] = Date.now()
+        alert(`Plugin ${id} has a new version`)
+      } else {
+        console.log(`Plugin ${id} is latest`)
+      }
+    }
+
+    if (!isCombined) {
+      if (
+        Date.now() - this.lastVersionNotificationTime["panels"] <
+        15 * 60 * 1000
+      )
+        return
+      const version = await this.getLatestVersion()
+      if (version != this.panelsVersion) {
+        this.lastVersionNotificationTime["panels"] = Date.now()
+        alert(`Panels has a new version`)
+      } else {
+        alert(`Panels is latest`)
+      }
+    }
   }
 }
