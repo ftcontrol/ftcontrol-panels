@@ -55,7 +55,7 @@ tasks.register('buildSvelteApp', Exec) {
 }
 
 tasks.register('clearAssets', Delete) {
-    delete fileTree('src/main/assets/web/plugins/com.bylazar.fullpanels/*')
+    delete fileTree('src/main/assets/web/plugins/*')
 }
 
 tasks.register('copySvelteToAssets', Copy) {
@@ -64,13 +64,7 @@ tasks.register('copySvelteToAssets', Copy) {
     into 'src/main/assets/web/plugins/com.bylazar.fullpanels'
 }
 
-tasks.register('copyConfigToAssets', Copy) {
-    dependsOn buildSvelteApp
-    from 'config.json'
-    into 'src/main/assets/web/plugins/com.bylazar.fullpanels/config.json'
-}
-
-preBuild.dependsOn(copySvelteToAssets, copyConfigToAssets)
+preBuild.dependsOn(copySvelteToAssets)
 
 
 dependencies {

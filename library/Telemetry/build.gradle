@@ -57,7 +57,7 @@ tasks.register('buildSvelteApp', Exec) {
 }
 
 tasks.register('clearAssets', Delete) {
-    delete fileTree('src/main/assets/web/plugins/com.bylazar.telemetry/*')
+    delete fileTree('src/main/assets/web/plugins/*')
 }
 
 tasks.register('copySvelteToAssets', Copy) {
