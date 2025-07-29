@@ -1,0 +1,19 @@
+{
+  "name": "library",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun /dev.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5",
+    "ftc-panels": "link:ftc-panels"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3"
+  }
+}
