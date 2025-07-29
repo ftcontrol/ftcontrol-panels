@@ -10,10 +10,9 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5",
-    "ftc-panels": "link:ftc-panels"
+    "typescript": "^5"
   },
   "dependencies": {
-    "chokidar": "^4.0.3"
+    "ftc-panels": "link:ftc-panels"
   }
 }
