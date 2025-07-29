@@ -75,5 +75,5 @@ body {
 
 a {
   color: currentColor;
-  display: block;
+  display: inline-block;
 }
