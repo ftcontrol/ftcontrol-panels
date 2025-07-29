@@ -29,7 +29,6 @@ function decompressLzma(compressedData: Uint8Array): Promise<string> {
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
-  devServers: string[] = $state([])
   skippedPlugins: PluginConfig[] = $state([])
   socket: GlobalSocket = new GlobalSocket()
 
@@ -73,59 +72,71 @@ export class GlobalState {
   reloadIndexes: Record<string, number> = $state({})
   lastVersionNotificationTime: Record<string, number> = $state({})
 
+  changedTimestamps: Record<string, number> = $state({})
+
+  devPlugins: string[] = $state([])
+
   private async updateDevPlugins(reloadManager = false) {
-    console.log("Dev for plugins", this.devServers)
-    for (const id of this.devServers) {
-      for (const plugin of this.plugins) {
-        if (id == plugin.details.id) {
-          console.log("Dev for plugin", id, "and URL", plugin.details.devURL)
-          if (plugin.details.devURL == "") return
-          try {
-            let details = JSON.parse(
-              await this.getFromServer(plugin.details.devURL, "/config.json")
-            )
+    type LiveChangeEntry = {
+      id: string
+      name: string
+      lastChanged: number
+    }
 
-            if (details.devURL != plugin.details.devURL) {
-              details.devURL = plugin.details.devURL
+    let livePlugins: LiveChangeEntry[]
+    try {
+      const data = await this.getFromServer("http://localhost:3001", "/plugins")
+      livePlugins = JSON.parse(data)
+    } catch (error) {
+      console.error("Failed to fetch live plugins:", error)
+      return
+    }
+
+    for (const entry of livePlugins) {
+      if (!this.devPlugins.includes(entry.id)) {
+        this.devPlugins.push(entry.id)
+      }
+      if (entry.lastChanged != this.changedTimestamps[entry.id]) {
+        console.log("Rebuilding", entry.name)
+
+        let details = JSON.parse(
+          await this.getFromServer(
+            "http://localhost:3001",
+            `/plugins/${entry.id}`
+          )
+        )
+
+        if (reloadManager) {
+          const { default: Manager } = await importFromSource(
+            details.manager.textContent || ""
+          )
+          const oldStateData = this.socket.pluginManagers[details.id].state.data
+          this.socket.pluginManagers[details.id] = new Manager(
+            new PluginSocket(details.id, this.socket),
+            details
+          )
+          this.socket.pluginManagers[details.id].state.data = oldStateData
+          for (const item of Object.values(
+            this.socket.pluginManagers[details.id].state.data
+          )) {
+            for (const callback of item.callbacks) {
+              callback(item.value)
             }
+          }
+          this.socket.pluginManagers[details.id]?.onInit()
+        }
 
-            if (JSON.stringify(details) != JSON.stringify(plugin.details)) {
-              if (reloadManager) {
-                const { default: Manager } = await importFromSource(
-                  details.manager.textContent || ""
-                )
-
-                const oldStateData =
-                  this.socket.pluginManagers[details.id].state.data
-
-                this.socket.pluginManagers[details.id] = new Manager(
-                  new PluginSocket(details.id, this.socket),
-                  details
-                )
-
-                this.socket.pluginManagers[details.id].state.data = oldStateData
-
-                for (const item of Object.values(
-                  this.socket.pluginManagers[details.id].state.data
-                )) {
-                  for (const callback of item.callbacks) {
-                    callback(item.value)
-                  }
-                }
-
-                this.socket.pluginManagers[details.id]?.onInit()
-              }
-
-              plugin.details = details
-
-              this.reloadIndexes[details.id]++
-
-              console.log("Reloaded plugin", id)
-            }
-          } catch (e) {
-            console.error("Failed to refresh plugin", id, e)
+        for (const plugin of this.plugins) {
+          if (plugin.details.id == entry.id) {
+            plugin.details = details
           }
         }
+
+        this.reloadIndexes[details.id]++
+
+        console.log("Reloaded plugin", entry.id)
+
+        this.changedTimestamps[entry.id] = entry.lastChanged
       }
     }
   }
@@ -161,6 +172,7 @@ export class GlobalState {
       console.log(`[init] Loaded ${this.plugins.length} plugins`)
       this.plugins.forEach((item) => {
         this.reloadIndexes[item.details.id] = 0
+        this.changedTimestamps[item.details.id] = 0
         this.lastVersionNotificationTime[item.details.id] = 0
       })
 
@@ -357,8 +369,9 @@ export class GlobalState {
     for (const plugin of this.plugins) {
       const id = plugin.details.id
 
-      if (Date.now() - this.lastVersionNotificationTime[id] < 15 * 60 * 1000)
-        return
+      const lastTime = this.lastVersionNotificationTime[id] ?? 0
+
+      if (Date.now() - lastTime < 15 * 60 * 1000) continue
 
       if (isCombined && combinedPlugins.includes(id)) continue
       const manager = this.socket.pluginManagers[id]
@@ -371,8 +384,11 @@ export class GlobalState {
         hasVersion = false
       }
 
-      if (hasVersion) {
+      if (version != "") {
         this.lastVersionNotificationTime[id] = Date.now()
+      }
+
+      if (hasVersion) {
         notifications.addAction(`Plugin ${id} has a new version: ${version}`, [
           {
             text: "Check Website",
@@ -391,14 +407,13 @@ export class GlobalState {
     }
 
     if (!isCombined) {
-      if (
-        Date.now() - this.lastVersionNotificationTime["panels"] <
-        15 * 60 * 1000
-      )
-        return
+      const lastTime = this.lastVersionNotificationTime["panels"] ?? 0
+      if (Date.now() - lastTime < 15 * 60 * 1000) return
       const version = await this.getLatestVersion()
-      if (version != this.panelsVersion && version != "") {
+      if (version != "") {
         this.lastVersionNotificationTime["panels"] = Date.now()
+      }
+      if (version != this.panelsVersion && version != "") {
         notifications.addAction(`Panels has a new version: ${version}`, [
           {
             text: "Check Website",

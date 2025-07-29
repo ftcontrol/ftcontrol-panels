@@ -6,7 +6,6 @@ export const config: PluginConfig = {
   letterName: "B",
   description: "Battery Utils for Panels",
   websiteURL: "",
-  devURL: "",
   version: "0.1.0",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",

@@ -10,7 +10,6 @@ data class PluginDetails(
     val letterName: String = "",
     val description: String = "",
     val websiteURL: String = "",
-    val devURL: String = "",
     val version: String = "",
     val pluginsCoreVersion: String = "",
     val author: String = "",
@@ -27,7 +26,6 @@ data class PluginDetails(
             appendLine("  letterName='$letterName',")
             appendLine("  description='$description',")
             appendLine("  websiteURL='$websiteURL',")
-            appendLine("  devURL='$devURL',")
             appendLine("  version='$version',")
             appendLine("  pluginsCoreVersion='$pluginsCoreVersion',")
             appendLine("  author='$author',")

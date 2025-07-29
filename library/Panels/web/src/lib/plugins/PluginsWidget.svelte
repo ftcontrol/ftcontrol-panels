@@ -11,15 +11,13 @@
     plugin: PluginInfo
     showDetailsButton?: boolean
   } = $props()
-
-  let isDev = $derived(global.devServers.includes(plugin.details.id))
 </script>
 
 <Section>
   <p>{plugin.details.id}</p>
   <h2>
     {plugin.details.name}
-    {#if global.devServers.includes(plugin.details.id)}
+    {#if global.devPlugins.includes(plugin.details.id)}
       DEV
     {/if}
   </h2>
@@ -31,41 +29,17 @@
   {/if}
   <p>{plugin.details.description}</p>
   <div class="main-buttons">
-    <div class="buttons">
-      {#if showDetailsButton}
-        <Button
-          onclick={() => {
-            goto(`/plugins/${plugin.details.id}`)
-          }}>Details</Button
-        >
-      {/if}
+    {#if showDetailsButton}
       <Button
         onclick={() => {
-          if (isDev) {
-            global.devServers = global.devServers.filter(
-              (it) => it != plugin.details.id
-            )
-          } else {
-            global.devServers.push(plugin.details.id)
-          }
-        }}
+          goto(`/plugins/${plugin.details.id}`)
+        }}>Details</Button
       >
-        {isDev ? "Disable Dev" : "Enable Dev"}
-      </Button>
-    </div>
-
-    <TextInput
-      bind:value={plugin.details.devURL}
-      placeholder={"http://localhost:3000"}
-    />
+    {/if}
   </div>
 </Section>
 
 <style>
-  .buttons {
-    display: flex;
-    gap: 1rem;
-  }
   .main-buttons {
     display: flex;
     flex-direction: column;
