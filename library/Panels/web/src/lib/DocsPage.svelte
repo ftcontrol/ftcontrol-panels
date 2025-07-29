@@ -1,7 +1,7 @@
 <script lang="ts">
   import { global } from "$lib"
   import {
-    DynamicComponent,
+    SimpleDynamicComponent,
     type PanelsWidget,
     type PluginInfo,
   } from "ftc-panels"
@@ -30,10 +30,8 @@
 </script>
 
 {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
-  <DynamicComponent
-    globalSocket={global.socket}
-    info={plugin}
+  <SimpleDynamicComponent
+    info={plugin.details}
     textContent={content.textContent}
-    id={pluginID}
   />
 {/key}
