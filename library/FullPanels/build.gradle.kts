@@ -47,7 +47,7 @@ dependencies {
     compileOnly("org.firstinspires.ftc:FtcCommon:10.3.0")
     compileOnly("org.firstinspires.ftc:Vision:10.3.0")
 
-    compileOnly(project(":Panels"))
+    api(project(":Panels"))
 
     api(project(":OpModeControl"))
     api(project(":ExamplePlugin"))

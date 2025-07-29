@@ -2,11 +2,7 @@
 import fs from "fs"
 import path from "path"
 import { execSync } from "child_process"
-import {
-  SimpleDynamicComponent,
-  type PluginConfig,
-  type PanelsWidget,
-} from "ftc-panels"
+import { SimpleDynamicComponent, type PluginConfig } from "ftc-panels"
 
 const libraryPath = path.resolve(process.cwd(), "../library")
 const modules: PluginConfig[] = []
@@ -20,7 +16,6 @@ for (const name of modulesRaw) {
   const modulePath = path.join(libraryPath, name)
   const webDir = path.join(modulePath, "web")
 
-  // Run `bun run build` if web directory and build script exist
   const packageJsonPath = path.join(webDir, "package.json")
   if (fs.existsSync(packageJsonPath)) {
     const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
@@ -43,40 +38,6 @@ for (const name of modulesRaw) {
 
   const rawConfig = fs.readFileSync(distConfigJson, "utf-8")
   const config = JSON.parse(rawConfig) as PluginConfig
-  const docs = config.docs ?? null
-
-  if (docs?.homepage?.name) {
-    const homepageJsPath = path.join(
-      webDir,
-      "dist",
-      "docs",
-      `${docs.homepage.name}.js`
-    )
-    if (fs.existsSync(homepageJsPath)) {
-      const homepageContent = fs.readFileSync(homepageJsPath, "utf-8")
-      docs.homepage.textContent = homepageContent
-    }
-  }
-
-  if (docs?.chapters?.length) {
-    docs.chapters = docs.chapters.map((chapter: PanelsWidget) => {
-      const chapterJsPath = path.join(
-        webDir,
-        "dist",
-        "docs",
-        `${chapter.name}.js`
-      )
-      let content = null
-      if (fs.existsSync(chapterJsPath)) {
-        content = fs.readFileSync(chapterJsPath, "utf-8")
-      }
-      return {
-        name: chapter.name,
-        filepath: chapter.filepath,
-        content,
-      }
-    })
-  }
 
   modules.push(config)
 }
