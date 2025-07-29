@@ -1,3 +1,5 @@
-import { devServer } from "ftc-panels/cli"
+import { globalDev } from "ftc-panels/cli"
+import path from "path"
 
-devServer(__dirname, 3004)
+const rootDir = path.resolve(__dirname, "../../")
+globalDev(rootDir)
