@@ -12,3 +12,5 @@ library/hs_err_pid62272.log
 *.log
 /library/plugin-svelte-assets/build
 /library/plugin-svelte-assets/.gradle
+/library/plugin-svelte-assets/.gradle
+/library/plugin-svelte-assets/.gradle

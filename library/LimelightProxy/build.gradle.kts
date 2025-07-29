@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 val pluginNamespace = "com.bylazar.limelightproxy"
 
 plugins {
@@ -48,4 +50,7 @@ dependencies {
     compileOnly("org.firstinspires.ftc:Vision:10.3.0")
 
     compileOnly(project(":Panels"))
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
 }

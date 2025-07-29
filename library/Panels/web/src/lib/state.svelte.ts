@@ -85,50 +85,6 @@ export class GlobalState {
               await this.getFromServer(plugin.details.devURL, "/config.json")
             )
 
-            const manager = await this.getFromServer(
-              plugin.details.devURL,
-              "/Manager.js"
-            )
-
-            details.manager.textContent = manager
-
-            await Promise.all(
-              details.widgets.map(async (widget: PanelsWidget) => {
-                const data = await this.getFromServer(
-                  plugin.details.devURL,
-                  `widgets/${widget.name}.js`
-                )
-                widget.textContent = data
-              })
-            )
-
-            await Promise.all(
-              details.navlets.map(async (navlet: PanelsWidget) => {
-                const data = await this.getFromServer(
-                  plugin.details.devURL,
-                  `navlets/${navlet.name}.js`
-                )
-                navlet.textContent = data
-              })
-            )
-
-            const homepage = await this.getFromServer(
-              plugin.details.devURL,
-              `/docs/${details.docs.homepage.name}.js`
-            )
-
-            details.docs.homepage.textContent = homepage
-
-            await Promise.all(
-              details.docs.chapters.map(async (chapter: PanelsWidget) => {
-                const data = await this.getFromServer(
-                  plugin.details.devURL,
-                  `docs/${chapter.name}.js`
-                )
-                chapter.textContent = data
-              })
-            )
-
             if (details.devURL != plugin.details.devURL) {
               details.devURL = plugin.details.devURL
             }
