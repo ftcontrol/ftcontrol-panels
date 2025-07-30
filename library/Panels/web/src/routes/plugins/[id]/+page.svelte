@@ -58,7 +58,7 @@
 
 <h3>Templates</h3>
 {#each plugin.details.templates as t}
-  <CanvasRender {t} />
+  <CanvasRender {t} pID={plugin.details.id} />
   <Section margin={true}>
     <pre>{JSON.stringify(t, null, 2)}</pre>
   </Section>

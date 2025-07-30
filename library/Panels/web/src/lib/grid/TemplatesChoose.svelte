@@ -23,7 +23,7 @@
           >
             <h4>{p.details.name}</h4>
             <p>{t.name}</p>
-            <CanvasRender {t} />
+            <CanvasRender {t} pID={p.details.id} />
           </button>
         {/each}
       {/each}

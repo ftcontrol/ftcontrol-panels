@@ -74,6 +74,8 @@ export class GlobalState {
 
   changedTimestamps: Record<string, number> = $state({})
 
+  pluginsTemplatesPreviews: Record<string, string> = $state({})
+
   devPlugins: string[] = $state([])
 
   private async updateDevPlugins(reloadManager = false) {
@@ -124,6 +126,11 @@ export class GlobalState {
             }
           }
           this.socket.pluginManagers[details.id]?.onInit()
+        }
+
+        for (const t of details.templates) {
+          const cacheKey = `${entry.id}/${t.name}`
+          delete this.pluginsTemplatesPreviews[cacheKey]
         }
 
         for (const plugin of this.plugins) {

@@ -4,28 +4,33 @@
   import Layout from "./Layout.svelte"
   import { Manager } from "./widgets.svelte"
   import type { Template } from "ftc-panels"
+  import { global } from "$lib"
 
   import Topbar from "$lib/Topbar.svelte"
 
-  let { t }: { t: Template } = $props()
+  let { t, pID }: { t: Template; pID: string } = $props()
+
+  const cacheKey = `${pID}/${t.name}`
 
   let m = $state(new Manager(t))
-
-  setContext("manager", m)
-
   let targetElement: HTMLDivElement
   let imageDataUrl: string = $state("")
+  let loading = $state(true)
+
+  setContext("manager", m)
 
   async function renderAsImage() {
     if (!targetElement) return
 
-    await tick()
-
     const renderedCanvas = await html2canvas(targetElement, {
       backgroundColor: null,
     })
+
     imageDataUrl = renderedCanvas.toDataURL("image/png")
+    global.pluginsTemplatesPreviews[cacheKey] = imageDataUrl
+
     targetElement.style.display = "none"
+    loading = false
   }
 
   async function waitForStableRender(ticks = 3) {
@@ -35,6 +40,12 @@
   }
 
   onMount(async () => {
+    if (global.pluginsTemplatesPreviews[cacheKey]) {
+      imageDataUrl = global.pluginsTemplatesPreviews[cacheKey]
+      loading = false
+      return
+    }
+
     await waitForStableRender(3)
     await renderAsImage()
   })
@@ -51,28 +62,13 @@
   </section>
 </div>
 
-{#if imageDataUrl}
+{#if loading}
+  <div class="preview-loading">Generating preview…</div>
+{:else}
   <img src={imageDataUrl} alt="Rendered Component" />
 {/if}
 
 <style>
-  nav {
-    background-color: var(--bgMedium);
-    padding: 0 var(--padding);
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    border-radius: 1rem;
-    margin: 0.5rem;
-    margin-bottom: 0;
-
-    gap: var(--padding);
-    max-width: 100%;
-
-    overflow-x: auto;
-  }
   section {
     display: flex;
     flex-direction: column;
