@@ -1,8 +1,15 @@
 import { goto } from "$app/navigation"
 import { global } from "$lib"
-import { getCookie, setCookie } from "ftc-panels"
+import {
+  getCookie,
+  setCookie,
+  type Template,
+  type TemplateNavlet,
+  type TemplateWidget,
+  type TemplateWidgetGroup,
+} from "ftc-panels"
 
-export type Widget = {
+export type ExtendedWidgetGroup = TemplateWidgetGroup & {
   offset: {
     x: number
     y: number
@@ -14,35 +21,24 @@ export type Widget = {
   selected: number
   isMoving: boolean
   id: string
-  widgets: Panel[]
-  x: number
-  y: number
-  w: number
-  h: number
+  widgets: ExtendedWidget[]
   minW: number
   maxW: number
   minH: number
   maxH: number
 }
 
-export type Panel = {
+export type ExtendedWidget = TemplateWidget & {
   isMoving: boolean
-  pluginID: string
-  widgetID: string
 }
 
-export type Preset = {
+export type ExtendedTemplate = Omit<Template, "plugins"> & {
+  widgets: ExtendedWidgetGroup[]
+}
+
+export type ManagerData = {
   selected: number
-  data: {
-    name: string
-    widgets: Widget[]
-    navlets: Navlet[]
-  }[]
-}
-
-export type Navlet = {
-  pluginID: string
-  navletID: string
+  data: ExtendedTemplate[]
 }
 
 export class Manager {
@@ -57,6 +53,61 @@ export class Manager {
     ],
   }
   enableInteractions = false
+  processTemplate(t: Template): ExtendedTemplate {
+    return {
+      name: t.name,
+      widgets: t.widgets.map((it) => {
+        return {
+          offset: {
+            x: 0,
+            y: 0,
+          },
+          move: {
+            x: 0,
+            y: 0,
+          },
+          selected: 0,
+          isMoving: false,
+          id: Math.random().toString(),
+          widgets: it.widgets.map((it) => {
+            return {
+              isMoving: false,
+              pluginID: it.pluginID,
+              widgetID: it.widgetID,
+            }
+          }),
+          x: it.x,
+          y: it.y,
+          w: it.w,
+          h: it.h,
+          minW: 1,
+          maxW: 60,
+          minH: 1,
+          maxH: 60,
+        }
+      }),
+      navlets: t.navlets,
+    }
+  }
+
+  unprocessTemplate(t: ExtendedTemplate): Template {
+    return {
+      name: t.name,
+      navlets: t.navlets,
+      widgets: t.widgets.map((group) => {
+        return {
+          x: group.x,
+          y: group.y,
+          w: group.w,
+          h: group.h,
+          widgets: group.widgets.map((w) => ({
+            pluginID: w.pluginID,
+            widgetID: w.widgetID,
+          })),
+        }
+      }),
+    }
+  }
   updateGridSize(section: HTMLElement) {
     const bounding = section.getBoundingClientRect()
     const width = bounding.width
@@ -65,20 +116,23 @@ export class Manager {
     this.WIDTH = width / this.MAX_GRID_WIDTH
     this.HEIGHT = height / this.MAX_GRID_HEIGHT
   }
-  load(
-    section: HTMLElement,
-    enableInteractions: boolean = true,
-    defaultTemplate: Preset | null = null
-  ) {
-    this.updateGridSize(section)
-    if (defaultTemplate == null) {
-      var data = getCookie("layout")
-      if (data == null) data = JSON.stringify(this.template)
-      this.presets = JSON.parse(data) || structuredClone(this.template)
-    } else {
-      this.presets = defaultTemplate
+  loadInteractive() {
+    var data = getCookie("layout")
+    if (data == null) data = JSON.stringify(this.template)
+    this.presets = JSON.parse(data) || structuredClone(this.template)
+
+    this.enableInteractions = true
+
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
+  }
+
+  loadPreview(defaultTemplate: Template) {
+    this.presets = {
+      selected: 0,
+      data: [this.processTemplate(defaultTemplate)],
     }
-    this.enableInteractions = enableInteractions
+    this.enableInteractions = false
 
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
@@ -137,10 +191,10 @@ export class Manager {
     setCookie("layout", JSON.stringify(this.presets))
   }
 
-  presets: Preset = $state(this.template)
+  presets: ManagerData = $state(this.template)
 
-  widgets: Widget[] = $state([])
-  navlets: Navlet[] = $state([])
+  widgets: ExtendedWidgetGroup[] = $state([])
+  navlets: TemplateNavlet[] = $state([])
 
   addNavlet() {
     if (!this.enableInteractions) return
@@ -158,7 +212,7 @@ export class Manager {
   }
 
   isValidNavlet(pluginID: string, navletID: string) {
-    if (!this.enableInteractions) return
+    if (!this.enableInteractions) return true
     const plugin = global.plugins.find((it) => it.details.id == pluginID)
     if (plugin == undefined) return false
     const navlet = plugin.details.navlets.find((it) => it.name == navletID)
@@ -187,7 +241,7 @@ export class Manager {
 
   isValid = $state(true)
 
-  isColliding(a: Widget, b: Widget): boolean {
+  isColliding(a: ExtendedWidgetGroup, b: ExtendedWidgetGroup): boolean {
     return !(
       a.x + a.w <= b.x ||
       a.x >= b.x + b.w ||
@@ -202,7 +256,11 @@ export class Manager {
     this.save()
   }
 
-  getWidget(x: number, y: number, widgets: Widget[]): Widget | undefined {
+  getWidget(
+    x: number,
+    y: number,
+    widgets: ExtendedWidgetGroup[]
+  ): ExtendedWidgetGroup | undefined {
     return widgets.find(
       (w) => x >= w.x && x < w.x + w.w && y >= w.y && y < w.y + w.h
     )
@@ -312,7 +370,10 @@ export class Manager {
     this.save()
   }
 
-  resolveCollisions(moved: Widget, widgets: Widget[]) {
+  resolveCollisions(
+    moved: ExtendedWidgetGroup,
+    widgets: ExtendedWidgetGroup[]
+  ) {
     const updated = widgets.map((w) => ({ ...w }))
     const queue = [moved]
 
@@ -360,11 +421,15 @@ export class Manager {
     return updated
   }
 
-  willCollide(test: Widget, widgets: Widget[], excludeId: string): boolean {
+  willCollide(
+    test: ExtendedWidgetGroup,
+    widgets: ExtendedWidgetGroup[],
+    excludeId: string
+  ): boolean {
     return widgets.some((w) => w.id !== excludeId && this.isColliding(test, w))
   }
 
-  isOutOfBounds(widget: Widget): boolean {
+  isOutOfBounds(widget: ExtendedWidgetGroup): boolean {
     return (
       widget.x < 0 ||
       widget.y < 0 ||
@@ -403,11 +468,17 @@ export class Manager {
     this.save()
   }
 
-  getWidgetById(id: string, widgets: Widget[]): Widget | undefined {
+  getWidgetById(
+    id: string,
+    widgets: ExtendedWidgetGroup[]
+  ): ExtendedWidgetGroup | undefined {
     return widgets.find((it) => it.id == id)
   }
 
-  moveWidget(id: string, widgets: Widget[]): Widget[] {
+  moveWidget(
+    id: string,
+    widgets: ExtendedWidgetGroup[]
+  ): ExtendedWidgetGroup[] {
     const widget = this.getWidgetById(id, widgets)
     if (widget == undefined) return this.widgets
     const dx = Math.round(widget.move.x / this.WIDTH)
@@ -422,7 +493,7 @@ export class Manager {
     return this.resolveCollisions(moved, updated)
   }
 
-  resizeWidget(id: string, widgets: Widget[]) {
+  resizeWidget(id: string, widgets: ExtendedWidgetGroup[]) {
     const widget = this.getWidgetById(id, widgets)
     if (widget == undefined) return this.widgets
     const dw = Math.round(widget.offset.x / this.WIDTH)
@@ -440,6 +511,11 @@ export class Manager {
     )
     const resized = updated.find((w) => w.id === id)!
     return this.resolveCollisions(resized, updated)
+  }
+
+  constructor(defaultTemplate: Template | null = null) {
+    if (defaultTemplate == null) return
+    this.loadPreview(defaultTemplate)
   }
 }
 

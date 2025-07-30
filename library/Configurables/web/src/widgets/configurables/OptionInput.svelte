@@ -40,7 +40,7 @@
   possibleValues,
 })} -->
 
-<Overlay disablePadding={false}>
+<Overlay>
   {#snippet trigger()}
     <button>{value}</button>
   {/snippet}

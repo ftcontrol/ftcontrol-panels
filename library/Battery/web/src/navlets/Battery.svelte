@@ -22,5 +22,6 @@
 <style>
   p {
     text-wrap: nowrap;
+    margin: 0;
   }
 </style>

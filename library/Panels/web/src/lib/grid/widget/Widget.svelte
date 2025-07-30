@@ -1,17 +1,16 @@
 <script lang="ts">
-  import { type Widget } from "../widgets.svelte"
-  import WidgetContent from "../WidgetContent.svelte"
   import WidgetTopBar from "./WidgetTopBar.svelte"
   import WidgetResize from "./WidgetResize.svelte"
   import WidgetChoose from "./WidgetChoose.svelte"
   import { getContext } from "svelte"
-  import type { Manager } from "../widgets.svelte"
+  import type { ExtendedWidgetGroup, Manager } from "../widgets.svelte"
+  import WidgetContent from "../WidgetContent.svelte"
   const manager = getContext("manager") as Manager
 
   let {
     widget = $bindable(),
     isPossible,
-  }: { widget: Widget; isPossible: boolean } = $props()
+  }: { widget: ExtendedWidgetGroup; isPossible: boolean } = $props()
   let isSmall = $derived(widget.w == 1 && widget.h == 1)
 </script>
 

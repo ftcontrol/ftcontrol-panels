@@ -1,13 +1,12 @@
 <script lang="ts">
   import Options from "$lib/icons/Options.svelte"
   import { Button, Overlay } from "ftc-panels"
-  import { type Widget } from "../widgets.svelte"
-  import { tick } from "svelte"
+  import { type ExtendedWidgetGroup } from "../widgets.svelte"
   import { getContext } from "svelte"
   import type { Manager } from "../widgets.svelte"
   const manager = getContext("manager") as Manager
 
-  let { widget = $bindable() }: { widget: Widget } = $props()
+  let { widget = $bindable() }: { widget: ExtendedWidgetGroup } = $props()
 </script>
 
 <Overlay>

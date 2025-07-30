@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { type Widget } from "../widgets.svelte"
-  import WidgetOptions from "./WidgetOptions.svelte"
+  import { type ExtendedWidgetGroup } from "../widgets.svelte"
   import Portal from "svelte-portal"
   import WidgetDrag from "./WidgetDrag.svelte"
+  import WidgetOptions from "./WidgetOptions.svelte"
   import { getContext } from "svelte"
   import type { Manager } from "../widgets.svelte"
   const manager = getContext("manager") as Manager
@@ -10,7 +10,7 @@
   let {
     widget = $bindable(),
     isPossible = $bindable(),
-  }: { widget: Widget; isPossible: boolean } = $props()
+  }: { widget: ExtendedWidgetGroup; isPossible: boolean } = $props()
 
   let movingIndex = $state(0)
 

@@ -1,18 +1,17 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte"
   import WidgetItem from "./widget/Widget.svelte"
-  import { Manager, type Preset, type Widget } from "./widgets.svelte"
+
   import Overlay from "./Overlay.svelte"
   import PlaceOverlay from "./PlaceOverlay.svelte"
   import { setContext } from "svelte"
+  import type { Manager } from "./widgets.svelte"
 
   let {
     manager = $bindable(),
-    defaultTemplate = null,
     enableInteractions = false,
   }: {
     manager: Manager
-    defaultTemplate?: Preset | null
     enableInteractions?: boolean
   } = $props()
 
@@ -25,6 +24,7 @@
   } | null>(null)
 
   function onMouseMove(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     if (!section) return
     const rect = section.getBoundingClientRect()
     const mouseX = e.clientX - rect.left
@@ -49,6 +49,7 @@
   }
 
   function onMouseLeave() {
+    if (!manager.enableInteractions) return
     mouseGridPos = null
   }
 
@@ -63,7 +64,11 @@
   })
 
   onMount(() => {
-    manager.load(section, enableInteractions, defaultTemplate)
+    if (enableInteractions) {
+      manager.loadInteractive()
+    }
+    manager.updateGridSize(section)
+    if (!manager.enableInteractions) return
     window.addEventListener("resize", () => manager.updateGridSize(section))
   })
 
@@ -82,30 +87,28 @@
   tabindex="0"
   style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
 >
-  <div>
-    {#if manager.isMoving}
-      {#each gridCells as { x, y } (x + "-" + y)}
-        <Overlay {x} {y} />
-      {/each}
-      {#each manager.possibleWidgets as widget, index}
-        <WidgetItem
-          isPossible={true}
-          bind:widget={manager.possibleWidgets[index]}
-        />
-      {/each}
-    {/if}
-    <PlaceOverlay />
-
-    {#each manager.widgets as widget, index}
-      {#if !manager.isMoving || widget.isMoving}
-        <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
-      {/if}
+  {#if manager.isMoving}
+    {#each gridCells as { x, y } (x + "-" + y)}
+      <Overlay {x} {y} />
     {/each}
+    {#each manager.possibleWidgets as widget, index}
+      <WidgetItem
+        isPossible={true}
+        bind:widget={manager.possibleWidgets[index]}
+      />
+    {/each}
+  {/if}
+  <PlaceOverlay />
 
-    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
-      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+  {#each manager.widgets as widget, index}
+    {#if !manager.isMoving || widget.isMoving}
+      <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
     {/if}
-  </div>
+  {/each}
+
+  {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
+    <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+  {/if}
 </section>
 
 <style>

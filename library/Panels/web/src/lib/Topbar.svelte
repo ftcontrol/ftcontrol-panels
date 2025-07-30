@@ -9,6 +9,7 @@
 
   import { getContext } from "svelte"
   import type { Manager } from "./grid/widgets.svelte"
+  import TemplatesChoose from "./grid/TemplatesChoose.svelte"
   var manager = getContext("manager") as Manager
 </script>
 
@@ -21,7 +22,11 @@
     {global.isConnected ? "Connected" : "Waiting"}
   </p>
 
-  <Navlets bind:manager />
+  {#if global.isConnected}
+    <Navlets bind:manager />
+  {:else}
+    <section style="flex-grow: 1;"></section>
+  {/if}
 
   <a href="/docs">Docs</a>
 
@@ -47,7 +52,6 @@
               {/snippet}
               {#snippet overlay({ close }: { close: () => void })}
                 <TextInput
-                  type="text"
                   bind:value={manager.presets.data[index].name}
                   oninput={() => {
                     manager.save()
@@ -62,10 +66,24 @@
                 >
                   x
                 </Button>
+                <Button
+                  disabled={manager.presets.data.length == 1}
+                  onclick={() => {
+                    manager.save()
+                    const temp = manager.unprocessTemplate(
+                      manager.presets.data[index]
+                    )
+                    alert(JSON.stringify(temp))
+                    close()
+                  }}
+                >
+                  Copy
+                </Button>
               {/snippet}
             </Overlay>
           </div>
         {/each}
+        <TemplatesChoose set={() => {}} />
         <Button
           onclick={() => {
             manager.newPreset()
@@ -178,5 +196,9 @@
 
     gap: var(--padding);
     max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 48px;
   }
 </style>

@@ -1,8 +1,9 @@
 <script lang="ts">
   import { setContext, type Snippet } from "svelte"
-  import "./global.css"
   import Topbar from "$lib/Topbar.svelte"
   import { global } from "$lib"
+  import "./global.css"
+
   import NotificationsUi from "$lib/NotificationsUI.svelte"
   import { manager } from "$lib/grid/widgets.svelte"
 

@@ -7,6 +7,7 @@
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import DocsPage from "$lib/DocsPage.svelte"
   import PluginsWidget from "$lib/plugins/PluginsWidget.svelte"
+  import CanvasRender from "$lib/grid/CanvasRender.svelte"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -53,6 +54,16 @@
   </Section>
 {:else}
   <p>No chapters found</p>
+{/each}
+
+<h3>Templates</h3>
+{#each plugin.details.templates as t}
+  <CanvasRender {t} />
+  <Section margin={true}>
+    <pre>{JSON.stringify(t, null, 2)}</pre>
+  </Section>
+{:else}
+  <p>No templates found</p>
 {/each}
 
 <style>

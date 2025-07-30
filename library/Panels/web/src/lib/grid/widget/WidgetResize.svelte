@@ -1,13 +1,12 @@
 <script lang="ts">
   import Resize from "$lib/icons/Resize.svelte"
-  import { type Widget } from "../widgets.svelte"
   import { getContext } from "svelte"
-  import type { Manager } from "../widgets.svelte"
+  import type { ExtendedWidgetGroup, Manager } from "../widgets.svelte"
   const manager = getContext("manager") as Manager
   let {
     widget = $bindable(),
     isPossible = $bindable(),
-  }: { widget: Widget; isPossible: boolean } = $props()
+  }: { widget: ExtendedWidgetGroup; isPossible: boolean } = $props()
 
   let startX = $state(0)
   let startY = $state(0)
