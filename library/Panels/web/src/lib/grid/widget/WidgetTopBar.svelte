@@ -21,6 +21,7 @@
   let yOffset = $state(0)
 
   function startMove(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     if (isPossible) return
     console.log("Started move of", movingIndex)
 
@@ -48,6 +49,7 @@
   }
 
   function onMove(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     tabX = e.clientX
     tabY = e.clientY
     if (
@@ -84,6 +86,7 @@
     }
   }
   function stopMove(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     console.log("Stopped move of", movingIndex)
     widget.widgets[movingIndex].isMoving = false
 

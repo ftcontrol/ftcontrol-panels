@@ -56,6 +56,7 @@ export class Manager {
       },
     ],
   }
+  enableInteractions = false
   updateGridSize(section: HTMLElement) {
     const bounding = section.getBoundingClientRect()
     const width = bounding.width
@@ -64,17 +65,27 @@ export class Manager {
     this.WIDTH = width / this.MAX_GRID_WIDTH
     this.HEIGHT = height / this.MAX_GRID_HEIGHT
   }
-  load(section: HTMLElement) {
+  load(
+    section: HTMLElement,
+    enableInteractions: boolean = true,
+    defaultTemplate: Preset | null = null
+  ) {
     this.updateGridSize(section)
-    var data = getCookie("layout")
-    if (data == null) data = JSON.stringify(this.template)
-    this.presets = JSON.parse(data) || structuredClone(this.template)
+    if (defaultTemplate == null) {
+      var data = getCookie("layout")
+      if (data == null) data = JSON.stringify(this.template)
+      this.presets = JSON.parse(data) || structuredClone(this.template)
+    } else {
+      this.presets = defaultTemplate
+    }
+    this.enableInteractions = enableInteractions
 
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
   }
 
   deletePreset(index: number) {
+    if (!this.enableInteractions) return
     if (this.presets.data.length <= 1) return
 
     this.presets.data.splice(index, 1)
@@ -92,6 +103,7 @@ export class Manager {
   }
 
   newPreset() {
+    if (!this.enableInteractions) return
     this.presets.data.push(structuredClone(this.template.data[0]))
     this.presets.selected = this.presets.data.length - 1
 
@@ -104,6 +116,7 @@ export class Manager {
   }
 
   change(index: number) {
+    if (!this.enableInteractions) return
     this.save()
     this.presets.selected = index
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
@@ -113,6 +126,7 @@ export class Manager {
   }
 
   save() {
+    if (!this.enableInteractions) return
     while (this.presets.data.length <= this.presets.selected) {
       this.presets.data.push(this.template.data[0])
     }
@@ -129,6 +143,7 @@ export class Manager {
   navlets: Navlet[] = $state([])
 
   addNavlet() {
+    if (!this.enableInteractions) return
     this.navlets.push({
       pluginID: "",
       navletID: "",
@@ -137,11 +152,13 @@ export class Manager {
   }
 
   removeNavlet(index: number) {
+    if (!this.enableInteractions) return
     this.navlets.splice(index, 1)
     this.save()
   }
 
   isValidNavlet(pluginID: string, navletID: string) {
+    if (!this.enableInteractions) return
     const plugin = global.plugins.find((it) => it.details.id == pluginID)
     if (plugin == undefined) return false
     const navlet = plugin.details.navlets.find((it) => it.name == navletID)
@@ -180,6 +197,7 @@ export class Manager {
   }
 
   removeWidget(id: string) {
+    if (!this.enableInteractions) return
     this.widgets = this.widgets.filter((it) => it.id != id)
     this.save()
   }
@@ -195,6 +213,7 @@ export class Manager {
   place: { x: number; y: number; w: number; h: number } | null = $state(null)
 
   startPlace(x: number, y: number) {
+    if (!this.enableInteractions) return
     console.log("Start", x, y)
     this.placeStart = { x, y }
     this.place = {
@@ -206,6 +225,7 @@ export class Manager {
     this.updatePlace(x, y)
   }
   updatePlace(uX: number, uY: number) {
+    if (!this.enableInteractions) return
     if (this.placeStart == null) return
     console.log("Update", uX, uY)
     this.placeEnd = { x: uX, y: uY }
@@ -251,6 +271,7 @@ export class Manager {
     ])
   }
   endPlace(x: number, y: number) {
+    if (!this.enableInteractions) return
     if (this.placeStart == null) return
     console.log("End", x, y)
 
@@ -362,18 +383,22 @@ export class Manager {
   }
 
   updateMove(id: string) {
+    if (!this.enableInteractions) return
     this.possibleWidgets = this.moveWidget(id, this.widgets)
   }
 
   updateResize(id: string) {
+    if (!this.enableInteractions) return
     this.possibleWidgets = this.resizeWidget(id, this.widgets)
   }
 
   finishMoveWidget(id: string) {
+    if (!this.enableInteractions) return
     this.widgets = this.moveWidget(id, this.widgets)
     this.save()
   }
   finishResizeWidget(id: string) {
+    if (!this.enableInteractions) return
     this.widgets = this.resizeWidget(id, this.widgets)
     this.save()
   }

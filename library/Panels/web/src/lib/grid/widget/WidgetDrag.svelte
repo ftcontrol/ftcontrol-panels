@@ -13,6 +13,7 @@
   let startY = $state(0)
 
   function startDrag(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     if (isPossible) return
     console.log("Start drag")
 
@@ -25,6 +26,7 @@
   }
 
   function onDrag(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     console.log("update drag")
     widget.move = {
       x: e.clientX - startX,
@@ -34,6 +36,7 @@
   }
 
   function stopDrag() {
+    if (!manager.enableInteractions) return
     console.log("Stop drag")
     widget.isMoving = false
     window.removeEventListener("mousemove", onDrag)

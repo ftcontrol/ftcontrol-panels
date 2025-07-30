@@ -1,15 +1,19 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte"
   import WidgetItem from "./widget/Widget.svelte"
-  import { Manager, type Widget } from "./widgets.svelte"
+  import { Manager, type Preset, type Widget } from "./widgets.svelte"
   import Overlay from "./Overlay.svelte"
   import PlaceOverlay from "./PlaceOverlay.svelte"
   import { setContext } from "svelte"
 
   let {
     manager = $bindable(),
+    defaultTemplate = null,
+    enableInteractions = false,
   }: {
     manager: Manager
+    defaultTemplate?: Preset | null
+    enableInteractions?: boolean
   } = $props()
 
   setContext("manager", manager)
@@ -59,7 +63,7 @@
   })
 
   onMount(() => {
-    manager.load(section)
+    manager.load(section, enableInteractions, defaultTemplate)
     window.addEventListener("resize", () => manager.updateGridSize(section))
   })
 

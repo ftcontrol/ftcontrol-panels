@@ -13,6 +13,7 @@
   let startY = $state(0)
 
   function startResize(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     if (isPossible) return
     widget.isMoving = true
     startX = e.clientX
@@ -22,6 +23,7 @@
   }
 
   function onResize(e: MouseEvent) {
+    if (!manager.enableInteractions) return
     e.preventDefault()
     widget.offset = {
       x: e.clientX - startX,
@@ -32,6 +34,7 @@
   }
 
   function stopResize() {
+    if (!manager.enableInteractions) return
     widget.isMoving = false
     window.removeEventListener("mousemove", onResize)
     window.removeEventListener("mouseup", stopResize)
