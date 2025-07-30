@@ -19,10 +19,10 @@
   </a>
 
   <p>
-    {global.isConnected ? "Connected" : "Waiting"}
+    {global.isPrepared ? "Connected" : "Waiting"}
   </p>
 
-  {#if global.isConnected}
+  {#if global.isPrepared}
     <Navlets bind:manager />
   {:else}
     <section style="flex-grow: 1;"></section>

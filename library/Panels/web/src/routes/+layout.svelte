@@ -6,6 +6,7 @@
 
   import NotificationsUi from "$lib/NotificationsUI.svelte"
   import { manager } from "$lib/grid/widgets.svelte"
+  import CanvasRender from "$lib/grid/CanvasRender.svelte"
 
   setContext("manager", manager.manager)
 
@@ -16,8 +17,16 @@
 <section>
   <Topbar />
 
-  {#if global.isConnected}
+  {#if global.isPrepared}
     {@render children?.()}
+  {/if}
+
+  {#if global.isConnected}
+    {#each global.plugins as p}
+      {#each p.details.templates as t}
+        <CanvasRender {t} pID={p.details.id} show={false} />
+      {/each}
+    {/each}
   {/if}
 </section>
 

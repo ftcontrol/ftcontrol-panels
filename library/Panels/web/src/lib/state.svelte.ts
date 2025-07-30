@@ -76,7 +76,25 @@ export class GlobalState {
 
   pluginsTemplatesPreviews: Record<string, string> = $state({})
 
+  isPrepared = $derived.by(() => {
+    if (!this.isConnected) return false
+
+    if (!this.firstPlugindReload) return false
+
+    for (const plugin of this.plugins) {
+      for (const t of plugin.details.templates) {
+        if (!this.pluginsTemplatesPreviews[`${plugin.details.id}/${t.name}`]) {
+          return false
+        }
+      }
+    }
+
+    return true
+  })
+
   devPlugins: string[] = $state([])
+
+  firstPlugindReload = $state(false)
 
   private async updateDevPlugins(reloadManager = false) {
     type LiveChangeEntry = {
@@ -146,6 +164,7 @@ export class GlobalState {
         this.changedTimestamps[entry.id] = entry.lastChanged
       }
     }
+    this.firstPlugindReload = true
   }
 
   async hasInternetConnection(): Promise<boolean> {
