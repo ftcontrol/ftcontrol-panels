@@ -217,6 +217,11 @@ export class GlobalState {
 
       this.interval = setInterval(() => {
         this.updateDevPlugins(true)
+        setTimeout(() => {
+          if (this.devPlugins.length == 0) {
+            this.firstPlugindReload = true
+          }
+        }, 400)
       }, 1000)
       console.log(`[init] Dev plugin interval set up`)
 
