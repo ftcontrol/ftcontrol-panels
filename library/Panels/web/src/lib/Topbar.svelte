@@ -3,7 +3,6 @@
   import { Button, Overlay, TextInput } from "ftc-panels"
   import { global } from "$lib"
   import { goto } from "$app/navigation"
-  import NavletContent from "./navlets/NavletContent.svelte"
   import Navlets from "./navlets/Navlets.svelte"
   import { manager } from "./grid/widgets.svelte"
   import Options from "./icons/Options.svelte"
@@ -42,7 +41,7 @@
               {#snippet trigger()}
                 <Options />
               {/snippet}
-              {#snippet overlay()}
+              {#snippet overlay({ close }: { close: () => void })}
                 <TextInput
                   type="text"
                   bind:value={manager.presets.data[index].name}
@@ -54,6 +53,7 @@
                   disabled={manager.presets.data.length == 1}
                   onclick={() => {
                     manager.deletePreset(index)
+                    close()
                   }}
                 >
                   x
