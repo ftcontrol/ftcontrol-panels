@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation"
   import NavletContent from "./navlets/NavletContent.svelte"
   import Navlets from "./navlets/Navlets.svelte"
+  import { manager } from "./grid/widgets.svelte"
 </script>
 
 <nav>
@@ -19,6 +20,46 @@
   <Navlets />
 
   <a href="/docs">Docs</a>
+
+  <Overlay>
+    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+      Presets
+    {/snippet}
+    {#snippet overlay({ close }: { close: () => void })}
+      <div class="plugins-overlay">
+        {#each manager.presets.data as preset, index}
+          <button
+            onclick={() => {
+              manager.change(index)
+            }}
+          >
+            {preset.name}
+          </button>
+          <button
+            onclick={() => {
+              manager.deletePreset(index)
+            }}
+          >
+            x
+          </button>
+          <input
+            type="text"
+            bind:value={manager.presets.data[index].name}
+            oninput={() => {
+              manager.save()
+            }}
+          />
+        {/each}
+        <button
+          onclick={() => {
+            manager.newPreset()
+          }}
+        >
+          +
+        </button>
+      </div>
+    {/snippet}
+  </Overlay>
 
   <Overlay>
     {#snippet trigger({ isOpen }: { isOpen: boolean })}

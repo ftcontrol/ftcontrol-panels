@@ -3,7 +3,7 @@
   import PreviewBox from "$lib/grid/PreviewBox.svelte"
   import { Button, Overlay } from "ftc-panels"
   import NavletContent from "./NavletContent.svelte"
-  import { manager } from "./manager.svelte"
+  import { manager } from "$lib/grid/widgets.svelte"
 
   let { set }: { set: (pID: string, wID: string) => void } = $props()
 </script>

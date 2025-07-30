@@ -65,6 +65,7 @@
   onMount(() => {
     updateGridSize()
     window.addEventListener("resize", updateGridSize)
+
     manager.load()
   })
 

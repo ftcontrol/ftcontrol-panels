@@ -30,17 +30,108 @@ export type Panel = {
   widgetID: string
 }
 
+export type Preset = {
+  selected: number
+  data: {
+    name: string
+    widgets: Widget[]
+    navlets: Navlet[]
+  }[]
+}
+
+export type Navlet = {
+  pluginID: string
+  navletID: string
+}
+
 class Manager {
-  load() {
-    var data = getCookie("widgets")
-    if (data == null) data = "[]"
-    this.widgets = JSON.parse(data) || []
+  template = {
+    selected: 0,
+    data: [
+      {
+        name: "Default",
+        widgets: [],
+        navlets: [],
+      },
+    ],
   }
-  save() {
-    setCookie("widgets", JSON.stringify(this.widgets))
+  load() {
+    var data = getCookie("layout")
+    if (data == null) data = JSON.stringify(this.template)
+    this.presets = JSON.parse(data) || structuredClone(this.template)
+
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
   }
 
+  deletePreset(index: number) {
+    if (this.presets.data.length <= 1) return
+
+    this.presets.data.splice(index, 1)
+
+    if (this.presets.selected === index) {
+      this.presets.selected = 0
+    } else if (this.presets.selected > index) {
+      this.presets.selected -= 1
+    }
+
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
+
+    this.save()
+  }
+
+  newPreset() {
+    this.presets.data.push(structuredClone(this.template.data[0]))
+    this.presets.selected = this.presets.data.length - 1
+
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
+  }
+
+  change(index: number) {
+    this.save()
+    this.presets.selected = index
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
+  }
+
+  save() {
+    while (this.presets.data.length <= this.presets.selected) {
+      this.presets.data.push(this.template.data[0])
+    }
+
+    this.presets.data[this.presets.selected].widgets = [...this.widgets]
+    this.presets.data[this.presets.selected].navlets = [...this.navlets]
+
+    setCookie("layout", JSON.stringify(this.presets))
+  }
+
+  presets: Preset = $state(this.template)
+
   widgets: Widget[] = $state([])
+  navlets: Navlet[] = $state([])
+
+  addNavlet() {
+    this.navlets.push({
+      pluginID: "",
+      navletID: "",
+    })
+    this.save()
+  }
+
+  removeNavlet(index: number) {
+    this.navlets.splice(index, 1)
+    this.save()
+  }
+
+  isValidNavlet(pluginID: string, navletID: string) {
+    const plugin = global.plugins.find((it) => it.details.id == pluginID)
+    if (plugin == undefined) return false
+    const navlet = plugin.details.navlets.find((it) => it.name == navletID)
+    if (navlet == undefined) return false
+    return true
+  }
 
   possibleWidgets = $state(this.widgets)
 

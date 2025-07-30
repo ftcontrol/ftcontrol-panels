@@ -1,22 +1,17 @@
 <script lang="ts">
   import Options from "$lib/icons/Options.svelte"
   import { Overlay } from "ftc-panels"
-  import { manager } from "./manager.svelte"
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import { global } from "$lib"
   import NavletsChoose from "./NavletsChoose.svelte"
-  import { onMount } from "svelte"
-
-  onMount(() => {
-    manager.load()
-  })
+  import { manager } from "$lib/grid/widgets.svelte"
 </script>
 
 <section>
   <div class="main">
     {#if global.isConnected}
       {#each manager.navlets as navlet}
-        {#if manager.isValid(navlet.pluginID, navlet.navletID)}
+        {#if manager.isValidNavlet(navlet.pluginID, navlet.navletID)}
           <div class="navlet">
             <NavletContent
               pluginID={navlet.pluginID}
@@ -40,7 +35,7 @@
         >
           {#each manager.navlets as navlet, index}
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              {#if manager.isValid(navlet.pluginID, navlet.navletID)}
+              {#if manager.isValidNavlet(navlet.pluginID, navlet.navletID)}
                 <p>{navlet.pluginID} / {navlet.navletID}</p>
 
                 <button
