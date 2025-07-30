@@ -22,4 +22,54 @@ export const config: PluginConfig = {
     },
     chapters: [],
   },
+  templates: [
+    {
+      name: "Default Panels",
+      widgets: [
+        {
+          widgets: [
+            {
+              pluginID: "com.bylazar.opmodecontrol",
+              widgetID: "OpModes Control",
+            },
+          ],
+          x: 0,
+          y: 0,
+          w: 4,
+          h: 4,
+        },
+      ],
+      navlets: [
+        {
+          pluginID: "com.bylazar.battery",
+          navletID: "Battery",
+        },
+      ],
+    },
+    {
+      name: "Test",
+      navlets: [
+        { pluginID: "com.bylazar.battery", navletID: "Battery" },
+        { pluginID: "com.bylazar.battery", navletID: "Battery" },
+        { pluginID: "com.bylazar.battery", navletID: "Battery" },
+        { pluginID: "com.bylazar.battery", navletID: "Battery" },
+      ],
+      widgets: [
+        { x: 4, y: 0, w: 7, h: 5, widgets: [] },
+        { x: 4, y: 5, w: 7, h: 7, widgets: [] },
+        {
+          x: 0,
+          y: 0,
+          w: 4,
+          h: 11,
+          widgets: [
+            {
+              pluginID: "com.bylazar.configurables",
+              widgetID: "Configurables",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }

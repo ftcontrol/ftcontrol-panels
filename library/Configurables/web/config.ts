@@ -36,4 +36,5 @@ export const config: PluginConfig = {
       },
     ],
   },
+  templates: [],
 }
