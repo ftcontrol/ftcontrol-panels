@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { manager, type Widget } from "../widgets.svelte"
+  import { type Widget } from "../widgets.svelte"
   import WidgetOptions from "./WidgetOptions.svelte"
   import Portal from "svelte-portal"
   import WidgetDrag from "./WidgetDrag.svelte"
+  import { getContext } from "svelte"
+  import type { Manager } from "../widgets.svelte"
+  const manager = getContext("manager") as Manager
 
   let {
     widget = $bindable(),

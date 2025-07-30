@@ -1,6 +1,9 @@
 <script lang="ts">
   import Move from "$lib/icons/Move.svelte"
-  import { manager, type Widget } from "../widgets.svelte"
+  import { type Widget } from "../widgets.svelte"
+  import { getContext } from "svelte"
+  import type { Manager } from "../widgets.svelte"
+  const manager = getContext("manager") as Manager
   let {
     widget = $bindable(),
     isPossible = $bindable(),

@@ -3,7 +3,9 @@
   import { Button, Overlay } from "ftc-panels"
   import PreviewBox from "../PreviewBox.svelte"
   import WidgetContent from "../WidgetContent.svelte"
-  import { manager } from "../widgets.svelte"
+  import { getContext } from "svelte"
+  import type { Manager } from "../widgets.svelte"
+  const manager = getContext("manager") as Manager
 
   let { set }: { set: (pID: string, wID: string) => void } = $props()
 </script>

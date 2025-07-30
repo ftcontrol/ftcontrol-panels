@@ -45,7 +45,7 @@ export type Navlet = {
   navletID: string
 }
 
-class Manager {
+export class Manager {
   template = {
     selected: 0,
     data: [
@@ -56,7 +56,16 @@ class Manager {
       },
     ],
   }
-  load() {
+  updateGridSize(section: HTMLElement) {
+    const bounding = section.getBoundingClientRect()
+    const width = bounding.width
+    const height = bounding.height
+
+    this.WIDTH = width / this.MAX_GRID_WIDTH
+    this.HEIGHT = height / this.MAX_GRID_HEIGHT
+  }
+  load(section: HTMLElement) {
+    this.updateGridSize(section)
     var data = getCookie("layout")
     if (data == null) data = JSON.stringify(this.template)
     this.presets = JSON.parse(data) || structuredClone(this.template)
@@ -409,7 +418,9 @@ class Manager {
   }
 }
 
-export const manager = new Manager()
+export const manager = $state({
+  manager: new Manager(),
+})
 
 function clamp(min: number, value: number, max: number) {
   return Math.min(Math.max(min, value), max)

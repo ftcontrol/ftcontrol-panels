@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { onDestroy, onMount, type Snippet } from "svelte"
+  import { setContext, type Snippet } from "svelte"
   import "./global.css"
   import Topbar from "$lib/Topbar.svelte"
-  import { global, notifications } from "$lib"
+  import { global } from "$lib"
   import NotificationsUi from "$lib/NotificationsUI.svelte"
+  import { manager } from "$lib/grid/widgets.svelte"
+
+  setContext("manager", manager.manager)
 
   let { children }: { children?: Snippet } = $props()
 </script>

@@ -1,9 +1,18 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte"
   import WidgetItem from "./widget/Widget.svelte"
-  import { manager, type Widget } from "./widgets.svelte"
+  import { Manager, type Widget } from "./widgets.svelte"
   import Overlay from "./Overlay.svelte"
   import PlaceOverlay from "./PlaceOverlay.svelte"
+  import { setContext } from "svelte"
+
+  let {
+    manager = $bindable(),
+  }: {
+    manager: Manager
+  } = $props()
+
+  setContext("manager", manager)
 
   let mouseGridPos = $state<{
     x: number
@@ -39,10 +48,6 @@
     mouseGridPos = null
   }
 
-  function getSurface(widget: Widget) {
-    return widget.w * widget.h
-  }
-
   let gridCells = $derived.by(() => {
     let list = []
     for (let y = 0; y < manager.MAX_GRID_HEIGHT; y++) {
@@ -53,24 +58,13 @@
     return list
   })
 
-  function updateGridSize() {
-    const bounding = section.getBoundingClientRect()
-    const width = bounding.width
-    const height = bounding.height
-
-    manager.WIDTH = width / manager.MAX_GRID_WIDTH
-    manager.HEIGHT = height / manager.MAX_GRID_HEIGHT
-  }
-
   onMount(() => {
-    updateGridSize()
-    window.addEventListener("resize", updateGridSize)
-
-    manager.load()
+    manager.load(section)
+    window.addEventListener("resize", () => manager.updateGridSize(section))
   })
 
   onDestroy(() => {
-    window.removeEventListener("resize", updateGridSize)
+    window.removeEventListener("resize", () => manager.updateGridSize(section))
   })
 
   let section: HTMLElement

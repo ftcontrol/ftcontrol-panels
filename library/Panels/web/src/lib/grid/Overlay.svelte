@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { manager, type Widget } from "./widgets.svelte"
+  import { getContext } from "svelte"
+  import type { Manager } from "./widgets.svelte"
+  const manager = getContext("manager") as Manager
 
   let {
     x,

@@ -4,8 +4,12 @@
   import { global } from "$lib"
   import { goto } from "$app/navigation"
   import Navlets from "./navlets/Navlets.svelte"
-  import { manager } from "./grid/widgets.svelte"
+
   import Options from "./icons/Options.svelte"
+
+  import { getContext } from "svelte"
+  import type { Manager } from "./grid/widgets.svelte"
+  var manager = getContext("manager") as Manager
 </script>
 
 <nav>
@@ -17,7 +21,7 @@
     {global.isConnected ? "Connected" : "Waiting"}
   </p>
 
-  <Navlets />
+  <Navlets bind:manager />
 
   <a href="/docs">Docs</a>
 

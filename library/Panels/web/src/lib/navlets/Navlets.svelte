@@ -4,7 +4,16 @@
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import { global } from "$lib"
   import NavletsChoose from "./NavletsChoose.svelte"
-  import { manager } from "$lib/grid/widgets.svelte"
+  import { setContext } from "svelte"
+  import type { Manager } from "$lib/grid/widgets.svelte"
+
+  let {
+    manager = $bindable(),
+  }: {
+    manager: Manager
+  } = $props()
+
+  setContext("manager", manager)
 </script>
 
 <section>

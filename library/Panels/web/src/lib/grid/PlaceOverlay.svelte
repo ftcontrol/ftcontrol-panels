@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { manager } from "./widgets.svelte"
+  import { getContext } from "svelte"
+  import type { Manager } from "./widgets.svelte"
+  const manager = getContext("manager") as Manager
 </script>
 
 {#if manager.place != null}
