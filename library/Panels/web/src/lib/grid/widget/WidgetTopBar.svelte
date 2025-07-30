@@ -145,6 +145,8 @@
 
     window.removeEventListener("mousemove", onMove)
     window.removeEventListener("mouseup", stopMove)
+
+    manager.save()
   }
 </script>
 

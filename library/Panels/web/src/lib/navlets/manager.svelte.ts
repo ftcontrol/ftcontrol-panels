@@ -1,4 +1,5 @@
 import { global } from "$lib"
+import { getCookie, setCookie } from "ftc-panels"
 
 export type Navlet = {
   pluginID: string
@@ -6,12 +7,17 @@ export type Navlet = {
 }
 
 class Manager {
-  navlets: Navlet[] = $state([
-    {
-      pluginID: "com.bylazar.battery",
-      navletID: "Battery",
-    },
-  ])
+  load() {
+    var data = getCookie("navlets")
+    if (data == null) data = "[]"
+    this.navlets = JSON.parse(data) || []
+  }
+
+  navlets: Navlet[] = $state([])
+
+  save() {
+    setCookie("navlets", JSON.stringify(this.navlets))
+  }
 
   addNavlet() {
     this.navlets.push({
@@ -22,6 +28,7 @@ class Manager {
 
   removeNavlet(index: number) {
     this.navlets.splice(index, 1)
+    this.save()
   }
 
   isValid(pluginID: string, navletID: string) {

@@ -5,6 +5,11 @@
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import { global } from "$lib"
   import NavletsChoose from "./NavletsChoose.svelte"
+  import { onMount } from "svelte"
+
+  onMount(() => {
+    manager.load()
+  })
 </script>
 
 <section>

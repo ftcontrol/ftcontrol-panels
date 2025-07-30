@@ -3,6 +3,7 @@
   import { Button, Overlay } from "ftc-panels"
   import PreviewBox from "../PreviewBox.svelte"
   import WidgetContent from "../WidgetContent.svelte"
+  import { manager } from "../widgets.svelte"
 
   let { set }: { set: (pID: string, wID: string) => void } = $props()
 </script>
@@ -20,6 +21,7 @@
             onclick={() => {
               close()
               set(p.details.id, w.name)
+              manager.save()
             }}
           >
             <h4>{p.details.name}</h4>

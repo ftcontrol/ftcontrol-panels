@@ -1,4 +1,5 @@
 import { global } from "$lib"
+import { getCookie, setCookie } from "ftc-panels"
 
 export type Widget = {
   offset: {
@@ -30,145 +31,16 @@ export type Panel = {
 }
 
 class Manager {
-  widgets: Widget[] = $state([
-    {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-      move: {
-        x: 0,
-        y: 0,
-      },
-      selected: 0,
-      isMoving: false,
-      id: Math.random().toString(),
-      widgets: [
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.opmodecontrol",
-          widgetID: "OpModes Control",
-        },
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.exampleplugin",
-          widgetID: "Counter",
-        },
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.configurables",
-          widgetID: "Configurables",
-        },
-      ],
-      x: 0,
-      y: 0,
-      w: 5,
-      h: 4,
-      minW: 1,
-      maxW: 60,
-      minH: 1,
-      maxH: 60,
-    },
-    {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-      move: {
-        x: 0,
-        y: 0,
-      },
-      selected: 0,
-      isMoving: false,
-      id: Math.random().toString(),
-      widgets: [
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.telemetry",
-          widgetID: "Telemetry",
-        },
-        {
-          isMoving: false,
-          pluginID: "",
-          widgetID: "",
-        },
-      ],
-      x: 0,
-      y: 4,
-      w: 5,
-      h: 4,
-      minW: 1,
-      maxW: 60,
-      minH: 1,
-      maxH: 60,
-    },
-    {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-      move: {
-        x: 0,
-        y: 0,
-      },
-      selected: 0,
-      isMoving: false,
-      id: Math.random().toString(),
-      widgets: [
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.configurables",
-          widgetID: "Configurables",
-        },
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.configurables",
-          widgetID: "ChangedConfigurables",
-        },
-      ],
-      x: 5,
-      y: 0,
-      w: 6,
-      h: 12,
-      minW: 1,
-      maxW: 60,
-      minH: 1,
-      maxH: 60,
-    },
-    {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-      move: {
-        x: 0,
-        y: 0,
-      },
-      selected: 0,
-      isMoving: false,
-      id: Math.random().toString(),
-      widgets: [
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.capture",
-          widgetID: "Capture",
-        },
-        {
-          isMoving: false,
-          pluginID: "com.bylazar.field",
-          widgetID: "Field",
-        },
-      ],
-      x: 11,
-      y: 0,
-      w: 5,
-      h: 12,
-      minW: 1,
-      maxW: 60,
-      minH: 1,
-      maxH: 60,
-    },
-  ])
+  load() {
+    var data = getCookie("widgets")
+    if (data == null) data = "[]"
+    this.widgets = JSON.parse(data) || []
+  }
+  save() {
+    setCookie("widgets", JSON.stringify(this.widgets))
+  }
+
+  widgets: Widget[] = $state([])
 
   possibleWidgets = $state(this.widgets)
 
@@ -202,6 +74,7 @@ class Manager {
 
   removeWidget(id: string) {
     this.widgets = this.widgets.filter((it) => it.id != id)
+    this.save()
   }
 
   getWidget(x: number, y: number, widgets: Widget[]): Widget | undefined {
@@ -308,6 +181,7 @@ class Manager {
     this.placeStart = null
     this.placeEnd = null
     this.place = null
+    this.save()
   }
 
   resolveCollisions(moved: Widget, widgets: Widget[]) {
@@ -390,9 +264,11 @@ class Manager {
 
   finishMoveWidget(id: string) {
     this.widgets = this.moveWidget(id, this.widgets)
+    this.save()
   }
   finishResizeWidget(id: string) {
     this.widgets = this.resizeWidget(id, this.widgets)
+    this.save()
   }
 
   getWidgetById(id: string, widgets: Widget[]): Widget | undefined {
