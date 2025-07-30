@@ -4,9 +4,7 @@
   import Layout from "./Layout.svelte"
   import { Manager } from "./widgets.svelte"
   import type { Template } from "ftc-panels"
-  import Navlets from "$lib/navlets/Navlets.svelte"
-  import Panels from "$lib/Panels.svelte"
-  import { global } from "$lib"
+
   import Topbar from "$lib/Topbar.svelte"
 
   let { t }: { t: Template } = $props()
@@ -30,14 +28,22 @@
     targetElement.style.display = "none"
   }
 
-  onMount(() => {
-    setTimeout(async () => {
-      await renderAsImage()
-    }, 1000)
+  async function waitForStableRender(ticks = 3) {
+    for (let i = 0; i < ticks; i++) {
+      await tick()
+    }
+  }
+
+  onMount(async () => {
+    await waitForStableRender(3)
+    await renderAsImage()
   })
 </script>
 
-<div bind:this={targetElement} style="width: 1400px;height: 600px;">
+<div
+  bind:this={targetElement}
+  style="width: 1400px; height: 600px; position: absolute; top: -9999px; left: -9999px;"
+>
   <section>
     <Topbar />
 
