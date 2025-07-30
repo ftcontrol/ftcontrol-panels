@@ -1,6 +1,6 @@
 <script lang="ts">
   import Panels from "$lib/Panels.svelte"
-  import { Button, Overlay } from "ftc-panels"
+  import { Button, Overlay, TextInput } from "ftc-panels"
   import { global } from "$lib"
   import { goto } from "$app/navigation"
   import NavletContent from "./navlets/NavletContent.svelte"
@@ -31,6 +31,7 @@
         {#each manager.presets.data as preset, index}
           <div class="preset">
             <Button
+              selected={manager.presets.selected == index}
               onclick={() => {
                 manager.change(index)
               }}
@@ -42,20 +43,21 @@
                 <Options />
               {/snippet}
               {#snippet overlay()}
-                <button
-                  onclick={() => {
-                    manager.deletePreset(index)
-                  }}
-                >
-                  x
-                </button>
-                <input
+                <TextInput
                   type="text"
                   bind:value={manager.presets.data[index].name}
                   oninput={() => {
                     manager.save()
                   }}
                 />
+                <Button
+                  disabled={manager.presets.data.length == 1}
+                  onclick={() => {
+                    manager.deletePreset(index)
+                  }}
+                >
+                  x
+                </Button>
               {/snippet}
             </Overlay>
           </div>
