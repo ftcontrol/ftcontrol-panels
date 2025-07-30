@@ -1,6 +1,6 @@
 <script lang="ts">
   import Options from "$lib/icons/Options.svelte"
-  import { Overlay } from "ftc-panels"
+  import { Button, Overlay } from "ftc-panels"
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import { global } from "$lib"
   import NavletsChoose from "./NavletsChoose.svelte"
@@ -36,12 +36,14 @@
           {#each manager.navlets as navlet, index}
             <div style="display: flex; gap: 0.5rem; align-items: center;">
               {#if manager.isValidNavlet(navlet.pluginID, navlet.navletID)}
-                <p>{navlet.pluginID} / {navlet.navletID}</p>
+                <div style="display: flex; gap: 1rem;">
+                  <Button>{navlet.pluginID} / {navlet.navletID}</Button>
 
-                <button
-                  onclick={() => manager.removeNavlet(index)}
-                  title="Remove navlet">✕</button
-                >
+                  <Button
+                    onclick={() => manager.removeNavlet(index)}
+                    title="Remove navlet">✕</Button
+                  >
+                </div>
               {:else}
                 <NavletsChoose
                   set={(pID, wID) => {
@@ -53,14 +55,13 @@
             </div>
           {/each}
 
-          <button
+          <Button
             onclick={() => {
               manager.addNavlet()
             }}
-            style="margin-top: 1rem;"
           >
-            + Add Navlet
-          </button>
+            +
+          </Button>
         </div>
       {/snippet}
     </Overlay>

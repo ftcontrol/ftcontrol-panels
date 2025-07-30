@@ -1,3 +1,4 @@
+import { goto } from "$app/navigation"
 import { global } from "$lib"
 import { getCookie, setCookie } from "ftc-panels"
 
@@ -85,8 +86,12 @@ class Manager {
     this.presets.data.push(structuredClone(this.template.data[0]))
     this.presets.selected = this.presets.data.length - 1
 
+    goto("/")
+
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
+
+    this.save()
   }
 
   change(index: number) {
@@ -94,6 +99,8 @@ class Manager {
     this.presets.selected = index
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
+    this.save()
+    goto("/")
   }
 
   save() {

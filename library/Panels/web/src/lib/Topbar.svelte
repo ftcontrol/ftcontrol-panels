@@ -6,6 +6,7 @@
   import NavletContent from "./navlets/NavletContent.svelte"
   import Navlets from "./navlets/Navlets.svelte"
   import { manager } from "./grid/widgets.svelte"
+  import Options from "./icons/Options.svelte"
 </script>
 
 <nav>
@@ -26,37 +27,46 @@
       Presets
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      <div class="plugins-overlay">
+      <div class="presets-overlay">
         {#each manager.presets.data as preset, index}
-          <button
-            onclick={() => {
-              manager.change(index)
-            }}
-          >
-            {preset.name}
-          </button>
-          <button
-            onclick={() => {
-              manager.deletePreset(index)
-            }}
-          >
-            x
-          </button>
-          <input
-            type="text"
-            bind:value={manager.presets.data[index].name}
-            oninput={() => {
-              manager.save()
-            }}
-          />
+          <div class="preset">
+            <Button
+              onclick={() => {
+                manager.change(index)
+              }}
+            >
+              {preset.name}
+            </Button>
+            <Overlay>
+              {#snippet trigger()}
+                <Options />
+              {/snippet}
+              {#snippet overlay()}
+                <button
+                  onclick={() => {
+                    manager.deletePreset(index)
+                  }}
+                >
+                  x
+                </button>
+                <input
+                  type="text"
+                  bind:value={manager.presets.data[index].name}
+                  oninput={() => {
+                    manager.save()
+                  }}
+                />
+              {/snippet}
+            </Overlay>
+          </div>
         {/each}
-        <button
+        <Button
           onclick={() => {
             manager.newPreset()
           }}
         >
           +
-        </button>
+        </Button>
       </div>
     {/snippet}
   </Overlay>
@@ -104,8 +114,28 @@
   .plugins-overlay {
     min-width: 200px;
     min-height: 100px;
+    max-height: 400px;
+
+    overflow-y: auto;
 
     padding: calc(var(--padding) / 2);
+  }
+  .presets-overlay {
+    min-width: 200px;
+    min-height: 100px;
+    max-height: 400px;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: calc(var(--padding) / 2);
+    gap: calc(var(--padding) / 2);
+  }
+  .preset {
+    display: flex;
+    gap: calc(var(--padding) / 2);
   }
   .grid {
     margin-top: 0.5rem;
