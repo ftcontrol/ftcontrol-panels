@@ -10,6 +10,9 @@
   import { getContext } from "svelte"
   import type { Manager } from "./grid/widgets.svelte"
   import TemplatesChoose from "./grid/TemplatesChoose.svelte"
+  import Delete from "./icons/Delete.svelte"
+  import Add from "./icons/Add.svelte"
+  import Copy from "./icons/Copy.svelte"
   var manager = getContext("manager") as Manager
 </script>
 
@@ -58,15 +61,17 @@
                   }}
                 />
                 <Button
+                  transparent={true}
                   disabled={manager.presets.data.length == 1}
                   onclick={() => {
                     manager.deletePreset(index)
                     close()
                   }}
                 >
-                  x
+                  <Delete />
                 </Button>
                 <Button
+                  transparent={true}
                   disabled={manager.presets.data.length == 1}
                   onclick={() => {
                     manager.save()
@@ -77,7 +82,7 @@
                     close()
                   }}
                 >
-                  Copy
+                  <Copy />
                 </Button>
               {/snippet}
             </Overlay>
@@ -89,11 +94,12 @@
           }}
         />
         <Button
+          transparent={true}
           onclick={() => {
             manager.newPreset()
           }}
         >
-          +
+          <Add />
         </Button>
       </div>
     {/snippet}
