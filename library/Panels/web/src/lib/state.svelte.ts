@@ -404,7 +404,7 @@ export class GlobalState {
     return text
   }
 
-  panelsVersion = "0.0.2"
+  panelsVersion = "0.0.6"
 
   async getLatestVersion(): Promise<string> {
     try {
@@ -438,6 +438,7 @@ export class GlobalState {
       "com.bylazar.opmodecontrol",
       "com.bylazar.telemetry",
       "com.bylazar.themes",
+      "com.bylazar.utils",
       //TODO: fill here
     ]
     var isCombined = false

@@ -53,7 +53,7 @@ object ClassFinder {
             "org.jetbrains",
             "com.fasterxml",
             "okhttp3.internal",
-            "kotlinx.coroutines"
+            "kotlinx.coroutines",
         )
     )
 

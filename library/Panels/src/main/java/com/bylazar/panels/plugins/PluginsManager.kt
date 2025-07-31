@@ -62,29 +62,34 @@ object PluginsManager {
                 pluginInstance.setConfig(newConfig)
                 Logger.pluginsLog("Set new config.")
             }
-            //
 
-            try {
-                val details: PluginDetails =
-                    loadPluginConfig(context, "web/plugins/${pluginInstance.id}/config.json")
+            if (!pluginInstance.config.isEnabled) {
+                Logger.pluginsLog("Is Disabled ID '${pluginInstance.id}'")
+            } else {
+                try {
+                    val details: PluginDetails =
+                        loadPluginConfig(context, "web/plugins/${pluginInstance.id}/config.json")
 
-                pluginInstance.details = details
+                    pluginInstance.details = details
 
-                Logger.pluginsLog(pluginInstance.details.toString())
+                    Logger.pluginsLog(pluginInstance.details.toString())
 
-                Logger.pluginsLog("Got details or ID '${pluginInstance.id}'")
+                    Logger.pluginsLog("Got details or ID '${pluginInstance.id}'")
 
-                if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
-                    skippedPlugins[pluginInstance.id] = pluginInstance.details
-                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.id}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
-                } else {
-                    plugins[pluginInstance.id] = pluginInstance
-                    Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.id}'")
+                    if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
+                        skippedPlugins[pluginInstance.id] = pluginInstance.details
+                        Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.id}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                    } else {
+                        plugins[pluginInstance.id] = pluginInstance
+                        Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.id}'")
+                    }
+
+                } catch (t: Throwable) {
+                    Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.id}', ${t.message}")
                 }
-
-            } catch (t: Throwable) {
-                Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.id}', ${t.message}")
             }
+
+
         }
 
         isRegistered = true
