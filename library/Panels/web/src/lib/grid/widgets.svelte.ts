@@ -32,13 +32,18 @@ export type ExtendedWidget = TemplateWidget & {
   isMoving: boolean
 }
 
-export type ExtendedTemplate = Omit<Template, "plugins"> & {
+export type ExtendedTemplate = Omit<Template, "widgets"> & {
   widgets: ExtendedWidgetGroup[]
 }
 
 export type ManagerData = {
   selected: number
   data: ExtendedTemplate[]
+}
+
+export type ExtendedTemplateEntry = Template & {
+  pluginID: string
+  missingPlugins: string[]
 }
 
 export class Manager {
@@ -136,6 +141,20 @@ export class Manager {
 
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
+  }
+
+  addTemplate(t: Template) {
+    if (!this.enableInteractions) return
+    const processed = this.processTemplate(t)
+    this.presets.data.push(processed)
+    this.presets.selected = this.presets.data.length - 1
+
+    goto("/")
+
+    this.widgets = [...this.presets.data[this.presets.selected].widgets]
+    this.navlets = [...this.presets.data[this.presets.selected].navlets]
+
+    this.save()
   }
 
   deletePreset(index: number) {

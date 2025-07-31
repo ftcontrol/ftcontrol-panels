@@ -22,10 +22,8 @@
   {/if}
 
   {#if global.isConnected}
-    {#each global.plugins as p}
-      {#each p.details.templates as t}
-        <CanvasRender {t} pID={p.details.id} show={false} />
-      {/each}
+    {#each global.allTemplates as t}
+      <CanvasRender {t} pID={t.pluginID} show={false} />
     {/each}
   {/if}
 </section>

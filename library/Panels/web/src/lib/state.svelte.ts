@@ -11,6 +11,7 @@ import LZMA from "./lzma"
 import { readValue, storeValue } from "./indexedDB"
 import { notifications } from "$lib"
 import { goto } from "$app/navigation"
+import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 
 function decompressLzma(compressedData: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,40 @@ function decompressLzma(compressedData: Uint8Array): Promise<string> {
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
+
+  allTemplates = $derived.by(() => {
+    let data: ExtendedTemplateEntry[] = []
+
+    for (const plugin of this.plugins) {
+      for (const t of plugin.details.templates) {
+        const usedIDs: Set<string> = new Set([])
+        const loadedPluginIDs = new Set(this.plugins.map((p) => p.details.id))
+
+        for (const group of t.widgets) {
+          for (const widget of group.widgets) {
+            usedIDs.add(widget.pluginID)
+          }
+        }
+
+        for (const navlet of t.navlets) {
+          usedIDs.add(navlet.pluginID)
+        }
+
+        const missingPlugins = Array.from(usedIDs).filter(
+          (id) => !loadedPluginIDs.has(id)
+        )
+
+        data.push({
+          ...t,
+          pluginID: plugin.details.id,
+          missingPlugins,
+        })
+      }
+    }
+
+    return data
+  })
+
   skippedPlugins: PluginConfig[] = $state([])
   socket: GlobalSocket = new GlobalSocket()
 

@@ -83,7 +83,11 @@
             </Overlay>
           </div>
         {/each}
-        <TemplatesChoose set={() => {}} />
+        <TemplatesChoose
+          set={(t) => {
+            manager.addTemplate(t)
+          }}
+        />
         <Button
           onclick={() => {
             manager.newPreset()

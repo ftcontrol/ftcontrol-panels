@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { global } from "$lib"
   import { Button, Overlay } from "ftc-panels"
   import CanvasRender from "./CanvasRender.svelte"
+  import type { Template } from "ftc-panels"
+  import { global } from "$lib"
 
-  let { set }: { set: (pID: string, tID: string) => void } = $props()
+  let { set }: { set: (t: Template) => void } = $props()
 </script>
 
 <Overlay triggerStyle={"flex-grow: 1;"}>
@@ -12,20 +13,22 @@
   {/snippet}
   {#snippet overlay({ close }: { close: () => void })}
     <div class="possibilities">
-      {#each global.plugins as p}
-        {#each p.details.templates as t}
-          <button
-            class="choose"
-            onclick={() => {
-              close()
-              set(p.details.id, t.name)
-            }}
-          >
-            <h4>{p.details.name}</h4>
-            <p>{t.name}</p>
-            <CanvasRender {t} pID={p.details.id} />
-          </button>
-        {/each}
+      {#each global.allTemplates as t}
+        <button
+          class="choose"
+          disabled={t.missingPlugins.length > 0}
+          onclick={() => {
+            close()
+            set(t)
+          }}
+        >
+          <h4>
+            {global.plugins.find((it) => it.details.id == t.pluginID)?.details
+              .name}
+          </h4>
+          <p>{t.name}</p>
+          <CanvasRender {t} pID={t.pluginID} />
+        </button>
       {/each}
     </div>
   {/snippet}
@@ -53,5 +56,8 @@
     background-color: var(--bgLight);
     padding: 0.5em;
     border-radius: 0.8rem;
+  }
+  button:disabled {
+    opacity: 0.5;
   }
 </style>
