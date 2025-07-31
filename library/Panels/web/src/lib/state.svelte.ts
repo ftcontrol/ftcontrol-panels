@@ -275,6 +275,23 @@ export class GlobalState {
       console.log(
         `[init] Initialization complete in ${Date.now() - startTime}ms`
       )
+
+      if (
+        this.plugins
+          .map((it) => it.details.id)
+          .includes("com.bylazar.exampleplugin")
+      ) {
+        notifications.addAction("Don't use default plugin id", [
+          {
+            text: "OK",
+            task: () => {},
+          },
+          {
+            text: "Details",
+            task: () => {},
+          },
+        ])
+      }
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
       window.location.reload()
