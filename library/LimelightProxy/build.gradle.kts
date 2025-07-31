@@ -1,6 +1,7 @@
 import org.gradle.kotlin.dsl.implementation
 
 val pluginNamespace = "com.bylazar.limelightproxy"
+val pluginVersion = "0.0.1"
 
 plugins {
     id("com.android.library")
@@ -53,4 +54,39 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+
+                groupId = pluginNamespace.substringBeforeLast('.')
+                artifactId = pluginNamespace.substringAfterLast('.')
+                version = pluginVersion
+
+                pom {
+                    description.set("Panels Limelight Proxy Plugin")
+                    name.set("Panels Limelight Proxy")
+                    url.set("https://panels.bylazar.com")
+
+                    developers {
+                        developer {
+                            id.set("lazar")
+                            name.set("Lazar Dragos George")
+                            email.set("hi@bylazar.com")
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "localDevRepo"
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+            }
+        }
+    }
 }

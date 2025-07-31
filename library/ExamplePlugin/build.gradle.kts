@@ -1,4 +1,5 @@
 val pluginNamespace = "com.bylazar.exampleplugin"
+val pluginVersion = "0.0.1"
 
 plugins {
     id("com.android.library")
@@ -48,4 +49,39 @@ dependencies {
     compileOnly("org.firstinspires.ftc:Vision:10.3.0")
 
     compileOnly(project(":Panels"))
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+
+                groupId = pluginNamespace.substringBeforeLast('.')
+                artifactId = pluginNamespace.substringAfterLast('.')
+                version = pluginVersion
+
+                pom {
+                    description.set("Panels Example Plugin")
+                    name.set("Panels Example Plugin")
+                    url.set("https://panels.bylazar.com")
+
+                    developers {
+                        developer {
+                            id.set("lazar")
+                            name.set("Lazar Dragos George")
+                            email.set("hi@bylazar.com")
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "localDevRepo"
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+            }
+        }
+    }
 }

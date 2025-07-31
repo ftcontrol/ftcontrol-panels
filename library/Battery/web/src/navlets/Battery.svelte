@@ -17,7 +17,7 @@
   })
 </script>
 
-<p>Battery {battery}V</p>
+<p>Battery {battery.toFixed(2)}V</p>
 
 <style>
   p {

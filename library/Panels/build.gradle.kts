@@ -5,6 +5,9 @@ plugins {
     id("com.bylazar.svelte-assets")
 }
 
+val pluginNamespace = "com.bylazar.panels"
+val pluginVersion = "0.0.4"
+
 svelteAssets {
     webAppPath = "web"
     buildDirPath = "build"
@@ -74,9 +77,9 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.bylazar"
-                artifactId = "panels"
-                version = "0.0.2"
+                groupId = pluginNamespace.substringBeforeLast('.')
+                artifactId = pluginNamespace.substringAfterLast('.')
+                version = pluginVersion
 
                 pom {
                     description.set("All in one toolbox dashboard for FTC.")

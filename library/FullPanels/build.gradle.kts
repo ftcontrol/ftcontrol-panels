@@ -1,4 +1,5 @@
 val pluginNamespace = "com.bylazar.fullpanels"
+val pluginVersion = "0.0.1"
 
 plugins {
     id("com.android.library")
@@ -60,4 +61,39 @@ dependencies {
     api(project(":Field"))
     api(project(":Docs"))
     api(project(":Battery"))
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+
+                groupId = pluginNamespace.substringBeforeLast('.')
+                artifactId = pluginNamespace.substringAfterLast('.')
+                version = pluginVersion
+
+                pom {
+                    description.set("All in one toolbox dashboard for FTC with core plugins.")
+                    name.set("Full Panels")
+                    url.set("https://panels.bylazar.com")
+
+                    developers {
+                        developer {
+                            id.set("lazar")
+                            name.set("Lazar Dragos George")
+                            email.set("hi@bylazar.com")
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "localDevRepo"
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@
   import Options from "$lib/icons/Options.svelte"
   import { Button, Overlay } from "ftc-panels"
   import { type ExtendedWidgetGroup } from "../widgets.svelte"
-  import { getContext } from "svelte"
+  import { getContext, tick } from "svelte"
   import type { Manager } from "../widgets.svelte"
   const manager = getContext("manager") as Manager
 
