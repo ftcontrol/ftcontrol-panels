@@ -11,11 +11,24 @@ export const config: PluginConfig = {
   author: "Lazar",
   widgets: [
     {
-      name: "Counter",
-      filepath: "src/widgets/Counter.svelte",
+      name: "CameraStream",
+      filepath: "src/widgets/CameraStream.svelte",
+    },
+    {
+      name: "Dashboard",
+      filepath: "src/widgets/Dashboard.svelte",
+    },
+    {
+      name: "Stats",
+      filepath: "src/widgets/Stats.svelte",
     },
   ],
-  navlets: [],
+  navlets: [
+    {
+      name: "Temperature",
+      filepath: "src/navlets/Temperature.svelte",
+    },
+  ],
   manager: {
     name: "Manager",
     filepath: "src/manager.ts",

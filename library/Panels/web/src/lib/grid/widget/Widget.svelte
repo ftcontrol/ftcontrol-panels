@@ -34,6 +34,7 @@
       {#if widget.widgets.length > 0}
         {#each widget.widgets, index}
           <div
+            class="wrapper"
             style={index == widget.selected
               ? "display:block;"
               : "display:none;"}
@@ -70,6 +71,9 @@
 </div>
 
 <style>
+  .wrapper {
+    height: 100%;
+  }
   section {
     padding: var(--padding);
     overflow: auto;
