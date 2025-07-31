@@ -1,12 +1,5 @@
 package com.bylazar.panels.json
 
-import android.R.attr.x
-import android.R.attr.y
-import com.bylazar.panels.plugins.PluginsManager.plugins
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginDetails(
     val id: String = "",
     val name: String = "",
@@ -36,23 +29,23 @@ data class PluginDetails(
 
             appendLine("  widgets=[")
             widgets.forEach { widget ->
-                appendLine("    PanelsWidget(name='${widget.name}', filepath='${widget.filepath}', textContent='${widget.textContent}'),")
+                appendLine("    PanelsWidget(name='${widget.name}', filepath='${widget.filepath}'),")
             }
             appendLine("  ],")
 
             appendLine("  navlets=[")
             navlets.forEach { navlet ->
-                appendLine("    PanelsWidget(name='${navlet.name}', filepath='${navlet.filepath}', textContent='${navlet.textContent}'),")
+                appendLine("    PanelsWidget(name='${navlet.name}', filepath='${navlet.filepath}'),")
             }
             appendLine("  ],")
 
-            appendLine("  manager=PanelsWidget(name='${manager.name}', filepath='${manager.filepath}', textContent='${manager.textContent}'),")
+            appendLine("  manager=PanelsWidget(name='${manager.name}', filepath='${manager.filepath}'),")
 
             appendLine("  docs=PanelsDocs(")
-            appendLine("    homepage=PanelsWidget(name='${docs.homepage.name}', filepath='${docs.homepage.filepath}', textContent='${docs.homepage.textContent}'),")
+            appendLine("    homepage=PanelsWidget(name='${docs.homepage.name}', filepath='${docs.homepage.filepath}'),")
             appendLine("    chapters=[")
             docs.chapters.forEach { chapter ->
-                appendLine("      PanelsWidget(name='${chapter.name}', filepath='${chapter.filepath}', textContent='${chapter.textContent}'),")
+                appendLine("      PanelsWidget(name='${chapter.name}', filepath='${chapter.filepath}'),")
             }
             appendLine("    ]")
             appendLine("  )")
@@ -62,20 +55,17 @@ data class PluginDetails(
     }
 }
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class PanelsWidget(
     val name: String = "",
     val filepath: String = "",
     var textContent: String = ""
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class PanelsDocs(
     val homepage: PanelsWidget = PanelsWidget(),
     val chapters: List<PanelsWidget> = listOf()
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class Template(
     val name: String = "",
     val widgets: List<TemplateWidgetGroup> = listOf(),
@@ -83,13 +73,11 @@ data class Template(
     val plugins: List<String> = listOf()
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class TemplateWidget(
     val pluginID: String = "",
     val widgetID: String = ""
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class TemplateWidgetGroup(
     val widgets: List<TemplateWidget> = listOf(),
     val x: Int = 0,
@@ -98,7 +86,6 @@ data class TemplateWidgetGroup(
     val h: Int = 0
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class TemplateNavlet(
     val pluginID: String = "",
     val navletID: String = ""

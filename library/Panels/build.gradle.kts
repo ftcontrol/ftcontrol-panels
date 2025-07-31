@@ -64,7 +64,6 @@ dependencies {
         exclude(module = "nanohttpd")
     }
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
     implementation("org.tukaani:xz:1.9")
 }

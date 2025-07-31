@@ -1,41 +1,37 @@
 package com.bylazar.panels.json
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class SocketMessage(
     val pluginID: String,
     val messageID: String,
     val data: Any?
 ) {
-    fun toJson(): String = mapper.writeValueAsString(this)
+    fun toJson(): String = gson.toJson(this)
 
     companion object {
-        val mapper: ObjectMapper = jacksonObjectMapper().registerKotlinModule()
+        val gson: Gson = Gson()
 
         fun fromJson(json: String): SocketMessage {
-            return mapper.readValue(json)
+            return gson.fromJson(json, SocketMessage::class.java)
         }
 
-        inline fun <reified T> convertData(data: Any?): T {
-            return mapper.convertValue(data, object : com.fasterxml.jackson.core.type.TypeReference<T>() {})
+        inline fun <reified T> convertData(data: Any?): T? {
+            if (data == null) return null
+            val jsonString = gson.toJson(data)
+            return gson.fromJson(jsonString, object : TypeToken<T>() {}.type)
         }
     }
 }
 
 data class TimeData(val time: String)
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginData(
     var plugins: List<PluginInfo>,
     var skippedPlugins: List<PluginDetails>,
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class PluginInfo(
     var details: PluginDetails,
     var config: Any,

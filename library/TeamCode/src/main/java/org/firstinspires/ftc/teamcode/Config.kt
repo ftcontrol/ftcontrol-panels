@@ -5,13 +5,16 @@ import com.bylazar.panels.PanelsConfig
 import com.bylazar.telemetry.TelemetryPluginConfig
 
 class Config : PanelsConfig() {
+    @Transient
     override var isDisabled = false
 }
 
 class TelemetryConfig: TelemetryPluginConfig(){
+    @Transient
     override var telemetryUpdateInterval = 100L
 }
 
 class LimelightProxyConfig: LimelightProxyConfig(){
-    override var isDev = true
+    @Transient
+    override var isDev = false
 }

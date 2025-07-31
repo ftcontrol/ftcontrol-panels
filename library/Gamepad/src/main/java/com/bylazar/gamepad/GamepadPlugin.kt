@@ -31,6 +31,8 @@ class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
                 Gamepad()
             }
 
+            if(changes == null) return
+
             if(changes.options) manager.setOptions()
         }
     }

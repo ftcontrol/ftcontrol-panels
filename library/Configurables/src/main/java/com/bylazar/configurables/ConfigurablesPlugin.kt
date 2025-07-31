@@ -50,6 +50,8 @@ class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPlugi
                 emptyList()
             }
 
+            if(changes == null) return
+
             changes.forEach {
                 val generalRef = GlobalConfigurables.fieldsMap[it.id] ?: return
                 log("Field id: ${it.id}, New value: ${it.newValueString}")

@@ -6,11 +6,11 @@ import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.google.gson.Gson
 import java.lang.ref.WeakReference
 import kotlin.collections.set
 import kotlin.jvm.java
+import kotlin.math.tan
 
 object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
@@ -23,10 +23,8 @@ object PluginsManager {
         val assetManager = context.assets
         assetManager.open(filename).use { inputStream ->
             val raw = inputStream.bufferedReader().readText()
-            Logger.pluginsLog("JSON is $raw")
-            val mapper = jacksonObjectMapper()
-            mapper.registerKotlinModule()
-            return mapper.readValue(raw, PluginDetails::class.java)
+            val gson = Gson()
+            return gson.fromJson(raw, PluginDetails::class.java)
         }
     }
 
@@ -46,17 +44,6 @@ object PluginsManager {
             val clazz = Class.forName(it.className)
 
             val pluginInstance = clazz.getDeclaredConstructor().newInstance() as Plugin<*>
-
-            val originalId = pluginInstance.id
-            var uniqueId = originalId
-            var suffix = 1
-
-            while (plugins.containsKey(uniqueId)) {
-                Logger.pluginsLog("Plugin ID '$originalId' is already registered. Renaming...")
-                uniqueId = "$originalId${suffix++}"
-            }
-
-            pluginInstance.id = uniqueId
 
             Logger.pluginsLog("Got ${pluginInstance.id}.")
 
@@ -85,18 +72,18 @@ object PluginsManager {
 
                 Logger.pluginsLog(pluginInstance.details.toString())
 
-                Logger.pluginsLog("Got details or ID '$uniqueId'")
+                Logger.pluginsLog("Got details or ID '${pluginInstance.id}'")
 
                 if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
                     skippedPlugins[pluginInstance.id] = pluginInstance.details
-                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '$uniqueId', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                    Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.id}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
                 } else {
-                    plugins[uniqueId] = pluginInstance
-                    Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '$uniqueId'")
+                    plugins[pluginInstance.id] = pluginInstance
+                    Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.id}'")
                 }
 
             } catch (t: Throwable) {
-                Logger.pluginsError("Error while loading: ${clazz.name} with ID '$uniqueId', ${t.message}")
+                Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.id}', ${t.message}")
             }
         }
 
