@@ -6,6 +6,7 @@
   import PlaceOverlay from "./PlaceOverlay.svelte"
   import { setContext } from "svelte"
   import type { Manager } from "./widgets.svelte"
+  import TemplatesChoose from "./TemplatesChoose.svelte"
 
   let {
     manager = $bindable(),
@@ -87,31 +88,55 @@
   tabindex="0"
   style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
 >
-  {#if manager.isMoving}
-    {#each gridCells as { x, y } (x + "-" + y)}
-      <Overlay {x} {y} />
-    {/each}
-    {#each manager.possibleWidgets as widget, index}
-      <WidgetItem
-        isPossible={true}
-        bind:widget={manager.possibleWidgets[index]}
+  {#if manager.isEmpty}
+    <div
+      class="item"
+      style="--w:{manager.MAX_GRID_WIDTH};--h:{manager.MAX_GRID_HEIGHT};"
+    >
+      <TemplatesChoose
+        set={(t) => {
+          manager.replaceCurrentWith(t)
+        }}
       />
-    {/each}
-  {/if}
-  <PlaceOverlay />
-
-  {#each manager.widgets as widget, index}
-    {#if !manager.isMoving || widget.isMoving}
-      <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
+    </div>
+  {:else}
+    {#if manager.isMoving}
+      {#each gridCells as { x, y } (x + "-" + y)}
+        <Overlay {x} {y} />
+      {/each}
+      {#each manager.possibleWidgets as widget, index}
+        <WidgetItem
+          isPossible={true}
+          bind:widget={manager.possibleWidgets[index]}
+        />
+      {/each}
     {/if}
-  {/each}
+    <PlaceOverlay />
 
-  {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
-    <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+    {#each manager.widgets as widget, index}
+      {#if !manager.isMoving || widget.isMoving}
+        <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
+      {/if}
+    {/each}
+
+    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
+      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+    {/if}
   {/if}
 </section>
 
 <style>
+  .item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(var(--h) * var(--height));
+    width: calc(var(--w) * var(--width));
+    display: grid;
+    place-items: center;
+    flex-direction: column;
+    padding: var(--spacing);
+  }
   section {
     --spacing: 0.25rem;
     position: relative;

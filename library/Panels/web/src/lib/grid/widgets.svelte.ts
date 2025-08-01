@@ -58,6 +58,7 @@ export class Manager {
     ],
   }
   enableInteractions = false
+
   processTemplate(t: Template): ExtendedTemplate {
     return {
       name: t.name,
@@ -157,6 +158,16 @@ export class Manager {
     this.save()
   }
 
+  replaceCurrentWith(t: Template) {
+    if (!this.enableInteractions) return
+    const processed = this.processTemplate(t)
+
+    this.widgets = processed.widgets
+    this.navlets = processed.navlets
+
+    this.save()
+  }
+
   deletePreset(index: number) {
     if (!this.enableInteractions) return
     if (this.presets.data.length <= 1) return
@@ -214,6 +225,8 @@ export class Manager {
 
   widgets: ExtendedWidgetGroup[] = $state([])
   navlets: TemplateNavlet[] = $state([])
+
+  isEmpty = $derived(this.widgets.length == 0 && this.navlets.length == 0)
 
   addNavlet() {
     if (!this.enableInteractions) return
