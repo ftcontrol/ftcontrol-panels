@@ -1,14 +1,11 @@
 import { goto } from "$app/navigation"
-import { global, notifications } from "$lib"
+import { global } from "$lib"
 import {
-  getCookie,
-  setCookie,
   type Template,
   type TemplateNavlet,
   type TemplateWidget,
   type TemplateWidgetGroup,
 } from "ftc-panels"
-import { stringify } from "uuid"
 
 export type ExtendedWidgetGroup = TemplateWidgetGroup & {
   offset: {
@@ -124,8 +121,7 @@ export class Manager {
     this.HEIGHT = height / this.MAX_GRID_HEIGHT
   }
   loadInteractive() {
-    var data = getCookie("layout")
-    if (data == null) data = JSON.stringify(this.template)
+    var data = localStorage.getItem("layout") ?? JSON.stringify(this.template)
     this.presets = JSON.parse(data) || structuredClone(this.template)
 
     this.enableInteractions = true
@@ -221,7 +217,7 @@ export class Manager {
     this.presets.data[this.presets.selected].widgets = [...this.widgets]
     this.presets.data[this.presets.selected].navlets = [...this.navlets]
 
-    setCookie("layout", JSON.stringify(this.presets))
+    localStorage.setItem("layout", JSON.stringify(this.presets))
   }
 
   presets: ManagerData = $state(this.template)

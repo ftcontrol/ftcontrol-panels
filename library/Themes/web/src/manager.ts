@@ -1,4 +1,4 @@
-import { PluginManager, setCookie, getCookie } from "ftc-panels"
+import { PluginManager } from "ftc-panels"
 import tinycolor from "tinycolor2"
 
 type Theme = {
@@ -21,9 +21,9 @@ export default class Manager extends PluginManager {
   generatedColors: string[] = []
 
   override onInit(): void {
-    this.loadFromCookies()
+    this.loadFromLocalStorage()
     this.apply()
-    this.saveToCookies()
+    this.saveToLocalStorage()
 
     console.log("Current CSS Variables:", this.theme)
   }
@@ -59,12 +59,12 @@ export default class Manager extends PluginManager {
     }
   }
 
-  saveToCookies() {
-    setCookie("theme", JSON.stringify(this.theme))
+  saveToLocalStorage() {
+    localStorage.setItem("theme", JSON.stringify(this.theme))
   }
 
-  loadFromCookies() {
-    const stringData = getCookie("theme")
+  loadFromLocalStorage() {
+    const stringData = localStorage.getItem("theme")
     if (stringData != null) {
       this.theme = JSON.parse(stringData)
     }
@@ -72,7 +72,7 @@ export default class Manager extends PluginManager {
 
   reset() {
     this.theme = this.DEFAULT_THEME
-    this.saveToCookies()
+    this.saveToLocalStorage()
     this.apply()
   }
 

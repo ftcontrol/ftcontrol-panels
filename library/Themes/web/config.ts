@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "T",
   description: "Themes for Panels",
   websiteURL: "",
-  version: "0.0.2",
+  version: "0.0.3",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
