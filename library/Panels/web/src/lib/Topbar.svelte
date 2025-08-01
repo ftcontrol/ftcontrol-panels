@@ -1,7 +1,7 @@
 <script lang="ts">
   import Panels from "$lib/Panels.svelte"
   import { Button, Overlay, TextInput } from "ftc-panels"
-  import { global } from "$lib"
+  import { global, notifications } from "$lib"
   import { goto } from "$app/navigation"
   import Navlets from "./navlets/Navlets.svelte"
 
@@ -79,8 +79,26 @@
                       const temp = manager.unprocessTemplate(
                         manager.presets.data[index]
                       )
-                      alert(JSON.stringify(temp))
                       close()
+                      notifications.addAction(JSON.stringify(temp), [
+                        {
+                          text: "Copy",
+                          task: () => {
+                            navigator.clipboard
+                              .writeText(JSON.stringify(temp))
+                              .then(() => {
+                                notifications.add("Text copied to clipboard")
+                              })
+                              .catch((err) => {
+                                notifications.add("Failed to copy")
+                              })
+                          },
+                        },
+                        {
+                          text: "Close",
+                          task: () => {},
+                        },
+                      ])
                     }}
                   >
                     <Copy />
