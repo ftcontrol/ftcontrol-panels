@@ -14,6 +14,8 @@
   import Add from "./icons/Add.svelte"
   import Copy from "./icons/Copy.svelte"
   var manager = getContext("manager") as Manager
+
+  let jsonPreset = $state("")
 </script>
 
 <nav>
@@ -73,7 +75,6 @@
                   </Button>
                   <Button
                     transparent={true}
-                    disabled={manager.presets.data.length == 1}
                     onclick={() => {
                       manager.save()
                       const temp = manager.unprocessTemplate(
@@ -113,6 +114,29 @@
             manager.addTemplate(t)
           }}
         />
+        <Overlay
+          onStateChange={(isOpen) => {
+            if (isOpen) {
+              jsonPreset = ""
+            }
+          }}
+        >
+          {#snippet trigger()}
+            <Button style="width: 100%;">Import</Button>
+          {/snippet}
+          {#snippet overlay({ close }: { close: () => void })}
+            <div class="new-menu">
+              <TextInput bind:value={jsonPreset} placeholder={"JSON Preset"} />
+              <Button
+                style="width: 100%;"
+                onclick={() => {
+                  manager.addTemplate(JSON.parse(jsonPreset))
+                  close()
+                }}>Create</Button
+              >
+            </div>
+          {/snippet}
+        </Overlay>
         <Button
           onclick={() => {
             manager.newPreset()
@@ -193,6 +217,14 @@
   }
   .menu {
     display: flex;
+    align-items: center;
+    gap: calc(var(--padding) / 2);
+    padding: calc(var(--padding) / 2);
+  }
+
+  .new-menu {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: calc(var(--padding) / 2);
     padding: calc(var(--padding) / 2);

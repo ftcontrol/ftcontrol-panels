@@ -1,5 +1,5 @@
 import { goto } from "$app/navigation"
-import { global } from "$lib"
+import { global, notifications } from "$lib"
 import {
   getCookie,
   setCookie,
@@ -8,6 +8,7 @@ import {
   type TemplateWidget,
   type TemplateWidgetGroup,
 } from "ftc-panels"
+import { stringify } from "uuid"
 
 export type ExtendedWidgetGroup = TemplateWidgetGroup & {
   offset: {
@@ -150,12 +151,12 @@ export class Manager {
     this.presets.data.push(processed)
     this.presets.selected = this.presets.data.length - 1
 
-    goto("/")
-
     this.widgets = [...this.presets.data[this.presets.selected].widgets]
     this.navlets = [...this.presets.data[this.presets.selected].navlets]
 
     this.save()
+
+    goto("/")
   }
 
   replaceCurrentWith(t: Template) {
@@ -188,7 +189,9 @@ export class Manager {
 
   newPreset() {
     if (!this.enableInteractions) return
-    this.presets.data.push(structuredClone(this.template.data[0]))
+    const preset = structuredClone(this.template.data[0])
+    preset.name = "Empty"
+    this.presets.data.push(preset)
     this.presets.selected = this.presets.data.length - 1
 
     goto("/")

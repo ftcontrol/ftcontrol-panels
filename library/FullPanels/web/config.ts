@@ -71,5 +71,10 @@ export const config: PluginConfig = {
         },
       ],
     },
+    {
+      name: "Empty",
+      navlets: [],
+      widgets: [],
+    },
   ],
 }
