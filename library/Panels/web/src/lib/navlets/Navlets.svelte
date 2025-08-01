@@ -5,6 +5,8 @@
   import NavletsChoose from "./NavletsChoose.svelte"
   import { setContext } from "svelte"
   import type { Manager } from "$lib/grid/widgets.svelte"
+  import Add from "$lib/icons/Add.svelte"
+  import Delete from "$lib/icons/Delete.svelte"
 
   let {
     manager = $bindable(),
@@ -31,34 +33,34 @@
       </div>
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
-      <div
-        style="display: flex;flex-direction: column; gap: var(--padding);padding: var(--padding);"
-      >
+      <div class="menu">
         {#each manager.navlets as navlet, index}
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            {#if manager.isValidNavlet(navlet.pluginID, navlet.navletID)}
-              <div style="display: flex; gap: 1rem;">
-                <Button>{navlet.pluginID} / {navlet.navletID}</Button>
+          {#if manager.isValidNavlet(navlet.pluginID, navlet.navletID)}
+            <Button>{navlet.pluginID} / {navlet.navletID}</Button>
 
-                <Button onclick={() => manager.removeNavlet(index)}>✕</Button>
-              </div>
-            {:else}
-              <NavletsChoose
-                set={(pID, wID) => {
-                  navlet.pluginID = pID
-                  navlet.navletID = wID
-                }}
-              />
-            {/if}
-          </div>
+            <Button
+              transparent={true}
+              onclick={() => manager.removeNavlet(index)}
+            >
+              <Delete />
+            </Button>
+          {:else}
+            <NavletsChoose
+              set={(pID, wID) => {
+                navlet.pluginID = pID
+                navlet.navletID = wID
+              }}
+            />
+          {/if}
         {/each}
 
         <Button
+          style="grid-column-start: span 2;"
           onclick={() => {
             manager.addNavlet()
           }}
         >
-          +
+          <Add />
         </Button>
       </div>
     {/snippet}
@@ -72,5 +74,11 @@
     gap: var(--padding);
     height: 100%;
     flex-grow: 1;
+  }
+  .menu {
+    display: grid;
+    gap: calc(var(--padding) / 2);
+    padding: calc(var(--padding) / 2);
+    grid-template-columns: auto 32px;
   }
 </style>

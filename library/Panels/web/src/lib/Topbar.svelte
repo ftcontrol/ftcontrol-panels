@@ -54,36 +54,38 @@
                 <Options />
               {/snippet}
               {#snippet overlay({ close }: { close: () => void })}
-                <TextInput
-                  bind:value={manager.presets.data[index].name}
-                  oninput={() => {
-                    manager.save()
-                  }}
-                />
-                <Button
-                  transparent={true}
-                  disabled={manager.presets.data.length == 1}
-                  onclick={() => {
-                    manager.deletePreset(index)
-                    close()
-                  }}
-                >
-                  <Delete />
-                </Button>
-                <Button
-                  transparent={true}
-                  disabled={manager.presets.data.length == 1}
-                  onclick={() => {
-                    manager.save()
-                    const temp = manager.unprocessTemplate(
-                      manager.presets.data[index]
-                    )
-                    alert(JSON.stringify(temp))
-                    close()
-                  }}
-                >
-                  <Copy />
-                </Button>
+                <div class="menu">
+                  <TextInput
+                    bind:value={manager.presets.data[index].name}
+                    oninput={() => {
+                      manager.save()
+                    }}
+                  />
+                  <Button
+                    transparent={true}
+                    disabled={manager.presets.data.length == 1}
+                    onclick={() => {
+                      manager.deletePreset(index)
+                      close()
+                    }}
+                  >
+                    <Delete />
+                  </Button>
+                  <Button
+                    transparent={true}
+                    disabled={manager.presets.data.length == 1}
+                    onclick={() => {
+                      manager.save()
+                      const temp = manager.unprocessTemplate(
+                        manager.presets.data[index]
+                      )
+                      alert(JSON.stringify(temp))
+                      close()
+                    }}
+                  >
+                    <Copy />
+                  </Button>
+                </div>
               {/snippet}
             </Overlay>
           </div>
@@ -94,7 +96,6 @@
           }}
         />
         <Button
-          transparent={true}
           onclick={() => {
             manager.newPreset()
           }}
@@ -169,7 +170,14 @@
   }
   .preset {
     display: flex;
+    align-items: center;
     gap: calc(var(--padding) / 2);
+  }
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--padding) / 2);
+    padding: calc(var(--padding) / 2);
   }
   .grid {
     margin-top: 0.5rem;

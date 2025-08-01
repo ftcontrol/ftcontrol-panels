@@ -21,7 +21,7 @@
 
 <style>
   svg {
-    height: 20px;
+    height: 10px;
   }
   path {
     fill: currentColor;
