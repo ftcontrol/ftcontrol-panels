@@ -29,9 +29,20 @@
   )
 </script>
 
-{#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
-  <SimpleDynamicComponent
-    info={plugin.details}
-    textContent={content.textContent}
-  />
-{/key}
+<section>
+  {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
+    <SimpleDynamicComponent
+      info={plugin.details}
+      textContent={content.textContent}
+    />
+  {/key}
+</section>
+
+<style>
+  section {
+    overflow-y: auto;
+    overflow-x: none;
+    max-height: 100%;
+    max-width: 100%;
+  }
+</style>
