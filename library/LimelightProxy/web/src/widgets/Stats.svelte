@@ -3,6 +3,30 @@
 
   import { onMount } from "svelte"
 
+  type Response = {
+    cameraQuat: {
+      w: number
+      x: number
+      y: number
+      z: number
+    }
+
+    cpu: number
+    cid: number
+    finalYaw: number
+    fps: number
+    hwType: number
+    ignoreNT: number
+    interfaceNeedsRefresh: number
+    name: string
+    pipeImgCount: number
+    pipelineIndex: number
+    pipelineType: string
+    ram: number
+    snapshotMode: number
+    temp: number
+  }
+
   let {
     manager,
   }: {
@@ -12,7 +36,7 @@
   let isDisabled = $state(false)
   let url = $state("")
 
-  let data = $state({})
+  let data: Response | null = $state(null)
 
   async function fetchCurrentURL() {
     try {
@@ -21,10 +45,9 @@
       if (!response.ok) {
         throw new Error(`HTTP error!`)
       }
-      const json = await response.json()
-      console.log(json)
+      data = (await response.json()) as Response
+      console.log(data)
       isDisabled = false
-      data = JSON.parse(json)
       console.log("Fetch successful")
     } catch (error) {
       console.error("Failed to fetch URL:", error)
@@ -45,12 +68,15 @@
   })
 </script>
 
+<p>{url}</p>
 {#if url == ""}
   <p>Waiting</p>
 {:else if isDisabled}
   <p>Disabled</p>
-{:else}
-  <p>{JSON.stringify(data)}</p>
+{:else if data != null}
+  <p>CPU: {data.cpu}</p>
+  <p>RAM: {data.ram}</p>
+  <p>TEMP: {data.temp}</p>
 {/if}
 
 <style>

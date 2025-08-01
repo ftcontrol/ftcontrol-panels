@@ -1,5 +1,6 @@
 <script lang="ts">
   import type Manager from "../manager"
+  import { Button } from "ftc-panels"
   import { onMount } from "svelte"
 
   let {
@@ -39,23 +40,13 @@
   })
 </script>
 
-{#if url == ""}
-  <p>Waiting</p>
-{:else if isDisabled}
-  <p>Disabled</p>
-{:else}
-  <iframe class:isDisabled src={url} title="Limelight Dashboard"> </iframe>
-{/if}
+<p>{url}</p>
 
-<style>
-  p {
-    margin: 0;
-  }
-  .isDisabled {
-    opacity: 0.5;
-  }
-  iframe {
-    width: 100%;
-    height: 100%;
-  }
-</style>
+<Button
+  disabled={isDisabled}
+  onclick={() => {
+    window.open(url, "_blank")
+  }}
+>
+  Open Dashboard
+</Button>

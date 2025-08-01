@@ -404,7 +404,7 @@ export class GlobalState {
     return text
   }
 
-  panelsVersion = "0.0.6"
+  panelsVersion = "0.0.7"
 
   async getLatestVersion(): Promise<string> {
     try {

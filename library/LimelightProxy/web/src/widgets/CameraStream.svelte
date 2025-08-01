@@ -13,7 +13,9 @@
 
   async function fetchCurrentURL() {
     try {
-      const response = await fetch(url)
+      const response = await fetch(
+        "http://" + window.location.hostname + ":5807/status"
+      )
 
       if (!response.ok) {
         throw new Error(`HTTP error!`)
@@ -39,6 +41,7 @@
   })
 </script>
 
+<p>{url}</p>
 {#if url == ""}
   <p>Waiting</p>
 {:else if isDisabled}
