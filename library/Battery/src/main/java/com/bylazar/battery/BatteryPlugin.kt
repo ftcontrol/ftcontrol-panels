@@ -16,9 +16,7 @@ open class BatteryPluginConfig : BasePluginConfig() {
     open var test = "test"
 }
 
-class BatteryPlugin : Plugin<BatteryPluginConfig>(BatteryPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.battery"
-
+class Plugin : Plugin<BatteryPluginConfig>(BatteryPluginConfig()) {
     private var timer: Timer = Timer()
 
     var provider = BatteryProvider()

@@ -9,9 +9,7 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-class ExamplePlugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.docs"
-
+class Plugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

@@ -3,8 +3,10 @@ package com.bylazar.field
 import com.bylazar.panels.Panels
 
 object PanelsField {
+    val pkgName = this::class.java.`package`?.name ?: "null"
+
     fun getField(): FieldManager {
-        val plugin = Panels.getPlugin(FieldPlugin().panelsPluginUniqueID) as FieldPlugin
+        val plugin = Panels.getPlugin(pkgName) as Plugin
         return plugin.manager
     }
 

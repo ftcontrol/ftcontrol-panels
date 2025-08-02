@@ -12,9 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class ThemesPluginConfig : BasePluginConfig() {
 }
 
-class ThemesPlugin : Plugin<ThemesPluginConfig>(ThemesPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.themes"
-
+class Plugin : Plugin<ThemesPluginConfig>(ThemesPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

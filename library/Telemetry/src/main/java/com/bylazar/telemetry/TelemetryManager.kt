@@ -15,6 +15,10 @@ class TelemetryManager(
     val shouldUpdateLines: Boolean
         get() = timeSinceLastUpdate >= updateInterval
 
+    fun addData(key: String, value: Any) {
+        lines.add("$key: $value")
+    }
+
     fun addData(key: String, value: String) {
         lines.add("$key: $value")
     }

@@ -12,9 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class FullPanelsPluginConfig : BasePluginConfig() {
 }
 
-class FullPanelsPlugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.fullpanels"
-
+class Plugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

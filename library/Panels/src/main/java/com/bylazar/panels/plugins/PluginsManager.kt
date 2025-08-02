@@ -7,6 +7,7 @@ import com.bylazar.panels.Panels
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
 import com.google.gson.Gson
+import java.io.IOException
 import java.lang.ref.WeakReference
 import kotlin.collections.set
 import kotlin.jvm.java
@@ -30,21 +31,43 @@ object PluginsManager {
     fun init(context: Context) {
         contextRef = WeakReference(context)
 
+        val assetManager = context.assets
+
         isRegistered = false
-        val classes = ClassFinder.findClasses(
-            { clazz ->
-                Plugin::class.java.isAssignableFrom(clazz) && clazz != Plugin::class.java
+
+        val pluginsRoot = "web/plugins"
+        var pluginDirs = try {
+            assetManager.list(pluginsRoot)
+                ?.filter { filename ->
+                    val path = "$pluginsRoot/$filename"
+                    assetManager.list(path)?.isNotEmpty() == true
+                }
+                ?: emptyList<String>()
+        } catch (e: IOException) {
+            Logger.pluginsError("Error while fetching ids: ${e.message}")
+            emptyList<String>()
+        }
+
+        pluginDirs = pluginDirs.mapNotNull {
+            try{
+                val clazz = Class.forName("${it}.Plugin")
+                it
+            }catch (t: Throwable){
+                null
             }
-        )
+        }
 
-        Logger.pluginsLog("Found ${classes.size} plugins.")
+        for (dir in pluginDirs) {
+            Logger.pluginsLog("Found plugin folder: $dir")
+        }
+        Logger.pluginsLog("Found ${pluginDirs.size} plugins.")
 
-        classes.forEach {
-            val clazz = Class.forName(it.className)
+        pluginDirs.forEach {
+            val clazz = Class.forName("${it}.Plugin")
 
             val pluginInstance = clazz.getDeclaredConstructor().newInstance() as Plugin<*>
 
-            Logger.pluginsLog("Got ${pluginInstance.panelsPluginUniqueID}.")
+            Logger.pluginsLog("Got ${it}.")
 
             //CONFIG
             val configs = ClassFinder.findClasses(
@@ -63,28 +86,28 @@ object PluginsManager {
             }
 
             if (!pluginInstance.config.isEnabled) {
-                Logger.pluginsLog("Is Disabled ID '${pluginInstance.panelsPluginUniqueID}'")
+                Logger.pluginsLog("Is Disabled ID '${it}'")
             } else {
                 try {
                     val details: PluginDetails =
-                        loadPluginConfig(context, "web/plugins/${pluginInstance.panelsPluginUniqueID}/config.json")
+                        loadPluginConfig(context, "web/plugins/${it}/config.json")
 
                     pluginInstance.details = details
 
                     Logger.pluginsLog(pluginInstance.details.toString())
 
-                    Logger.pluginsLog("Got details or ID '${pluginInstance.panelsPluginUniqueID}'")
+                    Logger.pluginsLog("Got details or ID '${it}'")
 
                     if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
-                        skippedPlugins[pluginInstance.panelsPluginUniqueID] = pluginInstance.details
-                        Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                        skippedPlugins[it] = pluginInstance.details
+                        Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${it}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
                     } else {
-                        plugins[pluginInstance.panelsPluginUniqueID] = pluginInstance
-                        Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}'")
+                        plugins[it] = pluginInstance
+                        Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${it}'")
                     }
 
                 } catch (t: Throwable) {
-                    Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}', ${t.message}")
+                    Logger.pluginsError("Error while loading: ${clazz.name} with ID '${it}', ${t.message}")
                 }
             }
 

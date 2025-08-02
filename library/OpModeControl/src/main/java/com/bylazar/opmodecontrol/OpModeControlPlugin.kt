@@ -14,9 +14,7 @@ import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 open class OpModeControlPluginConfig : BasePluginConfig() {
 }
 
-class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.opmodecontrol"
-
+class Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     var opModeList: MutableList<OpModeDetails> = mutableListOf()
         set(value) {
             field = value

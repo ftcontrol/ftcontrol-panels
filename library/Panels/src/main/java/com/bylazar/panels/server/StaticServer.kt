@@ -90,15 +90,10 @@ class StaticServer(
         val deflater = Deflater(Deflater.BEST_COMPRESSION)
         deflater.setInput(inputBytes)
         deflater.finish()
-
-        val outputStream = ByteArrayOutputStream()
-        val buffer = ByteArray(1024)
-        while (!deflater.finished()) {
-            val count = deflater.deflate(buffer)
-            outputStream.write(buffer, 0, count)
-        }
+        val output = ByteArray(inputBytes.size)
+        val compressedSize = deflater.deflate(output)
         deflater.end()
-        return outputStream.toByteArray()
+        return output.copyOf(compressedSize)
     }
 
     fun ByteArray.sha256Hex(): String {

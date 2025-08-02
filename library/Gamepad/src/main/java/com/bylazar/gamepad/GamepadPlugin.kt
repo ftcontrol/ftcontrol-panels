@@ -13,9 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class GamepadPluginConfig : BasePluginConfig() {
 }
 
-class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.gamepad"
-
+class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
     val manager = GamepadManager()
 
     override fun onNewClient(client: Socket.ClientSocket) {
@@ -23,7 +21,7 @@ class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
-        if(type == "gamepad"){
+        if (type == "gamepad") {
             val changes = try {
                 SocketMessage.convertData<Gamepad>(data)
             } catch (e: Exception) {
@@ -31,9 +29,9 @@ class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
                 Gamepad()
             }
 
-            if(changes == null) return
+            if (changes == null) return
 
-            if(changes.options) manager.setOptions()
+            if (changes.options) manager.setOptions()
         }
     }
 

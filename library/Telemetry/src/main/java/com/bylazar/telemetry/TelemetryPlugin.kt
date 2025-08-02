@@ -13,9 +13,7 @@ open class TelemetryPluginConfig : BasePluginConfig() {
     open var telemetryUpdateInterval = 75L
 }
 
-class TelemetryPlugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.telemetry"
-
+class Plugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
     val manager = TelemetryManager(config) { lines -> send("telemetryPacket", lines) }
 
     override fun onNewClient(client: Socket.ClientSocket) {

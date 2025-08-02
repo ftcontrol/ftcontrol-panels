@@ -16,9 +16,7 @@ open class FieldPluginConfig : BasePluginConfig() {
     open var defaultBg: ImagePreset = PanelsField.images.INTO_THE_DEEP.DARK
 }
 
-class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.field"
-
+class Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     lateinit var manager: FieldManager
 
     override fun onNewClient(client: Socket.ClientSocket) {

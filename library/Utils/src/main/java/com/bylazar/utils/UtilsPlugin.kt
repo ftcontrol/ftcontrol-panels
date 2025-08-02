@@ -12,9 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class UtilsPluginConfig : BasePluginConfig() {
 }
 
-class UtilsPlugin : Plugin<UtilsPluginConfig>(UtilsPluginConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.utils"
-
+class Plugin : Plugin<UtilsPluginConfig>(UtilsPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

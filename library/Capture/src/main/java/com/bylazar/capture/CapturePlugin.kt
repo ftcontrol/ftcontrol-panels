@@ -12,8 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class CaptureConfig : BasePluginConfig() {
 }
 
-class CapturePlugin : Plugin<CaptureConfig>(CaptureConfig()) {
-    override var panelsPluginUniqueID = "com.bylazar.capture"
+class Plugin : Plugin<CaptureConfig>(CaptureConfig()) {
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

@@ -46,7 +46,10 @@ class SvelteAssetsPlugin : Plugin<Project> {
         println("   outputDir: ${outputDir.absolutePath}")
 
         val clearAssets = project.tasks.register("clearAssets", Delete::class.java) {
-            delete(outputDir.listFiles())
+            val pluginsDir = File(project.projectDir, "src/main/assets/plugins")
+            if (pluginsDir.exists()) {
+                delete(pluginsDir.listFiles()?.toList() ?: emptyList<File>())
+            }
         }
 
         val installCmd = when {
