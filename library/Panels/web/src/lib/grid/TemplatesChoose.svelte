@@ -22,11 +22,11 @@
             set(t)
           }}
         >
-          <h4>
+          <p>
             {global.plugins.find((it) => it.details.id == t.pluginID)?.details
               .name}
-          </h4>
-          <p>{t.name}</p>
+          </p>
+          <h4>{t.name}</h4>
           <CanvasRender {t} pID={t.pluginID} />
         </button>
       {/each}
@@ -40,7 +40,7 @@
     margin: 0;
     text-align: center;
   }
-  p {
+  h4 {
     margin-bottom: var(--padding);
   }
   .possibilities {

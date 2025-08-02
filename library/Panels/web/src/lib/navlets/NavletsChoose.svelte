@@ -26,8 +26,8 @@
               manager.save()
             }}
           >
-            <h4>{p.details.name}</h4>
-            <p>{w.name}</p>
+            <p>{p.details.name}</p>
+            <h4>{w.name}</h4>
             <PreviewBox scale={1.75}>
               <NavletContent pluginID={p.details.id} widgetID={w.name} />
             </PreviewBox>
@@ -44,7 +44,7 @@
     margin: 0;
     text-align: center;
   }
-  p {
+  h4 {
     margin-bottom: var(--padding);
   }
   .possibilities {
