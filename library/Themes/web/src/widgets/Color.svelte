@@ -19,7 +19,7 @@
       padding: padding,
       tintColor: tintColor,
     }
-    manager.saveToCookies()
+    manager.saveToLocalStorage()
     manager.apply()
     generatedColors = manager.generatedColors
   })
@@ -33,7 +33,7 @@
 
   <label>
     Brightness Offset:
-    <input type="number" bind:value={brightnessOffset} />
+    <input type="number" bind:value={brightnessOffset} min="0" max="20" />
   </label>
 
   <label>
@@ -47,7 +47,7 @@
 
   <label>
     Padding:
-    <input type="number" bind:value={padding} />
+    <input type="number" bind:value={padding} min="0.1" max="2.5" />
   </label>
 </div>
 
