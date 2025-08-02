@@ -15,6 +15,7 @@ import org.tukaani.xz.LZMAOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
+import java.util.zip.Deflater
 
 class StaticServer(
     context: Context,
@@ -84,17 +85,21 @@ class StaticServer(
         ).allowCors()
     }
 
-    fun lzmaCompress(input: String): ByteArray {
+    fun compressDeflate(input: String): ByteArray {
         val inputBytes = input.toByteArray(Charsets.UTF_8)
-        val baos = ByteArrayOutputStream()
-        val options = LZMA2Options()
-        options.setPreset(3)
-        LZMAOutputStream(baos, options, -1).use { lzmaOut ->
-            lzmaOut.write(inputBytes)
-        }
-        return baos.toByteArray()
-    }
+        val deflater = Deflater(Deflater.BEST_COMPRESSION)
+        deflater.setInput(inputBytes)
+        deflater.finish()
 
+        val outputStream = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        while (!deflater.finished()) {
+            val count = deflater.deflate(buffer)
+            outputStream.write(buffer, 0, count)
+        }
+        deflater.end()
+        return outputStream.toByteArray()
+    }
 
     fun ByteArray.sha256Hex(): String {
         return MessageDigest.getInstance("SHA-256")
@@ -102,7 +107,7 @@ class StaticServer(
             .joinToString("") { "%02x".format(it) }
     }
 
-    var response = lzmaCompress("null")
+    var response = compressDeflate("null")
     var jsonString = "null"
     var lastSha = "null"
 
@@ -120,7 +125,7 @@ class StaticServer(
         ).toJson()
         val t3 = System.currentTimeMillis()
 
-        val compressed = lzmaCompress(jsonString)
+        val compressed = compressDeflate(jsonString)
 
         val t4 = System.currentTimeMillis()
 

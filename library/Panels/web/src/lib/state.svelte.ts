@@ -8,24 +8,16 @@ import {
 import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
 import LZMA from "./lzma"
-import { readValue, storeValue } from "./indexedDB"
+import { deleteValue, readValue, storeValue } from "./indexedDB"
 import { notifications } from "$lib"
 import { goto } from "$app/navigation"
 import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 
-function decompressLzma(compressedData: Uint8Array): Promise<string> {
-  return new Promise((resolve, reject) => {
-    LZMA.decompress(compressedData, (result: string | Uint8Array | Error) => {
-      if (result instanceof Error) {
-        reject(result)
-      } else if (typeof result === "string") {
-        resolve(result)
-      } else {
-        const decoder = new TextDecoder("utf-8")
-        resolve(decoder.decode(result))
-      }
-    })
-  })
+import pako from "pako"
+
+function decompressDeflate(compressed: Uint8Array): string {
+  const decompressed = pako.inflate(compressed)
+  return new TextDecoder("utf-8").decode(decompressed)
 }
 
 export class GlobalState {
@@ -228,6 +220,7 @@ export class GlobalState {
       console.log(`[init] getPluginsUntilReady() took ${Date.now() - t0}ms`)
 
       const parsed = JSON.parse(data)
+
       this.plugins = parsed.data.plugins
 
       console.log(`[init] Loaded ${this.plugins.length} plugins`)
@@ -309,6 +302,15 @@ export class GlobalState {
 
     var cachedSha = await readValue("sha256")
     var cachedText = await readValue("plugins")
+    var oldPanelsVersion = await readValue("version")
+
+    if (oldPanelsVersion !== this.panelsVersion) {
+      await deleteValue("sha256")
+      await deleteValue("plugins")
+      await storeValue("version", this.panelsVersion)
+      window.location.reload()
+      return ""
+    }
 
     if (currentSha == cachedSha && cachedText) {
       setTimeout(async () => {
@@ -318,6 +320,7 @@ export class GlobalState {
         if (extraText == cachedText) return
         await storeValue("sha256", currentSha)
         await storeValue("plugins", extraText)
+        await storeValue("version", this.panelsVersion)
         window.location.reload()
       }, 100)
       return cachedText
@@ -328,6 +331,7 @@ export class GlobalState {
     const text = await this.getPlugins()
 
     await storeValue("plugins", text)
+    await storeValue("version", this.panelsVersion)
 
     return text
   }
@@ -395,11 +399,9 @@ export class GlobalState {
     const uint8Array = new Uint8Array(buffer)
 
     const startTime = performance.now()
-    const text = await decompressLzma(uint8Array)
+    const text = decompressDeflate(uint8Array)
     const endTime = performance.now()
-    console.log(
-      `LZMA decompression took ${(endTime - startTime).toFixed(2)} ms`
-    )
+    console.log(`Decompression took ${(endTime - startTime).toFixed(2)} ms`)
 
     return text
   }

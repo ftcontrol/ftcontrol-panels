@@ -52,3 +52,14 @@ export async function readValue<K extends StoreKey>(
     request.onerror = () => reject(request.error)
   })
 }
+
+export async function deleteValue<K extends StoreKey>(key: K): Promise<true> {
+  const db = await openDB()
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite")
+    const store = tx.objectStore(STORE_NAME)
+    const request = store.delete(key as string)
+    request.onsuccess = () => resolve(true)
+    request.onerror = () => reject(request.error)
+  })
+}
