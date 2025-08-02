@@ -43,6 +43,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    publishing {
+        singleVariant("release") {}
+    }
 }
 
 dependencies {
