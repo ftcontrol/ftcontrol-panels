@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.fullpanels"
-val pluginVersion = "0.0.15"
+val pluginVersion = "0.0.16"
 
 plugins {
     id("com.android.library")
@@ -51,7 +51,6 @@ dependencies {
     api(project(":Panels"))
 
     api(project(":OpModeControl"))
-    api(project(":ExamplePlugin"))
     api(project(":Telemetry"))
     api(project(":Configurables"))
     api(project(":Themes"))

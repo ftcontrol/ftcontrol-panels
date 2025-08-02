@@ -13,6 +13,10 @@
   import Delete from "./icons/Delete.svelte"
   import Add from "./icons/Add.svelte"
   import Copy from "./icons/Copy.svelte"
+  import Plugins from "./icons/Plugins.svelte"
+  import Docs from "./icons/Docs.svelte"
+  import Presets from "./icons/Presets.svelte"
+  import Bell from "./icons/Bell.svelte"
   var manager = getContext("manager") as Manager
 
   let jsonPreset = $state("")
@@ -33,14 +37,38 @@
     <section style="flex-grow: 1;"></section>
   {/if}
 
-  <a href="/docs">Docs</a>
-
-  <Overlay>
+  <Overlay
+    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+  >
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
-      Presets
+      <Bell />
+    {/snippet}
+    {#snippet overlay()}
+      <div class="bell-menu">
+        <h1>Notifications</h1>
+
+        {#each notifications.data}
+          <p>D</p>
+        {:else}
+          <p>No notifications</p>
+        {/each}
+      </div>
+    {/snippet}
+  </Overlay>
+
+  <a href="/docs">
+    <Docs />
+  </a>
+
+  <Overlay
+    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+  >
+    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+      <Presets />
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
       <div class="presets-overlay">
+        <h1>Presets</h1>
         {#each manager.presets.data as preset, index}
           <div class="preset">
             <Button
@@ -140,6 +168,7 @@
         <Button
           onclick={() => {
             manager.newPreset()
+            close()
           }}
         >
           <Add />
@@ -148,18 +177,16 @@
     {/snippet}
   </Overlay>
 
-  <Overlay>
+  <Overlay
+    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+  >
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
-      Plugins
+      <Plugins />
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
       <div class="plugins-overlay">
-        <Button
-          onclick={() => {
-            goto("/plugins")
-            close()
-          }}>Details</Button
-        >
+        <h1>Plugins</h1>
+
         <div class="grid">
           {#each global.plugins as plugin}
             <button
@@ -178,12 +205,24 @@
             {details.letterName}
           </button>
         {/each}
+
+        <Button
+          style="margin-top: 0.5rem"
+          onclick={() => {
+            goto("/plugins")
+            close()
+          }}>Details</Button
+        >
       </div>
     {/snippet}
   </Overlay>
 </nav>
 
 <style>
+  h1 {
+    margin: 0.5rem;
+    font-size: 1.5rem;
+  }
   a {
     color: inherit;
     text-decoration: none;
@@ -220,6 +259,7 @@
     align-items: center;
     gap: calc(var(--padding) / 2);
     padding: calc(var(--padding) / 2);
+    max-height: 600px;
   }
 
   .new-menu {
@@ -228,6 +268,16 @@
     align-items: center;
     gap: calc(var(--padding) / 2);
     padding: calc(var(--padding) / 2);
+    max-height: 600px;
+  }
+
+  .bell-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--padding) / 2);
+    padding: calc(var(--padding) / 2);
+    max-height: 600px;
   }
   .grid {
     margin-top: 0.5rem;

@@ -1,4 +1,4 @@
-package com.bylazar.ftcontrol
+package com.bylazar.panels
 
 import org.junit.Test
 

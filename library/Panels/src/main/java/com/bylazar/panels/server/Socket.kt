@@ -12,9 +12,6 @@ import java.util.TimerTask
 class Socket(
     port: Int,
 ) : NanoWSD(port) {
-
-    //TODO: messages bundling
-
     override fun openWebSocket(handshake: IHTTPSession): WebSocket {
         return ClientSocket(handshake)
     }
@@ -42,6 +39,8 @@ class Socket(
                 send(data)
             } catch (e: IOException) {
                 Logger.socketError("Error sending message to client: ${e.message}")
+            } catch (t: Throwable){
+                Logger.socketError("Error sending message to client: ${t.message}")
             }
         }
 
