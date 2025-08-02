@@ -223,6 +223,7 @@ export class GlobalState {
       this.notificationsManager.onUpdate((newValue) => {
         this.notifications = newValue
       })
+      this.notifications = this.notificationsManager.data
       this.isConnected = false
 
       const t0 = Date.now()
@@ -244,9 +245,13 @@ export class GlobalState {
       console.log(`[init] Skipped ${this.skippedPlugins.length} plugins`)
 
       const t1 = Date.now()
-      await this.socket.init(this.plugins, this.notificationsManager, () => {
-        window.location.reload()
-      })
+      await this.socket.init(
+        this.plugins,
+        this.notificationsManager,
+        async () => {
+          await this.init()
+        }
+      )
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
       if (this.interval !== null) {
@@ -297,7 +302,7 @@ export class GlobalState {
       }
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
-      window.location.reload()
+      await this.init()
     }
   }
 
@@ -318,8 +323,7 @@ export class GlobalState {
       await deleteValue("sha256")
       await deleteValue("plugins")
       await storeValue("version", this.panelsVersion)
-      window.location.reload()
-      return ""
+      throw Error("Panels version changed")
     }
 
     if (currentSha == cachedSha && cachedText) {
@@ -331,7 +335,7 @@ export class GlobalState {
         await storeValue("sha256", currentSha)
         await storeValue("plugins", extraText)
         await storeValue("version", this.panelsVersion)
-        window.location.reload()
+        await this.init()
       }, 100)
       return cachedText
     }
