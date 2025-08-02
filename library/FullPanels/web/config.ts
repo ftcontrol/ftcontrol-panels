@@ -24,57 +24,64 @@ export const config: PluginConfig = {
   },
   templates: [
     {
-      name: "Default Panels",
+      name: "Default",
+      navlets: [{ navletID: "Battery", pluginID: "com.bylazar.battery" }],
       widgets: [
         {
+          x: 0,
+          y: 0,
+          w: 4,
+          h: 4,
           widgets: [
             {
               pluginID: "com.bylazar.opmodecontrol",
               widgetID: "OpModes Control",
             },
           ],
-          x: 0,
-          y: 0,
-          w: 4,
-          h: 4,
         },
-      ],
-      navlets: [
         {
-          pluginID: "com.bylazar.battery",
-          navletID: "Battery",
-        },
-      ],
-    },
-    {
-      name: "Test",
-      navlets: [
-        { pluginID: "com.bylazar.battery", navletID: "Battery" },
-        { pluginID: "com.bylazar.battery", navletID: "Battery" },
-        { pluginID: "com.bylazar.battery", navletID: "Battery" },
-        { pluginID: "com.bylazar.battery", navletID: "Battery" },
-      ],
-      widgets: [
-        { x: 4, y: 0, w: 7, h: 5, widgets: [] },
-        { x: 4, y: 5, w: 7, h: 7, widgets: [] },
-        {
-          x: 0,
+          x: 4,
           y: 0,
-          w: 4,
-          h: 11,
+          w: 7,
+          h: 12,
           widgets: [
             {
               pluginID: "com.bylazar.configurables",
               widgetID: "Configurables",
             },
+            {
+              pluginID: "com.bylazar.configurables",
+              widgetID: "ChangedConfigurables",
+            },
+          ],
+        },
+        {
+          x: 0,
+          y: 4,
+          w: 4,
+          h: 8,
+          widgets: [
+            { pluginID: "com.bylazar.gamepad", widgetID: "Gamepad" },
+            { pluginID: "com.bylazar.capture", widgetID: "Capture" },
+          ],
+        },
+        {
+          x: 11,
+          y: 0,
+          w: 5,
+          h: 9,
+          widgets: [{ pluginID: "com.bylazar.field", widgetID: "Field" }],
+        },
+        {
+          x: 11,
+          y: 9,
+          w: 5,
+          h: 3,
+          widgets: [
+            { pluginID: "com.bylazar.telemetry", widgetID: "Telemetry" },
           ],
         },
       ],
-    },
-    {
-      name: "Empty",
-      navlets: [],
-      widgets: [],
     },
   ],
 }
