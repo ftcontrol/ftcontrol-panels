@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 class ExamplePlugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
-    override var id = "com.bylazar.docs"
+    override var panelsPluginUniqueID = "com.bylazar.docs"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

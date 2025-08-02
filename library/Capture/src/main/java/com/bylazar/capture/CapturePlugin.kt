@@ -13,7 +13,7 @@ open class CaptureConfig : BasePluginConfig() {
 }
 
 class CapturePlugin : Plugin<CaptureConfig>(CaptureConfig()) {
-    override var id = "com.bylazar.capture"
+    override var panelsPluginUniqueID = "com.bylazar.capture"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

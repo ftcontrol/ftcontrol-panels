@@ -13,7 +13,7 @@ open class ThemesPluginConfig : BasePluginConfig() {
 }
 
 class ThemesPlugin : Plugin<ThemesPluginConfig>(ThemesPluginConfig()) {
-    override var id = "com.bylazar.themes"
+    override var panelsPluginUniqueID = "com.bylazar.themes"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

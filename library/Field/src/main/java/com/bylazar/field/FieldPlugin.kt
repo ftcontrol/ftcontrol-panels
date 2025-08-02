@@ -17,7 +17,7 @@ open class FieldPluginConfig : BasePluginConfig() {
 }
 
 class FieldPlugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
-    override var id = "com.bylazar.field"
+    override var panelsPluginUniqueID = "com.bylazar.field"
 
     lateinit var manager: FieldManager
 

@@ -4,7 +4,7 @@ import com.bylazar.panels.Panels
 
 object PanelsField {
     fun getField(): FieldManager {
-        val plugin = Panels.getPlugin(FieldPlugin().id) as FieldPlugin
+        val plugin = Panels.getPlugin(FieldPlugin().panelsPluginUniqueID) as FieldPlugin
         return plugin.manager
     }
 

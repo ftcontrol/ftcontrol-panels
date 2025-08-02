@@ -15,7 +15,7 @@ open class OpModeControlPluginConfig : BasePluginConfig() {
 }
 
 class OpModeControlPlugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
-    override var id = "com.bylazar.opmodecontrol"
+    override var panelsPluginUniqueID = "com.bylazar.opmodecontrol"
 
     var opModeList: MutableList<OpModeDetails> = mutableListOf()
         set(value) {

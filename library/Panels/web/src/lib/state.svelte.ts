@@ -1,6 +1,8 @@
 import { dev } from "$app/environment"
 import {
   GlobalSocket,
+  NotificationsManager,
+  type Notification,
   type PanelsWidget,
   type PluginConfig,
   type PluginInfo,
@@ -9,7 +11,6 @@ import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/s
 import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
 import LZMA from "./lzma"
 import { deleteValue, readValue, storeValue } from "./indexedDB"
-import { notifications } from "$lib"
 import { goto } from "$app/navigation"
 import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 
@@ -22,6 +23,10 @@ function decompressDeflate(compressed: Uint8Array): string {
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
+
+  notifications: Notification[] = $state([])
+
+  notificationsManager: NotificationsManager = new NotificationsManager()
 
   allTemplates = $derived.by(() => {
     let data: ExtendedTemplateEntry[] = []
@@ -160,7 +165,8 @@ export class GlobalState {
           const oldStateData = this.socket.pluginManagers[details.id].state.data
           this.socket.pluginManagers[details.id] = new Manager(
             new PluginSocket(details.id, this.socket),
-            details
+            details,
+            this.notificationsManager
           )
           this.socket.pluginManagers[details.id].state.data = oldStateData
           for (const item of Object.values(
@@ -213,6 +219,10 @@ export class GlobalState {
     console.log(`[init] Starting initialization...`)
 
     try {
+      this.notificationsManager.callbacks = []
+      this.notificationsManager.onUpdate((newValue) => {
+        this.notifications = newValue
+      })
       this.isConnected = false
 
       const t0 = Date.now()
@@ -234,7 +244,7 @@ export class GlobalState {
       console.log(`[init] Skipped ${this.skippedPlugins.length} plugins`)
 
       const t1 = Date.now()
-      await this.socket.init(this.plugins, () => {
+      await this.socket.init(this.plugins, this.notificationsManager, () => {
         window.location.reload()
       })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
@@ -274,7 +284,7 @@ export class GlobalState {
           .map((it) => it.details.id)
           .includes("com.bylazar.exampleplugin")
       ) {
-        notifications.addAction("Don't use default plugin id", [
+        this.notificationsManager.addAction("Don't use default plugin id", [
           {
             text: "OK",
             task: () => {},
@@ -475,18 +485,21 @@ export class GlobalState {
       }
 
       if (hasVersion) {
-        notifications.addAction(`Plugin ${id} has a new version: ${version}`, [
-          {
-            text: "Check Website",
-            task: () => {
-              window.open(plugin.details.websiteURL, "_blank")
+        this.notificationsManager.addAction(
+          `Plugin ${id} has a new version: ${version}`,
+          [
+            {
+              text: "Check Website",
+              task: () => {
+                window.open(plugin.details.websiteURL, "_blank")
+              },
             },
-          },
-          {
-            text: "Remind me later",
-            task: () => {},
-          },
-        ])
+            {
+              text: "Remind me later",
+              task: () => {},
+            },
+          ]
+        )
       } else {
         console.log(`Plugin ${id} is latest`)
       }
@@ -500,18 +513,21 @@ export class GlobalState {
         this.lastVersionNotificationTime["panels"] = Date.now()
       }
       if (version != this.panelsVersion && version != "") {
-        notifications.addAction(`Panels has a new version: ${version}`, [
-          {
-            text: "Check Website",
-            task: () => {
-              window.open("https://panels.bylazar.com", "_blank")
+        this.notificationsManager.addAction(
+          `Panels has a new version: ${version}`,
+          [
+            {
+              text: "Check Website",
+              task: () => {
+                window.open("https://panels.bylazar.com", "_blank")
+              },
             },
-          },
-          {
-            text: "Remind me later",
-            task: () => {},
-          },
-        ])
+            {
+              text: "Remind me later",
+              task: () => {},
+            },
+          ]
+        )
       } else {
         console.log(`Panels is latest`)
       }

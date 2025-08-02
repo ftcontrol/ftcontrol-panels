@@ -13,7 +13,7 @@ open class FullPanelsPluginConfig : BasePluginConfig() {
 }
 
 class FullPanelsPlugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()) {
-    override var id = "com.bylazar.fullpanels"
+    override var panelsPluginUniqueID = "com.bylazar.fullpanels"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

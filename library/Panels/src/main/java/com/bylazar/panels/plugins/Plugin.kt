@@ -32,24 +32,24 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     }
 
     fun log(message: String) {
-        Logger.log("${Logger.PLUGINS_PREFIX}/${id}", message)
+        Logger.log("${Logger.PLUGINS_PREFIX}/${panelsPluginUniqueID}", message)
     }
 
     fun error(message: String) {
-        Logger.error("${Logger.PLUGINS_PREFIX}/${id}", message)
+        Logger.error("${Logger.PLUGINS_PREFIX}/${panelsPluginUniqueID}", message)
     }
 
     fun send(type: String, data: Any) {
-        val message = SocketMessage(id, type, data)
+        val message = SocketMessage(panelsPluginUniqueID, type, data)
         Panels.socket.sendStrings(message.toJson())
     }
 
     fun sendClient(client: Socket.ClientSocket, type: String, data: Any) {
-        val message = SocketMessage(id, type, data)
+        val message = SocketMessage(panelsPluginUniqueID, type, data)
         client.sendString(message.toJson())
     }
 
-    abstract var id: String
+    abstract var panelsPluginUniqueID: String
 
     abstract fun onRegister(panelsInstance: Panels, context: Context)
     abstract fun onAttachEventLoop(eventLoop: FtcEventLoop)

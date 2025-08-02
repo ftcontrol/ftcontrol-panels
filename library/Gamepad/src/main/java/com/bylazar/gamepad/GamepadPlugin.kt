@@ -14,7 +14,7 @@ open class GamepadPluginConfig : BasePluginConfig() {
 }
 
 class GamepadPlugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
-    override var id = "com.bylazar.gamepad"
+    override var panelsPluginUniqueID = "com.bylazar.gamepad"
 
     val manager = GamepadManager()
 

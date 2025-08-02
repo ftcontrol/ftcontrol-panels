@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { notifications } from "$lib"
-  import { Button } from "ftc-panels"
-  import type { Notification } from "./notifications.svelte"
+  import { global } from "$lib"
+  import { Button, type Notification } from "ftc-panels"
   import { fly } from "svelte/transition"
 
   let date = $state(Date.now())
@@ -20,12 +19,14 @@
     return notifications.filter((it) => it.actions.length <= 0)
   }
   function getActions(notifications: Notification[]) {
-    return notifications.filter((it) => it.actions.length > 0)
+    return notifications
+      .filter((it) => it.actions.length > 0)
+      .filter((it) => !it.executedAction)
   }
 </script>
 
 <section>
-  {#each getSimple(notifications.data).filter((it) => date - it.timestamp <= 3000) as notif}
+  {#each getSimple(global.notifications).filter((it) => date - it.timestamp <= 3000) as notif}
     <div
       class="notif"
       in:fly={{ y: -10, opacity: 0, duration: 200 }}
@@ -36,7 +37,7 @@
   {/each}
 </section>
 <section>
-  {#each getActions(notifications.data) as notif}
+  {#each getActions(global.notifications) as notif}
     <div
       class="notif"
       in:fly={{ y: -10, opacity: 0, duration: 200 }}
@@ -48,7 +49,6 @@
           <Button
             onclick={() => {
               action.task()
-              notifications.data = notifications.data.filter((n) => n !== notif)
             }}
           >
             {action.text}

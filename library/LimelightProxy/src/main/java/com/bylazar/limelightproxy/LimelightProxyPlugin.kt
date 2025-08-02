@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class LimelightProxyConfig : BasePluginConfig() {}
 
 class LimelightProxyPlugin : Plugin<LimelightProxyConfig>(LimelightProxyConfig()) {
-    override var id = "com.bylazar.limelightproxy"
+    override var panelsPluginUniqueID = "com.bylazar.limelightproxy"
 
     lateinit var limelightProxy: GenericProxy
     lateinit var limelightFeedProxy: GenericStreamingProxy

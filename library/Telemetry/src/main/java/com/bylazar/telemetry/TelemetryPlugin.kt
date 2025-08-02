@@ -14,7 +14,7 @@ open class TelemetryPluginConfig : BasePluginConfig() {
 }
 
 class TelemetryPlugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
-    override var id = "com.bylazar.telemetry"
+    override var panelsPluginUniqueID = "com.bylazar.telemetry"
 
     val manager = TelemetryManager(config) { lines -> send("telemetryPacket", lines) }
 

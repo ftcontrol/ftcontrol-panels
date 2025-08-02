@@ -4,7 +4,7 @@ import com.bylazar.panels.Panels
 
 object PanelsGamepad {
     fun getGamepad(): GamepadManager {
-        val plugin = Panels.getPlugin(GamepadPlugin().id) as GamepadPlugin
+        val plugin = Panels.getPlugin(GamepadPlugin().panelsPluginUniqueID) as GamepadPlugin
         return plugin.manager
     }
 }

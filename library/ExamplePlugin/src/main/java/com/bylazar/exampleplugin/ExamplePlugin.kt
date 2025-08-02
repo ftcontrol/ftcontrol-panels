@@ -14,7 +14,7 @@ open class ExamplePluginConfig : BasePluginConfig() {
 }
 
 class ExamplePlugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
-    override var id = "com.bylazar.exampleplugin"
+    override var panelsPluginUniqueID = "com.bylazar.exampleplugin"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

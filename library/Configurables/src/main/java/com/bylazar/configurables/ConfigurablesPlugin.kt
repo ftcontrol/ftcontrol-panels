@@ -24,7 +24,7 @@ open class ConfigurablesPluginConfig : BasePluginConfig() {
 }
 
 class ConfigurablesPlugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPluginConfig()) {
-    override var id = "com.bylazar.configurables"
+    override var panelsPluginUniqueID = "com.bylazar.configurables"
 
     var fieldsMap = mutableMapOf<String, MyField>()
     var configurableClasses: List<ClassFinder.ClassEntry> = listOf()

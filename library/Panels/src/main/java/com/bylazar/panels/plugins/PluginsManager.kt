@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import java.lang.ref.WeakReference
 import kotlin.collections.set
 import kotlin.jvm.java
-import kotlin.math.tan
 
 object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
@@ -45,7 +44,7 @@ object PluginsManager {
 
             val pluginInstance = clazz.getDeclaredConstructor().newInstance() as Plugin<*>
 
-            Logger.pluginsLog("Got ${pluginInstance.id}.")
+            Logger.pluginsLog("Got ${pluginInstance.panelsPluginUniqueID}.")
 
             //CONFIG
             val configs = ClassFinder.findClasses(
@@ -64,28 +63,28 @@ object PluginsManager {
             }
 
             if (!pluginInstance.config.isEnabled) {
-                Logger.pluginsLog("Is Disabled ID '${pluginInstance.id}'")
+                Logger.pluginsLog("Is Disabled ID '${pluginInstance.panelsPluginUniqueID}'")
             } else {
                 try {
                     val details: PluginDetails =
-                        loadPluginConfig(context, "web/plugins/${pluginInstance.id}/config.json")
+                        loadPluginConfig(context, "web/plugins/${pluginInstance.panelsPluginUniqueID}/config.json")
 
                     pluginInstance.details = details
 
                     Logger.pluginsLog(pluginInstance.details.toString())
 
-                    Logger.pluginsLog("Got details or ID '${pluginInstance.id}'")
+                    Logger.pluginsLog("Got details or ID '${pluginInstance.panelsPluginUniqueID}'")
 
                     if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
-                        skippedPlugins[pluginInstance.id] = pluginInstance.details
-                        Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.id}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
+                        skippedPlugins[pluginInstance.panelsPluginUniqueID] = pluginInstance.details
+                        Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
                     } else {
-                        plugins[pluginInstance.id] = pluginInstance
-                        Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.id}'")
+                        plugins[pluginInstance.panelsPluginUniqueID] = pluginInstance
+                        Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}'")
                     }
 
                 } catch (t: Throwable) {
-                    Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.id}', ${t.message}")
+                    Logger.pluginsError("Error while loading: ${clazz.name} with ID '${pluginInstance.panelsPluginUniqueID}', ${t.message}")
                 }
             }
 

@@ -13,7 +13,7 @@ open class UtilsPluginConfig : BasePluginConfig() {
 }
 
 class UtilsPlugin : Plugin<UtilsPluginConfig>(UtilsPluginConfig()) {
-    override var id = "com.bylazar.utils"
+    override var panelsPluginUniqueID = "com.bylazar.utils"
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

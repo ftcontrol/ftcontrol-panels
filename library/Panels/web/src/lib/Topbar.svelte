@@ -1,7 +1,7 @@
 <script lang="ts">
   import Panels from "$lib/Panels.svelte"
   import { Button, Overlay, TextInput } from "ftc-panels"
-  import { global, notifications } from "$lib"
+  import { global } from "$lib"
   import { goto } from "$app/navigation"
   import Navlets from "./navlets/Navlets.svelte"
 
@@ -17,6 +17,7 @@
   import Docs from "./icons/Docs.svelte"
   import Presets from "./icons/Presets.svelte"
   import Bell from "./icons/Bell.svelte"
+  import AllNotifications from "./AllNotifications.svelte"
   var manager = getContext("manager") as Manager
 
   let jsonPreset = $state("")
@@ -38,7 +39,7 @@
   {/if}
 
   <Overlay
-    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+    triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       <Bell />
@@ -47,8 +48,8 @@
       <div class="bell-menu">
         <h1>Notifications</h1>
 
-        {#each notifications.data}
-          <p>D</p>
+        {#each global.notifications}
+          <AllNotifications />
         {:else}
           <p>No notifications</p>
         {/each}
@@ -61,7 +62,7 @@
   </a>
 
   <Overlay
-    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+    triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       <Presets />
@@ -109,25 +110,32 @@
                         manager.presets.data[index]
                       )
                       close()
-                      notifications.addAction(JSON.stringify(temp), [
-                        {
-                          text: "Copy",
-                          task: () => {
-                            navigator.clipboard
-                              .writeText(JSON.stringify(temp))
-                              .then(() => {
-                                notifications.add("Text copied to clipboard")
-                              })
-                              .catch((err) => {
-                                notifications.add("Failed to copy")
-                              })
+                      global.notificationsManager.addAction(
+                        JSON.stringify(temp),
+                        [
+                          {
+                            text: "Copy",
+                            task: () => {
+                              navigator.clipboard
+                                .writeText(JSON.stringify(temp))
+                                .then(() => {
+                                  global.notificationsManager.add(
+                                    "Text copied to clipboard"
+                                  )
+                                })
+                                .catch((err) => {
+                                  global.notificationsManager.add(
+                                    "Failed to copy"
+                                  )
+                                })
+                            },
                           },
-                        },
-                        {
-                          text: "Close",
-                          task: () => {},
-                        },
-                      ])
+                          {
+                            text: "Close",
+                            task: () => {},
+                          },
+                        ]
+                      )
                     }}
                   >
                     <Copy />
@@ -140,6 +148,7 @@
         <TemplatesChoose
           set={(t) => {
             manager.addTemplate(t)
+            close()
           }}
         />
         <Overlay
@@ -178,7 +187,7 @@
   </Overlay>
 
   <Overlay
-    triggetStyle={"display: flex;justify-content: center;align-items: center;"}
+    triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
     {#snippet trigger({ isOpen }: { isOpen: boolean })}
       <Plugins />
@@ -277,7 +286,9 @@
     align-items: center;
     gap: calc(var(--padding) / 2);
     padding: calc(var(--padding) / 2);
-    max-height: 600px;
+    max-height: 800px;
+    min-width: 300px;
+    max-width: 400px;
   }
   .grid {
     margin-top: 0.5rem;
@@ -317,6 +328,7 @@
 
     overflow-x: auto;
     overflow-y: hidden;
-    min-height: 48px;
+    max-height: 64px;
+    min-height: 64px;
   }
 </style>
