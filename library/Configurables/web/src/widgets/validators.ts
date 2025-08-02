@@ -10,6 +10,7 @@ const JAVA_DOUBLE_MIN = -1.7e308
 const JAVA_DOUBLE_MAX = 1.7e308
 
 export function intValidator(value: string): boolean {
+  if (value.startsWith("-")) value = value.slice(1)
   for (const char of value) {
     if (!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(char)) {
       return false
@@ -21,6 +22,7 @@ export function intValidator(value: string): boolean {
 }
 
 export function longValidator(value: string): boolean {
+  if (value.startsWith("-")) value = value.slice(1)
   for (const char of value) {
     if (!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(char)) {
       return false
@@ -31,6 +33,7 @@ export function longValidator(value: string): boolean {
 }
 
 export function doubleValidator(value: string): boolean {
+  if (value.startsWith("-")) value = value.slice(1)
   var foundDot = false
   for (const char of value) {
     if (
@@ -52,6 +55,7 @@ export function doubleValidator(value: string): boolean {
 }
 
 export function floatValidator(value: string): boolean {
+  if (value.startsWith("-")) value = value.slice(1)
   var foundDot = false
   for (const char of value) {
     if (
@@ -74,10 +78,6 @@ export function floatValidator(value: string): boolean {
 
 export function stringValidator(value: string): boolean {
   return typeof value === "string"
-}
-
-function falseValidator(value: string): boolean {
-  return false
 }
 
 export function anyValidator(type: Types) {
