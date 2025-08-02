@@ -18,9 +18,14 @@
     console.log("Start drag")
 
     widget.isMoving = true
+    widget.move = {
+      x: 0,
+      y: 0,
+    }
     e.preventDefault()
     startX = e.clientX
     startY = e.clientY
+    manager.updateMove(widget.id)
     window.addEventListener("mousemove", onDrag)
     window.addEventListener("mouseup", stopDrag)
   }

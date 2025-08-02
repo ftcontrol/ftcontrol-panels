@@ -15,8 +15,13 @@
     if (!manager.enableInteractions) return
     if (isPossible) return
     widget.isMoving = true
+    widget.offset = {
+      x: 0,
+      y: 0,
+    }
     startX = e.clientX
     startY = e.clientY
+    manager.updateResize(widget.id)
     window.addEventListener("mousemove", onResize)
     window.addEventListener("mouseup", stopResize)
   }

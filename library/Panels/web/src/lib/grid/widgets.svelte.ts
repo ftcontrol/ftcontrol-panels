@@ -313,6 +313,7 @@ export class Manager {
     }
     this.updatePlace(x, y)
   }
+
   updatePlace(uX: number, uY: number) {
     if (!this.enableInteractions) return
     if (this.placeStart == null) return
