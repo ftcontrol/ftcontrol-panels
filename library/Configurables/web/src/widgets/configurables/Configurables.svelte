@@ -30,9 +30,10 @@
             ): ExtendedType => {
               return {
                 ...item,
+                value: existing?.value ?? item.value,
                 isValid: existing?.isValid ?? true,
                 valueString: item.value,
-                newValueString: item.value,
+                newValueString: existing?.value ?? item.value,
                 customValues: item.customValues?.map((subItem, subIndex) =>
                   extendItem(subItem, existing?.customValues?.[subIndex])
                 ),
