@@ -73,7 +73,7 @@
 {:else if isDisabled}
   <p>Temp: 0.0</p>
 {:else if data != null}
-  <p>Temp: {data.temp.toFixed(2)}</p>
+  <p>Temp: {data.temp.toFixed(2)}°C</p>
 {/if}
 
 <style>

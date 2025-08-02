@@ -76,7 +76,7 @@
 {:else if data != null}
   <p>CPU: {data.cpu}</p>
   <p>RAM: {data.ram}</p>
-  <p>TEMP: {data.temp}</p>
+  <p>TEMP: {data.temp}°C</p>
 {/if}
 
 <style>
