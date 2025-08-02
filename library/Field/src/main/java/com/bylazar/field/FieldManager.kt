@@ -118,10 +118,10 @@ class FieldManager(
     }
 
     fun registerImage(preset: ImagePreset): UUID {
-        return registerImage(preset.get())
+        return registerBase64Image(preset.get())
     }
 
-    fun registerImage(base64: String): UUID {
+    fun registerBase64Image(base64: String): UUID {
         val existingEntry = images.entries.find { it.value == base64 }
         if (existingEntry != null) return existingEntry.key
 
@@ -131,6 +131,11 @@ class FieldManager(
         sendImages(images)
 
         return id
+    }
+
+    fun registerImage(path: String): UUID {
+        val base64 = FieldImages().loadResourceAsBase64(path)
+        return registerBase64Image(base64)
     }
 
     fun img(w: Double, h: Double, id: UUID) {
@@ -144,9 +149,14 @@ class FieldManager(
         )
     }
 
-    fun setBackground(base64: String) {
-        val id = registerImage(base64)
+    fun setBase64Background(base64: String) {
+        val id = registerBase64Image(base64)
         setBackground(id)
+    }
+
+    fun setBackground(path: String) {
+        val base64 = FieldImages().loadResourceAsBase64(path)
+        setBase64Background(base64)
     }
 
     fun setBackground(id: UUID) {
@@ -154,7 +164,7 @@ class FieldManager(
     }
 
     fun setBackground(image: ImagePreset) {
-        setBackground(image.get())
+        setBase64Background(image.get())
     }
 
     fun update() {
