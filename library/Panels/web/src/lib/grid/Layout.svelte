@@ -119,7 +119,7 @@
       {/if}
     {/each}
 
-    {#if mouseGridPos && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
+    {#if mouseGridPos != null && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
       <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
     {/if}
   {/if}

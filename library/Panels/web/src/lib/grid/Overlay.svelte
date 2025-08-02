@@ -9,13 +9,27 @@
     isMouse = false,
   }: { x: number; y: number; isMouse?: boolean } = $props()
 
-  let w = $derived(manager.getWidget(x, y, manager.possibleWidgets))
+  function handleMouseMove() {
+    if (manager.placeStart == null) return
+    manager.updatePlace(x, y)
+  }
 
-  let blue = $derived.by(() => {
-    if (w == undefined) return true
-    if (w.isMoving) return false
-    return false
-  })
+  function handleMouseLeave() {
+    cleanup()
+    manager.resetPlace()
+  }
+
+  function handleMouseOut(e) {
+    var from = e.relatedTarget || e.toElement
+    if (!from || from.nodeName == "HTML") {
+      handleMouseLeave()
+    }
+  }
+
+  function cleanup() {
+    window.removeEventListener("mouseout", handleMouseOut)
+    window.removeEventListener("blur", handleMouseLeave)
+  }
 </script>
 
 {#if isMouse}
@@ -24,14 +38,16 @@
     onmousedown={(e) => {
       if (e.button != 0) return
       manager.startPlace(x, y)
+
+      window.addEventListener("mouseout", handleMouseOut)
+      window.addEventListener("blur", handleMouseLeave)
     }}
     onmouseup={(e) => {
       if (e.button != 0) return
       manager.endPlace(x, y)
+      cleanup()
     }}
-    onmousemove={() => {
-      manager.updatePlace(x, y)
-    }}
+    onmousemove={handleMouseMove}
     style="--x:{x};--y:{y};">+</button
   >
 {:else}

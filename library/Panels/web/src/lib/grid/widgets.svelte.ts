@@ -360,6 +360,12 @@ export class Manager {
       ...this.widgets,
     ])
   }
+  resetPlace() {
+    if (!this.enableInteractions) return
+    this.placeStart = null
+    this.placeEnd = null
+    this.place = null
+  }
   endPlace(x: number, y: number) {
     if (!this.enableInteractions) return
     if (this.placeStart == null) return
