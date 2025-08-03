@@ -9,22 +9,22 @@
     text: string
     top: number
     left: number
-    value: boolean
-    shownValue: boolean
+    value: number
+    shownValue: number
   } = $props()
 </script>
 
 <button
   onmousedown={() => {
-    value = true
+    value = 1.0
   }}
   onmouseup={() => {
-    value = false
+    value = 0.0
   }}
   onmouseleave={() => {
-    value = false
+    value = 0.0
   }}
-  style="--value: {value || shownValue ? 1 : 0};--top:{top}%;--left:{left}%;"
+  style="--value: {Math.max(value, shownValue)};--top:{top}%;--left:{left}%;"
   aria-label={text}
 >
 </button>

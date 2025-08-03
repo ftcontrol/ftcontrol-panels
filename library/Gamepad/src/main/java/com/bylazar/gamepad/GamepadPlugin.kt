@@ -9,6 +9,7 @@ import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
+import kotlin.math.abs
 
 open class GamepadPluginConfig : BasePluginConfig() {
 }
@@ -16,7 +17,11 @@ open class GamepadPluginConfig : BasePluginConfig() {
 class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
     val manager = GamepadManager()
 
+    private var lastSendTime = 0L
+    private val sendIntervalMs = 200L
+
     override fun onNewClient(client: Socket.ClientSocket) {
+        sendClient(client, "newGamepad", manager.currentState)
     }
 
     override fun onMessage(type: String, data: Any?) {
@@ -31,7 +36,18 @@ class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
 
             if (changes == null) return
 
-            if (changes.options) manager.setOptions()
+            if (abs(changes.leftStick.x) < 0.01) changes.leftStick.x = 0.0
+            if (abs(changes.leftStick.y) < 0.01) changes.leftStick.y = 0.0
+            if (abs(changes.rightStick.x) < 0.01) changes.rightStick.x = 0.0
+            if (abs(changes.rightStick.y) < 0.01) changes.rightStick.y = 0.0
+
+            manager.update(changes)
+
+            val now = System.currentTimeMillis()
+            if (now - lastSendTime >= sendIntervalMs) {
+                send("newGamepad", manager.currentState)
+                lastSendTime = now
+            }
         }
     }
 
@@ -39,7 +55,7 @@ class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-
+        send("newGamepad", manager.currentState)
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {

@@ -5,12 +5,16 @@
     left,
     x = $bindable(),
     y = $bindable(),
+    shownX = $bindable(),
+    shownY = $bindable(),
   }: {
     text: string
     top: number
     left: number
     x: number
     y: number
+    shownX: number
+    shownY: number
   } = $props()
 
   let isMoving = $state(false)
@@ -39,15 +43,23 @@
 
   function handleMouseMove(e: MouseEvent) {
     if (!isMoving) return
-    x = Math.max(-12, Math.min(startX - e.clientX, 12)) / 12
-    y = Math.max(-12, Math.min(startY - e.clientY, 12)) / 12
+    x = (Math.max(-12, Math.min(startX - e.clientX, 12)) / 12) * -1
+    y = (Math.max(-12, Math.min(startY - e.clientY, 12)) / 12) * -1
+  }
+  function combine(x: number, y: number) {
+    if (x == 0.0) return y
+    if (y == 0.0) return x
+    return x
   }
 </script>
 
 <button
   onmousedown={handleMouseDown}
   class:selected={isMoving}
-  style="--offsetX:{x}px;--offsetY:{y}px;--top:{top}%;--left:{left}%;"
+  style="--offsetX:{combine(x, shownX)}px;--offsetY:{combine(
+    y,
+    shownY
+  )}px;--top:{top}%;--left:{left}%;"
   aria-label={text}
 ></button>
 
@@ -67,8 +79,8 @@
     --offsetX: 0;
     --offsetY: 0;
 
-    top: calc(var(--top) - var(--offsetY) * 12);
-    left: calc(var(--left) - var(--offsetX) * 12);
+    top: calc(var(--top) + var(--offsetY) * 12);
+    left: calc(var(--left) + var(--offsetX) * 12);
   }
   button.selected {
     opacity: 1;
