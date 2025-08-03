@@ -43,7 +43,7 @@ class FieldManager(
             outlineWidth = currentOutlineWidth
         )
 
-    fun goto(x: Double, y: Double) {
+    fun moveCursor(x: Double, y: Double) {
         cursorX = x
         cursorY = y
     }
@@ -68,6 +68,11 @@ class FieldManager(
     fun setStyle(fill: String, outline: String, width: Double) {
         setFill(fill)
         setOutline(outline, width)
+    }
+
+    fun setStyle(style: Style){
+        setFill(style.fill)
+        setOutline(style.outlineFill, style.outlineWidth)
     }
 
     fun clearFill() {

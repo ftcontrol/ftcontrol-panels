@@ -31,6 +31,10 @@ class TelemetryManager(
         data.forEach { lines.add(it) }
     }
 
+    fun debug(vararg data: Any) {
+        data.forEach { lines.add(it.toString()) }
+    }
+
     fun update() {
         if (lines.isEmpty()) return
         if (shouldUpdateLines) {
