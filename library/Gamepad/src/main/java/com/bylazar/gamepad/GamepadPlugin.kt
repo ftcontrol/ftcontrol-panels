@@ -18,7 +18,7 @@ class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
     val manager = GamepadManager()
 
     private var lastSendTime = 0L
-    private val sendIntervalMs = 200L
+    private val sendIntervalMs = 500L
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "newGamepad", manager.currentState)

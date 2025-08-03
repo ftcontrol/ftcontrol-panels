@@ -93,13 +93,20 @@
 
   onMount(() => {
     const interval = setInterval(() => {
+      now = performance.now()
       if (!hasChange(combinedGamepad)) return
       manager.socket.sendMessage("gamepad", combinedGamepad)
-      now = performance.now()
     }, 50)
+
+    var firstLoad = false
 
     manager.state.onChange(manager.GAMEPAD_KEY, (data) => {
       externalGamepad = data
+
+      if (!firstLoad) {
+        firstLoad = true
+        return
+      }
 
       const currentTime = performance.now()
 
@@ -168,7 +175,7 @@
     ps: false,
   })
 
-  const THRESHOLD_MS = 50
+  const THRESHOLD_MS = 600
 
   let now = $state(0)
 
@@ -177,7 +184,7 @@
     timestamps: GamepadTimestamps,
     now: number
   ): GamepadData {
-    const delta = (time: number) => now - time <= THRESHOLD_MS
+    const delta = (time: number) => performance.now() - time <= THRESHOLD_MS
 
     return {
       l1: delta(timestamps.l1) ? gamepad.l1 : false,
