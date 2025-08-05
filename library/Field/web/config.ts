@@ -5,8 +5,8 @@ export const config: PluginConfig = {
   name: "Field",
   letterName: "F",
   description: "Field Drawing for Panels",
-  version: "0.0.3",
   websiteURL: "",
+  version: "0.0.4",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
