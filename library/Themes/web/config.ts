@@ -4,9 +4,9 @@ export const config: PluginConfig = {
   id: "com.bylazar.themes",
   name: "Themes",
   letterName: "T",
-  description: "Themes for Panels",
+  description: "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "",
-  version: "0.0.5",
+  version: "0.0.6",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
@@ -32,8 +32,16 @@ export const config: PluginConfig = {
     },
     chapters: [
       {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
+        name: "Theming Widget",
+        filepath: "src/docs/ThemingWidget.svelte",
+      },
+      {
+        name: "Colors Navlet",
+        filepath: "src/docs/ColorsNavlet.svelte",
+      },
+      {
+        name: "Other",
+        filepath: "src/docs/Other.svelte",
       },
     ],
   },
