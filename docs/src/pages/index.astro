@@ -3,12 +3,8 @@ import path from "path"
 import { buildAllPlugins } from "ftc-panels/cli"
 import {
   SimpleDynamicComponent,
-  type PanelsWidget,
-  type PluginConfig,
 } from "ftc-panels"
-
-const libraryPath = path.resolve(process.cwd(), "../library")
-const modules: PluginConfig[] = await buildAllPlugins(libraryPath, false)
+import {modules} from "../data";
 ---
 
 <html lang="en">
@@ -19,7 +15,7 @@ const modules: PluginConfig[] = await buildAllPlugins(libraryPath, false)
   <body>
     <h1>Library Modules with Docs</h1>
     {
-      modules.map((mod: PluginConfig) => (
+      modules.map((mod) => (
         <section>
           <h2>{mod.name}</h2>
           <SimpleDynamicComponent
@@ -27,7 +23,7 @@ const modules: PluginConfig[] = await buildAllPlugins(libraryPath, false)
             info={mod}
             textContent={mod.docs.homepage.textContent}
           />
-          {mod.docs.chapters.map((c: PanelsWidget) => (
+          {mod.docs.chapters.map((c) => (
             <SimpleDynamicComponent
               client:load
               info={mod}
