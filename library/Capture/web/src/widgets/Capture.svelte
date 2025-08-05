@@ -171,7 +171,7 @@
 
   <Overlay>
     {#snippet trigger()}
-      <button>{playbackSpeed}</button>
+      <button style="border: 1px solid currentColor">{playbackSpeed}</button>
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
       {#each speeds.filter((it) => it != playbackSpeed) as s}
