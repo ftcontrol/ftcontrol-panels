@@ -16,7 +16,7 @@
 <Section>
   <p>{plugin.details.id}</p>
   <h2>
-    {plugin.details.name}
+    {plugin.details.name} v{plugin.details.version}
     {#if global.devPlugins.includes(plugin.details.id)}
       DEV
     {/if}
