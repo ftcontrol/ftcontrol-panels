@@ -17,8 +17,8 @@ export const config: PluginConfig = {
   },
   docs: {
     homepage: {
-      name: "Overview",
-      filepath: "src/docs/Overview.svelte",
+      name: "Homepage",
+      filepath: "src/docs/Homepage.svelte",
     },
     chapters: [],
   },

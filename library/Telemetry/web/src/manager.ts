@@ -12,7 +12,7 @@ export default class Manager extends PluginManager {
     })
   }
 
-  override getNewVersion(): string {
+  static async getNewVersion(): string {
     return ""
   }
 }

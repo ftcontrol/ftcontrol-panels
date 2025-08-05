@@ -3,7 +3,7 @@ import { PluginManager } from "ftc-panels"
 export default class Manager extends PluginManager {
   override onInit(): void {}
 
-  async getNewVersion(): Promise<string> {
+  static async getNewVersion(): Promise<string> {
     try {
       const response = await fetch(
         `https://raw.githubusercontent.com/lazarcloud/ftcontrol-maven/refs/heads/main/dev/com/bylazar/fullpanels/maven-metadata.xml`

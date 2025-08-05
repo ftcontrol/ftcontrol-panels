@@ -80,7 +80,7 @@ export default class Manager extends PluginManager {
         this.apply()
     }
 
-    override getNewVersion(): string {
+    static async getNewVersion(): string {
         return ""
     }
 }
