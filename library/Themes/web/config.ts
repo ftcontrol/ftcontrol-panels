@@ -30,20 +30,7 @@ export const config: PluginConfig = {
       name: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "Theming Widget",
-        filepath: "src/docs/ThemingWidget.svelte",
-      },
-      {
-        name: "Colors Navlet",
-        filepath: "src/docs/ColorsNavlet.svelte",
-      },
-      {
-        name: "Other",
-        filepath: "src/docs/Other.svelte",
-      },
-    ],
+    chapters: [],
   },
   templates: [],
 }

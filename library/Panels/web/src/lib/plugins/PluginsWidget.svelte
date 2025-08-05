@@ -7,13 +7,16 @@
   let {
     plugin,
     showDetailsButton = true,
+          transparent = false
+
   }: {
     plugin: PluginInfo
     showDetailsButton?: boolean
+    transparent?: boolean
   } = $props()
 </script>
 
-<Section>
+<Section {transparent}>
   <p>{plugin.details.id}</p>
   <h2>
     {plugin.details.name} v{plugin.details.version}

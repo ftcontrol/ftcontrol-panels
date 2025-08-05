@@ -11,11 +11,19 @@
   )
 </script>
 
-<PluginsWidget plugin={plugin} showDetailsButton={false} />
+
 <DocsPage
   pluginID={plugin.details.id}
   widgetID={plugin.details.docs.homepage.name}
-/>
+>
+    <section>
+        <PluginsWidget plugin={plugin} showDetailsButton={false} transparent={true} />
+    </section>
+</DocsPage>
 
 <style>
+    section {
+        background-color: var(--bgLight);
+        border-radius: calc(var(--padding) / 2);
+    }
 </style>

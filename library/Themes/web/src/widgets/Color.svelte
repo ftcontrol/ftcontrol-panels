@@ -83,7 +83,7 @@
         </label>
         <label>
             <span>Padding</span>
-            <NumberInput bind:value={padding} step="0.1" min="0.1" max="2.5" />
+            <NumberInput bind:value={padding} step="0.1" min="0" max="2.5" />
         </label>
     </div>
 

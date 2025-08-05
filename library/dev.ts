@@ -1,7 +1,7 @@
 import { globalDev } from "ftc-panels/cli"
 
 var folders = []
-folders = ["Themes"]
+folders = ["Battery", "Themes"]
 
 globalDev(__dirname, folders).catch((err) => {
   console.error("Unhandled error in build process:", err)

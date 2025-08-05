@@ -5,13 +5,16 @@
     type PanelsWidget,
     type PluginInfo,
   } from "ftc-panels"
+  import type {Snippet} from "svelte";
 
   let {
     pluginID,
     widgetID,
+      children,
   }: {
     pluginID: string
     widgetID: string
+    children?: Snippet
   } = $props()
 
   const plugin = $derived(
@@ -30,6 +33,7 @@
 </script>
 
 <section>
+  {@render children?.()}
   {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
     <SimpleDynamicComponent
       info={plugin.details}
