@@ -1,4 +1,4 @@
-package com.bylazar.ftcontrol
+package com.bylazar.utils
 
 class MovingAverageSmoother(private val windowSize: Int) {
     private val values = mutableListOf<Double>()

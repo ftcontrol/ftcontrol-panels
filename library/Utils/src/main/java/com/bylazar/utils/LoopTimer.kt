@@ -1,4 +1,4 @@
-package com.bylazar.ftcontrol
+package com.bylazar.utils
 
 class LoopTimer(smootherWindow: Int = 5) {
     var startTime = 0L

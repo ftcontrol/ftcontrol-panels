@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "T",
   description: "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "",
-  version: "0.0.6",
+  version: "0.0.7",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
