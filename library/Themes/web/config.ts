@@ -15,7 +15,12 @@ export const config: PluginConfig = {
       filepath: "src/widgets/Color.svelte",
     },
   ],
-  navlets: [],
+  navlets: [
+    {
+      name: "Colors Preview",
+      filepath: "src/navlets/Preview.svelte",
+    }
+  ],
   manager: {
     name: "Manager",
     filepath: "src/manager.ts",
