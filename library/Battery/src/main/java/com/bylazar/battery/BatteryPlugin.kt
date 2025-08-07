@@ -9,6 +9,7 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import java.io.IOException
+import java.lang.ref.WeakReference
 import java.util.Timer
 import java.util.TimerTask
 
@@ -16,18 +17,20 @@ open class BatteryPluginConfig : BasePluginConfig() {
     open var test = "test"
 }
 
-class Plugin : Plugin<BatteryPluginConfig>(BatteryPluginConfig()) {
+object Plugin : Plugin<BatteryPluginConfig>(BatteryPluginConfig()) {
     private var timer: Timer = Timer()
 
     var provider = BatteryProvider()
 
-    lateinit var opModeManager: OpModeManagerImpl
+    private var opModeManagerRef: WeakReference<OpModeManagerImpl>? = null
+
 
     fun startSendingTime() {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 try {
-                    provider.updateBatteryVoltage(opModeManager)
+                    val manager = opModeManagerRef?.get() ?: return
+                    provider.updateBatteryVoltage(manager)
                     if (provider.hasChanged) {
                         send("battery", provider.batteryVoltage)
                         provider.lastBatteryVoltage = provider.batteryVoltage
@@ -62,7 +65,7 @@ class Plugin : Plugin<BatteryPluginConfig>(BatteryPluginConfig()) {
     }
 
     override fun onOpModeManager(o: OpModeManagerImpl) {
-        opModeManager = o
+        opModeManagerRef = WeakReference(o)
         startSendingTime()
     }
 

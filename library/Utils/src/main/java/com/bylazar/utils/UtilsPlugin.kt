@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class UtilsPluginConfig : BasePluginConfig() {
 }
 
-class Plugin : Plugin<UtilsPluginConfig>(UtilsPluginConfig()) {
+object Plugin : Plugin<UtilsPluginConfig>(UtilsPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

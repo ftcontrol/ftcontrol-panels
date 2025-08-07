@@ -9,7 +9,7 @@ import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
-class Plugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
+object Plugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

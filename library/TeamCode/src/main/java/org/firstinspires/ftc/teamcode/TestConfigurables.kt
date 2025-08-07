@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 @TeleOp(name = "Test Configurables", group = "Dev")
 class TestConfigurables : OpMode() {
 
-    val telemetry = PanelsTelemetry.getTelemetry()
+    val telemetry = PanelsTelemetry.telemetry
 
     override fun init() {
         ClawConfig.follower = Follower()

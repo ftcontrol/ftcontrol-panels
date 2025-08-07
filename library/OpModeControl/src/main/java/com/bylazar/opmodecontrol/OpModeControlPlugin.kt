@@ -2,6 +2,7 @@ package com.bylazar.opmodecontrol
 
 import android.content.Context
 import com.bylazar.panels.Panels
+import com.bylazar.panels.core.OpModeHandler.manager
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -10,11 +11,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
+import java.lang.ref.WeakReference
 
 open class OpModeControlPluginConfig : BasePluginConfig() {
 }
 
-class Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
+object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     var opModeList: MutableList<OpModeDetails> = mutableListOf()
         set(value) {
             field = value
@@ -55,13 +57,13 @@ class Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         log("Got message of type $type with data $data")
         when(type){
             "initOpMode" -> {
-                opModeManager.initOpMode(data as String)
+                opModeManagerRef?.get()?.initOpMode(data as String)
             }
             "startActiveOpMode" -> {
-                opModeManager.startActiveOpMode()
+                opModeManagerRef?.get()?.startActiveOpMode()
             }
             "stopActiveOpMode" -> {
-                opModeManager.stopActiveOpMode()
+                opModeManagerRef?.get()?.stopActiveOpMode()
             }
         }
     }
@@ -73,13 +75,13 @@ class Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
 
     }
 
-    lateinit var opModeManager: OpModeManagerImpl
+    private var opModeManagerRef: WeakReference<OpModeManagerImpl>? = null
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
     }
 
     override fun onOpModeManager(o: OpModeManagerImpl) {
-        opModeManager = o
+        opModeManagerRef = WeakReference(o)
         activeOpMode = null
         activeOpModeName = ""
         opModeList.clear()
@@ -99,27 +101,30 @@ class Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
-        activeOpModeName = opModeManager.activeOpModeName
+        activeOpModeName = manager.activeOpModeName
         status = OpModeStatus.INIT
         sendActiveOpMode()
     }
 
     override fun onOpModePreStart(opMode: OpMode) {
+        val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
-        activeOpModeName = opModeManager.activeOpModeName
+        activeOpModeName = manager.activeOpModeName
         status = OpModeStatus.RUNNING
         sendActiveOpMode()
     }
 
     override fun onOpModePostStop(opMode: OpMode) {
+        val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
-        activeOpModeName = opModeManager.activeOpModeName
+        activeOpModeName = manager.activeOpModeName
         status = OpModeStatus.STOPPED
         sendActiveOpMode()
     }
 
-    inner class FetcherRoutine : Runnable {
+    class FetcherRoutine : Runnable {
         override fun run() {
             RegisteredOpModes.getInstance().waitOpModesRegistered()
 

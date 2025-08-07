@@ -14,7 +14,7 @@ import kotlin.math.abs
 open class GamepadPluginConfig : BasePluginConfig() {
 }
 
-class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
+object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
     val manager = GamepadManager()
 
     private var lastSendTime = 0L
@@ -72,7 +72,6 @@ class Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
 
     override fun onOpModePostStop(opMode: OpMode) {
     }
-
 
     override fun onEnablePanels() {
     }

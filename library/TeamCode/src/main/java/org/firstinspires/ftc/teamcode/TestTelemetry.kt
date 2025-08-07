@@ -12,12 +12,15 @@ class TestTelemetry : OpMode() {
         var test = "lazar"
     }
 
-    val telemetry = PanelsTelemetry.getTelemetry()
-    val field = PanelsField.getField()
+    val telemetry = PanelsTelemetry.telemetry
+    val field = PanelsField.field
 
     val imgID = field.registerImage(PanelsField.images.INTO_THE_DEEP.DARK)
 
     override fun init() {
+
+        Drawing.field.moveCursor(0.0, 0.0)
+
         field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
 
         field.moveCursor(0.0, 0.0)

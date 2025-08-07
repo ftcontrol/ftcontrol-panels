@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class CaptureConfig : BasePluginConfig() {
 }
 
-class Plugin : Plugin<CaptureConfig>(CaptureConfig()) {
+object Plugin : Plugin<CaptureConfig>(CaptureConfig()) {
 
     override fun onNewClient(client: Socket.ClientSocket) {
     }

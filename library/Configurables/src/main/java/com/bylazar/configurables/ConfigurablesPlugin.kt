@@ -20,10 +20,9 @@ import java.lang.reflect.Modifier
 import kotlin.jvm.java
 
 open class ConfigurablesPluginConfig : BasePluginConfig() {
-    open var test = "test"
 }
 
-class Plugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPluginConfig()) {
+object Plugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPluginConfig()) {
     var fieldsMap = mutableMapOf<String, MyField>()
     var configurableClasses: List<ClassFinder.ClassEntry> = listOf()
     var allFields: MutableList<GenericTypeJson> = mutableListOf()

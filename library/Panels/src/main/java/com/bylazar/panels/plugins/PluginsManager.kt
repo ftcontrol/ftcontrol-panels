@@ -49,10 +49,10 @@ object PluginsManager {
         }
 
         pluginDirs = pluginDirs.mapNotNull {
-            try{
+            try {
                 val clazz = Class.forName("${it}.Plugin")
                 it
-            }catch (t: Throwable){
+            } catch (t: Throwable) {
                 null
             }
         }
@@ -65,7 +65,13 @@ object PluginsManager {
         pluginDirs.forEach {
             val clazz = Class.forName("${it}.Plugin")
 
-            val pluginInstance = clazz.getDeclaredConstructor().newInstance() as Plugin<*>
+            @Suppress("UNCHECKED_CAST")
+            val pluginInstance = clazz.kotlin.objectInstance as? Plugin<*>
+
+            if (pluginInstance == null) {
+                Logger.pluginsError("$it plugin is not kotlin singleton")
+                return@forEach
+            }
 
             Logger.pluginsLog("Got ${it}.")
 
@@ -110,8 +116,6 @@ object PluginsManager {
                     Logger.pluginsError("Error while loading: ${clazz.name} with ID '${it}', ${t.message}")
                 }
             }
-
-
         }
 
         isRegistered = true

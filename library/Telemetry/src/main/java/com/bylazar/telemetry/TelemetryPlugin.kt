@@ -13,7 +13,7 @@ open class TelemetryPluginConfig : BasePluginConfig() {
     open var telemetryUpdateInterval = 75L
 }
 
-class Plugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
+object Plugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
     val manager = TelemetryManager(config) { lines -> send("telemetryPacket", lines) }
 
     override fun onNewClient(client: Socket.ClientSocket) {

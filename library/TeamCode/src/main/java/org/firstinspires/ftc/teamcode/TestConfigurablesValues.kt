@@ -15,7 +15,7 @@ class TestConfigurablesValues : OpMode() {
         var lazarBool = false
     }
 
-    val telemetry = PanelsTelemetry.getTelemetry()
+    val telemetry = PanelsTelemetry.telemetry
 
     override fun init() {
         telemetry.debug("Value of $lazar")

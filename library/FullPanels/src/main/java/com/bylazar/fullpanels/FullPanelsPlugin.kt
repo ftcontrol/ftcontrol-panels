@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 open class FullPanelsPluginConfig : BasePluginConfig() {
 }
 
-class Plugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()) {
+object Plugin : Plugin<FullPanelsPluginConfig>(FullPanelsPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

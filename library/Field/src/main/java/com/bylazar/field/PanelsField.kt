@@ -1,14 +1,8 @@
 package com.bylazar.field
 
-import com.bylazar.panels.Panels
-
 object PanelsField {
-    val pkgName = this::class.java.`package`?.name ?: "null"
-
-    fun getField(): FieldManager {
-        val plugin = Panels.getPlugin(pkgName) as Plugin
-        return plugin.manager
-    }
+    val field: FieldManager
+        get() = Plugin.manager
 
     val PANELS = CanvasPreset { /* no-op */ }
     val PEDRO_PATHING = CanvasPreset {

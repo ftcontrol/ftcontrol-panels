@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class LimelightProxyConfig : BasePluginConfig() {}
 
-class Plugin : Plugin<LimelightProxyConfig>(LimelightProxyConfig()) {
+object Plugin : Plugin<LimelightProxyConfig>(LimelightProxyConfig()) {
     lateinit var limelightProxy: GenericProxy
     lateinit var limelightFeedProxy: GenericStreamingProxy
     lateinit var limelightWebsocketProxy: GenericSocketProxy

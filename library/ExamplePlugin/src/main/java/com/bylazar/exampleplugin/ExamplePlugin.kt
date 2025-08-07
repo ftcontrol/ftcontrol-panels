@@ -13,8 +13,8 @@ open class ExamplePluginConfig : BasePluginConfig() {
     open var test = "test"
 }
 
-//DON'T CHANGE THIS, LEAVE ON Plugin
-class Plugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
+//DON'T CHANGE THIS, LEAVE AS Plugin
+object Plugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 

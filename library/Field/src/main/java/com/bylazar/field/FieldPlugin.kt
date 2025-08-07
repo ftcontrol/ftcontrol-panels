@@ -2,21 +2,19 @@ package com.bylazar.field
 
 import android.content.Context
 import com.bylazar.panels.Panels
-import com.bylazar.panels.core.OpModeHandler.manager
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
-import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 
 open class FieldPluginConfig : BasePluginConfig() {
     open var canvasUpdateInterval = 100L
     open var defaultBg: ImagePreset = PanelsField.images.INTO_THE_DEEP.DARK
 }
 
-class Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
+object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     lateinit var manager: FieldManager
 
     override fun onNewClient(client: Socket.ClientSocket) {

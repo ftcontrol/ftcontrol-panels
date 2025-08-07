@@ -4,9 +4,10 @@ export const config: PluginConfig = {
   id: "com.bylazar.themes",
   name: "Themes",
   letterName: "T",
-  description: "Plugin for Panels that implements custom theming with saving and preset sharing.",
+  description:
+    "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "",
-  version: "0.0.7",
+  version: "0.0.8",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
@@ -19,7 +20,7 @@ export const config: PluginConfig = {
     {
       name: "Colors Preview",
       filepath: "src/navlets/Preview.svelte",
-    }
+    },
   ],
   manager: {
     name: "Manager",
