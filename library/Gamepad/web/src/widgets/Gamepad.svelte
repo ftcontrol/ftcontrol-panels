@@ -13,13 +13,13 @@
   function hasChange(lastSentGamepad: GamepadData): boolean {
     if (!lastSentGamepad) return true
 
-    if (Math.abs(lastSentGamepad.leftStick.x) < 0.01)
+    if (Math.abs(lastSentGamepad.leftStick.x) < 0.1)
       lastSentGamepad.leftStick.x = 0.0
-    if (Math.abs(lastSentGamepad.leftStick.y) < 0.01)
+    if (Math.abs(lastSentGamepad.leftStick.y) < 0.1)
       lastSentGamepad.leftStick.y = 0.0
-    if (Math.abs(lastSentGamepad.rightStick.x) < 0.01)
+    if (Math.abs(lastSentGamepad.rightStick.x) < 0.1)
       lastSentGamepad.rightStick.x = 0.0
-    if (Math.abs(lastSentGamepad.rightStick.y) < 0.01)
+    if (Math.abs(lastSentGamepad.rightStick.y) < 0.1)
       lastSentGamepad.rightStick.y = 0.0
 
     return (
@@ -98,7 +98,7 @@
       manager.socket.sendMessage("gamepad", combinedGamepad)
     }, 50)
 
-    var firstLoad = false
+    let firstLoad = false;
 
     manager.state.onChange(manager.GAMEPAD_KEY, (data) => {
       externalGamepad = data
@@ -462,10 +462,10 @@
     <div>touchpad</div>
   {/if}
 
-  {#if combinedGamepad.leftStick.value || Math.abs(combinedGamepad.leftStick.x) > 0.01 || Math.abs(combinedGamepad.leftStick.y) > 0.01}
+  {#if combinedGamepad.leftStick.value || Math.abs(combinedGamepad.leftStick.x) > 0.1 || Math.abs(combinedGamepad.leftStick.y) > 0.1}
     <div>L STICK</div>
   {/if}
-  {#if combinedGamepad.rightStick.value || Math.abs(combinedGamepad.rightStick.x) > 0.01 || Math.abs(combinedGamepad.rightStick.y) > 0.01}
+  {#if combinedGamepad.rightStick.value || Math.abs(combinedGamepad.rightStick.x) > 0.1 || Math.abs(combinedGamepad.rightStick.y) > 0.1}
     <div>R STICK</div>
   {/if}
 </section>

@@ -6,14 +6,18 @@ class GamepadManager {
     internal var currentState = Gamepad()
     internal var timestamps = GamepadTimestamps()
 
-    fun update(newState: Gamepad) {
+    internal fun update(newState: Gamepad) {
         val now = System.currentTimeMillis()
 
-        fun updateIfChanged(old: Boolean, new: Boolean, oldTs: Long): Long =
-            if (old != new) now else oldTs
+        fun updateIfChanged(old: Boolean, new: Boolean, oldTs: Long): Long {
+            if(new) return now
+            return oldTs
+        }
 
-        fun updateIfChangedDouble(old: Double, new: Double, oldTs: Long): Long =
-            if (old != new) now else oldTs
+        fun updateIfChangedDouble(old: Double, new: Double, oldTs: Long): Long {
+            if(new != 0.0) return now
+            return oldTs
+        }
 
         fun updateStick(old: Stick, new: Stick, oldTs: StickTimestamps): StickTimestamps =
             StickTimestamps(
@@ -27,17 +31,45 @@ class GamepadManager {
             l2 = updateIfChangedDouble(currentState.l2, newState.l2, timestamps.l2),
             r1 = updateIfChanged(currentState.r1, newState.r1, timestamps.r1),
             r2 = updateIfChangedDouble(currentState.r2, newState.r2, timestamps.r2),
-            leftStick = updateStick(currentState.leftStick, newState.leftStick, timestamps.leftStick),
-            rightStick = updateStick(currentState.rightStick, newState.rightStick, timestamps.rightStick),
+            leftStick = updateStick(
+                currentState.leftStick,
+                newState.leftStick,
+                timestamps.leftStick
+            ),
+            rightStick = updateStick(
+                currentState.rightStick,
+                newState.rightStick,
+                timestamps.rightStick
+            ),
             cross = updateIfChanged(currentState.cross, newState.cross, timestamps.cross),
             circle = updateIfChanged(currentState.circle, newState.circle, timestamps.circle),
             square = updateIfChanged(currentState.square, newState.square, timestamps.square),
-            triangle = updateIfChanged(currentState.triangle, newState.triangle, timestamps.triangle),
+            triangle = updateIfChanged(
+                currentState.triangle,
+                newState.triangle,
+                timestamps.triangle
+            ),
             dpad_up = updateIfChanged(currentState.dpad_up, newState.dpad_up, timestamps.dpad_up),
-            dpad_left = updateIfChanged(currentState.dpad_left, newState.dpad_left, timestamps.dpad_left),
-            dpad_right = updateIfChanged(currentState.dpad_right, newState.dpad_right, timestamps.dpad_right),
-            dpad_down = updateIfChanged(currentState.dpad_down, newState.dpad_down, timestamps.dpad_down),
-            touchpad = updateIfChanged(currentState.touchpad, newState.touchpad, timestamps.touchpad),
+            dpad_left = updateIfChanged(
+                currentState.dpad_left,
+                newState.dpad_left,
+                timestamps.dpad_left
+            ),
+            dpad_right = updateIfChanged(
+                currentState.dpad_right,
+                newState.dpad_right,
+                timestamps.dpad_right
+            ),
+            dpad_down = updateIfChanged(
+                currentState.dpad_down,
+                newState.dpad_down,
+                timestamps.dpad_down
+            ),
+            touchpad = updateIfChanged(
+                currentState.touchpad,
+                newState.touchpad,
+                timestamps.touchpad
+            ),
             options = updateIfChanged(currentState.options, newState.options, timestamps.options),
             share = updateIfChanged(currentState.share, newState.share, timestamps.share),
             ps = updateIfChanged(currentState.ps, newState.ps, timestamps.ps),
@@ -47,70 +79,90 @@ class GamepadManager {
     }
 
     fun asCombinedFTCGamepad(gamepad: com.qualcomm.robotcore.hardware.Gamepad): com.qualcomm.robotcore.hardware.Gamepad {
-        return com.qualcomm.robotcore.hardware.Gamepad().apply {
-            left_stick_x = if (currentState.leftStick.x != 0.0) currentState.leftStick.x.toFloat() else gamepad.left_stick_x
-            left_stick_y = if (currentState.leftStick.y != 0.0) currentState.leftStick.y.toFloat() else gamepad.left_stick_y
-            right_stick_x = if (currentState.rightStick.x != 0.0) currentState.rightStick.x.toFloat() else gamepad.right_stick_x
-            right_stick_y = if (currentState.rightStick.y != 0.0) currentState.rightStick.y.toFloat() else gamepad.right_stick_y
+        val g = com.qualcomm.robotcore.hardware.Gamepad()
+        g.left_stick_x = if (leftStick.x != 0.0) leftStick.x.toFloat() else gamepad.left_stick_x
+        g.left_stick_y = if (leftStick.y != 0.0) leftStick.y.toFloat() else gamepad.left_stick_y
+        g.right_stick_x =
+            if (rightStick.x != 0.0) rightStick.x.toFloat() else gamepad.right_stick_x
+        g.right_stick_y =
+            if (rightStick.y != 0.0) rightStick.y.toFloat() else gamepad.right_stick_y
 
-            left_trigger = if (currentState.l2 != 0.0) currentState.l2.toFloat() else gamepad.left_trigger
-            right_trigger = if (currentState.r2 != 0.0) currentState.r2.toFloat() else gamepad.right_trigger
+        g.left_trigger = if (l2 != 0.0) l2.toFloat() else gamepad.left_trigger
+        g.right_trigger = if (r2 != 0.0) r2.toFloat() else gamepad.right_trigger
 
-            left_bumper = currentState.l1 || gamepad.left_bumper
-            right_bumper = currentState.r1 || gamepad.right_bumper
+        g.left_bumper = l1 || gamepad.left_bumper
+        g.right_bumper = r1 || gamepad.right_bumper
 
-            a = currentState.cross || gamepad.a
-            b = currentState.circle || gamepad.b
-            x = currentState.square || gamepad.x
-            y = currentState.triangle || gamepad.y
+        g.a = cross || gamepad.a
+        g.b = circle || gamepad.b
+        g.x = square || gamepad.x
+        g.y = triangle || gamepad.y
 
-            dpad_up = currentState.dpad_up || gamepad.dpad_up
-            dpad_down = currentState.dpad_down || gamepad.dpad_down
-            dpad_left = currentState.dpad_left || gamepad.dpad_left
-            dpad_right = currentState.dpad_right || gamepad.dpad_right
+        g.cross = g.a
+        g.circle = g.b
+        g.square = g.x
+        g.triangle = g.y
 
-            guide = currentState.ps || gamepad.guide
-            options = currentState.options || gamepad.options
-            back = currentState.share || gamepad.back
-            touchpad = currentState.touchpad || gamepad.touchpad
+        g.dpad_up = dpadUp || gamepad.dpad_up
+        g.dpad_down = dpadDown || gamepad.dpad_down
+        g.dpad_left = dpadLeft || gamepad.dpad_left
+        g.dpad_right = dpadRight || gamepad.dpad_right
 
-            left_stick_button = currentState.leftStick.value || gamepad.left_stick_button
-            right_stick_button = currentState.rightStick.value || gamepad.right_stick_button
+        g.guide = ps || gamepad.guide
+        g.ps = g.guide
+        g.options = options || gamepad.options
+        g.back = share || gamepad.back
+        g.share = g.back
+        g.touchpad = touchpad || gamepad.touchpad
 
-            type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
-        }
+        g.left_stick_button = leftStick.value || gamepad.left_stick_button
+        g.right_stick_button = rightStick.value || gamepad.right_stick_button
+
+        g.type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
+
+        return g
     }
 
     val asFTCGamepad: com.qualcomm.robotcore.hardware.Gamepad
-        get() = com.qualcomm.robotcore.hardware.Gamepad().apply {
-            left_stick_x = currentState.leftStick.x.toFloat()
-            left_stick_y = currentState.leftStick.y.toFloat()
-            right_stick_x = currentState.rightStick.x.toFloat()
-            right_stick_y = currentState.rightStick.y.toFloat()
-            left_trigger = currentState.l2.toFloat()
-            right_trigger = currentState.r2.toFloat()
-            left_bumper = currentState.l1
-            right_bumper = currentState.r1
+        get() {
+            val g = com.qualcomm.robotcore.hardware.Gamepad()
+            g.left_stick_x = leftStick.x.toFloat()
+            g.left_stick_y = leftStick.y.toFloat()
+            g.right_stick_x = rightStick.x.toFloat()
+            g.right_stick_y = rightStick.y.toFloat()
+            g.left_trigger = l2.toFloat()
+            g.right_trigger = r2.toFloat()
+            g.left_bumper = l1
+            g.right_bumper = r1
 
-            a = currentState.cross
-            b = currentState.circle
-            x = currentState.square
-            y = currentState.triangle
+            g.a = cross
+            g.b = circle
+            g.x = square
+            g.y = triangle
 
-            dpad_up = currentState.dpad_up
-            dpad_down = currentState.dpad_down
-            dpad_left = currentState.dpad_left
-            dpad_right = currentState.dpad_right
+            g.cross = cross
+            g.circle = circle
+            g.square = square
+            g.triangle = triangle
 
-            guide = currentState.ps
-            options = currentState.options
-            back = currentState.share
-            touchpad = currentState.touchpad
+            g.dpad_up = dpadUp
+            g.dpad_down = dpadDown
+            g.dpad_left = dpadLeft
+            g.dpad_right = dpadRight
 
-            left_stick_button = currentState.leftStick.value
-            right_stick_button = currentState.rightStick.value
+            g.guide = ps
+            g.ps = ps
+            g.options = options
+            g.back = share
+            g.share = share
+            g.touchpad = touchpad
 
-            type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
+            g.left_stick_button = leftStick.value
+            g.right_stick_button = rightStick.value
+
+            g.type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
+
+            return g
         }
 
     private fun isActive(timestamp: Long): Boolean =
@@ -122,6 +174,7 @@ class GamepadManager {
     val r2: Double get() = if (isActive(timestamps.r2)) currentState.r2 else 0.0
 
     val cross: Boolean get() = currentState.cross && isActive(timestamps.cross)
+    val crossTimestamp: Long get() = timestamps.cross
     val circle: Boolean get() = currentState.circle && isActive(timestamps.circle)
     val square: Boolean get() = currentState.square && isActive(timestamps.square)
     val triangle: Boolean get() = currentState.triangle && isActive(timestamps.triangle)

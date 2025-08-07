@@ -17,6 +17,8 @@ class TestGamepad: OpMode() {
     override fun loop() {
         val gm = g.asFTCGamepad
 
+        telemetry.debug("Cross: ${g.cross}", "FCross: ${g.asFTCGamepad.cross}", "T: ${g.crossTimestamp}")
+
         telemetry.debug("==== Buttons ====")
         telemetry.debug("A: ${gm.a}")
         telemetry.debug("B: ${gm.b}")
