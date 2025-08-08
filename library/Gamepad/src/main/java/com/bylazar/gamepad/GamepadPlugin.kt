@@ -15,18 +15,20 @@ open class GamepadPluginConfig : BasePluginConfig() {
 }
 
 object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
-    val manager = GamepadManager()
+    val firstManager = GamepadManager()
+    val secondManager = GamepadManager()
 
     private var lastSendTime = 0L
     private val sendIntervalMs = 500L
 
     override fun onNewClient(client: Socket.ClientSocket) {
-        sendClient(client, "newGamepad", manager.currentState)
+        sendClient(client, "newGamepad0", firstManager.currentState)
+        sendClient(client, "newGamepad1", secondManager.currentState)
     }
 
     override fun onMessage(type: String, data: Any?) {
         log("Got message of type $type with data $data")
-        if (type == "gamepad") {
+        if (type == "gamepad0" || type == "gamepad1") {
             val changes = try {
                 SocketMessage.convertData<Gamepad>(data)
             } catch (e: Exception) {
@@ -41,11 +43,25 @@ object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
             if (abs(changes.rightStick.x) < 0.01) changes.rightStick.x = 0.0
             if (abs(changes.rightStick.y) < 0.01) changes.rightStick.y = 0.0
 
-            manager.update(changes)
+            when(type){
+                "gamepad0" -> {
+                    firstManager.update(changes)
+                }
+                "gamepad1" -> {
+                    secondManager.update(changes)
+                }
+            }
 
             val now = System.currentTimeMillis()
             if (now - lastSendTime >= sendIntervalMs) {
-                send("newGamepad", manager.currentState)
+                when(type){
+                    "gamepad0" -> {
+                        send("newGamepad0", firstManager.currentState)
+                    }
+                    "gamepad1" -> {
+                        send("newGamepad1", secondManager.currentState)
+                    }
+                }
                 lastSendTime = now
             }
         }
@@ -55,7 +71,8 @@ object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-        send("newGamepad", manager.currentState)
+        send("newGamepad0", firstManager.currentState)
+        send("newGamepad1", secondManager.currentState)
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {

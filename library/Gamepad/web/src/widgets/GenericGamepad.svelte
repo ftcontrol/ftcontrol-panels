@@ -6,8 +6,10 @@
 
   let {
     manager,
+    gamepadIndex = 0,
   }: {
     manager: Manager
+    gamepadIndex: number
   } = $props()
 
   function hasChange(lastSentGamepad: GamepadData): boolean {
@@ -95,12 +97,18 @@
     const interval = setInterval(() => {
       now = performance.now()
       if (!hasChange(combinedGamepad)) return
-      manager.socket.sendMessage("gamepad", combinedGamepad)
+      manager.socket.sendMessage("gamepad" + gamepadIndex, combinedGamepad)
     }, 50)
 
-    let firstLoad = false;
+    let firstLoad = false
 
-    manager.state.onChange(manager.GAMEPAD_KEY, (data) => {
+    var KEY = manager.FIRST_GAMEPAD_KEY
+
+    if (gamepadIndex == 1) {
+      KEY = manager.SECOND_GAMEPAD_KEY
+    }
+
+    manager.state.onChange(KEY, (data) => {
       externalGamepad = data
 
       if (!firstLoad) {
@@ -141,7 +149,7 @@
 
   $effect(() => {
     if (!hasChange(combinedGamepad)) return
-    manager.socket.sendMessage("gamepad", combinedGamepad)
+    manager.socket.sendMessage("gamepad" + gamepadIndex, combinedGamepad)
   })
 
   let physicalGamepad: GamepadData = $state({
@@ -329,8 +337,8 @@
       ? (Array.from(navigator.getGamepads()).filter((g) => g) as Gamepad[])
       : []
 
-    if (gamepads.length) {
-      current = gamepads[0]
+    if (gamepads.length && gamepads.length >= gamepadIndex + 1) {
+      current = gamepads[gamepadIndex]
 
       physicalGamepad = {
         l1: current.buttons[4].value >= 1.0,

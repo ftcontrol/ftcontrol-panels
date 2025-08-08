@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
 @TeleOp(name = "Test Gamepad", group = "Dev")
 class TestGamepad: OpMode() {
-    val g = PanelsGamepad.manager
+    val g = PanelsGamepad.firstManager
     val telemetry = PanelsTelemetry.telemetry
     override fun init() {
 
