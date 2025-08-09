@@ -2,11 +2,11 @@ package com.bylazar.field
 
 import java.util.UUID
 
-class FieldManager(
-    config: FieldPluginConfig,
-    private val sendCanvas: (canvas: Canvas) -> Unit,
-    private val sendImages: (images: MutableMap<UUID, String>) -> Unit
-) {
+class FieldManager() {
+    var config: FieldPluginConfig = FieldPluginConfig()
+    var sendCanvas: (canvas: Canvas) -> Unit = {}
+    var sendImages: (images: MutableMap<UUID, String>) -> Unit = {}
+
     var images: MutableMap<UUID, String> = mutableMapOf()
 
     var disableDefaultBg = false
@@ -24,7 +24,7 @@ class FieldManager(
     var lastCanvas = Canvas()
 
     init {
-        if (!disableDefaultBg){
+        if (!disableDefaultBg) {
             canvas.bgID = defaultBgID
             lastCanvas.bgID = defaultBgID
         }
@@ -70,7 +70,7 @@ class FieldManager(
         setOutline(outline, width)
     }
 
-    fun setStyle(style: Style){
+    fun setStyle(style: Style) {
         setFill(style.fill)
         setOutline(style.outlineFill, style.outlineWidth)
     }

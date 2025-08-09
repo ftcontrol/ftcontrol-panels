@@ -15,7 +15,7 @@ open class FieldPluginConfig : BasePluginConfig() {
 }
 
 object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
-    lateinit var manager: FieldManager
+    var manager = FieldManager()
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "canvasPacket", manager.lastCanvas)
@@ -30,20 +30,15 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         panelsInstance: Panels,
         context: Context
     ) {
-        manager = FieldManager(
-            config,
-            { canvas -> send("canvasPacket", canvas) },
-            { images -> send("canvasImages", images) }
-        )
+        manager.config = config
+        manager.sendCanvas = { canvas -> send("canvasPacket", canvas) }
+        manager.sendImages = { images -> send("canvasImages", images) }
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
     }
 
-    lateinit var opModeManager: OpModeManagerImpl
-
     override fun onOpModeManager(o: OpModeManagerImpl) {
-        this.opModeManager = o
     }
 
     override fun onOpModePreInit(opMode: OpMode) {

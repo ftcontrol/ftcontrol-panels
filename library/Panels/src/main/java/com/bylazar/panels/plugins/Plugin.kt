@@ -20,7 +20,7 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     val isEnabled: Boolean
         get() = config.isEnabled
 
-    private var wasRegistered = false
+    var wasRegistered = false
     private val pendingClients = mutableListOf<ClientSocket>()
     private var pendingPreInit: OpMode? = null
     private var pendingPreStart: OpMode? = null
