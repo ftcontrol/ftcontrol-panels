@@ -406,76 +406,78 @@
   })
 </script>
 
-<GamepadDrawing
-  bind:writeGamepad={virtualGamepad}
-  showGamepad={getCombinedGamepad(
-    physicalGamepad,
-    filterGamepadByTimestamp(externalGamepad, externalGamepadTimestamps, now)
-  )}
-/>
+<section class="gamepad { gamepadIndex?'second':'first' }">
+  <GamepadDrawing
+    bind:writeGamepad={virtualGamepad}
+    showGamepad={getCombinedGamepad(
+      physicalGamepad,
+      filterGamepadByTimestamp(externalGamepad, externalGamepadTimestamps, now)
+    )}
+  />
 
-<section>
-  {#if current != null}
-    <div>Physical</div>
-  {/if}
-  {#if combinedGamepad.l1}
-    <div>L1</div>
-  {/if}
-  {#if combinedGamepad.l2}
-    <div>L2</div>
-  {/if}
-  {#if combinedGamepad.r1}
-    <div>R1</div>
-  {/if}
-  {#if combinedGamepad.r2}
-    <div>R2</div>
-  {/if}
+  <section class="overlay">
+    {#if current != null}
+      <div>Physical</div>
+    {/if}
+    {#if combinedGamepad.l1}
+      <div>L1</div>
+    {/if}
+    {#if combinedGamepad.l2}
+      <div>L2</div>
+    {/if}
+    {#if combinedGamepad.r1}
+      <div>R1</div>
+    {/if}
+    {#if combinedGamepad.r2}
+      <div>R2</div>
+    {/if}
 
-  {#if combinedGamepad.dpad_left}
-    <div>←</div>
-  {/if}
-  {#if combinedGamepad.dpad_right}
-    <div>→</div>
-  {/if}
-  {#if combinedGamepad.dpad_up}
-    <div>↑</div>
-  {/if}
-  {#if combinedGamepad.dpad_down}
-    <div>↓</div>
-  {/if}
+    {#if combinedGamepad.dpad_left}
+      <div>←</div>
+    {/if}
+    {#if combinedGamepad.dpad_right}
+      <div>→</div>
+    {/if}
+    {#if combinedGamepad.dpad_up}
+      <div>↑</div>
+    {/if}
+    {#if combinedGamepad.dpad_down}
+      <div>↓</div>
+    {/if}
 
-  {#if combinedGamepad.circle}
-    <div>●</div>
-  {/if}
-  {#if combinedGamepad.cross}
-    <div>✚</div>
-  {/if}
-  {#if combinedGamepad.triangle}
-    <div>▲</div>
-  {/if}
-  {#if combinedGamepad.square}
-    <div>■</div>
-  {/if}
+    {#if combinedGamepad.circle}
+      <div>●</div>
+    {/if}
+    {#if combinedGamepad.cross}
+      <div>✚</div>
+    {/if}
+    {#if combinedGamepad.triangle}
+      <div>▲</div>
+    {/if}
+    {#if combinedGamepad.square}
+      <div>■</div>
+    {/if}
 
-  {#if combinedGamepad.share}
-    <div>SHR</div>
-  {/if}
-  {#if combinedGamepad.options}
-    <div>OPTS</div>
-  {/if}
-  {#if combinedGamepad.ps}
-    <div>PS</div>
-  {/if}
-  {#if combinedGamepad.touchpad}
-    <div>touchpad</div>
-  {/if}
+    {#if combinedGamepad.share}
+      <div>SHR</div>
+    {/if}
+    {#if combinedGamepad.options}
+      <div>OPTS</div>
+    {/if}
+    {#if combinedGamepad.ps}
+      <div>PS</div>
+    {/if}
+    {#if combinedGamepad.touchpad}
+      <div>touchpad</div>
+    {/if}
 
-  {#if combinedGamepad.leftStick.value || Math.abs(combinedGamepad.leftStick.x) > 0.1 || Math.abs(combinedGamepad.leftStick.y) > 0.1}
-    <div>L STICK</div>
-  {/if}
-  {#if combinedGamepad.rightStick.value || Math.abs(combinedGamepad.rightStick.x) > 0.1 || Math.abs(combinedGamepad.rightStick.y) > 0.1}
-    <div>R STICK</div>
-  {/if}
+    {#if combinedGamepad.leftStick.value || Math.abs(combinedGamepad.leftStick.x) > 0.1 || Math.abs(combinedGamepad.leftStick.y) > 0.1}
+      <div>L STICK</div>
+    {/if}
+    {#if combinedGamepad.rightStick.value || Math.abs(combinedGamepad.rightStick.x) > 0.1 || Math.abs(combinedGamepad.rightStick.y) > 0.1}
+      <div>R STICK</div>
+    {/if}
+  </section>
 </section>
 
 <style>
@@ -483,11 +485,22 @@
     outline: 1px solid currentColor;
     padding: 0.5em 0.75em;
   }
-  section {
+  .overlay {
     position: absolute;
     left: var(--padding);
     bottom: var(--padding);
     display: flex;
     gap: var(--padding);
+  }
+  .gamepad.first{
+    --primary: var(--primaryBlue)
+  }
+  .gamepad.second{
+    --primary: var(--primaryRed)
+  }
+  .gamepad {
+    flex-grow: 1;
+    min-width: 300px;
+    position: relative;
   }
 </style>

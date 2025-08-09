@@ -158,6 +158,7 @@
 {:else}
   <p>No values changed</p>
 {/if}
+<br>
 
 <style>
   h3 {

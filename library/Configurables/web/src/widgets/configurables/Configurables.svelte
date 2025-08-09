@@ -100,6 +100,7 @@
     {/snippet}
   </Toggle>
 {/each}
+<br>
 
 <style>
   nav {

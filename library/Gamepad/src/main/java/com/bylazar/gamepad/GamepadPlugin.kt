@@ -42,11 +42,14 @@ object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
             if (abs(changes.leftStick.y) < 0.01) changes.leftStick.y = 0.0
             if (abs(changes.rightStick.x) < 0.01) changes.rightStick.x = 0.0
             if (abs(changes.rightStick.y) < 0.01) changes.rightStick.y = 0.0
+            if (abs(changes.l2) < 0.01) changes.l2 = 0.0
+            if (abs(changes.r2) < 0.01) changes.r2 = 0.0
 
-            when(type){
+            when (type) {
                 "gamepad0" -> {
                     firstManager.update(changes)
                 }
+
                 "gamepad1" -> {
                     secondManager.update(changes)
                 }
@@ -54,10 +57,11 @@ object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
 
             val now = System.currentTimeMillis()
             if (now - lastSendTime >= sendIntervalMs) {
-                when(type){
+                when (type) {
                     "gamepad0" -> {
                         send("newGamepad0", firstManager.currentState)
                     }
+
                     "gamepad1" -> {
                         send("newGamepad1", secondManager.currentState)
                     }

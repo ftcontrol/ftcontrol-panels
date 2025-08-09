@@ -9,4 +9,13 @@
   } = $props()
 </script>
 
-<GenericGamepad {manager} gamepadIndex={1} />
+<section>
+    <GenericGamepad {manager} gamepadIndex={1} />
+</section>
+
+<style>
+    section {
+        width: 100%;
+        display: flex;
+    }
+</style>

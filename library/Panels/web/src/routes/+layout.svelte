@@ -11,6 +11,7 @@
   setContext("manager", manager.manager)
 
   let { children }: { children?: Snippet } = $props()
+
 </script>
 
 <NotificationsUi />

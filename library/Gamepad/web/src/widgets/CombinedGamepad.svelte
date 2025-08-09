@@ -10,12 +10,15 @@
 </script>
 
 <section>
-    <GenericGamepad {manager} gamepadIndex={0} />
+  <GenericGamepad {manager} gamepadIndex={0} />
+  <GenericGamepad {manager} gamepadIndex={1} />
 </section>
 
 <style>
-    section {
-        width: 100%;
-        display: flex;
-    }
+  section {
+    display: flex;
+    gap: var(--padding);
+    height: 100%;
+    flex-wrap: wrap;
+  }
 </style>

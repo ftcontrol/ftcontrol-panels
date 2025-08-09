@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "G",
   description: "Gamepad Plugin for Panels",
   websiteURL: "",
-  version: "0.0.7",
+  version: "0.0.8",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [
@@ -17,6 +17,10 @@ export const config: PluginConfig = {
     {
       name: "Second Gamepad",
       filepath: "src/widgets/SecondGamepad.svelte",
+    },
+    {
+      name: "Combined Gamepad",
+      filepath: "src/widgets/CombinedGamepad.svelte",
     },
   ],
   navlets: [],
