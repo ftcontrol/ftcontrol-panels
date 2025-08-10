@@ -144,7 +144,7 @@ class StaticServer(
         val uri = session.uri.removePrefix("/").removeSuffix("/").removePrefix("index.html")
             .ifEmpty { "index.html" }
 
-        if (uri == "plugins") {
+        if (uri == "api/plugins") {
             return newFixedLengthResponse(
                 Response.Status.OK,
                 "application/octet-stream",
@@ -152,10 +152,10 @@ class StaticServer(
                 response.size.toLong()
             ).allowCors()
         }
-        if (uri == "plugins-json") {
+        if (uri == "api/plugins-json") {
             return getResponse(jsonString, "application/json").allowCors()
         }
-        if (uri == "sha256") {
+        if (uri == "api/sha256") {
             return getResponse(lastSha).allowCors()
         }
 
