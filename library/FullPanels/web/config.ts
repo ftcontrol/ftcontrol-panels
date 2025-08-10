@@ -30,7 +30,7 @@ export const config: PluginConfig = {
         {
           x: 0,
           y: 0,
-          w: 4,
+          w: 5,
           h: 4,
           widgets: [
             {
@@ -40,9 +40,9 @@ export const config: PluginConfig = {
           ],
         },
         {
-          x: 4,
+          x: 5,
           y: 0,
-          w: 7,
+          w: 6,
           h: 12,
           widgets: [
             {
@@ -58,11 +58,9 @@ export const config: PluginConfig = {
         {
           x: 0,
           y: 4,
-          w: 4,
+          w: 5,
           h: 8,
           widgets: [
-            { pluginID: "com.bylazar.gamepad", widgetID: "First Gamepad" },
-            { pluginID: "com.bylazar.gamepad", widgetID: "Second Gamepad" },
             { pluginID: "com.bylazar.gamepad", widgetID: "Combined Gamepad" },
             { pluginID: "com.bylazar.capture", widgetID: "Capture" },
           ],
