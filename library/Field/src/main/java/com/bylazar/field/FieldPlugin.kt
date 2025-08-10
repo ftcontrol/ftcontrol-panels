@@ -22,7 +22,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         sendClient(client, "canvasImages", manager.images)
     }
 
-    override fun onMessage(type: String, data: Any?) {
+    override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
     }
 

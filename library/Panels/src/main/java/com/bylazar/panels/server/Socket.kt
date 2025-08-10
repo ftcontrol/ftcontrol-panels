@@ -122,7 +122,7 @@ class Socket(
 
                 matchedPluginKey?.let { key ->
                     val plugin = PluginsManager.plugins[key]
-                    plugin?.onMessage(message.messageID, message.data)
+                    plugin?.onMessage(this, message.messageID, message.data)
                 }
 
             } catch (e: Exception) {

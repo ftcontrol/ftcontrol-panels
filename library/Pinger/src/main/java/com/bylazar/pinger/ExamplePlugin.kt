@@ -2,6 +2,7 @@ package com.bylazar.pinger
 
 import android.content.Context
 import com.bylazar.panels.Panels
+import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -16,8 +17,25 @@ object Plugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 
-    override fun onMessage(type: String, data: Any?) {
+    override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
+        if(type == "request"){
+            val timestamp = System.currentTimeMillis()
+
+            val data = try {
+                SocketMessage.convertData<PingRequest>(data)
+            } catch (e: Exception) {
+                log("Failed to convert data: ${e.message}")
+                null
+            }
+
+            if(data == null) return
+
+            sendClient(client, "answer", PingAnswer(
+                sentTimestamp = data.sentTimestamp,
+                receivedTimestamp = timestamp
+            ))
+        }
     }
 
     override fun onRegister(

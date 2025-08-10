@@ -26,7 +26,7 @@ object Plugin : Plugin<GamepadPluginConfig>(GamepadPluginConfig()) {
         sendClient(client, "newGamepad1", secondManager.currentState)
     }
 
-    override fun onMessage(type: String, data: Any?) {
+    override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
         if (type == "gamepad0" || type == "gamepad1") {
             val changes = try {

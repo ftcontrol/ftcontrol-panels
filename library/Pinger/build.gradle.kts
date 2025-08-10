@@ -66,8 +66,8 @@ afterEvaluate {
                 version = pluginVersion
 
                 pom {
-                    description.set("Panels Example Plugin")
-                    name.set("Panels Example Plugin")
+                    description.set("Panels Pinger Plugin")
+                    name.set("Panels Pinger Plugin")
                     url.set("https://panels.bylazar.com")
 
                     developers {

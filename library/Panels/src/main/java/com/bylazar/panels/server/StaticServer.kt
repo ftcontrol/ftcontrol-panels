@@ -170,7 +170,7 @@ class StaticServer(
         "png" -> "image/png"
         "jpg", "jpeg" -> "image/jpeg"
         "svg" -> "image/svg+xml"
-        else -> "application/octet-stream"
+        else -> "text/html"
     }
 
     private fun getStaticResponse(uri: String): Response {

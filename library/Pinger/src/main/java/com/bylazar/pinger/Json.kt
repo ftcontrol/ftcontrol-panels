@@ -1,6 +1,10 @@
 package com.bylazar.pinger
 
-data class ExampleObject(
-    val data: String
+data class PingRequest(
+    val sentTimestamp: Long
+)
+data class PingAnswer(
+    val sentTimestamp: Long,
+    val receivedTimestamp: Long,
 )
 

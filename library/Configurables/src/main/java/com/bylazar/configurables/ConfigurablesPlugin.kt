@@ -1,5 +1,6 @@
 package com.bylazar.configurables
 
+import android.R.attr.type
 import android.content.Context
 import com.bylazar.configurables.GlobalConfigurables
 import com.bylazar.configurables.GlobalConfigurables.jvmFields
@@ -37,7 +38,7 @@ object Plugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPluginConfig()) {
         sendClient(client, "configurables", allFieldsMap)
     }
 
-    override fun onMessage(type: String, data: Any?) {
+    override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
         if (type == "updatedConfigurable") {
             val changes = try {

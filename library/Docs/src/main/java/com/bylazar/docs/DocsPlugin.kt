@@ -13,7 +13,7 @@ object Plugin : Plugin<BasePluginConfig>(BasePluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
     }
 
-    override fun onMessage(type: String, data: Any?) {
+    override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
     }
 
