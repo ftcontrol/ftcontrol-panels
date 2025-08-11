@@ -1,64 +1,70 @@
 <script lang="ts">
-  import type Manager from "../manager"
-  import { onMount } from "svelte"
+    import type Manager from "../manager"
+    import {onMount} from "svelte"
 
-  let {
-    manager,
-  }: {
-    manager: Manager
-  } = $props()
+    let {
+        manager,
+    }: {
+        manager: Manager
+    } = $props()
 
-  let isDisabled = $state(false)
-  let url = $state("")
+    let isDisabled = $state(false)
+    let url = $state("")
+    let index = $state(0)
 
-  async function fetchCurrentURL() {
-    try {
-      const response = await fetch(
-        "http://" + window.location.hostname + ":5807/status"
-      )
+    async function fetchCurrentURL() {
+        index++
+        try {
+            const response = await fetch(
+                "http://" + window.location.hostname + ":5807/status"
+            )
 
-      if (!response.ok) {
-        throw new Error(`HTTP error!`)
-      }
-      isDisabled = false
-      console.log("Fetch successful")
-    } catch (error) {
-      console.error("Failed to fetch URL:", error)
-      isDisabled = true
+            if (!response.ok) {
+                throw new Error(`HTTP error!`)
+            }
+            isDisabled = false
+            console.log("Fetch successful")
+        } catch (error) {
+            console.error("Failed to fetch URL:", error)
+            isDisabled = true
+        }
     }
-  }
 
-  onMount(() => {
-    url = "http://" + window.location.hostname + ":5800"
+    onMount(() => {
+        url = "http://" + window.location.hostname + ":5800"
 
-    const interval = setInterval(() => {
-      fetchCurrentURL()
-    }, 2000)
+        const interval = setInterval(() => {
+            fetchCurrentURL()
+        }, 2000)
 
-    return () => {
-      clearInterval(interval)
-    }
-  })
+        return () => {
+            clearInterval(interval)
+        }
+    })
 </script>
 
 <p>{url}</p>
 {#if url == ""}
-  <p>Waiting</p>
+    <p>Waiting</p>
 {:else if isDisabled}
-  <p>Disabled</p>
+    <p>Disabled</p>
 {:else}
-  <img class:isDisabled src={url} alt="Limelight Stream" />
+    {#key index}
+        <img class:isDisabled src={url} alt="Limelight Stream"/>
+    {/key}
 {/if}
 
 <style>
-  p {
-    margin: 0;
-  }
-  .isDisabled {
-    opacity: 0.5;
-  }
-  img {
-    width: 100%;
-    height: auto;
-  }
+    p {
+        margin: 0;
+    }
+
+    .isDisabled {
+        opacity: 0.5;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
 </style>

@@ -237,7 +237,6 @@
     border: 1px solid currentColor;
     border-radius: 0.25rem;
     text-wrap: nowrap;
-    opacity: 0.5;
   }
   .tab.selected{
     opacity: 1;
