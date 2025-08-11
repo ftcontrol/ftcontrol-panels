@@ -137,7 +137,7 @@ export class GlobalState {
 
     let livePlugins: LiveChangeEntry[]
     try {
-      const data = await this.getFromServer("http://localhost:3001", "api/plugins")
+      const data = await this.getFromServer("http://localhost:3001", "plugins")
       livePlugins = JSON.parse(data)
     } catch (error) {
       console.error("Failed to fetch live plugins:", error)
@@ -384,7 +384,7 @@ export class GlobalState {
     const url = dev ? "http://localhost:8001" : window.location.origin
 
     try {
-      const response = await this.fetchWithRetry(`${url}api/sha256`, {})
+      const response = await this.fetchWithRetry(`${url}/api/sha256`, {})
 
       const sha = await response.text()
 
@@ -402,7 +402,7 @@ export class GlobalState {
     const url = dev ? "http://localhost:8001" : window.location.origin
 
     const response = await this.fetchWithRetry(
-      `${url}/plugins`,
+      `${url}/api/plugins`,
       {},
       5,
       4000,

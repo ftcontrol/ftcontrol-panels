@@ -9,6 +9,7 @@ import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
+import com.sun.tools.doclint.Entity.delta
 
 open class ExamplePluginConfig : BasePluginConfig() {
 }
@@ -20,10 +21,8 @@ object Plugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
     override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
         if(type == "request"){
-            val timestamp = System.currentTimeMillis()
-
             val data = try {
-                SocketMessage.convertData<PingRequest>(data)
+                SocketMessage.convertData<Data>(data)
             } catch (e: Exception) {
                 log("Failed to convert data: ${e.message}")
                 null
@@ -31,10 +30,7 @@ object Plugin : Plugin<ExamplePluginConfig>(ExamplePluginConfig()) {
 
             if(data == null) return
 
-            sendClient(client, "answer", PingAnswer(
-                sentTimestamp = data.sentTimestamp,
-                receivedTimestamp = timestamp
-            ))
+            sendClient(client, "answer", data)
         }
     }
 

@@ -7,6 +7,3 @@
     info: PluginConfig
   } = $props()
 </script>
-
-<Title>{info.name}</Title>
-<Paragraph>{info.description}</Paragraph>

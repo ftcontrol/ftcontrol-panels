@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "OC",
   description: "OpMode Control for FTC Robots",
   websiteURL: "",
-  version: "0.0.5",
+  version: "0.0.6",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [

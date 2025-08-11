@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "FP",
   description: "Full Panels Installation",
   websiteURL: "",
-  version: "0.0.29",
+  version: "0.0.30",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [],
@@ -25,7 +25,7 @@ export const config: PluginConfig = {
   templates: [
     {
       name: "Default",
-      navlets: [{ navletID: "Battery", pluginID: "com.bylazar.battery" }],
+      navlets: [{ navletID: "Battery", pluginID: "com.bylazar.battery" }, { navletID: "Ping", pluginID: "com.bylazar.pinger" }],
       widgets: [
         {
           x: 0,
