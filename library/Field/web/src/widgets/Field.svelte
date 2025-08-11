@@ -77,7 +77,7 @@
       } else if (item.type == DrawablesTypes.IMAGE) {
         console.log("rendering image", item)
 
-        drawBase64Image(
+        await drawBase64Image(
           item.id,
           images[item.id],
           new Distance(item.x),
@@ -95,6 +95,8 @@
       await render()
     })
     manager.state.onChange(manager.IMAGES_KEY, async (newValue) => {
+    console.log("Got images", newValue)
+        if(Object.keys(newValue).length == 0) return
       images = newValue
       await render()
     })
@@ -104,10 +106,10 @@
 </script>
 
 <canvas bind:this={canvas}></canvas>
+<p>Images: {Object.values(images).length}</p>
+<!-- <p>{JSON.stringify(packet)}</p>-->
 
-<!-- <p>{JSON.stringify(packet)}</p>
-
-<p>{JSON.stringify(images)}</p> -->
+<!--<p>{JSON.stringify(images)}</p>-->
 
 <style>
   p {

@@ -20,6 +20,8 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "canvasPacket", manager.lastCanvas)
         sendClient(client, "canvasImages", manager.images)
+
+        log("Images length: ${manager.images.keys.size}")
     }
 
     override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
@@ -33,6 +35,8 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         manager.config = config
         manager.sendCanvas = { canvas -> send("canvasPacket", canvas) }
         manager.sendImages = { images -> send("canvasImages", images) }
+
+        log("Images length: ${manager.images.keys.size}")
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {
