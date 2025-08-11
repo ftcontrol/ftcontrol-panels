@@ -18,8 +18,8 @@ class TestTelemetry : OpMode() {
     val imgID = field.registerImage(PanelsField.images.INTO_THE_DEEP.DARK)
 
     override fun init() {
-
-        Drawing.field.moveCursor(0.0, 0.0)
+        field.setOffsets(PanelsField.presets.PEDRO_PATHING)
+//        field.setOffsets(PanelsField.PANELS)
 
         field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
 

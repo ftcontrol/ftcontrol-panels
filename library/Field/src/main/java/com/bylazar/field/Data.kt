@@ -2,7 +2,7 @@ package com.bylazar.field
 
 import java.util.UUID
 
-enum class DrawablesTypes{
+enum class DrawablesTypes {
     CIRCLE,
     RECTANGLE,
     LINE,
@@ -71,5 +71,11 @@ data class Canvas(
 
     fun reset() {
         items.clear()
+    }
+
+    fun resetOffsets() {
+        offsetX = 0.0
+        offsetY = 0.0
+        rotation = CanvasRotation.DEG_0
     }
 }

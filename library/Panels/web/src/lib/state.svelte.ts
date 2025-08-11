@@ -244,18 +244,17 @@ export class GlobalState {
             console.log(`[init] Skipped ${this.skippedPlugins.length} plugins`)
 
             const t1 = Date.now()
-            await this.socket.init(
-                this.plugins,
-                this.notificationsManager,
-                async () => {
-                    await this.init()
-                }
-            )
-            console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
             if (this.interval !== null) {
                 clearInterval(this.interval)
             }
+
+            await this.socket.initPlugins(
+                this.plugins,
+                this.notificationsManager
+            )
+
+            await this.updateDevPlugins(true)
 
             this.interval = setInterval(() => {
                 this.updateDevPlugins(true)
@@ -266,6 +265,14 @@ export class GlobalState {
                 }, 400)
             }, 1000)
             console.log(`[init] Dev plugin interval set up`)
+
+            await this.socket.initSocket(
+                async () => {
+                    // await this.init()
+                    window.location.reload()
+                }
+            )
+            console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
             if (this.updateInterval !== null) {
                 clearInterval(this.updateInterval)
@@ -303,7 +310,8 @@ export class GlobalState {
             }
         } catch (e) {
             console.error(`[init] Error during initialization:`, e)
-            await this.init()
+            // await this.init()
+            window.location.reload()
         }
     }
 
@@ -336,7 +344,8 @@ export class GlobalState {
                 await storeValue("sha256", currentSha)
                 await storeValue("plugins", extraText)
                 await storeValue("version", this.panelsVersion)
-                await this.init()
+                // await this.init()
+                window.location.reload()
             }, 100)
             return cachedText
         }
@@ -421,7 +430,7 @@ export class GlobalState {
         return text
     }
 
-    panelsVersion = "0.0.15"
+    panelsVersion = "0.0.16"
 
     async getLatestVersion(): Promise<string> {
         try {

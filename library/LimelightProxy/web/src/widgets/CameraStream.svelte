@@ -10,10 +10,8 @@
 
     let isDisabled = $state(false)
     let url = $state("")
-    let index = $state(0)
 
     async function fetchCurrentURL() {
-        index++
         try {
             const response = await fetch(
                 "http://" + window.location.hostname + ":5807/status"
@@ -49,9 +47,7 @@
 {:else if isDisabled}
     <p>Disabled</p>
 {:else}
-    {#key index}
-        <img class:isDisabled src={url} alt="Limelight Stream"/>
-    {/key}
+    <img class:isDisabled src={url} alt="Limelight Stream"/>
 {/if}
 
 <style>

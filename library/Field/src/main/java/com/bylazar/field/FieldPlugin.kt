@@ -19,7 +19,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "canvasPacket", manager.lastCanvas)
-        sendClient(client, "canvasImages", manager.images)
+        if(manager.images.isNotEmpty()) sendClient(client, "canvasImages", manager.images)
 
         log("Images length: ${manager.images.keys.size}")
     }
@@ -34,7 +34,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     ) {
         manager.config = config
         manager.sendCanvas = { canvas -> send("canvasPacket", canvas) }
-        manager.sendImages = { images -> send("canvasImages", images) }
+        manager.sendImages = { images -> if(images.isNotEmpty()) send("canvasImages", images) }
 
         log("Images length: ${manager.images.keys.size}")
     }
@@ -46,6 +46,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
+        manager.setOffsets(PanelsField.PANELS)
     }
 
     override fun onOpModePreStart(opMode: OpMode) {

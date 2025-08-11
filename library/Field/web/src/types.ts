@@ -12,6 +12,16 @@ export enum CanvasRotation {
   DEG_270 = "DEG_270",
 }
 
+export function rotationToRadians(r: CanvasRotation): number {
+  switch (r) {
+    case CanvasRotation.DEG_0:   return 0;
+    case CanvasRotation.DEG_90:  return Math.PI / 2;
+    case CanvasRotation.DEG_180: return Math.PI;
+    case CanvasRotation.DEG_270: return 3 * Math.PI / 2;
+    default: return 0;
+  }
+}
+
 export type Packet = {
   offsetX: number
   offsetY: number

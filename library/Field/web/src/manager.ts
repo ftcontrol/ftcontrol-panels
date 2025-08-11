@@ -8,6 +8,7 @@ export default class Manager extends PluginManager {
   override onInit(): void {
     this.state.update(this.PACKETS_KEY, emptyPacket)
     this.state.update(this.IMAGES_KEY, {})
+
     this.socket.addMessageHandler("canvasPacket", (data) => {
       this.state.update(this.PACKETS_KEY, data)
     })

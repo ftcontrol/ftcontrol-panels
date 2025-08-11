@@ -35,12 +35,10 @@
 
     let isDisabled = $state(false)
     let url = $state("")
-    let index = $state(0)
 
     let data: Response | null = $state(null)
 
     async function fetchCurrentURL() {
-        index++
         try {
             const response = await fetch(url)
 
@@ -75,9 +73,7 @@
 {:else if isDisabled}
     <p>Temp: 0.0</p>
 {:else if data != null}
-    {#key index}
-        <p>Temp: {data.temp.toFixed(2)}°C</p>
-    {/key}
+    <p>Temp: {data.temp.toFixed(2)}°C</p>
 {/if}
 
 <style>

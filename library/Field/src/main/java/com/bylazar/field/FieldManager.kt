@@ -194,6 +194,7 @@ class FieldManager() {
     }
 
     fun setOffsets(o: CanvasPreset) {
+        canvas.resetOffsets()
         o.apply(canvas)
     }
 }
