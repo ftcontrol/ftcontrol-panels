@@ -25,7 +25,13 @@
   }
 </script>
 
-<!-- <p style="--indent: {indent};">{JSON.stringify(item)}</p> -->
+{#if [Types.UNKNOWN, Types.RECURSION_REACHED, Types.GENERIC_NO_ANNOTATION, Types.ERROR].includes(item.type)}
+  <div style="--indent: {indent};">
+    <p>{item.fieldName}</p>
+    <p>{item.type}</p>
+    <span></span>
+  </div>
+{/if}
 {#if [Types.INT, Types.LONG, Types.DOUBLE, Types.FLOAT, Types.STRING].includes(item.type)}
   <div style="--indent: {indent};">
     <p style="margin-top: 0.75rem;">{item.fieldName}</p>
@@ -89,6 +95,8 @@
     </Toggle>
   {/if}
 {/if}
+
+
 
 <style>
   button {

@@ -7,6 +7,7 @@ import com.bylazar.configurables.annotations.IgnoreConfigurable
 import com.bylazar.configurables.variables.generics.GenericField
 import com.bylazar.configurables.variables.generics.GenericVariable
 import com.bylazar.configurables.variables.instances.CustomVariable
+import com.bylazar.configurables.variables.instances.ErrorVariable
 import com.bylazar.configurables.variables.instances.RecursionReachedVariable
 import com.bylazar.configurables.variables.instances.UnknownVariable
 import com.bylazar.configurables.variables.instances.UnsupportedVariable
@@ -246,7 +247,8 @@ fun processValue(
             ConfigurablesLogger.error("Recursion detected and aborted at top-level.")
             return RecursionReachedVariable(className, reference.name)
         } else {
-            throw e
+            ConfigurablesLogger.error("Other error: ${e.message}")
+            return ErrorVariable(className, reference.name)
         }
     }
 }

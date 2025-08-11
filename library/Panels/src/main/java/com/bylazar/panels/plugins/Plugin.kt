@@ -54,7 +54,7 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
 
     abstract fun onRegister(panelsInstance: Panels, context: Context)
     abstract fun onAttachEventLoop(eventLoop: FtcEventLoop)
-    abstract fun onOpModeManager(opModeManager: OpModeManagerImpl)
+    abstract fun onOpModeManager(o: OpModeManagerImpl)
     abstract fun onOpModePreInit(opMode: OpMode)
     abstract fun onOpModePreStart(opMode: OpMode)
     abstract fun onOpModePostStop(opMode: OpMode)

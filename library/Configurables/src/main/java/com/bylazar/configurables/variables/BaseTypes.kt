@@ -13,6 +13,7 @@ enum class BaseTypes {
     UNSUPPORTED,
     RECURSION_REACHED,
     JSON_ERROR,
+    ERROR,
 
     CUSTOM,
     ARRAY,

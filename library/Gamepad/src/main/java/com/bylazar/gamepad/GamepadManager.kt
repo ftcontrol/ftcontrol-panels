@@ -79,90 +79,100 @@ class GamepadManager {
     }
 
     fun asCombinedFTCGamepad(gamepad: com.qualcomm.robotcore.hardware.Gamepad): com.qualcomm.robotcore.hardware.Gamepad {
-        val g = com.qualcomm.robotcore.hardware.Gamepad()
-        g.left_stick_x = if (leftStick.x != 0.0) leftStick.x.toFloat() else gamepad.left_stick_x
-        g.left_stick_y = if (leftStick.y != 0.0) leftStick.y.toFloat() else gamepad.left_stick_y
-        g.right_stick_x =
-            if (rightStick.x != 0.0) rightStick.x.toFloat() else gamepad.right_stick_x
-        g.right_stick_y =
-            if (rightStick.y != 0.0) rightStick.y.toFloat() else gamepad.right_stick_y
-
-        g.left_trigger = if (l2 != 0.0) l2.toFloat() else gamepad.left_trigger
-        g.right_trigger = if (r2 != 0.0) r2.toFloat() else gamepad.right_trigger
-
-        g.left_bumper = l1 || gamepad.left_bumper
-        g.right_bumper = r1 || gamepad.right_bumper
-
-        g.a = cross || gamepad.a
-        g.b = circle || gamepad.b
-        g.x = square || gamepad.x
-        g.y = triangle || gamepad.y
-
-        g.cross = g.a
-        g.circle = g.b
-        g.square = g.x
-        g.triangle = g.y
-
-        g.dpad_up = dpadUp || gamepad.dpad_up
-        g.dpad_down = dpadDown || gamepad.dpad_down
-        g.dpad_left = dpadLeft || gamepad.dpad_left
-        g.dpad_right = dpadRight || gamepad.dpad_right
-
-        g.guide = ps || gamepad.guide
-        g.ps = g.guide
-        g.options = options || gamepad.options
-        g.back = share || gamepad.back
-        g.share = g.back
-        g.touchpad = touchpad || gamepad.touchpad
-
-        g.left_stick_button = leftStick.value || gamepad.left_stick_button
-        g.right_stick_button = rightStick.value || gamepad.right_stick_button
-
-        g.type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
-
-        return g
-    }
-
-    val asFTCGamepad: com.qualcomm.robotcore.hardware.Gamepad
-        get() {
+        try {
             val g = com.qualcomm.robotcore.hardware.Gamepad()
-            g.left_stick_x = leftStick.x.toFloat()
-            g.left_stick_y = leftStick.y.toFloat()
-            g.right_stick_x = rightStick.x.toFloat()
-            g.right_stick_y = rightStick.y.toFloat()
-            g.left_trigger = l2.toFloat()
-            g.right_trigger = r2.toFloat()
-            g.left_bumper = l1
-            g.right_bumper = r1
 
-            g.a = cross
-            g.b = circle
-            g.x = square
-            g.y = triangle
+            g.left_stick_x = if (leftStick.x != 0.0) leftStick.x.toFloat() else gamepad.left_stick_x
+            g.left_stick_y = if (leftStick.y != 0.0) leftStick.y.toFloat() else gamepad.left_stick_y
+            g.right_stick_x =
+                if (rightStick.x != 0.0) rightStick.x.toFloat() else gamepad.right_stick_x
+            g.right_stick_y =
+                if (rightStick.y != 0.0) rightStick.y.toFloat() else gamepad.right_stick_y
 
-            g.cross = cross
-            g.circle = circle
-            g.square = square
-            g.triangle = triangle
+            g.left_trigger = if (l2 != 0.0) l2.toFloat() else gamepad.left_trigger
+            g.right_trigger = if (r2 != 0.0) r2.toFloat() else gamepad.right_trigger
 
-            g.dpad_up = dpadUp
-            g.dpad_down = dpadDown
-            g.dpad_left = dpadLeft
-            g.dpad_right = dpadRight
+            g.left_bumper = l1 || gamepad.left_bumper
+            g.right_bumper = r1 || gamepad.right_bumper
 
-            g.guide = ps
-            g.ps = ps
-            g.options = options
-            g.back = share
-            g.share = share
-            g.touchpad = touchpad
+            g.a = cross || gamepad.a
+            g.b = circle || gamepad.b
+            g.x = square || gamepad.x
+            g.y = triangle || gamepad.y
 
-            g.left_stick_button = leftStick.value
-            g.right_stick_button = rightStick.value
+            g.cross = g.a
+            g.circle = g.b
+            g.square = g.x
+            g.triangle = g.y
+
+            g.dpad_up = dpadUp || gamepad.dpad_up
+            g.dpad_down = dpadDown || gamepad.dpad_down
+            g.dpad_left = dpadLeft || gamepad.dpad_left
+            g.dpad_right = dpadRight || gamepad.dpad_right
+
+            g.guide = ps || gamepad.guide
+            g.ps = g.guide
+            g.options = options || gamepad.options
+            g.back = share || gamepad.back
+            g.share = g.back
+            g.touchpad = touchpad || gamepad.touchpad
+
+            g.left_stick_button = leftStick.value || gamepad.left_stick_button
+            g.right_stick_button = rightStick.value || gamepad.right_stick_button
 
             g.type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
 
             return g
+        }catch (t: Throwable){
+            return gamepad
+        }
+    }
+
+    val asFTCGamepad: com.qualcomm.robotcore.hardware.Gamepad
+        get() {
+            try {
+                val g = com.qualcomm.robotcore.hardware.Gamepad()
+
+                g.left_stick_x = leftStick.x.toFloat()
+                g.left_stick_y = leftStick.y.toFloat()
+                g.right_stick_x = rightStick.x.toFloat()
+                g.right_stick_y = rightStick.y.toFloat()
+                g.left_trigger = l2.toFloat()
+                g.right_trigger = r2.toFloat()
+                g.left_bumper = l1
+                g.right_bumper = r1
+
+                g.a = cross
+                g.b = circle
+                g.x = square
+                g.y = triangle
+
+                g.cross = cross
+                g.circle = circle
+                g.square = square
+                g.triangle = triangle
+
+                g.dpad_up = dpadUp
+                g.dpad_down = dpadDown
+                g.dpad_left = dpadLeft
+                g.dpad_right = dpadRight
+
+                g.guide = ps
+                g.ps = ps
+                g.options = options
+                g.back = share
+                g.share = share
+                g.touchpad = touchpad
+
+                g.left_stick_button = leftStick.value
+                g.right_stick_button = rightStick.value
+
+                g.type = com.qualcomm.robotcore.hardware.Gamepad.Type.SONY_PS4
+
+                return g
+            }catch (t: Throwable){
+                return com.qualcomm.robotcore.hardware.Gamepad()
+            }
         }
 
     private fun isActive(timestamp: Long): Boolean =

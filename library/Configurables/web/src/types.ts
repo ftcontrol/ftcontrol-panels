@@ -14,6 +14,7 @@ export enum Types {
   GENERIC = "GENERIC",
   RECURSION_REACHED = "RECURSION_REACHED",
   GENERIC_NO_ANNOTATION = "GENERIC_NO_ANNOTATION",
+  ERROR = "ERROR",
 }
 
 export type GenericTypeJson = {

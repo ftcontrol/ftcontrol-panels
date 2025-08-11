@@ -6,6 +6,10 @@ class Follower {
     lateinit var something: String
 }
 
+interface PathCallback {
+
+}
+
 @Configurable
 object ClawConfig {
     @JvmField
@@ -14,4 +18,6 @@ object ClawConfig {
     var number = 0
     @JvmField
     var follower: Follower? = null
+    @JvmField
+    var callbacks: ArrayList<PathCallback> = ArrayList<PathCallback>()
 }
