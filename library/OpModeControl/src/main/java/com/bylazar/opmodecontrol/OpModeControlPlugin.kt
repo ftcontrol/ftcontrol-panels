@@ -55,13 +55,15 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
 
     override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {
         log("Got message of type $type with data $data")
-        when(type){
+        when (type) {
             "initOpMode" -> {
                 opModeManagerRef?.get()?.initOpMode(data as String)
             }
+
             "startActiveOpMode" -> {
                 opModeManagerRef?.get()?.startActiveOpMode()
             }
+
             "stopActiveOpMode" -> {
                 opModeManagerRef?.get()?.stopActiveOpMode()
             }
@@ -91,7 +93,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
 
     fun sendActiveOpMode() {
         log("New active OpMode $status, ${activeOpModeInfo.name}")
-        if(activeOpModeName == "\$Stop\$Robot\$") status = OpModeStatus.STOPPED
+        if (activeOpModeName == "\$Stop\$Robot\$") status = OpModeStatus.STOPPED
         send(
             "activeOpMode", ActiveOpMode(
                 opMode = activeOpModeInfo,
@@ -147,6 +149,14 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
             opModeList = list.sortedWith(compareBy({ it.group }, { it.name })).toMutableList()
 
             log("OpModes: ${opModeList.joinToString(", ")}")
+
+            send("opModesList", OpModesList(opModeList))
+            send(
+                "activeOpMode", ActiveOpMode(
+                    opMode = activeOpModeInfo,
+                    status = status
+                )
+            )
         }
     }
 

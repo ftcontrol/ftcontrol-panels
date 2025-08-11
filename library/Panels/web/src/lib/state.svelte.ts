@@ -62,8 +62,8 @@ export class GlobalState {
     private async getFromServer(serverURL: string, path: string): Promise<any> {
         const url = `${serverURL.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`
 
-        const timeout = 5000
-        const interval = 500
+        const timeout = 1000
+        const interval = 200
         const maxAttempts = Math.ceil(timeout / interval)
         let attempt = 0
 

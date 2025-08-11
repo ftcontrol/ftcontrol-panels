@@ -46,7 +46,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
-        manager.setOffsets(PanelsField.PANELS)
+        manager.setOffsets(PanelsField.presets.PANELS)
     }
 
     override fun onOpModePreStart(opMode: OpMode) {

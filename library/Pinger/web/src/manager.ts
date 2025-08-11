@@ -15,7 +15,7 @@ export default class Manager extends PluginManager {
       const now = Date.now()
 
       const rtt = Math.max(0, now - data.timestamp)
-      const oneWayMs = Math.round(rtt / 2)
+      const oneWayMs = Math.round(rtt / 4)
 
       const prev = this.state.get(this.LAST_PING_KEY)
       const smooth = Math.round(prev + this.SMOOTHING_ALPHA * (oneWayMs - prev))
