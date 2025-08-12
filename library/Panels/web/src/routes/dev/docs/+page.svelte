@@ -13,11 +13,11 @@
         Image,
         Video,
         Table,
-        CodeBlock,
+        CodeBlock
     } from "ftc-panels/docs"
 </script>
 
-<Title level={1} text="Docs Components Demo"/>
+<Title level={1}>Docs Components Demo</Title>
 
 <Paragraph>
     This is a
@@ -36,7 +36,7 @@
 
 <Separator/>
 
-<Title level={2} text="Lists"/>
+<Title level={2}>Lists</Title>
 <OrderedList start={3}>
     <ListItem>
         <Paragraph>Numbered item with a paragraph inside.</Paragraph>
@@ -57,7 +57,7 @@
 
 <Separator/>
 
-<Title level={2} text="Images & Video"/>
+<Title level={2}>Images & Video</Title>
 <Image src="https://picsum.photos/800/360" alt="Random" caption="An example image"/>
 
 <Video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" autoplay={true} controls={false}
@@ -68,7 +68,7 @@
 
 <Separator/>
 
-<Title level={2} text="Tables"/>
+<Title level={2}>Tables</Title>
 
 <Table
         hasHeader={true}
@@ -79,9 +79,8 @@
   ]}
 />
 
-<Title level={2} text="Code"/>
+<Title level={2}>Code</Title>
 
 <CodeBlock
-        code={"const lazar = require('lazar');"}
-        lang={"js"}
+    code={"const lazar = require('lazar');"}
 />

@@ -136,16 +136,16 @@ export class GlobalState {
         let livePlugins: LiveChangeEntry[]
 
         try {
-            const data = await this.fetchWithRetry("http://localhost:3001/plugins", {}, 1)
-            livePlugins = JSON.parse(data)
+            const res = await this.fetchWithRetry("http://localhost:3001/plugins", {}, 1)
+            livePlugins = await res.json()
             if(!this.hasDevServer) {
-                createDevServerInterval()
+                this.createDevServerInterval()
             }
             this.hasDevServer = true
         } catch (error) {
             console.error("Failed to fetch live plugins:", error)
             if(this.hasDevServer) {
-                createDevServerInterval()
+                this.createDevServerInterval()
             }
             this.hasDevServer = false
             return
@@ -158,12 +158,8 @@ export class GlobalState {
             if (entry.lastChanged != this.changedTimestamps[entry.id]) {
                 console.log("Rebuilding", entry.name)
 
-                let details = JSON.parse(
-                    await this.getFromServer(
-                        "http://localhost:3001",
-                        `/plugins/${entry.id}`
-                    )
-                )
+                const res = await this.fetchWithRetry(`http://localhost:3001/plugins/${entry.id}`, {}, 1)
+                let details = await res.json()
 
                 if (reloadManager) {
                     const {default: Manager} = await importFromSource(
@@ -442,7 +438,7 @@ export class GlobalState {
         return text
     }
 
-    panelsVersion = "0.0.17"
+    panelsVersion = "0.0.18"
 
     async getLatestVersion(): Promise<string> {
         try {
