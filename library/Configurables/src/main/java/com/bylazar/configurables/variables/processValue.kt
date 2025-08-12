@@ -58,45 +58,49 @@ fun processValue(
         if (type == BaseTypes.CUSTOM) {
             reference.isAccessible = true
             val customValues = reference.type.declaredFields.mapNotNull { field ->
-                field.isAccessible = true
-                if (field.isAnnotationPresent(IgnoreConfigurable::class.java)) return@mapNotNull null
+                try{
+                    field.isAccessible = true
+                    if (field.isAnnotationPresent(IgnoreConfigurable::class.java)) return@mapNotNull null
 
-                if (field.type == reference.type && field.name == reference.name) {
-                    ConfigurablesLogger.log("Ignored inner instance of same type: ${field.name}")
-                    return@mapNotNull null
-                }
+                    if (field.type == reference.type && field.name == reference.name) {
+                        ConfigurablesLogger.log("Ignored inner instance of same type: ${field.name}")
+                        return@mapNotNull null
+                    }
 
 //                if (field.type == reference.type){
 //                    ConfigurablesManager.jvmFields.add(GenericField(reference.type.toString(), field))
 //                    Logger.configurablesLog("Moved field to global configurable:${reference.name} ${reference.type} ${field.name}")
 //                    return@mapNotNull null
 //                }
-                if (field.type == reference.type) {
-                    val newField = GenericField(reference.type.toString(), field)
-                    val alreadyExists = GlobalConfigurables.jvmFields.any {
-                        it.className == newField.className && it.reference.name == newField.reference.name
+                    if (field.type == reference.type) {
+                        val newField = GenericField(reference.type.toString(), field)
+                        val alreadyExists = GlobalConfigurables.jvmFields.any {
+                            it.className == newField.className && it.reference.name == newField.reference.name
+                        }
+
+                        if (!alreadyExists) {
+                            GlobalConfigurables.jvmFields.add(newField)
+                            ConfigurablesLogger.log("Moved field to global configurable: ${reference.name} ${reference.type} ${field.name}")
+                        } else {
+                            ConfigurablesLogger.log("Skipped duplicate configurable: ${reference.name} ${reference.type} ${field.name}")
+                        }
+
+                        return@mapNotNull null
                     }
 
-                    if (!alreadyExists) {
-                        GlobalConfigurables.jvmFields.add(newField)
-                        ConfigurablesLogger.log("Moved field to global configurable: ${reference.name} ${reference.type} ${field.name}")
-                    } else {
-                        ConfigurablesLogger.log("Skipped duplicate configurable: ${reference.name} ${reference.type} ${field.name}")
-                    }
+                    val customNewField = convertToMyField(field)
 
-                    return@mapNotNull null
+                    processValue(
+                        recursionDepth + 1,
+                        className,
+                        getType(field.type, customNewField, reference),
+                        customNewField,
+                        currentManager,
+                        recursionItems.toMutableList(),
+                    )
+                }catch (t: Throwable){
+                    null
                 }
-
-                val customNewField = convertToMyField(field)
-
-                processValue(
-                    recursionDepth + 1,
-                    className,
-                    getType(field.type, customNewField, reference),
-                    customNewField,
-                    currentManager,
-                    recursionItems.toMutableList(),
-                )
             }
 
             return CustomVariable(reference.name, className, customValues, BaseTypes.CUSTOM)
