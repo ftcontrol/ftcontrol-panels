@@ -6,7 +6,7 @@ plugins {
 }
 
 val pluginNamespace = "com.bylazar.panels"
-val pluginVersion = "0.0.16"
+val pluginVersion = "0.0.17"
 
 svelteAssets {
     webAppPath = "web"

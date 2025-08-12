@@ -101,8 +101,6 @@ export class GlobalState {
     isPrepared = $derived.by(() => {
         if (!this.isConnected) return false
 
-        if (!this.firstPlugindReload) return false
-
         for (const plugin of this.plugins) {
             for (const t of plugin.details.templates) {
                 if (!this.pluginsTemplatesPreviews[`${plugin.details.id}/${t.name}`]) {
@@ -116,7 +114,17 @@ export class GlobalState {
 
     devPlugins: string[] = $state([])
 
-    firstPlugindReload = $state(false)
+    hasDevServer = $state(false)
+
+    createDevServerInterval(){
+        if (this.interval !== null) {
+            clearInterval(this.interval)
+        }
+
+        this.interval = setInterval(async() => {
+            await this.updateDevPlugins(true)
+        }, this.hasDevServer?1500:10000)
+    }
 
     private async updateDevPlugins(reloadManager = false) {
         type LiveChangeEntry = {
@@ -126,11 +134,20 @@ export class GlobalState {
         }
 
         let livePlugins: LiveChangeEntry[]
+
         try {
-            const data = await this.getFromServer("http://localhost:3001", "plugins")
+            const data = await this.fetchWithRetry("http://localhost:3001/plugins", {}, 1)
             livePlugins = JSON.parse(data)
+            if(!this.hasDevServer) {
+                createDevServerInterval()
+            }
+            this.hasDevServer = true
         } catch (error) {
             console.error("Failed to fetch live plugins:", error)
+            if(this.hasDevServer) {
+                createDevServerInterval()
+            }
+            this.hasDevServer = false
             return
         }
 
@@ -187,7 +204,6 @@ export class GlobalState {
                 this.changedTimestamps[entry.id] = entry.lastChanged
             }
         }
-        this.firstPlugindReload = true
     }
 
     async hasInternetConnection(): Promise<boolean> {
@@ -210,6 +226,8 @@ export class GlobalState {
 
         try {
             this.plugins = []
+
+            this.hasDevServer = false
 
             this.notifications = []
 
@@ -256,14 +274,7 @@ export class GlobalState {
 
             await this.updateDevPlugins(true)
 
-            this.interval = setInterval(() => {
-                this.updateDevPlugins(true)
-                setTimeout(() => {
-                    if (this.devPlugins.length == 0) {
-                        this.firstPlugindReload = true
-                    }
-                }, 400)
-            }, 1000)
+            this.createDevServerInterval()
             console.log(`[init] Dev plugin interval set up`)
 
             await this.socket.initSocket(
@@ -274,6 +285,8 @@ export class GlobalState {
             )
             console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
+            this.isConnected = true
+
             if (this.updateInterval !== null) {
                 clearInterval(this.updateInterval)
             }
@@ -283,9 +296,8 @@ export class GlobalState {
                 if (!hasInternet) return
                 console.log("Has internet")
                 await this.checkVersions()
-            }, 1000)
+            }, 10000)
 
-            this.isConnected = true
             console.log(
                 `[init] Initialization complete in ${Date.now() - startTime}ms`
             )
@@ -430,7 +442,7 @@ export class GlobalState {
         return text
     }
 
-    panelsVersion = "0.0.16"
+    panelsVersion = "0.0.17"
 
     async getLatestVersion(): Promise<string> {
         try {
