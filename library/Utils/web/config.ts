@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "U",
   description: "Utils for Panels",
   websiteURL: "",
-  version: "0.0.7",
+  version: "0.0.8",
   pluginsCoreVersion: "0.0.1",
   author: "Lazar",
   widgets: [],
@@ -20,7 +20,16 @@ export const config: PluginConfig = {
       name: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [],
+    chapters: [
+      {
+        name: "Loop Timer",
+        filepath: "src/docs/LoopTimer.svelte",
+      },
+      {
+        name: "Moving Average",
+        filepath: "src/docs/MovingAverage.svelte",
+      }
+    ],
   },
   templates: [],
 }

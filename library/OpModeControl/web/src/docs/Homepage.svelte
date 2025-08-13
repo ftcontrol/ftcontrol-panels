@@ -9,7 +9,7 @@
   import control from "./control.mp4"
 </script>
 
-<Title>OpMode Control</Title>
+<Title level={1}>OpMode Control</Title>
 
 <Video src={control} controls={false} alt={"OpMode Control Showcase"}></Video>
 
