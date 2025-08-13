@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Configurable variables for Panels",
   websiteURL: "",
   version: "0.0.10",
-  pluginsCoreVersion: "1.1.17",
+  pluginsCoreVersion: "1.1.18",
   author: "Lazar",
   widgets: [
     {
