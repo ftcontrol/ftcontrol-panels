@@ -1,0 +1,69 @@
+name: Build FTControl Docs
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - examples/**
+      - .github/workflows/deploy.yml
+  workflow_dispatch:
+
+concurrency:
+  group: "docs-deploy"
+  cancel-in-progress: true
+
+env:
+  SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
+  REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+  REPO_FOLDER: docs
+  BASE_DIR: docs
+  SERVICE_FOLDER: /home/panels-docs
+  IMAGE_NAME: myregistry.bylazar.com/panels-docs
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: lazarvps
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: ls
+        run: ls -a
+      - name: Build and Push Docker Image
+        run: |
+          echo "$SUDO_PASSWORD" | sudo -S bash -c "
+            set -e
+            sudo docker login --username $REGISTRY_USER --password $REGISTRY_PASSWORD myregistry.bylazar.com
+            sudo docker build --pull --cache-from $IMAGE_NAME \
+              --tag $IMAGE_NAME:$GITHUB_SHA \
+              --tag $IMAGE_NAME:latest \
+              . -f ./$BASE_DIR/Dockerfile
+            sudo docker push $IMAGE_NAME:$GITHUB_SHA
+            sudo docker push $IMAGE_NAME:latest
+          "
+
+  deploy:
+    runs-on: lazarvps
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          clean: true
+      - name: Copy and set permissions
+        run: |
+          echo "$SUDO_PASSWORD" | sudo -S bash -c "
+            mkdir -p $SERVICE_FOLDER
+            cp -r $REPO_FOLDER/docker-compose.yml $SERVICE_FOLDER
+          "
+      - name: Restart Docker Compose service
+        run: |
+          echo "$SUDO_PASSWORD" | sudo -S su -c "
+            sudo docker login --username $REGISTRY_USER --password $REGISTRY_PASSWORD myregistry.bylazar.com
+            cd $SERVICE_FOLDER
+            docker compose down
+            docker compose up -d
+          "

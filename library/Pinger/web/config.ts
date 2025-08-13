@@ -1,4 +1,4 @@
-import { PluginConfig } from "ftc-panels"
+import type { PluginConfig } from "ftc-panels"
 
 export const config: PluginConfig = {
   id: "com.bylazar.pinger",

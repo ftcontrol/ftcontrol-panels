@@ -1,0 +1,11 @@
+services:
+  portfolio-worker:
+    image: myregistry.bylazar.com/panels-docs:latest
+    container_name: panels-docs
+    restart: always
+    networks:
+      - lazar-network
+
+networks:
+  lazar-network:
+    external: true

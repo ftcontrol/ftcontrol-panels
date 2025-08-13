@@ -1,4 +1,4 @@
-import { PluginConfig } from "ftc-panels"
+import type { PluginConfig } from "ftc-panels"
 
 export const config: PluginConfig = {
   id: "com.bylazar.fullpanels",
@@ -25,7 +25,10 @@ export const config: PluginConfig = {
   templates: [
     {
       name: "Default",
-      navlets: [{ navletID: "Battery", pluginID: "com.bylazar.battery" }, { navletID: "Ping", pluginID: "com.bylazar.pinger" }],
+      navlets: [
+        { navletID: "Battery", pluginID: "com.bylazar.battery" },
+        { navletID: "Ping", pluginID: "com.bylazar.pinger" },
+      ],
       widgets: [
         {
           x: 0,
