@@ -10,5 +10,5 @@
         plugins={global.plugins.map(it => it.details)}
         skippedPlugins={global.skippedPlugins}
 >
-    {@render children()}
+    {@render children?.()}
 </DocsPage>

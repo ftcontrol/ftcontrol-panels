@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Full Panels Installation",
   websiteURL: "",
   version: "0.0.36",
-  pluginsCoreVersion: "1.1.14",
+  pluginsCoreVersion: "1.1.16",
   author: "Lazar",
   widgets: [],
   navlets: [],

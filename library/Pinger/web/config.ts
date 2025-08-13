@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Latency Test for Panels",
   websiteURL: "",
   version: "0.0.4",
-  pluginsCoreVersion: "1.1.14",
+  pluginsCoreVersion: "1.1.16",
   author: "Lazar",
   widgets: [],
   navlets: [

@@ -8,7 +8,7 @@ export const config: PluginConfig = {
     "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "",
   version: "0.0.9",
-  pluginsCoreVersion: "1.1.14",
+  pluginsCoreVersion: "1.1.16",
   author: "Lazar",
   widgets: [
     {
