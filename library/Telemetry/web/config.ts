@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Text-Based Telemetry",
   websiteURL: "",
   version: "0.0.6",
-  pluginsCoreVersion: "0.0.1",
+  pluginsCoreVersion: "1.1.14",
   author: "Lazar",
   widgets: [
     {

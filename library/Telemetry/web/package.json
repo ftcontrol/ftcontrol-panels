@@ -4,10 +4,11 @@
   "description": "An example of a Panels Plugin",
   "type": "module",
   "scripts": {
-    "build": "bun /build.ts"
+    "build": "rm -rf bun.lock && bun install --no-cache && bun /build.ts",
+    "dev": "bun /builddev.ts"
   },
   "dependencies": {
-    "ftc-panels": "^1.1.10",
+    "ftc-panels": "^1.1.14",
     "typescript": "^5.8.3"
   }
 }

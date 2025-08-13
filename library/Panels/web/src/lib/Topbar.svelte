@@ -208,12 +208,12 @@
               {plugin.details.letterName}
             </button>
           {/each}
+          {#each global.skippedPlugins as details}
+            <button class="plugin" disabled onclick={close}>
+              {details.letterName}
+            </button>
+          {/each}
         </div>
-        {#each global.skippedPlugins as details}
-          <button class="plugin" disabled onclick={close}>
-            {details.letterName}
-          </button>
-        {/each}
 
         <Button
           style="margin-top: 0.5rem"

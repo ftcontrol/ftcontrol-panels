@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Gamepad Plugin for Panels",
   websiteURL: "",
   version: "0.0.11",
-  pluginsCoreVersion: "0.0.1",
+  pluginsCoreVersion: "1.1.14",
   author: "Lazar",
   widgets: [
     {
