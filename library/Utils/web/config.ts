@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Utils for Panels",
   websiteURL: "",
   version: "0.0.8",
-  pluginsCoreVersion: "1.1.16",
+  pluginsCoreVersion: "1.1.17",
   author: "Lazar",
   widgets: [],
   navlets: [],

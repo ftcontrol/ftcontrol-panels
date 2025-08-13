@@ -9,7 +9,7 @@
     "check": "bun /check.ts"
   },
   "dependencies": {
-    "ftc-panels": "^1.1.16",
+    "ftc-panels": "^1.1.17",
     "typescript": "^5.8.3"
   }
 }

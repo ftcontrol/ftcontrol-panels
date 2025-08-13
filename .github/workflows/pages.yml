@@ -5,7 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Needed for GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -34,7 +33,6 @@ jobs:
             -t docs-site:latest \
             .
 
-      # We'll run the final image, mount a host dir, and copy out /www
       - name: Extract static site from container via mount
         run: |
           mkdir -p _site
