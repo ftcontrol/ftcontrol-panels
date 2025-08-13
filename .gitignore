@@ -14,3 +14,6 @@ library/hs_err_pid62272.log
 /library/plugin-svelte-assets/.gradle
 /library/plugin-svelte-assets/.gradle
 /library/plugin-svelte-assets/.gradle
+/examples/.gradle
+/examples/FtcRobotController/build
+/examples/TeamCode/build

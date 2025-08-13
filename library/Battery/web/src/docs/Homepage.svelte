@@ -9,7 +9,7 @@
     } = $props()
 
     import drain from "./drain.mp4"
-    import code from "./Battery.kt?raw"
+    import code from "@examples/battery/BatteryExample.kt?raw"
 </script>
 
 <Title level={2}>Battery Navlet</Title>
