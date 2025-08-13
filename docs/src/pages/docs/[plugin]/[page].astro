@@ -3,7 +3,7 @@ import DocsLayout from "../../DocsLayout.astro";
 import {modules} from "../../../data";
 const { plugin, page } = Astro.params;
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
     const paths = []
     for(const m of modules) {
         const docs = m.docs
