@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Capture Plugin for Panels",
   websiteURL: "",
   version: "0.0.7",
-  pluginsCoreVersion: "1.1.18",
+  pluginsCoreVersion: "1.1.19",
   author: "Lazar",
   widgets: [
     {

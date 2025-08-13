@@ -4,7 +4,7 @@
     "": {
       "name": "panels-plugin",
       "dependencies": {
-        "ftc-panels": "^1.1.18",
+        "ftc-panels": "^1.1.19",
         "tinycolor2": "^1.6.0",
         "typescript": "^5.8.3"
       }
@@ -1193,7 +1193,7 @@
     ],
 
     "ftc-panels": [
-      "ftc-panels@1.1.18",
+      "ftc-panels@1.1.19",
       "",
       {
         "dependencies": {
