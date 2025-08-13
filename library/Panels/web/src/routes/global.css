@@ -1,7 +1,7 @@
 :root {
-  --bgDark: #040606;
-  --bgMedium: #1b2020;
-  --bgLight: #3c4646;
+  ---bgDark: #0b0d0d;
+  --bgMedium: #212222;
+  --bgLight: #363737;
   --text: #ffffff;
   --padding: 1rem;
 

@@ -1,37 +1,15 @@
 ---
-import path from "path"
-import { buildAllPlugins } from "ftc-panels/cli"
-import {
-  SimpleDynamicComponent,
-} from "ftc-panels"
-import {modules} from "../data";
+
 ---
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="utf-8"/>
     <title>Library Modules with Docs</title>
-  </head>
-  <body>
-    <h1>Library Modules with Docs</h1>
-    {
-      modules.map((mod) => (
-        <section>
-          <h2>{mod.name}</h2>
-          <SimpleDynamicComponent
-            client:load
-            info={mod}
-            textContent={mod.docs.homepage.textContent}
-          />
-          {mod.docs.chapters.map((c) => (
-            <SimpleDynamicComponent
-              client:load
-              info={mod}
-              textContent={c.textContent}
-            />
-          ))}
-        </section>
-      ))
-    }
-  </body>
+</head>
+<body>
+<h1>Panels</h1>
+<a href="/docs">Read the docs</a>
+
+</body>
 </html>
