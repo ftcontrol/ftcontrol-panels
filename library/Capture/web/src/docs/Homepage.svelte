@@ -12,7 +12,7 @@
 </script>
 
 <Title>Capture Mode</Title>
-<Paragraph>It is a <Accent>powerful tool</Accent> designed to record and replay matches for debugging purposes. This feature allows users to analyze robot performance, identify issues, and optimize strategies by reviewing recorded match data. It supports Telemetry, Graph, Field Recordings and any other Plugin that respects its protocol.</Paragraph>
+<Paragraph>It is a powerful tool designed to record and replay matches for debugging purposes. This feature allows users to analyze robot performance, identify issues, and optimize strategies by reviewing recorded match data. It supports Telemetry, Graph, Field Recordings and any other Plugin that respects its protocol.</Paragraph>
 
 <Video src={capture} alt={"Capture Function"}></Video>
 
