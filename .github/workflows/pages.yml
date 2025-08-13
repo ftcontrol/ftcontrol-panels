@@ -1,0 +1,61 @@
+name: Build & Deploy Docs (Docker)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Needed for GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site with Docker & upload artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build site image (context = repo root, Dockerfile = docs/Dockerfile)
+        run: |
+          docker build \
+            -f docs/Dockerfile \
+            -t docs-site:latest \
+            .
+
+      # We'll run the final image, mount a host dir, and copy out /www
+      - name: Extract static site from container via mount
+        run: |
+          mkdir -p _site
+          # Mount the host _site directory into the container and copy the built files out
+          docker run --rm \
+            -v "${{ github.workspace }}/_site:/export" \
+            docs-site:latest \
+            sh -c 'cp -R /www/* /export/'
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
