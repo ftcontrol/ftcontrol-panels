@@ -16,7 +16,8 @@ open class SvelteAssetsPluginExtension {
 
 class SvelteAssetsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val extension = project.extensions.create("svelteAssets", SvelteAssetsPluginExtension::class.java)
+        val extension =
+            project.extensions.create("svelteAssets", SvelteAssetsPluginExtension::class.java)
 
         project.plugins.withId("com.android.library") {
             configureAfterEvaluate(project, extension)
@@ -58,10 +59,21 @@ class SvelteAssetsPlugin : Plugin<Project> {
         }
 
         val installCmd = when {
-            extension.useNpm && isWindows -> listOf("cmd", "/c", "npm", "install")
-            extension.useNpm -> listOf("sh", "-c", "npm install")
-            !extension.useNpm && isWindows -> listOf("cmd", "/c", "bun", "install")
-            else -> listOf("sh", "-c", "rm -rf bun.lock && bun install --no-cachenstall")
+            extension.useNpm && isWindows -> listOf(
+                "cmd", "/c", "del /f /q bun.lock && npm install --no-cache"
+            )
+
+            extension.useNpm -> listOf(
+                "sh", "-c", "rm -rf bun.lock && npm install --no-cache"
+            )
+
+            !extension.useNpm && isWindows -> listOf(
+                "cmd", "/c", "del /f /q bun.lock && bun install --no-cache"
+            )
+
+            else -> listOf(
+                "sh", "-c", "rm -rf bun.lock && bun install --no-cache"
+            )
         }
 
         val buildCmd = when {
