@@ -1,8 +1,6 @@
 import { PluginManager } from "ftc-panels"
 import type { ChangeJson, GenericTypeJson } from "./types"
 
-export type OpModeStatus = "INIT" | "RUNNING" | "STOPPED"
-
 export default class Manager extends PluginManager {
   INITIAL_CONFIGURABLES_KEY = "initialConfigurables"
   CONFIGURABLES_KEY = "configurables"

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type Manager from "../manager"
   import { Types, type ExtendedType, type GenericTypeJson } from "../../types"
   import FieldHelper from "./FieldHelper.svelte"
   import OptionInput from "./OptionInput.svelte"
@@ -9,13 +8,15 @@
   import { anyValidator } from "../validators"
   import Arrow from "../Arrow.svelte"
 
-  import { getContext } from "svelte"
+  import {getContext, tick} from "svelte"
+  import type Manager from "../../manager.ts";
   const manager = getContext("manager") as Manager
 
   let { item, indent = 0 }: { item: ExtendedType; indent?: number } = $props()
 
-  function sendFieldUpdate() {
+  async function sendFieldUpdate() {
     if (!item.isValid) return
+
     manager.socket.sendMessage("updatedConfigurable", [
       {
         id: item.id,
@@ -61,14 +62,14 @@
       bind:newValue={item.newValueString}
       bind:isValid={item.isValid}
       bind:possibleValues={item.possibleValues}
-      validate={(value: string) => {
+      validate={(value) => {
         if (item.possibleValues == null) return false
         return item.possibleValues.includes(value)
       }}
     />
     <button
       onclick={sendFieldUpdate}
-      disabled={!item.isValid || item.valueString == item.newValueString}
+      disabled={!item.isValid || item.valueString === item.newValueString}
     >
       <UpdateIcon />
     </button>
@@ -78,12 +79,12 @@
 {#if item.customValues}
   {#if item.customValues.length}
     <Toggle>
-      {#snippet trigger({ isOpen }: { isOpen: boolean })}
+      {#snippet trigger({ isOpen })}
         <div style="--indent: {indent};">
           <p><Arrow {isOpen} /> {item.fieldName}</p>
         </div>
       {/snippet}
-      {#snippet content({ close }: { close: () => void })}
+      {#snippet content({ close })}
         <div class="container">
           {#if item.customValues}
             {#each item.customValues as value}
