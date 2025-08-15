@@ -24,8 +24,20 @@
       },
     ])
   }
-</script>
 
+  function isSameValue(value1: any, value2: any) {
+    if (value1 === value2) return true;
+
+    const num1 = Number(value1);
+    const num2 = Number(value2);
+
+    if (!Number.isNaN(num1) && !Number.isNaN(num2) && num1 === num2) {
+      return true;
+    }
+
+    return String(value1) === String(value2);
+  }
+</script>
 {#if [Types.UNKNOWN, Types.RECURSION_REACHED, Types.GENERIC_NO_ANNOTATION, Types.ERROR].includes(item.type)}
   <div style="--indent: {indent};">
     <p>{item.fieldName}</p>
@@ -47,13 +59,13 @@
     />
     <button
       onclick={sendFieldUpdate}
-      disabled={!item.isValid || item.valueString == item.newValueString}
+      disabled={!item.isValid || isSameValue(item.valueString,item.newValueString)}
     >
       <UpdateIcon />
     </button>
   </div>
 {/if}
-{#if item.possibleValues != undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
+{#if item.possibleValues !== undefined && [Types.BOOLEAN, Types.ENUM].includes(item.type)}
   <div style="--indent: {indent};">
     <p>{item.fieldName}</p>
     <OptionInput
@@ -69,7 +81,7 @@
     />
     <button
       onclick={sendFieldUpdate}
-      disabled={!item.isValid || item.valueString === item.newValueString}
+      disabled={!item.isValid || isSameValue(item.valueString,item.newValueString)}
     >
       <UpdateIcon />
     </button>
