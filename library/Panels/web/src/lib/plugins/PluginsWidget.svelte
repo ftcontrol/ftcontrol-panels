@@ -7,13 +7,26 @@
   let {
     plugin,
     showDetailsButton = true,
-          transparent = false
-
+    transparent = false,
   }: {
     plugin: PluginInfo
     showDetailsButton?: boolean
     transparent?: boolean
   } = $props()
+
+  function processWebsiteURL(url: string) {
+    try {
+      const parsed = new URL(url)
+      return parsed.hostname
+    } catch (e) {
+      try {
+        const parsed = new URL("http://" + url)
+        return parsed.hostname
+      } catch {
+        return url
+      }
+    }
+  }
 </script>
 
 <Section {transparent}>
@@ -26,7 +39,9 @@
   </h2>
   <p>by {plugin.details.author}</p>
   {#if plugin.details.websiteURL}
-    <a href={plugin.details.websiteURL}>Website: {plugin.details.websiteURL}</a>
+    <a href={plugin.details.websiteURL}
+      >Website: {processWebsiteURL(plugin.details.websiteURL)}</a
+    >
   {:else}
     <a>No website</a>
   {/if}

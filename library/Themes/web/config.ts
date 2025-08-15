@@ -6,9 +6,9 @@ export const config: PluginConfig = {
   letterName: "T",
   description:
     "Plugin for Panels that implements custom theming with saving and preset sharing.",
-  websiteURL: "",
-  version: "0.0.9",
-  pluginsCoreVersion: "1.1.19",
+  websiteURL: "https://panels.bylazar.com/docs/com.bylazar.themes/",
+  version: "0.0.10",
+  pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [
     {

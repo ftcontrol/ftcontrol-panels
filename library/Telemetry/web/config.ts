@@ -5,9 +5,9 @@ export const config: PluginConfig = {
   name: "Telemetry",
   letterName: "T",
   description: "Text-Based Telemetry",
-  websiteURL: "",
-  version: "0.0.6",
-  pluginsCoreVersion: "1.1.19",
+  websiteURL: "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
+  version: "0.0.7",
+  pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [
     {
