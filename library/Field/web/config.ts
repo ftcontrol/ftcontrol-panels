@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "F",
   description: "Field Drawing for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
-  version: "0.0.10",
+  version: "0.0.11",
   pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [

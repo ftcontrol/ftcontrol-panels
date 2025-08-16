@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "EP",
   description: "Latency Test for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.pinger/",
-  version: "0.0.5",
+  version: "0.0.6",
   pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [],

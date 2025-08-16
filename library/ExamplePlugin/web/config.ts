@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "EP",
   description: "Example Plugin for Panels",
   websiteURL: "",
-  version: "0.0.7",
+  version: "0.0.8",
   pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [

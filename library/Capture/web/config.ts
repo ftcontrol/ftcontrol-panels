@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "C",
   description: "Capture Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.capture/",
-  version: "0.0.8",
+  version: "0.0.9",
   pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [

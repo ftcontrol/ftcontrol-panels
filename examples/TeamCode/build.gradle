@@ -19,7 +19,10 @@ apply plugin: 'org.jetbrains.kotlin.android'
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 
-    compileSdk 35
+    defaultConfig {
+        compileSdk = 35
+        minSdk = 24
+    }
 
     packagingOptions {
         jniLibs.useLegacyPackaging true

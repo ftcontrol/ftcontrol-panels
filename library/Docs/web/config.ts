@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "D",
   description: "Docs Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.docs/",
-  version: "0.0.6",
+  version: "0.0.7",
   pluginsCoreVersion: "1.1.20",
   author: "Lazar",
   widgets: [],
