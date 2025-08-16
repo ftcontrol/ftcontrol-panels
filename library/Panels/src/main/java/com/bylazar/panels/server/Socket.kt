@@ -1,6 +1,7 @@
 package com.bylazar.panels.server
 
 import com.bylazar.panels.Logger
+import com.bylazar.panels.Panels
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.server.tasks.TimeTask
@@ -12,6 +13,25 @@ import java.util.TimerTask
 class Socket(
     port: Int,
 ) : NanoWSD(port) {
+    private val healthPath = "/health"
+
+    override fun serve(session: IHTTPSession): Response {
+        if (session.uri == healthPath) {
+            return newFixedLengthResponse(Response.Status.OK, "text/plain", "OK")
+        }
+
+        if (!Panels.wasStarted) {
+            Logger.serverLog("Rejecting connection: server not accepting clients yet.")
+            return newFixedLengthResponse(
+                Response.Status.SERVICE_UNAVAILABLE,
+                "text/plain",
+                "WebSocket not available yet"
+            )
+        }
+
+        return super.serve(session)
+    }
+
     override fun openWebSocket(handshake: IHTTPSession): WebSocket {
         return ClientSocket(handshake)
     }

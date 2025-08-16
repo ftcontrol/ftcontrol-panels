@@ -4,7 +4,6 @@ import android.content.Context
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
-import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.plugins.PluginsManager
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
@@ -12,7 +11,6 @@ import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
-import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier.Notifications
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import com.qualcomm.robotcore.util.WebHandlerManager
@@ -29,13 +27,7 @@ object Panels : Notifications {
     lateinit var socket: Socket
     var config = PanelsConfig()
 
-    fun getPlugin(id: String): Plugin<*>? {
-        val plugin = PluginsManager.plugins[id]
-        if(plugin == null){
-            Logger.pluginsError("Plugin with id: $id not found")
-        }
-        return plugin
-    }
+    var wasStarted = false
 
     @JvmStatic
     @OpModeRegistrar
@@ -47,13 +39,19 @@ object Panels : Notifications {
     @JvmStatic
     @OnCreate
     fun start(context: Context) {
-        ClassFinder.init(context.packageCodePath)
+        wasStarted = false
 
-        val configs = ClassFinder.findClasses(
-            { clazz ->
+        TaskTimer.measure("Init all reflection classes") {
+            ClassFinder.init(context.packageCodePath)
+        }
+
+        var configs = listOf<ClassFinder.ClassEntry>()
+
+        TaskTimer.measure("Find configs") {
+            configs = ClassFinder.findClasses { clazz ->
                 PanelsConfig::class.java.isAssignableFrom(clazz) && clazz != PanelsConfig::class.java
             }
-        )
+        }
 
         Logger.coreLog("Found ${configs.size} configs.")
 
@@ -89,7 +87,11 @@ object Panels : Notifications {
 
         PluginsManager.init(context)
 
-        server.precompressData()
+        TaskTimer.measure("Server compress data") {
+            server.precompressData()
+        }
+
+        wasStarted = true
     }
 
     @JvmStatic

@@ -4,6 +4,8 @@ import android.content.Context
 import com.bylazar.panels.GlobalStats
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
+import com.bylazar.panels.Panels.server
+import com.bylazar.panels.TaskTimer
 import com.bylazar.panels.json.PluginDetails
 import com.bylazar.panels.reflection.ClassFinder
 import com.google.gson.Gson
@@ -121,8 +123,10 @@ object PluginsManager {
         isRegistered = true
 
         plugins.values.forEach {
-            it.registerInternal(Panels, context)
-            it.log("Successfully registered plugin")
+            TaskTimer.measure("Register plugin: ${it.details.id}") {
+                it.registerInternal(Panels, context)
+                it.log("Successfully registered plugin")
+            }
         }
     }
 }

@@ -4,16 +4,14 @@ import android.content.Context
 import android.content.res.AssetManager
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
+import com.bylazar.panels.TaskTimer
 import com.bylazar.panels.json.PluginData
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
 import java.lang.ref.WeakReference
-import org.tukaani.xz.LZMA2Options
-import org.tukaani.xz.LZMAOutputStream
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.zip.Deflater
 
@@ -137,6 +135,10 @@ class StaticServer(
     }
 
     override fun serve(session: IHTTPSession): Response {
+        if(!Panels.wasStarted){
+            return getResponse("Panels not started yet.").allowCors()
+        }
+
         if (session.method == Method.OPTIONS) {
             return getResponse("")
         }
@@ -157,6 +159,16 @@ class StaticServer(
         }
         if (uri == "api/sha256") {
             return getResponse(lastSha).allowCors()
+        }
+        if(uri == "api/performance"){
+            return getResponse(
+                SocketMessage(
+                    "core",
+                    "performanceReadings",
+                    TaskTimer.records
+                ).toJson(),
+                "application/json"
+            ).allowCors()
         }
 
         return getStaticResponse(uri)
