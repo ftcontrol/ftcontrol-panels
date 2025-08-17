@@ -7,6 +7,7 @@ import com.bylazar.panels.Panels
 import com.bylazar.panels.Panels.server
 import com.bylazar.panels.TaskTimer
 import com.bylazar.panels.json.PluginDetails
+import com.bylazar.panels.json.SocketMessage.Companion.gson
 import com.bylazar.panels.reflection.ClassFinder
 import com.google.gson.Gson
 import java.io.IOException
@@ -17,6 +18,7 @@ import kotlin.jvm.java
 object PluginsManager {
     val plugins: MutableMap<String, Plugin<*>> = mutableMapOf()
     val skippedPlugins: MutableMap<String, PluginDetails> = mutableMapOf()
+    val skippedPluginsStrings: MutableMap<String, String> = mutableMapOf()
     var isRegistered = false
 
     lateinit var contextRef: WeakReference<Context>
@@ -27,6 +29,14 @@ object PluginsManager {
             val raw = inputStream.bufferedReader().readText()
             val gson = Gson()
             return gson.fromJson(raw, PluginDetails::class.java)
+        }
+    }
+
+    fun loadPluginConfigString(context: Context, filename: String = "config.json"): String {
+        val assetManager = context.assets
+        assetManager.open(filename).use { inputStream ->
+            val raw = inputStream.bufferedReader().readText()
+            return raw
         }
     }
 
@@ -106,11 +116,16 @@ object PluginsManager {
 
                     Logger.pluginsLog("Got details or ID '${it}'")
 
+                    val configString = loadPluginConfigString(context, "web/plugins/${it}/config.json")
+
                     if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
                         skippedPlugins[it] = pluginInstance.details
+                        skippedPluginsStrings[it] = configString
                         Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${it}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")
                     } else {
                         plugins[it] = pluginInstance
+                        pluginInstance.detailsString = configString
+
                         Logger.pluginsLog("Successfully registered plugin: ${clazz.name} with ID '${it}'")
                     }
 

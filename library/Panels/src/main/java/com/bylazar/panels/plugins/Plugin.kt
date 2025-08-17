@@ -1,5 +1,6 @@
 package com.bylazar.panels.plugins
 
+import android.R.attr.data
 import android.content.Context
 import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
@@ -8,6 +9,8 @@ import com.bylazar.panels.json.PluginInfo
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.Socket.ClientSocket
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
@@ -15,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     var config = baseConfig
     var details = PluginDetails()
+    var detailsString = ""
     val isDev: Boolean
         get() = config.isDev
     val isEnabled: Boolean
@@ -65,11 +69,15 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     abstract fun onEnablePanels()
     abstract fun onDisablePanels()
 
-    internal fun toInfo(): PluginInfo {
-        return PluginInfo(
-            details,
-            config
-        )
+    internal fun toInfo(): String {
+        val gson: Gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
+        val configString = gson.toJson(config)
+
+        return """{"config": $configString, "details": $detailsString}"""
+    }
+
+    internal fun toDetails(): String {
+        return detailsString
     }
 
     internal fun registerInternal(panelsInstance: Panels, context: Context) {

@@ -87,9 +87,7 @@ object Panels : Notifications {
 
         PluginsManager.init(context)
 
-        TaskTimer.measure("Server compress data") {
-            server.precompressData()
-        }
+        server.precompressData()
 
         wasStarted = true
     }

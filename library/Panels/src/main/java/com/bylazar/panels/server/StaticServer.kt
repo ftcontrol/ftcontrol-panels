@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.zip.Deflater
+import java.io.File
 
 class StaticServer(
     context: Context,
@@ -25,6 +26,55 @@ class StaticServer(
 
     private val assetManager: AssetManager?
         get() = contextRef.get()?.assets
+
+    private fun getCacheFolder(): File? {
+        val ctx = contextRef.get() ?: return null
+        val dir = File(ctx.cacheDir, "panels_static_cache")
+        if (!dir.exists()) dir.mkdirs()
+        return dir
+    }
+
+    private fun cacheBinFile(): File? = getCacheFolder()?.let { File(it, "plugins_compressed.bin") }
+    private fun cacheMetaFile(): File? =
+        getCacheFolder()?.let { File(it, "plugins_compressed.meta") }
+
+    private fun writeCache(compressed: ByteArray, compressedSha: String, jsonSha: String) {
+        val bin = cacheBinFile()
+        val meta = cacheMetaFile()
+        if (bin == null || meta == null) return
+
+        runCatching { bin.delete() }
+        runCatching { meta.delete() }
+
+        bin.outputStream().use { it.write(compressed) }
+        val metaContent = buildString {
+            appendLine("jsonSha=$jsonSha")
+            appendLine("compressedSha=$compressedSha")
+        }
+        meta.writeText(metaContent, Charsets.UTF_8)
+    }
+
+    private fun readCacheIfValid(jsonSha: String): Pair<ByteArray, String>? {
+        val bin = cacheBinFile() ?: return null
+        val meta = cacheMetaFile() ?: return null
+        if (!bin.exists() || !meta.exists()) return null
+
+        val metaText = runCatching { meta.readText(Charsets.UTF_8) }.getOrNull() ?: return null
+        val lines = metaText.lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && '=' in it }
+            .associate { it.substringBefore('=').trim() to it.substringAfter('=').trim() }
+
+        val cachedJsonSha = lines["jsonSha"] ?: return null
+        val cachedCompressedSha = lines["compressedSha"] ?: return null
+        if (cachedJsonSha != jsonSha) return null
+
+        val bytes = runCatching { bin.readBytes() }.getOrNull() ?: return null
+        val bytesSha = bytes.sha256Hex()
+        if (bytesSha != cachedCompressedSha) return null
+
+        return bytes to cachedCompressedSha
+    }
 
 
     init {
@@ -106,44 +156,87 @@ class StaticServer(
             .joinToString("") { "%02x".format(it) }
     }
 
+    fun String.sha256Hex(): String {
+        return this.toByteArray().sha256Hex()
+    }
+
+    private inline fun <T> List<T>.toJsonArray(crossinline render: (T) -> String): String =
+        this.joinToString(separator = ",", prefix = "[", postfix = "]") { render(it) }
+
     var response = compressDeflate("null")
     var jsonString = "null"
     var lastSha = "null"
 
     fun precompressData() {
+        TaskTimer.start("building plugin info")
         val t0 = System.currentTimeMillis()
-        val pluginInfos =
-            PluginsManager.plugins.values.map { it.toInfo() }.sortedBy { it.details.id }
+        val pluginsString = PluginsManager.plugins.entries
+            .sortedBy { it.key }
+            .map { it.value.toInfo() }
+            .toJsonArray { it }
+
         val t1 = System.currentTimeMillis()
-        val skipped = PluginsManager.skippedPlugins.values.toList().sortedBy { it.id }
+        val skippedPluginsString = PluginsManager.skippedPluginsStrings.entries
+            .sortedBy { it.key }
+            .map { it.value }
+            .toJsonArray { it }
+
         val t2 = System.currentTimeMillis()
 
-        jsonString = SocketMessage(
-            "core",
-            "pluginsDetails",
-            PluginData(pluginInfos, skipped)
-        ).toJson()
+        val sb = StringBuilder(256 + pluginsString.length + skippedPluginsString.length)
+        sb.append("{\"messageID\":\"pluginsDetails\",\"pluginID\":\"core\",\"data\":{")
+            .append("\"plugins\":").append(pluginsString).append(',')
+            .append("\"skippedPlugins\":").append(skippedPluginsString)
+            .append("}}")
+
+        jsonString = sb.toString()
+
         val t3 = System.currentTimeMillis()
 
+        val jsonSha = jsonString.sha256Hex()
+
+        TaskTimer.end("building plugin info")
+        TaskTimer.start("compressing data")
+        val cacheHit = readCacheIfValid(jsonSha)
+        if (cacheHit != null) {
+            response = cacheHit.first
+            lastSha = cacheHit.second
+            val t4 = System.currentTimeMillis()
+
+            Logger.serverLog("toInfo() took ${t1 - t0}ms")
+            Logger.serverLog("skippedPlugins took ${t2 - t1}ms")
+            Logger.serverLog("toJson() took ${t3 - t2}ms")
+            Logger.serverLog("Cache HIT: reused compressed payload (no recompression).")
+            Logger.serverLog("Total time: ${t4 - t0}ms")
+
+            Logger.serverLog("Sending ${jsonString.length} characters (~${jsonString.toByteArray().size / 1024} KB)")
+            Logger.serverLog("Sending compressed (~${response.size / 1024} KB)")
+            TaskTimer.end("compressing data")
+            return
+        }
+
         val compressed = compressDeflate(jsonString)
+        response = compressed
+        lastSha = compressed.sha256Hex()
+
+        writeCache(compressed, lastSha, jsonSha)
 
         val t4 = System.currentTimeMillis()
-
         Logger.serverLog("toInfo() took ${t1 - t0}ms")
         Logger.serverLog("skippedPlugins took ${t2 - t1}ms")
         Logger.serverLog("toJson() took ${t3 - t2}ms")
         Logger.serverLog("Compression took ${t4 - t3}ms")
+        Logger.serverLog("Cache MISS: wrote new cache (single file policy).")
         Logger.serverLog("Total time: ${t4 - t0}ms")
 
         Logger.serverLog("Sending ${jsonString.length} characters (~${jsonString.toByteArray().size / 1024} KB)")
         Logger.serverLog("Sending compressed (~${compressed.size / 1024} KB)")
-        response = compressed
-        lastSha = compressed.sha256Hex()
+        TaskTimer.end("compressing data")
     }
 
     override fun serve(session: IHTTPSession): Response {
         if (!Panels.wasStarted) {
-            return getResponse("Panels not started yet.").allowCors()
+            return getResponse("Panels has not started yet.").allowCors()
         }
 
         if (session.method == Method.OPTIONS) {
