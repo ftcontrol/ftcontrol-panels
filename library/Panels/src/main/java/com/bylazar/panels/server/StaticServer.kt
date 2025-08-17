@@ -12,6 +12,7 @@ import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.zip.Deflater
 
@@ -84,14 +85,19 @@ class StaticServer(
     }
 
     fun compressDeflate(input: String): ByteArray {
+        val buffer = ByteArray(64 * 1024)
         val inputBytes = input.toByteArray(Charsets.UTF_8)
-        val deflater = Deflater(Deflater.BEST_COMPRESSION)
+        val deflater = Deflater(Deflater.DEFAULT_COMPRESSION)
+        deflater.reset()
         deflater.setInput(inputBytes)
         deflater.finish()
-        val output = ByteArray(inputBytes.size)
-        val compressedSize = deflater.deflate(output)
-        deflater.end()
-        return output.copyOf(compressedSize)
+        val baos = ByteArrayOutputStream(inputBytes.size / 4 + 128)
+        while (!deflater.finished()) {
+            val n = deflater.deflate(buffer)
+            baos.write(buffer, 0, n)
+        }
+        deflater.reset()
+        return baos.toByteArray()
     }
 
     fun ByteArray.sha256Hex(): String {
@@ -106,7 +112,8 @@ class StaticServer(
 
     fun precompressData() {
         val t0 = System.currentTimeMillis()
-        val pluginInfos = PluginsManager.plugins.values.map { it.toInfo() }.sortedBy { it.details.id }
+        val pluginInfos =
+            PluginsManager.plugins.values.map { it.toInfo() }.sortedBy { it.details.id }
         val t1 = System.currentTimeMillis()
         val skipped = PluginsManager.skippedPlugins.values.toList().sortedBy { it.id }
         val t2 = System.currentTimeMillis()
@@ -135,7 +142,7 @@ class StaticServer(
     }
 
     override fun serve(session: IHTTPSession): Response {
-        if(!Panels.wasStarted){
+        if (!Panels.wasStarted) {
             return getResponse("Panels not started yet.").allowCors()
         }
 
@@ -160,7 +167,7 @@ class StaticServer(
         if (uri == "api/sha256") {
             return getResponse(lastSha).allowCors()
         }
-        if(uri == "api/performance"){
+        if (uri == "api/performance") {
             return getResponse(
                 SocketMessage(
                     "core",
