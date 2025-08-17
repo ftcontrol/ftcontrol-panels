@@ -1,6 +1,7 @@
 package com.bylazar.panels.json
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
 data class SocketMessage(
@@ -11,7 +12,7 @@ data class SocketMessage(
     fun toJson(): String = gson.toJson(this)
 
     companion object {
-        val gson: Gson = Gson()
+        val gson: Gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
 
         fun fromJson(json: String): SocketMessage {
             return gson.fromJson(json, SocketMessage::class.java)
