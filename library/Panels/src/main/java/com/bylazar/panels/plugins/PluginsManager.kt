@@ -32,9 +32,16 @@ object PluginsManager {
         }
     }
 
-    fun loadPluginConfigString(context: Context, filename: String = "config.json"): String {
+    fun loadPluginConfigString(context: Context, id: String): String {
         val assetManager = context.assets
-        assetManager.open(filename).use { inputStream ->
+        assetManager.open("web/plugins/${id}/config.json").use { inputStream ->
+            val raw = inputStream.bufferedReader().readText()
+            return raw
+        }
+    }
+    fun loadPluginSimpleConfigString(context: Context, id: String): String {
+        val assetManager = context.assets
+        assetManager.open("web/plugins/${id}/simple_config.json").use { inputStream ->
             val raw = inputStream.bufferedReader().readText()
             return raw
         }
@@ -116,7 +123,7 @@ object PluginsManager {
 
                     Logger.pluginsLog("Got details or ID '${it}'")
 
-                    val configString = loadPluginConfigString(context, "web/plugins/${it}/config.json")
+                    val configString = loadPluginConfigString(context, it)
 
                     if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
                         skippedPlugins[it] = pluginInstance.details

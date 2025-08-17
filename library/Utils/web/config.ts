@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Utils for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.utils/",
   version: "0.0.10",
-  pluginsCoreVersion: "1.1.23",
+  pluginsCoreVersion: "1.1.24",
   author: "Lazar",
   widgets: [],
   navlets: [],

@@ -20,6 +20,8 @@ import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
+import java.lang.Compiler.disable
+import java.lang.Compiler.enable
 
 
 object Panels : Notifications {
@@ -39,57 +41,59 @@ object Panels : Notifications {
     @JvmStatic
     @OnCreate
     fun start(context: Context) {
-        wasStarted = false
+        TaskTimer.measure("full init") {
+            wasStarted = false
 
-        TaskTimer.measure("Init all reflection classes") {
-            ClassFinder.init(context.packageCodePath)
-        }
-
-        var configs = listOf<ClassFinder.ClassEntry>()
-
-        TaskTimer.measure("Find configs") {
-            configs = ClassFinder.findClasses { clazz ->
-                PanelsConfig::class.java.isAssignableFrom(clazz) && clazz != PanelsConfig::class.java
+            TaskTimer.measure("Init all reflection classes") {
+                ClassFinder.init(context.packageCodePath)
             }
+
+            var configs = listOf<ClassFinder.ClassEntry>()
+
+            TaskTimer.measure("Find configs") {
+                configs = ClassFinder.findClasses { clazz ->
+                    PanelsConfig::class.java.isAssignableFrom(clazz) && clazz != PanelsConfig::class.java
+                }
+            }
+
+            Logger.coreLog("Found ${configs.size} configs.")
+
+            if (configs.isNotEmpty()) {
+                config = Class.forName(configs[0].className)
+                    .getDeclaredConstructor()
+                    .newInstance() as PanelsConfig
+            }
+            Logger.coreLog("Config is $config")
+
+            PreferencesHandler.init(context)
+
+            if (config.isDisabled) {
+                PreferencesHandler.isEnabled = false
+                disable()
+            } else {
+                enable()
+            }
+
+            try {
+                server = StaticServer(context, 8001, "web")
+                socket = Socket(8002)
+            } catch (e: Exception) {
+                Logger.coreLog("Failed to start webserver: " + e.message)
+            }
+
+            if (PreferencesHandler.isEnabled) {
+                server.startServer()
+                socket.startServer()
+            }
+
+            TextHandler.injectText()
+
+            PluginsManager.init(context)
+
+            server.precompressData()
+
+            wasStarted = true
         }
-
-        Logger.coreLog("Found ${configs.size} configs.")
-
-        if (configs.isNotEmpty()) {
-            config = Class.forName(configs[0].className)
-                .getDeclaredConstructor()
-                .newInstance() as PanelsConfig
-        }
-        Logger.coreLog("Config is $config")
-
-        PreferencesHandler.init(context)
-
-        if (config.isDisabled) {
-            PreferencesHandler.isEnabled = false
-            disable()
-        } else {
-            enable()
-        }
-
-        try {
-            server = StaticServer(context, 8001, "web")
-            socket = Socket(8002)
-        } catch (e: Exception) {
-            Logger.coreLog("Failed to start webserver: " + e.message)
-        }
-
-        if (PreferencesHandler.isEnabled) {
-            server.startServer()
-            socket.startServer()
-        }
-
-        TextHandler.injectText()
-
-        PluginsManager.init(context)
-
-        server.precompressData()
-
-        wasStarted = true
     }
 
     @JvmStatic

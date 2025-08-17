@@ -271,6 +271,29 @@ class StaticServer(
             ).allowCors()
         }
 
+        for (id in PluginsManager.plugins.keys) {
+            if (uri == "api/simple-configs/${id}") {
+                val context = contextRef.get()
+                if (context != null) {
+                    val data = PluginsManager.loadPluginSimpleConfigString(context, id)
+                    return getResponse(
+                        data,
+                        "application/json"
+                    ).allowCors()
+                }
+            }
+            if (uri == "api/configs/${id}") {
+                val context = contextRef.get()
+                if (context != null) {
+                    val data = PluginsManager.loadPluginConfigString(context, id)
+                    return getResponse(
+                        data,
+                        "application/json"
+                    ).allowCors()
+                }
+            }
+        }
+
         return getStaticResponse(uri)
     }
 
