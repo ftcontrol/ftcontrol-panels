@@ -14,6 +14,7 @@ data class PluginDetails(
     val manager: PanelsWidget = PanelsWidget(),
     val docs: PanelsDocs = PanelsDocs(),
     val templates: List<Template> = listOf(),
+    val includedPluginsIDs: List<String> = listOf(),
 ) {
     override fun toString(): String {
         return buildString {

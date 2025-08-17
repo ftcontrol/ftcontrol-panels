@@ -41,6 +41,11 @@
     {:else}
       <a>No website</a>
     {/if}
+    <br />
+    <p>Included Plugins</p>
+    {#each plugin.includedPluginsIDs as id}
+      <p>{id}</p>
+    {/each}
     <p>{plugin.description}</p>
   </section>
   <SimpleDynamicComponent

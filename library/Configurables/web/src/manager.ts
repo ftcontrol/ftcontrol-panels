@@ -41,7 +41,7 @@ export default class Manager extends PluginManager {
     })
   }
 
-  static async getNewVersion(): string {
+  static async getNewVersion(): Promise<string> {
     return ""
   }
 }

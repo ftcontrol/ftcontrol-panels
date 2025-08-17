@@ -3,7 +3,7 @@ import { PluginManager } from "ftc-panels"
 export default class Manager extends PluginManager {
   override onInit(): void {}
 
-  static async getNewVersion(): string {
+  static async getNewVersion(): Promise<string> {
     return ""
   }
 }

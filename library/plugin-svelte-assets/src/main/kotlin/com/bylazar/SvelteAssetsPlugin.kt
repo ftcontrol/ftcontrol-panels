@@ -60,19 +60,19 @@ class SvelteAssetsPlugin : Plugin<Project> {
 
         val installCmd = when {
             extension.useNpm && isWindows -> listOf(
-                "cmd", "/c", "npm install --no-cache"
+                "cmd", "/c", "npm i"
             )
 
             extension.useNpm -> listOf(
-                "sh", "-c", "npm install --no-cache"
+                "sh", "-c", "npm i"
             )
 
             !extension.useNpm && isWindows -> listOf(
-                "cmd", "/c", "bun install --no-cache"
+                "cmd", "/c", "bun i"
             )
 
             else -> listOf(
-                "sh", "-c", "bun install --no-cache"
+                "sh", "-c", "bun i"
             )
         }
 
