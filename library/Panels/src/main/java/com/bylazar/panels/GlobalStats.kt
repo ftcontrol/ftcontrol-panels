@@ -1,5 +1,5 @@
 package com.bylazar.panels
 
 object GlobalStats {
-    val pluginsCoreVersion = "1.1.22"
+    val pluginsCoreVersion = "1.1.23"
 }

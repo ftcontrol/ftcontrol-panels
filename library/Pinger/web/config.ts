@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Latency Test for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.pinger/",
   version: "0.0.6",
-  pluginsCoreVersion: "1.1.22",
+  pluginsCoreVersion: "1.1.23",
   author: "Lazar",
   widgets: [],
   navlets: [
