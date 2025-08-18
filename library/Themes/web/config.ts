@@ -8,31 +8,26 @@ export const config: PluginConfig = {
     "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.themes/",
   version: "0.0.11",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Theme Manager",
+      type: "widget",
+      id: "Theme Manager",
       filepath: "src/widgets/Color.svelte",
     },
-  ],
-  navlets: [
     {
-      name: "Colors Preview",
+      type: "navlet",
+      id: "Colors Preview",
       filepath: "src/navlets/Preview.svelte",
     },
-  ],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [],
-  },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

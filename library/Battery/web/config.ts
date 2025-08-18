@@ -7,26 +7,21 @@ export const config: PluginConfig = {
   description: "Battery Utils for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.battery/",
   version: "0.0.10",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [],
-  navlets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Battery",
+      type: "navlet",
+      id: "Battery",
       filepath: "src/navlets/Battery.svelte",
     },
-  ],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [],
-  },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

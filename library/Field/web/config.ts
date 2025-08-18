@@ -7,31 +7,26 @@ export const config: PluginConfig = {
   description: "Field Drawing for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
   version: "0.0.11",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Field",
+      type: "widget",
+      id: "Field",
       filepath: "src/widgets/Field.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

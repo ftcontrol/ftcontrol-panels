@@ -7,30 +7,26 @@ export const config: PluginConfig = {
   description: "Docs Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.docs/",
   version: "0.0.7",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Overview",
+  manager: "src/manager.ts",
+  components: [
+    {
+      type: "docs",
+      id: "Overview",
       filepath: "src/docs/Overview.svelte",
     },
-    chapters: [
-      {
-        name: "Prerequisites",
-        filepath: "src/docs/Prerequisites.svelte",
-      },
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "Prerequisites",
+      filepath: "src/docs/Prerequisites.svelte",
+    },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

@@ -7,31 +7,26 @@ export const config: PluginConfig = {
   description: "Text-Based Telemetry",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
   version: "0.0.8",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Telemetry",
+      type: "widget",
+      id: "Telemetry",
       filepath: "src/widgets/Telemetry.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

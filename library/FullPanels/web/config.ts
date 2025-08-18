@@ -7,21 +7,16 @@ export const config: PluginConfig = {
   description: "Full Panels Installation",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   version: "0.0.40",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+  manager: "src/manager.ts",
+  components: [
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [],
-  },
+  ],
   templates: [
     {
       name: "Default",

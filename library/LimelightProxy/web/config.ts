@@ -7,44 +7,41 @@ export const config: PluginConfig = {
   description: "Limelight Proxy for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
   version: "0.0.10",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "CameraStream",
+      type: "widget",
+      id: "CameraStream",
       filepath: "src/widgets/CameraStream.svelte",
     },
     {
-      name: "Dashboard",
+      type: "widget",
+      id: "Dashboard",
       filepath: "src/widgets/Dashboard.svelte",
     },
     {
-      name: "Stats",
+      type: "widget",
+      id: "Stats",
       filepath: "src/widgets/Stats.svelte",
     },
-  ],
-  navlets: [
     {
-      name: "Temperature",
+      type: "navlet",
+      id: "Temperature",
       filepath: "src/navlets/Temperature.svelte",
     },
-  ],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

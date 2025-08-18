@@ -8,7 +8,7 @@
     "dev": "bun /builddev.ts"
   },
   "dependencies": {
-    "ftc-panels": "link:ftc-panels",
+    "ftc-panels": "^1.1.25",
     "typescript": "^5.8.3"
   }
 }

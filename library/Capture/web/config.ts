@@ -7,26 +7,21 @@ export const config: PluginConfig = {
   description: "Capture Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.capture/",
   version: "0.0.9",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Capture",
+      type: "widget",
+      id: "Capture",
       filepath: "src/widgets/Capture.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [],
-  },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

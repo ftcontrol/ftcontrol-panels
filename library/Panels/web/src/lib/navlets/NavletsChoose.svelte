@@ -17,19 +17,19 @@
   {#snippet overlay({ close }: { close: () => void })}
     <div class="possibilities">
       {#each global.plugins as p}
-        {#each p.details.navlets as w}
+        {#each p.details.components.filter(it => it.type === "navlet") as w}
           <button
             class="choose"
             onclick={() => {
               close()
-              set(p.details.id, w.name)
+              set(p.details.id, w.id)
               manager.save()
             }}
           >
             <p>{p.details.name}</p>
-            <h4>{w.name}</h4>
+            <h4>{w.id}</h4>
             <PreviewBox scale={1.75}>
-              <NavletContent pluginID={p.details.id} widgetID={w.name} />
+              <NavletContent pluginID={p.details.id} widgetID={w.id} />
             </PreviewBox>
           </button>
         {/each}

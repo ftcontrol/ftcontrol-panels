@@ -7,31 +7,26 @@ export const config: PluginConfig = {
   description: "Example Plugin for Panels",
   websiteURL: "",
   version: "0.0.8",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Counter",
+      type: "widget",
+      id: "Counter",
       filepath: "src/widgets/Counter.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Overview",
+    {
+      type: "docs",
+      id: "Overview",
       filepath: "src/docs/Overview.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

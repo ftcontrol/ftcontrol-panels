@@ -7,39 +7,36 @@ export const config: PluginConfig = {
   description: "Gamepad Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.gamepad/",
   version: "0.0.13",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "First Gamepad",
+      type: "widget",
+      id: "First Gamepad",
       filepath: "src/widgets/FirstGamepad.svelte",
     },
     {
-      name: "Second Gamepad",
+      type: "widget",
+      id: "Second Gamepad",
       filepath: "src/widgets/SecondGamepad.svelte",
     },
     {
-      name: "Combined Gamepad",
+      type: "widget",
+      id: "Combined Gamepad",
       filepath: "src/widgets/CombinedGamepad.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "docs",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }

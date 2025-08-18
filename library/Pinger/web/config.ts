@@ -7,26 +7,21 @@ export const config: PluginConfig = {
   description: "Latency Test for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.pinger/",
   version: "0.0.6",
-  pluginsCoreVersion: "1.1.24",
+  pluginsCoreVersion: "1.1.25",
   author: "Lazar",
-  widgets: [],
-  navlets: [
+  manager: "src/manager.ts",
+  components: [
     {
-      name: "Ping",
+      type: "navlet",
+      id: "Ping",
       filepath: "src/navlets/Ping.svelte",
     },
-  ],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Overview",
+    {
+      type: "docs",
+      id: "Overview",
       filepath: "src/docs/Overview.svelte",
     },
-    chapters: [],
-  },
+  ],
   templates: [],
   includedPluginsIDs: [],
 }
