@@ -9,33 +9,29 @@ export const config: PluginConfig = {
   version: "0.0.14",
   pluginsCoreVersion: "1.1.24",
   author: "Lazar",
-  widgets: [
+  components: [
     {
-      name: "Configurables",
+      type: "widget",
+      id: "Configurables",
       filepath: "src/widgets/configurables/Configurables.svelte",
     },
     {
-      name: "ChangedConfigurables",
+      type: "widget",
+      id: "ChangedConfigurables",
       filepath: "src/widgets/changed/ChangedConfigurables.svelte",
     },
-  ],
-  navlets: [],
-  manager: {
-    name: "Manager",
-    filepath: "src/manager.ts",
-  },
-  docs: {
-    homepage: {
-      name: "Homepage",
+    {
+      type: "docs",
+      id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    chapters: [
-      {
-        name: "DocsPage1",
-        filepath: "src/docs/DocsPage1.svelte",
-      },
-    ],
-  },
+    {
+      type: "widget",
+      id: "DocsPage1",
+      filepath: "src/docs/DocsPage1.svelte",
+    },
+  ],
+  manager: "src/manager.ts",
   templates: [],
   includedPluginsIDs: [],
 }
