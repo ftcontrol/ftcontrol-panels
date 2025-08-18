@@ -9,10 +9,8 @@ data class PluginDetails(
     val version: String = "",
     val pluginsCoreVersion: String = "",
     val author: String = "",
-    val widgets: List<PanelsWidget> = listOf(),
-    val navlets: List<PanelsWidget> = listOf(),
-    val manager: PanelsWidget = PanelsWidget(),
-    val docs: PanelsDocs = PanelsDocs(),
+    val components: List<PanelsWidget> = listOf(),
+    val manager: String = "",
     val templates: List<Template> = listOf(),
     val includedPluginsIDs: List<String> = listOf(),
 ) {
@@ -29,27 +27,12 @@ data class PluginDetails(
             appendLine("  author='$author',")
 
             appendLine("  widgets=[")
-            widgets.forEach { widget ->
-                appendLine("    PanelsWidget(name='${widget.name}', filepath='${widget.filepath}'),")
+            components.forEach { c ->
+                appendLine("    PanelsWidget(type='${c.type}', name='${c.id}', filepath='${c.filepath}'),")
             }
             appendLine("  ],")
 
-            appendLine("  navlets=[")
-            navlets.forEach { navlet ->
-                appendLine("    PanelsWidget(name='${navlet.name}', filepath='${navlet.filepath}'),")
-            }
-            appendLine("  ],")
-
-            appendLine("  manager=PanelsWidget(name='${manager.name}', filepath='${manager.filepath}'),")
-
-            appendLine("  docs=PanelsDocs(")
-            appendLine("    homepage=PanelsWidget(name='${docs.homepage.name}', filepath='${docs.homepage.filepath}'),")
-            appendLine("    chapters=[")
-            docs.chapters.forEach { chapter ->
-                appendLine("      PanelsWidget(name='${chapter.name}', filepath='${chapter.filepath}'),")
-            }
-            appendLine("    ]")
-            appendLine("  )")
+            appendLine("  manager=PanelsWidget(filepath='${manager}'),")
 
             append(")")
         }
@@ -57,21 +40,15 @@ data class PluginDetails(
 }
 
 data class PanelsWidget(
-    val name: String = "",
+    val type: String = "",
+    val id: String = "",
     val filepath: String = "",
-    var textContent: String = ""
-)
-
-data class PanelsDocs(
-    val homepage: PanelsWidget = PanelsWidget(),
-    val chapters: List<PanelsWidget> = listOf()
 )
 
 data class Template(
     val name: String = "",
     val widgets: List<TemplateWidgetGroup> = listOf(),
     val navlets: List<TemplateNavlet> = listOf(),
-    val plugins: List<String> = listOf()
 )
 
 data class TemplateWidget(
