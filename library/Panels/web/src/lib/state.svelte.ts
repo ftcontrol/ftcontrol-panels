@@ -66,37 +66,6 @@ export class GlobalState {
 
   updateInterval: ReturnType<typeof setInterval> | null = null
 
-  private async getFromServer(serverURL: string, path: string): Promise<any> {
-    const url = `${serverURL.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`
-
-    const timeout = 1000
-    const interval = 200
-    const maxAttempts = Math.ceil(timeout / interval)
-    let attempt = 0
-
-    while (attempt < maxAttempts) {
-      try {
-        const response = await fetch(url)
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch: ${response.status} ${response.statusText}`
-          )
-        }
-
-        return await response.text()
-      } catch (err) {
-        attempt++
-        if (attempt >= maxAttempts) {
-          console.error(`Failed after ${attempt} attempts:`, err)
-          throw err
-        }
-        await new Promise((res) => setTimeout(res, interval))
-      }
-    }
-
-    throw new Error(`Unexpected error while fetching ${url}`)
-  }
-
   interval: ReturnType<typeof setInterval> | null = null
   reloadIndexes: Record<string, number> = $state({})
   lastVersionNotificationTime: Record<string, number> = $state({})
@@ -173,16 +142,27 @@ export class GlobalState {
         console.log("Rebuilding", entry.name)
 
         const res = await this.fetchWithRetry(
-          `http://localhost:3001/plugins/${entry.id}`,
-          {},
-          1
+            `http://localhost:3001/plugins/${entry.id}`,
+            {},
+            1
         )
-        let details = await res.json()
+        let details = await res.json() as PluginConfig
+
+        const response = await this.fetchWithRetry(
+            `http://localhost:3001/plugins/${entry.id}/svelte.js`,
+            {},
+            1
+        )
+        let svelte = await response.text()
+
+        const { default: Selector } = await importFromSource(
+            svelte || ""
+        )
+
+        this.socket.pluginSelectors[details.id] = Selector
 
         if (reloadManager) {
-          const { default: Manager } = await importFromSource(
-            details.manager.textContent || ""
-          )
+          const Manager = Selector("Manager")
           const oldStateData = this.socket.pluginManagers[details.id].state.data
           this.socket.pluginManagers[details.id] = new Manager(
             new PluginSocket(details.id, this.socket),
@@ -296,7 +276,9 @@ export class GlobalState {
         this.notificationsManager
       )
 
-      await this.updateDevPlugins(true)
+      try{
+        await this.updateDevPlugins(true)
+      }catch (e){}
 
       this.plugins.push({
         details: panelsConfig,
