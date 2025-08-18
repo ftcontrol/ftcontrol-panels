@@ -46,7 +46,7 @@
         <a>No website</a>
     {/if}
     <p>{plugin.details.description}</p>
-    {#if !showDetailsButton}
+    {#if !showDetailsButton && plugin.details.includedPluginsIDs.length > 0}
         <br><p>Included Plugins</p>
         {#each plugin.details.includedPluginsIDs as id}
             <p>{id}</p>

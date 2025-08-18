@@ -41,7 +41,7 @@
   <Overlay
     triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
-    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+    {#snippet trigger({ isOpen })}
       <Bell />
     {/snippet}
     {#snippet overlay()}
@@ -64,7 +64,7 @@
   <Overlay
     triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
-    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+    {#snippet trigger({ isOpen })}
       <Presets />
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}
@@ -73,7 +73,7 @@
         {#each manager.presets.data as preset, index}
           <div class="preset">
             <Button
-              selected={manager.presets.selected == index}
+              selected={manager.presets.selected === index}
               onclick={() => {
                 manager.change(index)
               }}
@@ -94,7 +94,7 @@
                   />
                   <Button
                     transparent={true}
-                    disabled={manager.presets.data.length == 1}
+                    disabled={manager.presets.data.length === 1}
                     onclick={() => {
                       manager.deletePreset(index)
                       close()
@@ -189,7 +189,7 @@
   <Overlay
     triggerStyle={"display: flex;justify-content: center;align-items: center;"}
   >
-    {#snippet trigger({ isOpen }: { isOpen: boolean })}
+    {#snippet trigger({ isOpen })}
       <Plugins />
     {/snippet}
     {#snippet overlay({ close }: { close: () => void })}

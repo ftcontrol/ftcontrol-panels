@@ -5,17 +5,9 @@
   import DocsPage from "$lib/DocsPage.svelte"
 
   let { data }: PageProps = $props()
-  let plugin = $derived(
-    global.plugins.find((it) => it.details.id == data.id) as PluginInfo
-  )
-  let page = $derived(
-    plugin.details.docs.chapters.find(
-      (it) => it.name == data.page
-    ) as PanelsWidget
-  )
 </script>
 
-<DocsPage pluginID={plugin.details.id} widgetID={page.name} />
+<DocsPage pluginID={data.id} widgetID={data.page} />
 
 <style>
 </style>

@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Example Plugin for Panels",
   websiteURL: "",
   version: "0.0.8",
-  pluginsCoreVersion: "1.1.25",
+  pluginsCoreVersion: "1.1.26",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

@@ -246,7 +246,7 @@ export class Manager {
     if (!this.enableInteractions) return true
     const plugin = global.plugins.find((it) => it.details.id == pluginID)
     if (plugin == undefined) return false
-    const navlet = plugin.details.components.find((it) => it.name == navletID)
+    const navlet = plugin.details.components.find((it) => it.id == navletID)
     if (navlet == undefined) return false
     return true
   }

@@ -22,14 +22,14 @@
             class="choose"
             onclick={() => {
               close()
-              set(p.details.id, w.name)
+              set(p.details.id, w.id)
               manager.save()
             }}
           >
             <p>{p.details.name}</p>
-            <h4>{w.name}</h4>
+            <h4>{w.id}</h4>
             <PreviewBox scale={0.5}>
-              <WidgetContent pluginID={p.details.id} widgetID={w.name} />
+              <WidgetContent pluginID={p.details.id} widgetID={w.id} />
             </PreviewBox>
           </button>
         {/each}

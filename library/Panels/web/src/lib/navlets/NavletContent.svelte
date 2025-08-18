@@ -1,32 +1,31 @@
 <script lang="ts">
-  import { global } from "$lib"
-  import {
-    DynamicComponent,
-    type PanelsWidget,
-    type PluginInfo,
-  } from "ftc-panels"
+    import {global} from "$lib"
+    import {
+        DynamicComponent,
+        type PanelsWidget,
+        type PluginInfo,
+    } from "ftc-panels"
 
-  let {
-    pluginID,
-    widgetID,
-  }: {
-    pluginID: string
-    widgetID: string
-  } = $props()
+    let {
+        pluginID,
+        widgetID,
+    }: {
+        pluginID: string
+        widgetID: string
+    } = $props()
 
-  const plugin = $derived(
-    global.plugins.find((it) => it.details.id == pluginID) as PluginInfo
-  )
-
-  const navlet = $derived(
-    plugin.details.components.find((it) => it.id == widgetID) as PanelsWidget
-  )
+    const plugin = $derived(
+        global.plugins.find((it) => it.details.id == pluginID) as PluginInfo
+    )
 </script>
 
 {#key `${pluginID}-${widgetID}-${global.reloadIndexes[pluginID]}`}
-  <DynamicComponent
-    globalSocket={global.socket}
-    info={plugin}
-    id={pluginID}
-  />
+    <DynamicComponent
+            globalSocket={global.socket}
+            info={plugin}
+            id={pluginID}
+            loadFunction={(host, props)=>{
+    global.socket.pluginSelectors[pluginID](widgetID, host, props)
+    }}
+    />
 {/key}

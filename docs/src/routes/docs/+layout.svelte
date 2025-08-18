@@ -1,11 +1,12 @@
 <script lang="ts">
   import { type Snippet } from "svelte"
-  import { DocsPage } from "ftc-panels/docs"
-  import { modules } from "$lib/data"
+  import { DocsPage, CodeFormatter } from "ftc-panels/docs"
+  import {simpleModules} from "$lib/simpleData";
 
   let { children }: { children?: Snippet } = $props()
 </script>
 
-<DocsPage plugins={modules} skippedPlugins={[]}>
+<DocsPage plugins={simpleModules} skippedPlugins={[]}>
+  <CodeFormatter />
   {@render children?.()}
 </DocsPage>

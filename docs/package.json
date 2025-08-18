@@ -21,9 +21,9 @@
     "vite": "^7.1.2"
   },
   "dependencies": {
+    "ftc-panels": "link:ftc-panels",
     "@sveltejs/adapter-static": "^3.0.9",
     "fs": "^0.0.1-security",
-    "ftc-panels": "^1.1.24",
     "path": "^0.12.7"
   }
 }

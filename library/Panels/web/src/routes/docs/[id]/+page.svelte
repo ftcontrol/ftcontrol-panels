@@ -14,7 +14,7 @@
 
 <DocsPage
   pluginID={plugin.details.id}
-  widgetID={plugin.details.docs.homepage.name}
+  widgetID={plugin.details.components.filter(it => it.type =="docs")[0].id}
 >
     <section>
         <PluginsWidget plugin={plugin} showDetailsButton={false} transparent={true} />
