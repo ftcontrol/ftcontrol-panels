@@ -1,5 +1,6 @@
 package com.bylazar.panels.server
 
+import android.R.attr.path
 import android.content.Context
 import android.content.res.AssetManager
 import com.bylazar.panels.Logger
@@ -8,6 +9,7 @@ import com.bylazar.panels.TaskTimer
 import com.bylazar.panels.json.PluginData
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
+import com.bylazar.panels.plugins.PluginsManager.plugins
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -119,6 +121,11 @@ class StaticServer(
         addHeader("Access-Control-Allow-Origin", "*")
         addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
         addHeader("Access-Control-Allow-Headers", "*")
+        return this
+    }
+
+    private fun Response.gzip(): Response {
+        addHeader("Content-Encoding", "gzip")
         return this
     }
 
@@ -272,23 +279,25 @@ class StaticServer(
         }
 
         for (id in PluginsManager.plugins.keys) {
-            if (uri == "api/simple-configs/${id}") {
-                val context = contextRef.get()
-                if (context != null) {
-                    val data = PluginsManager.loadPluginSimpleConfigString(context, id)
-                    return getResponse(
-                        data,
-                        "application/json"
-                    ).allowCors()
+            if (uri == "api/svelte/${id}") {
+                val assets = assetManager
+                if (assets != null) {
+                    val inputStream = assets.open("web/plugins/${id}/svelte.js")
+                    return newChunkedResponse(
+                        Response.Status.OK,
+                        "application/javascript",
+                        inputStream
+                    ).allowCors().gzip()
                 }
             }
             if (uri == "api/configs/${id}") {
-                val context = contextRef.get()
-                if (context != null) {
-                    val data = PluginsManager.loadPluginConfigString(context, id)
-                    return getResponse(
-                        data,
-                        "application/json"
+                val assets = assetManager
+                if (assets != null) {
+                    val inputStream = assets.open("web/plugins/${id}/config.json")
+                    return newChunkedResponse(
+                        Response.Status.OK,
+                        "application/json",
+                        inputStream
                     ).allowCors()
                 }
             }

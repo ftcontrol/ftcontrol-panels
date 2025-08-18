@@ -17,7 +17,7 @@
   {#snippet overlay({ close }: { close: () => void })}
     <div class="possibilities">
       {#each global.plugins as p}
-        {#each p.details.widgets as w}
+        {#each p.details.components.filter(it => it.type === "widget") as w}
           <button
             class="choose"
             onclick={() => {

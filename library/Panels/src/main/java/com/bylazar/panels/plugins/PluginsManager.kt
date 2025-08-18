@@ -39,13 +39,6 @@ object PluginsManager {
             return raw
         }
     }
-    fun loadPluginSimpleConfigString(context: Context, id: String): String {
-        val assetManager = context.assets
-        assetManager.open("web/plugins/${id}/simple_config.json").use { inputStream ->
-            val raw = inputStream.bufferedReader().readText()
-            return raw
-        }
-    }
 
     fun init(context: Context) {
         contextRef = WeakReference(context)
@@ -125,7 +118,7 @@ object PluginsManager {
 
                     val configString = loadPluginConfigString(context, it)
 
-                    if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion) {
+                    if (pluginInstance.details.pluginsCoreVersion != GlobalStats.pluginsCoreVersion && !pluginInstance.details.pluginsCoreVersion.startsWith("link:")) {
                         skippedPlugins[it] = pluginInstance.details
                         skippedPluginsStrings[it] = configString
                         Logger.pluginsLog("Skipped plugin: ${clazz.name} with ID '${it}', coreVersion: ${pluginInstance.details.pluginsCoreVersion}, latest: ${GlobalStats.pluginsCoreVersion}")

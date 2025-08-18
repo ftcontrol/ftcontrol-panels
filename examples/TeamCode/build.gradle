@@ -42,7 +42,6 @@ repositories {
 
 dependencies {
     implementation project(':FtcRobotController')
-//    implementation project(':FullPanels')
-//    implementation project(':ExamplePlugin')
-    implementation project(':Configurables')
+    implementation project(':FullPanels')
+    implementation project(':ExamplePlugin')
 }

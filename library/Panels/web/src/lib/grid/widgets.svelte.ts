@@ -246,7 +246,7 @@ export class Manager {
     if (!this.enableInteractions) return true
     const plugin = global.plugins.find((it) => it.details.id == pluginID)
     if (plugin == undefined) return false
-    const navlet = plugin.details.navlets.find((it) => it.name == navletID)
+    const navlet = plugin.details.components.find((it) => it.name == navletID)
     if (navlet == undefined) return false
     return true
   }
@@ -480,7 +480,7 @@ export class Manager {
     if (!global.isConnected) return true
     const plugin = global.plugins.find((it) => it.details.id == pluginID)
     if (plugin == undefined) return false
-    const widget = plugin.details.widgets.find((it) => it.name == widgetID)
+    const widget = plugin.details.components.find((it) => it.id == widgetID)
     if (widget == undefined) return false
     return true
   }

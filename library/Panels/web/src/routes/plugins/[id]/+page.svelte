@@ -13,44 +13,36 @@
   let plugin = $derived(
     global.plugins.find((it) => it.details.id == data.id) as PluginInfo
   )
+
 </script>
 
 <PluginsWidget {plugin} showDetailsButton={false} />
 
 <h3>Widgets</h3>
-{#each plugin.details.widgets as widget}
+{#each plugin.details.components.filter(it => it.type === "widget")  as widget}
   <Section margin={true}>
-    <h4>{widget.name}</h4>
-    <WidgetContent pluginID={plugin.details.id} widgetID={widget.name} />
+    <h4>{widget.id}</h4>
+    <WidgetContent pluginID={plugin.details.id} widgetID={widget.id} />
   </Section>
 {:else}
   <p>No widgets found</p>
 {/each}
 
 <h3>Navlets</h3>
-{#each plugin.details.navlets as navlet}
+{#each plugin.details.components.filter(it => it.type === "navlet") as navlet}
   <Section margin={true}>
-    <h4>{navlet.name}</h4>
-    <NavletContent pluginID={plugin.details.id} widgetID={navlet.name} />
+    <h4>{navlet.id}</h4>
+    <NavletContent pluginID={plugin.details.id} widgetID={navlet.id} />
   </Section>
 {:else}
   <p>No navlets found</p>
 {/each}
 
-<h3>Docs Homepage</h3>
-<Section margin={true}>
-  <h4>{plugin.details.docs.homepage.name}</h4>
-  <DocsPage
-    pluginID={plugin.details.id}
-    widgetID={plugin.details.docs.homepage.name}
-  />
-</Section>
-
 <h3>Docs Chapters</h3>
-{#each plugin.details.docs.chapters as chapter}
+{#each plugin.details.components.filter(it => it.type === "docs") as chapter}
   <Section margin={true}>
-    <h4>{chapter.name}</h4>
-    <DocsPage pluginID={plugin.details.id} widgetID={chapter.name} />
+    <h4>{chapter.id}</h4>
+    <DocsPage pluginID={plugin.details.id} widgetID={chapter.id} />
   </Section>
 {:else}
   <p>No chapters found</p>

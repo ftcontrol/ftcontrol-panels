@@ -19,7 +19,7 @@
   )
 
   const navlet = $derived(
-    plugin.details.navlets.find((it) => it.name == widgetID) as PanelsWidget
+    plugin.details.components.find((it) => it.id == widgetID) as PanelsWidget
   )
 </script>
 
@@ -27,7 +27,6 @@
   <DynamicComponent
     globalSocket={global.socket}
     info={plugin}
-    textContent={navlet.textContent as string}
     id={pluginID}
   />
 {/key}
