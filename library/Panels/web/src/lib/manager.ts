@@ -4,7 +4,7 @@ export const panelsConfig: PluginConfig = {
   id: "com.bylazar.panels",
   name: "Panels",
   letterName: "P",
-  description: "Panels",
+  description: "Empty Panels Installation ready to be extended",
   websiteURL: "https://panels.bylazar.com",
   version: "0.0.23",
   pluginsCoreVersion: "1.1.22",

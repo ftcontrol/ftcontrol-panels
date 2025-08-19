@@ -3,12 +3,13 @@ package com.bylazar.telemetry
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 class TelemetryManager(
-    config: TelemetryPluginConfig,
+    val config: () -> TelemetryPluginConfig,
     private val sendLines: (lines: MutableList<String>) -> Unit
 ) {
     var lines = mutableListOf<String>()
 
-    val updateInterval = config.telemetryUpdateInterval
+    val updateInterval: Long
+        get() = config().telemetryUpdateInterval
     var lastUpdate = 0L
     val timeSinceLastUpdate: Long
         get() = System.currentTimeMillis() - lastUpdate

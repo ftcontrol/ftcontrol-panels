@@ -1,0 +1,15 @@
+{
+  "name": "panels-plugin",
+  "version": "0.0.1",
+  "description": "An example of a Panels Plugin",
+  "type": "module",
+  "scripts": {
+    "build": "bun /build.ts",
+    "dev": "bun /builddev.ts",
+    "check": "bun /check.ts"
+  },
+  "dependencies": {
+    "ftc-panels": "^1.1.29",
+    "typescript": "^5.8.3"
+  }
+}

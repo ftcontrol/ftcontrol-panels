@@ -1,5 +1,5 @@
-val pluginNamespace = "com.bylazar.fullpanels"
-val pluginVersion = "0.0.43"
+val pluginNamespace = "com.bylazar.graph"
+val pluginVersion = "0.0.5"
 
 plugins {
     id("com.android.library")
@@ -52,21 +52,7 @@ dependencies {
     compileOnly("org.firstinspires.ftc:FtcCommon:10.3.0")
     compileOnly("org.firstinspires.ftc:Vision:10.3.0")
 
-    api(project(":Panels"))
-
-    api(project(":OpModeControl"))
-    api(project(":Telemetry"))
-    api(project(":Configurables"))
-    api(project(":Themes"))
-    api(project(":Capture"))
-    api(project(":LimelightProxy"))
-    api(project(":Gamepad"))
-    api(project(":Field"))
-    api(project(":Docs"))
-    api(project(":Battery"))
-    api(project(":Utils"))
-    api(project(":Pinger"))
-    api(project(":Graph"))
+    compileOnly(project(":Panels"))
 }
 
 afterEvaluate {
@@ -80,8 +66,8 @@ afterEvaluate {
                 version = pluginVersion
 
                 pom {
-                    description.set("All in one toolbox dashboard for FTC with core plugins.")
-                    name.set("Full Panels")
+                    description.set("Panels Graph Plugin")
+                    name.set("Panels Graph")
                     url.set("https://panels.bylazar.com")
 
                     developers {
