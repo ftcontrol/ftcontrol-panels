@@ -213,6 +213,10 @@ export class GlobalState {
                     clearInterval(this.updateInterval)
                 }
 
+                if (this.interval !== null) {
+                    clearInterval(this.interval)
+                }
+
                 this.notificationsManager = new NotificationsManager()
 
                 this.skippedPlugins = []
@@ -309,10 +313,12 @@ export class GlobalState {
                 this.notificationsManager
             )
 
-            try {
-                await this.updateDevPlugins(true)
-            } catch (e) {
-            }
+            setTimeout(async()=>{
+                try {
+                    await this.updateDevPlugins(true)
+                } catch (e) {
+                }
+            }, 100)
 
             this.plugins.push({
                 details: panelsConfig,
@@ -323,8 +329,10 @@ export class GlobalState {
                 panelsConfig
             )
 
-            this.createDevServerInterval()
-            console.log(`[init] Dev plugin interval set up`)
+            setTimeout(()=>{
+                this.createDevServerInterval()
+                console.log(`[init] Dev plugin interval set up`)
+            }, 100)
 
             await this.socket.initSocket(async () => {
                 this.notificationsManager.add("Lost connection to robot")
