@@ -1,14 +1,11 @@
 <script lang="ts">
     import {
-        Button,
         type PluginConfig,
-        type PluginInfo,
         SimpleDynamicComponent,
     } from "ftc-panels"
     import type {PageProps} from "./$types"
     import {modules} from "$lib/data"
-    import {goto} from "$app/navigation"
-    import {importFromSource} from "../../../../../../ftcontrol-plugins/cli/core/socket/source";
+    import {importFromSource} from "ftc-panels"
 
     let {data}: PageProps = $props()
     let plugin = $derived(modules.find((it) => it.config.id == data.id)) as { config: PluginConfig, svelte: string }
