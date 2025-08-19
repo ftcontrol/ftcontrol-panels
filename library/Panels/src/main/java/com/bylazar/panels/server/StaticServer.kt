@@ -175,6 +175,36 @@ class StaticServer(
             ).allowCors()
         }
 
+        if (uri == "api/shas") {
+            val json = buildString {
+                append('{')
+                var first = true
+                for (id in PluginsManager.plugins.keys) {
+                    if (!first) append(',')
+                    append('"')
+                        .append(id.replace("\"", "\\\""))
+                        .append('"')
+                        .append(':')
+                    val sha = pluginSvelteSha256[id]
+                    if (sha != null) {
+                        append('"')
+                            .append(sha.replace("\"", "\\\""))
+                            .append('"')
+                    } else {
+                        append("null")
+                    }
+                    first = false
+                }
+                append('}')
+            }
+
+            return newFixedLengthResponse(
+                Response.Status.OK,
+                "application/json",
+                json
+            ).allowCors()
+        }
+
         for (id in PluginsManager.plugins.keys) {
             if (uri == "api/svelte/${id}") {
                 val assets = assetManager

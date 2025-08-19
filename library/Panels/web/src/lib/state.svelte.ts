@@ -258,16 +258,13 @@ export class GlobalState {
 
             const mapping: Record<string, string> = {}
 
+            const r = await fetch(`${baseURL}api/shas`);
+            const allShas: Record<string, string> = await r.json()
+
             await Promise.all(
                 this.plugins.map(async (it) => {
                     const id = it.details.id;
-                    let sha = "";
-
-                    try {
-                        const resp = await fetch(`${baseURL}api/svelte/${id}/sha256`);
-                        sha = await resp.text();
-                    } catch (_) {
-                    }
+                    let sha = allShas[id] ?? ""
 
                     let shouldRefresh = true;
                     if (sha !== "") {
