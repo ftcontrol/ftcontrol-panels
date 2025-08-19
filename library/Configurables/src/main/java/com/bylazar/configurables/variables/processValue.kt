@@ -58,7 +58,7 @@ fun processValue(
         if (type == BaseTypes.CUSTOM) {
             reference.isAccessible = true
             val customValues = reference.type.declaredFields.mapNotNull { field ->
-                try{
+                try {
                     field.isAccessible = true
                     if (field.isAnnotationPresent(IgnoreConfigurable::class.java)) return@mapNotNull null
 
@@ -98,7 +98,7 @@ fun processValue(
                         currentManager,
                         recursionItems.toMutableList(),
                     )
-                }catch (t: Throwable){
+                } catch (t: Throwable) {
                     null
                 }
             }
@@ -110,46 +110,49 @@ fun processValue(
             val componentType = reference.type.componentType
             val componentValues = currentManager.getValue()
             if (componentValues != null && componentType != null) {
-                val arrayValues = (0 until Array.getLength(componentValues)).map { i ->
+                val arrayValues = (0 until Array.getLength(componentValues)).mapNotNull { i ->
+                    try {
+                        val value = Array.get(componentValues, i)
 
-                    val value = Array.get(componentValues, i)
+                        val arrayType = getType(componentType)
 
-                    val arrayType = getType(componentType)
+                        val itemType = if (arrayType == BaseTypes.UNKNOWN) {
+                            getType(value.javaClass)
+                        } else {
+                            arrayType
+                        }
+                        val cType = if (arrayType == BaseTypes.UNKNOWN) {
+                            value.javaClass
+                        } else {
+                            componentType
+                        }
 
-                    val itemType = if (arrayType == BaseTypes.UNKNOWN) {
-                        getType(value.javaClass)
-                    } else {
-                        arrayType
+                        ConfigurablesLogger.log("Array type: $itemType")
+
+                        val currentElementReference = MyField(
+                            name = i.toString(),
+                            type = cType,
+                            isAccessible = true,
+                            get = { instance ->
+                                Array.get(instance, i)
+                            },
+                            set = { instance, newValue ->
+                                Array.set(instance, i, newValue)
+                            },
+                            genericType = componentType
+                        )
+
+                        processValue(
+                            recursionDepth + 1,
+                            className,
+                            itemType,
+                            currentElementReference,
+                            currentManager,
+                            recursionItems.toMutableList(),
+                        )
+                    } catch (t: Throwable) {
+                        null
                     }
-                    val cType = if (arrayType == BaseTypes.UNKNOWN) {
-                        value.javaClass
-                    } else {
-                        componentType
-                    }
-
-                    ConfigurablesLogger.log("Array type: $itemType")
-
-                    val currentElementReference = MyField(
-                        name = i.toString(),
-                        type = cType,
-                        isAccessible = true,
-                        get = { instance ->
-                            Array.get(instance, i)
-                        },
-                        set = { instance, newValue ->
-                            Array.set(instance, i, newValue)
-                        },
-                        genericType = componentType
-                    )
-
-                    processValue(
-                        recursionDepth + 1,
-                        className,
-                        itemType,
-                        currentElementReference,
-                        currentManager,
-                        recursionItems.toMutableList(),
-                    )
                 }
                 return CustomVariable(reference.name, className, arrayValues, BaseTypes.ARRAY)
             } else {
@@ -161,47 +164,51 @@ fun processValue(
             val listInstance = currentManager.getValue() as? MutableList<Any?>
             if (listInstance != null) {
 
-                val listValues = listInstance.mapIndexed { index, value ->
-                    val arrayType = getType(reference.type.componentType)
+                val listValues = listInstance.mapIndexedNotNull { index, value ->
+                    try {
+                        val arrayType = getType(reference.type.componentType)
 
-                    val itemType = if (arrayType == BaseTypes.UNKNOWN) {
-                        getType(value?.javaClass ?: Any::class.java)
-                    } else {
-                        arrayType
+                        val itemType = if (arrayType == BaseTypes.UNKNOWN) {
+                            getType(value?.javaClass ?: Any::class.java)
+                        } else {
+                            arrayType
+                        }
+                        val cType = if (arrayType == BaseTypes.UNKNOWN) {
+                            value?.javaClass ?: Any::class.java
+                        } else {
+                            reference.type.componentType
+                        }
+
+                        ConfigurablesLogger.log("Array type: $itemType")
+
+                        val currentElementReference = MyField(
+                            name = index.toString(),
+                            type = cType,
+                            isAccessible = true,
+                            get = { instance ->
+                                listInstance.getOrNull(index)
+                            },
+                            set = { instance, newValue ->
+                                if (index in listInstance.indices) {
+                                    listInstance[index] = newValue
+                                } else {
+                                    listInstance.add(newValue)
+                                }
+                            },
+                            genericType = reference.type.componentType
+                        )
+
+                        processValue(
+                            recursionDepth + 1,
+                            className,
+                            itemType,
+                            currentElementReference,
+                            currentManager,
+                            recursionItems.toMutableList(),
+                        )
+                    } catch (t: Throwable) {
+                        null
                     }
-                    val cType = if (arrayType == BaseTypes.UNKNOWN) {
-                        value?.javaClass ?: Any::class.java
-                    } else {
-                        reference.type.componentType
-                    }
-
-                    ConfigurablesLogger.log("Array type: $itemType")
-
-                    val currentElementReference = MyField(
-                        name = index.toString(),
-                        type = cType,
-                        isAccessible = true,
-                        get = { instance ->
-                            listInstance.getOrNull(index)
-                        },
-                        set = { instance, newValue ->
-                            if (index in listInstance.indices) {
-                                listInstance[index] = newValue
-                            } else {
-                                listInstance.add(newValue)
-                            }
-                        },
-                        genericType = reference.type.componentType
-                    )
-
-                    processValue(
-                        recursionDepth + 1,
-                        className,
-                        itemType,
-                        currentElementReference,
-                        currentManager,
-                        recursionItems.toMutableList(),
-                    )
                 }
 
                 return CustomVariable(reference.name, className, listValues, BaseTypes.LIST)
@@ -212,34 +219,37 @@ fun processValue(
             val mapInstance = currentManager.getValue() as? MutableMap<*, *>
             if (mapInstance != null) {
                 ConfigurablesLogger.log("Map keys: ${mapInstance.map { (key, value) -> "$key.$value" }}")
-                val mapValues: List<GenericVariable> = mapInstance.map { (key, _) ->
-                    ConfigurablesLogger.log("Map key: $key")
-                    val itemType = getType(mapInstance[key]?.javaClass)
-                    val currentElementReference = MyField(
-                        name = key.toString(),
-                        type = mapInstance[key]?.javaClass ?: Any::class.java,
-                        isAccessible = true,
-                        get = { instance ->
-                            mapInstance[key]
-                        },
-                        set = { instance, newValue ->
-                            (mapInstance as MutableMap<Any, Any>)[key as Any] = newValue as Any
-                        },
-                        genericType = reference.type.componentType
-                    )
+                val mapValues: List<GenericVariable> = mapInstance.mapNotNull { (key, _) ->
+                    try {
+                        ConfigurablesLogger.log("Map key: $key")
+                        val itemType = getType(mapInstance[key]?.javaClass)
+                        val currentElementReference = MyField(
+                            name = key.toString(),
+                            type = mapInstance[key]?.javaClass ?: Any::class.java,
+                            isAccessible = true,
+                            get = { instance ->
+                                mapInstance[key]
+                            },
+                            set = { instance, newValue ->
+                                (mapInstance as MutableMap<Any, Any>)[key as Any] = newValue as Any
+                            },
+                            genericType = reference.type.componentType
+                        )
 
-                    processValue(
-                        recursionDepth + 1,
-                        className,
-                        itemType,
-                        currentElementReference,
-                        currentManager,
-                        recursionItems.toMutableList(),
-                    )
+                        processValue(
+                            recursionDepth + 1,
+                            className,
+                            itemType,
+                            currentElementReference,
+                            currentManager,
+                            recursionItems.toMutableList(),
+                        )
+                    } catch (t: Throwable) {
+                        null
+                    }
                 }
 
                 ConfigurablesLogger.log("Map keys2: ${mapValues.map { it.toJsonType }}")
-
 
                 return CustomVariable(reference.name, className, mapValues, BaseTypes.MAP)
             }
