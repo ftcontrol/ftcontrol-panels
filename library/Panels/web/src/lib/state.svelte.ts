@@ -204,27 +204,31 @@ export class GlobalState {
   async init(resetStuff = true) {
 
     try {
-      this.plugins = []
+      if(resetStuff){
+        this.plugins = []
 
-      this.hasDevServer = false
+        this.hasDevServer = false
 
-      this.notifications = []
+        if (this.updateInterval !== null) {
+          clearInterval(this.updateInterval)
+        }
 
-      if (this.updateInterval !== null) {
-        clearInterval(this.updateInterval)
+        this.notificationsManager = new NotificationsManager()
+
+        this.skippedPlugins = []
+        this.socket = new GlobalSocket()
       }
 
-      this.notificationsManager = new NotificationsManager()
-
-      this.skippedPlugins = []
-      this.socket = new GlobalSocket()
-
       this.notificationsManager.callbacks = []
+
       this.notificationsManager.onUpdate((newValue) => {
         this.notifications = newValue
       })
+
       this.notifications = this.notificationsManager.data
+
       this.isConnected = false
+
 
       const startTime = Date.now()
       console.log(`[init] Starting initialization...`)
@@ -282,8 +286,8 @@ export class GlobalState {
       console.log(`[init] Dev plugin interval set up`)
 
       await this.socket.initSocket(async () => {
-        // await this.init(false)
         this.notificationsManager.add("Lost connection to robot")
+        await this.init(false)
       })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
@@ -322,7 +326,7 @@ export class GlobalState {
       }
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
-      await this.init()
+      await this.init(resetStuff)
     }
   }
 
