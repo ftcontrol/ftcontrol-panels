@@ -1,23 +1,10 @@
-import { dev } from "$app/environment"
-import {
-  GlobalSocket,
-  type Notification,
-  NotificationsManager,
-  type PluginConfig,
-  type PluginInfo,
-} from "ftc-panels"
-import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
-import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
-import { deleteValue, readValue, storeValue } from "./indexedDB"
-import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
+import {dev} from "$app/environment"
+import {GlobalSocket, type Notification, NotificationsManager, type PluginConfig, type PluginInfo,} from "ftc-panels"
+import {importFromSource} from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
+import {PluginSocket} from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
+import type {ExtendedTemplateEntry} from "./grid/widgets.svelte"
 
-import pako from "pako"
-import { panelsConfig, PanelsManager } from "$lib/manager"
-
-function decompressDeflate(compressed: Uint8Array): string {
-  const decompressed = pako.inflate(compressed)
-  return new TextDecoder("utf-8").decode(decompressed)
-}
+import {panelsConfig, PanelsManager} from "$lib/manager"
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
@@ -214,9 +201,7 @@ export class GlobalState {
     }
   }
 
-  async init() {
-    const startTime = Date.now()
-    console.log(`[init] Starting initialization...`)
+  async init(resetStuff = true) {
 
     try {
       this.plugins = []
@@ -224,6 +209,10 @@ export class GlobalState {
       this.hasDevServer = false
 
       this.notifications = []
+
+      if (this.updateInterval !== null) {
+        clearInterval(this.updateInterval)
+      }
 
       this.notificationsManager = new NotificationsManager()
 
@@ -237,11 +226,11 @@ export class GlobalState {
       this.notifications = this.notificationsManager.data
       this.isConnected = false
 
-      const t0 = Date.now()
-      const data = await this.getPluginsUntilReady()
-      console.log(`[init] getPluginsUntilReady() took ${Date.now() - t0}ms`)
+      const startTime = Date.now()
+      console.log(`[init] Starting initialization...`)
 
-      const parsed = JSON.parse(data)
+
+      const parsed = await this.getPlugins()
 
       this.plugins = parsed.data.plugins
 
@@ -293,8 +282,8 @@ export class GlobalState {
       console.log(`[init] Dev plugin interval set up`)
 
       await this.socket.initSocket(async () => {
-        // await this.init()
-        window.location.reload()
+        // await this.init(false)
+        this.notificationsManager.add("Lost connection to robot")
       })
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
@@ -333,8 +322,7 @@ export class GlobalState {
       }
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
-      // await this.init()
-      window.location.reload()
+      await this.init()
     }
   }
 
@@ -342,45 +330,6 @@ export class GlobalState {
     this.isConnected = false
     if (this.interval) clearInterval(this.interval)
     this.socket.close()
-  }
-
-  private async getPluginsUntilReady(): Promise<string> {
-    const currentSha = await this.getSha()
-
-    const cachedSha = await readValue("sha256")
-    const cachedText = await readValue("plugins")
-    const oldPanelsVersion = await readValue("version")
-
-    if (oldPanelsVersion !== panelsConfig.version) {
-      await deleteValue("sha256")
-      await deleteValue("plugins")
-      await storeValue("version", panelsConfig.version)
-      throw Error("Panels version changed")
-    }
-
-    if (currentSha == cachedSha && cachedText) {
-      setTimeout(async () => {
-        const extraText = await this.getPlugins()
-
-        if (extraText == null) return
-        if (extraText == cachedText) return
-        await storeValue("sha256", currentSha)
-        await storeValue("plugins", extraText)
-        await storeValue("version", panelsConfig.version)
-        // await this.init()
-        window.location.reload()
-      }, 100)
-      return cachedText
-    }
-
-    await storeValue("sha256", currentSha)
-
-    const text = await this.getPlugins()
-
-    await storeValue("plugins", text)
-    await storeValue("version", panelsConfig.version)
-
-    return text
   }
 
   private fetchWithTimeout(url: string, options = {}, timeout = 5000) {
@@ -442,15 +391,7 @@ export class GlobalState {
       500
     )
 
-    const buffer = await response.arrayBuffer()
-    const uint8Array = new Uint8Array(buffer)
-
-    const startTime = performance.now()
-    const text = decompressDeflate(uint8Array)
-    const endTime = performance.now()
-    console.log(`Decompression took ${(endTime - startTime).toFixed(2)} ms`)
-
-    return text
+    return await response.json()
   }
 
   async checkVersions() {

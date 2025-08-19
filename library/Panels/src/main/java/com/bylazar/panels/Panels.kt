@@ -20,8 +20,6 @@ import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
-import java.lang.Compiler.disable
-import java.lang.Compiler.enable
 
 
 object Panels : Notifications {
@@ -90,7 +88,7 @@ object Panels : Notifications {
 
             PluginsManager.init(context)
 
-            server.precompressData()
+            server.prepareData()
 
             wasStarted = true
         }

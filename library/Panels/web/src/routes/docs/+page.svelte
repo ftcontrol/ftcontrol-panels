@@ -3,7 +3,7 @@
 </script>
 
 <h1>Docs</h1>
-<div></div>
+<a href="panels.bylazar.com">Official Docs</a>
 
 <style>
   p {
