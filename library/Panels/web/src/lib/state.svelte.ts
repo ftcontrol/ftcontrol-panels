@@ -258,38 +258,52 @@ export class GlobalState {
 
             const mapping: Record<string, string> = {}
 
-            for (const it of this.plugins) {
-                let sha = "";
+            await Promise.all(
+                this.plugins.map(async (it) => {
+                    const id = it.details.id;
+                    let sha = "";
 
-                try {
-                    const response = await fetch(`${baseURL}api/svelte/${it.details.id}/sha256`)
-                    sha = await response.text()
-                }catch (e) {
-                }
-
-                let shouldRefresh = true;
-
-                if(sha != ""){
-                    const oldSha = await readValue(it.details.id + "_sha")
-                    if(sha == oldSha){
-                        mapping[it.details.id] = await readValue(it.details.id + "_data")
-                        shouldRefresh = false
+                    try {
+                        const resp = await fetch(`${baseURL}api/svelte/${id}/sha256`);
+                        sha = await resp.text();
+                    } catch (_) {
                     }
-                }
 
-                if(shouldRefresh){
-                    const response = await fetch(`${baseURL}api/svelte/${it.details.id}`)
-                    const data = await response.text()
-                    const src = data.trim() ?? ""
-                    if (!src) {
-                        console.warn(`[plugin:${it.details.id}] Missing manager source`)
-                    } else {
-                        await storeValue(it.details.id + "_data", src)
-                        await storeValue(it.details.id + "_sha", sha)
-                        mapping[it.details.id] = src
+                    let shouldRefresh = true;
+                    if (sha !== "") {
+                        try {
+                            const oldSha = await readValue(`${id}_sha`);
+                            if (sha === oldSha) {
+                                mapping[id] = await readValue(`${id}_data`);
+                                shouldRefresh = false;
+                            }
+                        } catch (_) {
+                        }
                     }
-                }
-            }
+
+                    if (shouldRefresh) {
+                        try {
+                            const resp = await fetch(`${baseURL}api/svelte/${id}`);
+                            const data = await resp.text();
+                            const src = (data || "").trim();
+
+                            if (!src) {
+                                console.warn(`[plugin:${id}] Missing manager source`);
+                                return;
+                            }
+
+                            await Promise.all([
+                                storeValue(`${id}_data`, src),
+                                storeValue(`${id}_sha`, sha),
+                            ]);
+
+                            mapping[id] = src;
+                        } catch (e) {
+                            console.warn(`[plugin:${id}] Failed to refresh`, e);
+                        }
+                    }
+                })
+            );
 
 
             await this.socket.initPlugins(
