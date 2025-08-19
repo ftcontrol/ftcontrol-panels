@@ -18,7 +18,7 @@ android {
     namespace = "com.bylazar.panels"
 
     defaultConfig {
-        compileSdk = 35
+        compileSdk = 34
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.google.android.material:material:1.12.0")
 

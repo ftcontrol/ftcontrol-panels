@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.pinger"
-val pluginVersion = "0.0.7"
+val pluginVersion = "0.0.8"
 
 plugins {
     id("com.android.library")
@@ -18,7 +18,7 @@ android {
     namespace = pluginNamespace
 
     defaultConfig {
-        compileSdk = 35
+        compileSdk = 34
         minSdk = 24
     }
 

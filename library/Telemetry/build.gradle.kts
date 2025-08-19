@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.telemetry"
-val pluginVersion = "0.0.9"
+val pluginVersion = "0.0.10"
 
 plugins {
     id("com.android.library")
@@ -18,7 +18,7 @@ android {
     namespace = pluginNamespace
 
     defaultConfig {
-        compileSdk = 35
+        compileSdk = 34
         minSdk = 24
     }
 

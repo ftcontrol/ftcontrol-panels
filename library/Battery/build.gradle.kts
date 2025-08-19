@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.battery"
-val pluginVersion = "0.0.11"
+val pluginVersion = "0.0.12"
 
 plugins {
     id("com.android.library")
@@ -18,7 +18,7 @@ android {
     namespace = pluginNamespace
 
     defaultConfig {
-        compileSdk = 35
+        compileSdk = 34
         minSdk = 24
     }
 

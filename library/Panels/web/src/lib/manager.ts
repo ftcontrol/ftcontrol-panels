@@ -6,7 +6,7 @@ export const panelsConfig: PluginConfig = {
   letterName: "P",
   description: "Panels",
   websiteURL: "https://panels.bylazar.com",
-  version: "0.0.22",
+  version: "0.0.23",
   pluginsCoreVersion: "1.1.22",
   author: "Lazar",
   manager: "",
