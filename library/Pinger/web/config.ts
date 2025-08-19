@@ -6,8 +6,8 @@ export const config: PluginConfig = {
   letterName: "P",
   description: "Latency Test for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.pinger/",
-  version: "0.0.8",
-  pluginsCoreVersion: "1.1.28",
+  version: "0.0.9",
+  pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
