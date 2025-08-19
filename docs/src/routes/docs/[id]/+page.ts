@@ -1,7 +1,7 @@
-import { modules } from "$lib/data"
+import { simpleModules } from "$lib/simpleData"
 
 export function entries(): { id: string }[] {
-  return modules.map((it) => {
+  return simpleModules.map((it) => {
     return {
       id: it.id,
     }

@@ -100,8 +100,26 @@ class StaticServer(
     var response = "null"
     var lastSha = "null"
 
+    val pluginSvelteSha256 = mutableMapOf<String, String>()
+
     fun prepareData() {
         TaskTimer.start("building plugin info")
+
+        val assets = assetManager
+        if (assets != null) {
+            pluginSvelteSha256.clear()
+            for (id in PluginsManager.plugins.keys) {
+                try {
+                    assets.open("web/plugins/${id}/svelte.js").use { input ->
+                        val bytes = input.readBytes()
+                        pluginSvelteSha256[id] = bytes.sha256Hex()
+                    }
+                } catch (e: Exception) {
+                    Logger.serverLog("No svelte.js for plugin $id")
+                }
+            }
+        }
+
         val pluginsString = PluginsManager.plugins.entries
             .sortedBy { it.key }
             .map { it.value.toInfo() }
@@ -167,6 +185,22 @@ class StaticServer(
                         "application/javascript",
                         inputStream
                     ).allowCors().gzip()
+                }
+            }
+            if (uri == "api/svelte/${id}/sha256") {
+                val sha = pluginSvelteSha256[id]
+                if (sha != null) {
+                    return newFixedLengthResponse(
+                        Response.Status.OK,
+                        "text/plain",
+                        sha
+                    ).allowCors()
+                } else {
+                    return newFixedLengthResponse(
+                        Response.Status.NOT_FOUND,
+                        "text/plain",
+                        "sha256 not found for $id"
+                    ).allowCors()
                 }
             }
             if (uri == "api/configs/${id}") {

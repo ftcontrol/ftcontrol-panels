@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Battery Utils for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.battery/",
   version: "0.0.10",
-  pluginsCoreVersion: "1.1.26",
+  pluginsCoreVersion: "1.1.28",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
