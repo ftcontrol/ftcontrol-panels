@@ -13,10 +13,12 @@ object ClassFinder {
         mutableListOf(
             "com.google",
             "com.sun",
+            "sun.misc",
             "sun",
             "com.qualcomm",
             "org.opencv",
             "java",
+            "java.lang",
             "javax",
             "android",
             "com.android",

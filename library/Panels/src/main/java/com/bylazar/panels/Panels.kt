@@ -1,16 +1,19 @@
 package com.bylazar.panels
 
 import android.content.Context
+import androidx.core.app.PendingIntentCompat.send
 import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
 import com.bylazar.panels.plugins.PluginsManager
+import com.bylazar.panels.plugins.PluginsManager.contextRef
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier.Notifications
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import com.qualcomm.robotcore.util.WebHandlerManager
@@ -19,7 +22,10 @@ import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
 import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
+import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
+import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
+import java.lang.ref.WeakReference
 
 
 object Panels : Notifications {
@@ -36,9 +42,7 @@ object Panels : Notifications {
         OpModeHandler.registerOpMode()
     }
 
-    @JvmStatic
-    @OnCreate
-    fun start(context: Context) {
+    internal fun initPanels(context: Context, eventLoop: FtcEventLoop) {
         TaskTimer.measure("full init") {
             wasStarted = false
 
@@ -90,8 +94,23 @@ object Panels : Notifications {
 
             server.prepareData()
 
+            PluginsManager.plugins.values.forEach { it.onAttachEventLoop(eventLoop) }
+            PluginsManager.plugins.values.forEach { it.onOpModeManager(eventLoop.opModeManager) }
+
             wasStarted = true
         }
+    }
+
+    class StartRoutine(val context: Context, val eventLoop: FtcEventLoop) : Runnable {
+        override fun run() {
+            initPanels(context, eventLoop)
+        }
+    }
+
+    @JvmStatic
+    @OnCreate
+    fun start(context: Context) {
+        wasStarted = false
     }
 
     @JvmStatic
@@ -102,8 +121,8 @@ object Panels : Notifications {
     @JvmStatic
     @OnCreateEventLoop
     fun attachEventLoop(context: Context, eventLoop: FtcEventLoop) {
-        PluginsManager.plugins.values.forEach { it.onAttachEventLoop(eventLoop) }
-        PluginsManager.plugins.values.forEach { it.onOpModeManager(eventLoop.opModeManager) }
+        val t = Thread(StartRoutine(context, eventLoop))
+        t.start()
 
         eventLoop.opModeManager.unregisterListener(this)
         eventLoop.opModeManager.registerListener(this)
