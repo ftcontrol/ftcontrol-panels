@@ -259,8 +259,9 @@
     aspect-ratio: 3 / 3;
     position: relative;
     border: 1px solid currentColor;
-    margin-top: 1rem;
+    margin-top: var(--padding);
     background-color: var(--bgDark);
+    margin-bottom: var(--padding);
   }
   ul {
     list-style: none;

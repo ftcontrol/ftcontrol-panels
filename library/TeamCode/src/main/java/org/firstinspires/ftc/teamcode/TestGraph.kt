@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode
 
 import com.bylazar.graph.PanelsGraph
+import com.bylazar.telemetry.PanelsTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
@@ -10,6 +11,7 @@ import kotlin.math.sin
 @TeleOp(name = "Test Graph")
 class TestGraph : OpMode() {
     private val graphManager = PanelsGraph.manager
+    private val panelsTelemetry = PanelsTelemetry.telemetry
 
     private val timer = ElapsedTime()
 
@@ -20,24 +22,25 @@ class TestGraph : OpMode() {
     override fun init() {
         timer.reset()
         updateSignals()
-        graphManager.addData("sin", sinVariable)
-        graphManager.addData("cos", cosVariable)
-        graphManager.addData("const", constVariable)
-        graphManager.update()
     }
 
     override fun loop() {
         updateSignals()
-
-        graphManager.addData("sin", sinVariable)
-        graphManager.addData("cos", cosVariable)
-        graphManager.addData("const", constVariable)
-        graphManager.update()
     }
 
     private fun updateSignals() {
         val t = timer.seconds()
         sinVariable = sin(t)
         cosVariable = cos(t)
+
+        graphManager.addData("sin", sinVariable)
+        graphManager.addData("cos", cosVariable)
+        graphManager.addData("const", constVariable)
+        graphManager.update()
+
+        panelsTelemetry.addData("sin", sinVariable)
+        panelsTelemetry.addData("cos", cosVariable)
+        panelsTelemetry.addData("const", constVariable)
+        panelsTelemetry.update(telemetry)
     }
 }
