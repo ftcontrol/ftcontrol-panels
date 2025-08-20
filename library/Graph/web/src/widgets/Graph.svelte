@@ -146,8 +146,6 @@
   }
 </script>
 
-<p>Entries Count: {Object.values(active).length}</p>
-
 <div class="flex">
   <input
     type="range"
@@ -256,7 +254,7 @@
   }
   .graph {
     width: 100%;
-    aspect-ratio: 3 / 3;
+    aspect-ratio: 1 / 1;
     position: relative;
     border: 1px solid currentColor;
     margin-top: var(--padding);
