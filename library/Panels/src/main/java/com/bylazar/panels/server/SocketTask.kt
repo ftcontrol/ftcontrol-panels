@@ -9,5 +9,6 @@ abstract class SocketTask() {
     abstract fun onClose()
     abstract fun onException()
     abstract fun onMessage(text: String)
+    abstract fun onDetailedMessage(client: Socket.ClientSocket, pluginID: String, messageID: String, data: Any?)
     open fun onAdvancedMessage(message: WebSocketFrame){}
 }

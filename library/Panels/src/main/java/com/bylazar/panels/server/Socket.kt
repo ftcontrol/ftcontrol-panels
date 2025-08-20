@@ -4,6 +4,7 @@ import com.bylazar.panels.Logger
 import com.bylazar.panels.Panels
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.plugins.PluginsManager
+import com.bylazar.panels.server.tasks.PluginDevTask
 import com.bylazar.panels.server.tasks.TimeTask
 import fi.iki.elonen.NanoWSD
 import java.io.IOException
@@ -52,6 +53,7 @@ class Socket(
     inner class ClientSocket(handshake: IHTTPSession) : WebSocket(handshake) {
         val tasks: List<SocketTask> = listOf(
             TimeTask(),
+            PluginDevTask()
         )
 
         internal fun sendString(data: String) {
@@ -137,6 +139,8 @@ class Socket(
                 val message = SocketMessage.fromJson(message.textPayload)
 
                 val pluginID = message.pluginID
+
+                tasks.forEach { it.onDetailedMessage(this, pluginID, message.messageID, message.data) }
 
                 val matchedPluginKey = PluginsManager.plugins.keys.find { it == pluginID }
 

@@ -187,6 +187,12 @@ export class GlobalState {
         console.log("Reloaded plugin", entry.id)
 
         this.changedTimestamps[entry.id] = entry.lastChanged
+
+        this.socket.sendMessage({
+          pluginID: "core",
+          messageID: "pluginReloaded",
+          data: details.id,
+        })
       }
     }
   }

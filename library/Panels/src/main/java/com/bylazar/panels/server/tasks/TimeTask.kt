@@ -2,6 +2,7 @@ package com.bylazar.panels.server.tasks
 
 import com.bylazar.panels.json.SocketMessage
 import com.bylazar.panels.json.TimeData
+import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.SocketTask
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -26,6 +27,10 @@ class TimeTask : SocketTask() {
     }
 
     override fun onMessage(text: String) {
+
+    }
+
+    override fun onDetailedMessage(client: Socket.ClientSocket, pluginID: String, messageID: String, data: Any?) {
 
     }
 
