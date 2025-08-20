@@ -15,10 +15,12 @@
   let last = $state(-1)
 
   onMount(() => {
-    manager.sendRequest()
-
-    const interval = setInterval(() => {
+    setTimeout(() => {
       manager.sendRequest()
+
+      const interval = setInterval(() => {
+        manager.sendRequest()
+      }, 5000)
     }, 5000)
 
     manager.state.onChange(manager.LAST_PING_KEY, (data) => {
