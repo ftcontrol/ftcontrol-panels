@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode
+package org.firstinspires.ftc.teamcode.graph
 
 import com.bylazar.graph.PanelsGraph
 import com.bylazar.telemetry.PanelsTelemetry
