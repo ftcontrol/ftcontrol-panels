@@ -9,8 +9,13 @@ class FieldManager() {
 
     var images: MutableMap<UUID, String> = mutableMapOf()
 
-    var disableDefaultBg = false
-    val defaultBgID = registerImage(config.defaultBg)
+    var defaultBgID: UUID? = null
+
+    fun init(){
+        defaultBgID = registerImage(config.defaultBg)
+        canvas.bgID = defaultBgID
+        lastCanvas.bgID = defaultBgID
+    }
 
     val updateInterval = config.canvasUpdateInterval
     var lastUpdate = 0L
@@ -24,10 +29,8 @@ class FieldManager() {
     var lastCanvas = Canvas()
 
     init {
-        if (!disableDefaultBg) {
-            canvas.bgID = defaultBgID
-            lastCanvas.bgID = defaultBgID
-        }
+        canvas.bgID = defaultBgID
+        lastCanvas.bgID = defaultBgID
     }
 
     var cursorX = 0.0
@@ -173,9 +176,6 @@ class FieldManager() {
     }
 
     fun update() {
-        if (!disableDefaultBg && canvas.bgID == null) {
-            canvas.bgID = defaultBgID
-        }
         if (shouldUpdateCanvas) {
             sendCanvas(canvas)
             lastUpdate = System.currentTimeMillis()

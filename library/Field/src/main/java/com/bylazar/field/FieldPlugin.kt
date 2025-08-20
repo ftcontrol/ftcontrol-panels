@@ -19,7 +19,7 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "canvasPacket", manager.lastCanvas)
-        if(manager.images.isNotEmpty()) sendClient(client, "canvasImages", manager.images)
+        if (manager.images.isNotEmpty()) sendClient(client, "canvasImages", manager.images)
 
         log("Images length: ${manager.images.keys.size}")
     }
@@ -33,10 +33,14 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         context: Context
     ) {
         manager.config = config
+        manager.init()
         manager.sendCanvas = { canvas -> send("canvasPacket", canvas) }
-        manager.sendImages = { images -> if(images.isNotEmpty()) send("canvasImages", images) }
+        manager.sendImages = { images -> if (images.isNotEmpty()) send("canvasImages", images) }
 
         log("Images length: ${manager.images.keys.size}")
+
+        send("canvasPacket", manager.lastCanvas)
+        if (manager.images.isNotEmpty()) send("canvasImages", manager.images)
     }
 
     override fun onAttachEventLoop(eventLoop: FtcEventLoop) {

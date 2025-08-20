@@ -47,6 +47,8 @@ class TestTelemetry : OpMode() {
         field.line(25.0, 25.0)
         field.moveCursor(40.0, 40.0)
         field.img(10.0, 10.0, imgID)
+        field.moveCursor(98.0, 58.0)
+        field.img(10.0, 10.0, imgID)
         field.update()
     }
 }

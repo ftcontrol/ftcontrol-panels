@@ -27,7 +27,7 @@ class FieldImages {
     }
 
     val INTO_THE_DEEP = FieldImage(
-        LIGHT = ImagePreset { loadResourceAsBase64("into-the-deep-dark.png") },
-        DARK = ImagePreset { loadResourceAsBase64("into-the-deep-light.png") }
+        DARK = ImagePreset { loadResourceAsBase64("into-the-deep-dark.png") },
+        LIGHT = ImagePreset { loadResourceAsBase64("into-the-deep-light.png") }
     )
 }
