@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class GraphPluginConfig : BasePluginConfig() {
-    open var graphUpdateInterval = 75L
+    open var graphUpdateInterval = 200L
 }
 
 object Plugin : Plugin<GraphPluginConfig>(GraphPluginConfig()) {

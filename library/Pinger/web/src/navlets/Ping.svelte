@@ -17,6 +17,19 @@
   onMount(() => {
     manager.sendRequest()
 
+    setTimeout(() => {
+      manager.sendRequest()
+    }, 500)
+    setTimeout(() => {
+      manager.sendRequest()
+    }, 1000)
+    setTimeout(() => {
+      manager.sendRequest()
+    }, 2000)
+    setTimeout(() => {
+      manager.sendRequest()
+    }, 4000)
+
     const interval = setInterval(() => {
       manager.sendRequest()
     }, 5000)

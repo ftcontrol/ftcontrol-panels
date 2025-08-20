@@ -15,7 +15,7 @@ class TestGraph : OpMode() {
 
     private var sinVariable = 0.0
     private var cosVariable = 0.0
-    private var constVariable = 1.0
+    private var constVariable = 0.0
 
     override fun init() {
         timer.reset()

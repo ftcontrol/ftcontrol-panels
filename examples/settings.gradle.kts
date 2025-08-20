@@ -22,7 +22,8 @@ val modules = listOf(
     "FullPanels",
     "Panels",
     "Utils",
-    "Pinger"
+    "Pinger",
+    "Graph"
 )
 
 modules.forEach { name ->

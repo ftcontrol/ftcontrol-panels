@@ -26,7 +26,7 @@ export const config: PluginConfig = {
       filepath: "src/docs/Homepage.svelte",
     },
     {
-      type: "widget",
+      type: "docs",
       id: "DocsPage1",
       filepath: "src/docs/DocsPage1.svelte",
     },
