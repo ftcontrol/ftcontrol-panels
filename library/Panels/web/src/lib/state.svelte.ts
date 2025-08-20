@@ -6,11 +6,12 @@ import {
   type PluginConfig,
   type PluginInfo,
 } from "ftc-panels"
-import { importFromSource } from "../../../../../../ftcontrol-plugins/cli/core/socket/source"
-import { PluginSocket } from "../../../../../../ftcontrol-plugins/cli/core/socket/plugin"
+import { importFromSource } from "ftc-panels"
+import { PluginSocket } from "ftc-panels"
 import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 import { readValue, storeValue } from "$lib/indexedDB"
 import { panelsConfig, PanelsManager } from "$lib/manager"
+import type { PluginManager } from "ftc-panels"
 
 export class GlobalState {
   plugins: PluginInfo[] = $state([])
@@ -211,6 +212,8 @@ export class GlobalState {
     }
   }
 
+  wasSocketOpened = $state(false)
+
   async init(resetStuff = true) {
     try {
       if (resetStuff) {
@@ -249,14 +252,20 @@ export class GlobalState {
 
       this.plugins = parsed.data.plugins
 
-      if (resetStuff == false) {
-        await this.init(true)
-        return
+      if (this.wasSocketOpened) {
+        location.reload()
       }
 
-      console.log(`[init] Loaded ${this.plugins.length} plugins`)
       this.plugins.forEach((item) => {
         this.reloadIndexes[item.details.id] = 0
+        this.changedTimestamps[item.details.id] = -1
+        this.lastVersionNotificationTime[item.details.id] = -1
+      })
+
+      console.log(`[init] Loaded ${this.plugins.length} plugins`)
+
+      this.plugins.forEach((item) => {
+        this.reloadIndexes[item.details.id]++
         this.changedTimestamps[item.details.id] = 0
         this.lastVersionNotificationTime[item.details.id] = 0
       })
@@ -287,7 +296,7 @@ export class GlobalState {
             try {
               const oldSha = await readValue(`${id}_sha`)
               if (sha === oldSha) {
-                mapping[id] = await readValue(`${id}_data`)
+                mapping[id] = (await readValue(`${id}_data`)) ?? ""
                 shouldRefresh = false
               }
             } catch (_) {}
@@ -323,20 +332,20 @@ export class GlobalState {
         this.notificationsManager
       )
 
-      setTimeout(async () => {
-        try {
-          await this.updateDevPlugins(true)
-        } catch (e) {}
-      }, 100)
+      try {
+        await this.updateDevPlugins(true)
+      } catch (e) {}
 
       this.plugins.push({
         details: panelsConfig,
-        config: {},
+        config: {
+          isEnabled: true,
+          isDev: false,
+        },
       })
 
-      this.socket.pluginManagers["com.bylazar.panels"] = new PanelsManager(
-        panelsConfig
-      )
+      this.socket.pluginManagers["com.bylazar.panels"] =
+        new PanelsManager() as PluginManager
 
       setTimeout(() => {
         this.createDevServerInterval()
@@ -350,6 +359,7 @@ export class GlobalState {
       console.log(`[init] socket.init() took ${Date.now() - t1}ms`)
 
       this.isConnected = true
+      this.wasSocketOpened = true
 
       if (this.updateInterval !== null) {
         clearInterval(this.updateInterval)
@@ -384,8 +394,17 @@ export class GlobalState {
       }
     } catch (e) {
       console.error(`[init] Error during initialization:`, e)
+      await this.waitTwoSeconds()
       await this.init(resetStuff)
     }
+  }
+
+  waitTwoSeconds() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("Done waiting 2 seconds!")
+      }, 2000)
+    })
   }
 
   close() {
@@ -442,7 +461,12 @@ export class GlobalState {
     }
   }
 
-  private async getPlugins(): Promise<string> {
+  private async getPlugins(): Promise<{
+    data: {
+      plugins: PluginInfo[]
+      skippedPlugins: PluginConfig[]
+    }
+  }> {
     const url = dev ? "http://localhost:8001" : window.location.origin
 
     const response = await this.fetchWithRetry(
@@ -479,7 +503,9 @@ export class GlobalState {
 
         console.log("Checking plugin version", id, manager.config.version)
 
-        const version = await manager.constructor.getNewVersion()
+        const version = await (
+          manager.constructor as typeof PluginManager
+        ).getNewVersion()
         let hasVersion = version != manager.config.version
         if (version == "") {
           hasVersion = false
