@@ -11,14 +11,13 @@
   setContext("manager", manager.manager)
 
   let { children }: { children?: Snippet } = $props()
-
 </script>
 
 <NotificationsUi />
 <section>
   <Topbar />
 
-  {#if global.isPrepared}
+  {#if global.isPrepared || global.plugins.filter((it) => it.details.id != "com.bylazar.panels").length > 0}
     {@render children?.()}
   {/if}
 
