@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "OC",
   description: "OpMode Control for FTC Robots",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.opmodecontrol/",
-  version: "0.0.13",
+  version: "0.0.14",
   pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   manager: "src/manager.ts",

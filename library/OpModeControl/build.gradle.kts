@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.opmodecontrol"
-val pluginVersion = "0.0.13"
+val pluginVersion = "0.0.14"
 
 plugins {
     id("com.android.library")

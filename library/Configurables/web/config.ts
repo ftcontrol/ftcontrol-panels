@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "C",
   description: "Configurable variables for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.configurables/",
-  version: "0.0.17",
+  version: "0.0.18",
   pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   components: [

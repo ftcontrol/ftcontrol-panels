@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "FP",
   description: "Full Panels Installation",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
-  version: "0.0.43",
+  version: "0.0.44",
   pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   manager: "src/manager.ts",

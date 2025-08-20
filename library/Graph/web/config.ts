@@ -6,7 +6,7 @@ export const config: PluginConfig = {
   letterName: "G",
   description: "Graphs for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.graph",
-  version: "0.0.5",
+  version: "0.0.1",
   pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   manager: "src/manager.ts",
