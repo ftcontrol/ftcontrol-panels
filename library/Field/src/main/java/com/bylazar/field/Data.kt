@@ -65,6 +65,8 @@ data class Canvas(
     var offsetX: Double = 0.0,
     var offsetY: Double = 0.0,
     var rotation: CanvasRotation = CanvasRotation.DEG_0,
+    var flipX: Boolean = false,
+    var flipY: Boolean = false,
     var items: MutableList<Drawable> = mutableListOf(),
     var bgID: UUID? = null
 ) {
@@ -77,5 +79,7 @@ data class Canvas(
         offsetX = 0.0
         offsetY = 0.0
         rotation = CanvasRotation.DEG_0
+        flipX = false
+        flipY = false
     }
 }

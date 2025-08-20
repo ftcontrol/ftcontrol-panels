@@ -28,6 +28,8 @@ export class Renderer {
   private offsetX = new Distance(0)
   private offsetY = new Distance(0)
   private heading: CanvasRotation = CanvasRotation.DEG_0
+  private flipX = false
+  private flipY = false
 
   private imageCache = new Map<string, { sig: number; el: HTMLImageElement }>()
 
@@ -43,10 +45,12 @@ export class Renderer {
     this.imageCache.clear()
   }
 
-  setViewport(offsetX: Distance, offsetY: Distance, heading: CanvasRotation) {
-    this.offsetX = offsetX
-    this.offsetY = offsetY
-    this.heading = heading
+  setViewport(packet: Packet) {
+    this.offsetX = new Distance(packet.offsetX)
+    this.offsetY = new Distance(packet.offsetY)
+    this.heading = packet.rotation
+    this.flipX = packet.flipX
+    this.flipY = packet.flipY
   }
 
   async draw(packet: Packet, images: ImagesMap): Promise<void> {
@@ -151,6 +155,7 @@ export class Renderer {
       FIELD_HEIGHT.pixels / 2 + this.offsetY.pixels
     )
     this.ctx.rotate(rotationToRadians(this.heading))
+    this.ctx.scale(this.flipX ? -1 : 1, this.flipY ? -1 : 1)
   }
 
   private async getImage(
@@ -201,15 +206,12 @@ export class Renderer {
     const img = await this.getImage(key, base64)
     if (!img) return
 
+    const W = FIELD_WIDTH.pixels
+    const H = FIELD_HEIGHT.pixels
+
     this.ctx.save()
     this.applyBaseTransform()
-    this.ctx.drawImage(
-      img,
-      -(this.canvas.width / 2),
-      -(this.canvas.height / 2),
-      this.canvas.width,
-      this.canvas.height
-    )
+    this.ctx.drawImage(img, -W / 2, -H / 2, W, H)
     this.ctx.restore()
   }
 

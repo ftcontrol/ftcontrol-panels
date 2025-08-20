@@ -31,6 +31,8 @@ export type Packet = {
   offsetX: number
   offsetY: number
   rotation: CanvasRotation
+  flipX: boolean
+  flipY: boolean
   items: Drawable[]
   bgID: string | null
 }
@@ -41,6 +43,8 @@ export const emptyPacket: Packet = {
   offsetX: 0,
   offsetY: 0,
   rotation: CanvasRotation.DEG_0,
+  flipX: false,
+  flipY: false,
   items: [],
   bgID: null,
 }

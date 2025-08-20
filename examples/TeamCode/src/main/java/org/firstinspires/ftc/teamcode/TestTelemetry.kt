@@ -1,15 +1,25 @@
 package org.firstinspires.ftc.teamcode
 
 import com.bylazar.configurables.PanelsConfigurables
+import com.bylazar.configurables.annotations.Configurable
 import com.bylazar.field.PanelsField
 import com.bylazar.telemetry.PanelsTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
+@Configurable
 @TeleOp(name = "Test Telemetry", group = "Dev")
 class TestTelemetry : OpMode() {
     companion object {
         var test = "lazar"
+
+        enum class Config{
+            PANELS,
+            PEDRO,
+            RR
+        }
+
+        @JvmField var config = Config.PANELS
     }
 
     val telemetry = PanelsTelemetry.telemetry
@@ -18,8 +28,11 @@ class TestTelemetry : OpMode() {
     val imgID = field.registerImage(PanelsField.images.INTO_THE_DEEP.DARK)
 
     override fun init() {
-        field.setOffsets(PanelsField.presets.PEDRO_PATHING)
-//        field.setOffsets(PanelsField.PANELS)
+        field.setOffsets(when(config){
+            Config.PANELS -> PanelsField.presets.PANELS
+            Config.PEDRO -> PanelsField.presets.PEDRO_PATHING
+            Config.RR -> PanelsField.presets.ROAD_RUNNER
+        })
 
         field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
 
@@ -37,6 +50,7 @@ class TestTelemetry : OpMode() {
 
     override fun loop() {
         telemetry.debug("Loop of ${System.currentTimeMillis()}")
+        telemetry.debug("Config: $config")
         telemetry.update()
         field.moveCursor(0.0, 0.0)
         field.setStyle(PanelsField.RED, PanelsField.BLUE, 0.1)

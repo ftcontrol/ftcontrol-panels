@@ -184,6 +184,8 @@ class FieldManager() {
             lastCanvas.items = canvas.items.toList().toMutableList()
             lastCanvas.offsetX = canvas.offsetX
             lastCanvas.offsetY = canvas.offsetY
+            lastCanvas.flipX = canvas.flipX
+            lastCanvas.flipY = canvas.flipY
             lastCanvas.rotation = canvas.rotation
         }
 

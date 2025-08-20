@@ -25,7 +25,7 @@
   function updateMouseCoords(ev: PointerEvent) {
     if (!canvas) return
 
-    // 1) Content-box geometry (exclude borders)
+    // CSS → device px (exclude borders)
     const rect = canvas.getBoundingClientRect()
     const cs = getComputedStyle(canvas)
     const bl = parseFloat(cs.borderLeftWidth) || 0
@@ -38,37 +38,28 @@
     const contentWidth = rect.width - bl - br
     const contentHeight = rect.height - bt - bb
 
-    // 2) CSS px -> device px (backing store)
-    const scaleX = canvas.width / contentWidth
-    const scaleY = canvas.height / contentHeight
-    const cx = (ev.clientX - contentLeft) * scaleX
-    const cy = (ev.clientY - contentTop) * scaleY
+    const cx = (ev.clientX - contentLeft) * (canvas.width / contentWidth)
+    const cy = (ev.clientY - contentTop) * (canvas.height / contentHeight)
 
-    // 3) Dynamic pixels-per-inch in device pixels
-    const ppi = canvas.width / FIELD_WIDTH.inches // == (FIELD_WIDTH.pixels * dpr) / inches
-
-    // 4) Invert overlay transform (translate center+offset, then rotate -θ)
+    const ppi = canvas.width / FIELD_WIDTH.inches
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
     const offXpx = packet.offsetX * ppi
     const offYpx = packet.offsetY * ppi
+    const flipX = packet.flipX
+    const flipY = packet.flipY
+    const deg = (rotationToRadians(packet.rotation) * 180) / Math.PI
 
-    const x = cx - (centerX + offXpx)
-    const y = cy - (centerY + offYpx)
+    const M = new DOMMatrix()
+      .translateSelf(centerX + offXpx, centerY + offYpx)
+      .rotateSelf(0, 0, deg)
+      .scaleSelf(flipX ? -1 : 1, flipY ? -1 : 1)
 
-    const θ = rotationToRadians(packet.rotation)
-    const cos = Math.cos(θ),
-      sin = Math.sin(θ)
+    const inv = M.inverse()
+    const pt = new DOMPoint(cx, cy).matrixTransform(inv)
 
-    // inverse rotation R(-θ) = [[cos, sin], [-sin, cos]]
-    const xr = x * cos + y * sin
-    const yr = -x * sin + y * cos
-
-    // 5) device px -> inches
-    mouseXIn = xr / ppi
-    mouseYIn = yr / ppi
-    // if you want +Y up, use: mouseYIn = -yr / ppi
-
+    mouseXIn = pt.x / ppi
+    mouseYIn = pt.y / ppi
     hasMouse = true
   }
 
@@ -83,11 +74,7 @@
     requestAnimationFrame(async () => {
       needsRender = false
       if (!renderer) return
-      renderer.setViewport(
-        new Distance(packet.offsetX),
-        new Distance(packet.offsetY),
-        packet.rotation
-      )
+      renderer.setViewport(packet)
       await renderer.draw(packet, images)
     })
   }
@@ -101,9 +88,6 @@
     scheduleRender()
 
     manager.state.onChange(manager.PACKETS_KEY, (next) => {
-      // next.offsetX = 0
-      // next.offsetY = 0
-      // next.offsetHeading = 0
       packet = next
       scheduleRender()
     })
@@ -133,6 +117,8 @@
           360}°</b
       >
     </div>
+    <div>flipX: <b>{packet.flipX}"</b></div>
+    <div>flipY: <b>{packet.flipY}"</b></div>
   </div>
   {#if hasMouse}
     <div>
