@@ -137,7 +137,7 @@ object Plugin : Plugin<ConfigurablesPluginConfig>(ConfigurablesPluginConfig()) {
 
         log("Configurable fields: ${fields.map { it.name }}")
 
-        allFields = jvmFields.map { it.toJsonType }.toMutableList()
+        allFields = jvmFields.map { it.toJsonType }.filter { it.className != "class java.lang.ClassLoader" && it.className != "class sun.misc.Unsafe" }.toMutableList()
 
         initialAFieldsMap = allFieldsMap
 
