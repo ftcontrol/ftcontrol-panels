@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.pinger"
-val pluginVersion = "0.0.10"
+val pluginVersion = "0.0.11"
 
 plugins {
     id("com.android.library")

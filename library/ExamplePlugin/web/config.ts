@@ -6,8 +6,8 @@ export const config: PluginConfig = {
   letterName: "EP",
   description: "Example Plugin for Panels",
   websiteURL: "",
-  version: "0.0.12",
-  pluginsCoreVersion: "1.1.29",
+  version: "0.0.13",
+  pluginsCoreVersion: "1.1.31",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

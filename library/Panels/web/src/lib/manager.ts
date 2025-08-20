@@ -6,7 +6,7 @@ export const panelsConfig: PluginConfig = {
   letterName: "P",
   description: "Empty Panels Installation ready to be extended",
   websiteURL: "https://panels.bylazar.com",
-  version: "0.0.28",
+  version: "0.0.29",
   pluginsCoreVersion: "1.1.29",
   author: "Lazar",
   manager: "",
