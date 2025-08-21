@@ -29,4 +29,47 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [
+    {
+      version: "0.0.1",
+      release_date: "28.10.2000",
+      changes: [
+        {
+          type: "added",
+          description: "New telemetry implementation.",
+          upgrading: "",
+        },
+        {
+          type: "changed",
+          description: "Renames config class",
+          upgrading: "",
+        },
+        {
+          type: "deprecated",
+          description: "Deprecated old functions",
+          upgrading: "",
+        },
+        {
+          type: "removed",
+          description: "Removed Telemetry class",
+          upgrading: "",
+        },
+        {
+          type: "fixed",
+          description: "Bug with Field",
+          upgrading: "Reset cookies",
+        },
+        {
+          type: "docs",
+          description: "Finished Docs",
+          upgrading: "",
+        },
+        {
+          type: "other",
+          description: "Changed Colors",
+          upgrading: "",
+        },
+      ],
+    },
+  ],
 }

@@ -13,6 +13,7 @@ data class PluginDetails(
     val manager: String = "",
     val templates: List<Template> = listOf(),
     val includedPluginsIDs: List<String> = listOf(),
+    val changelog: List<ChangeLogEntry> = listOf()
 ) {
     override fun toString(): String {
         return buildString {
@@ -68,3 +69,24 @@ data class TemplateNavlet(
     val pluginID: String = "",
     val navletID: String = ""
 )
+data class ChangeLogEntry(
+    val version: String = "",
+    val releaseDate: String = "",
+    val changes: List<Change> = listOf()
+)
+
+data class Change(
+    val type: ChangeLogType = ChangeLogType.OTHER,
+    val description: String = "",
+    val upgrading: String = ""
+)
+
+enum class ChangeLogType {
+    ADDED,
+    CHANGED,
+    DEPRECATED,
+    REMOVED,
+    FIXED,
+    DOCS,
+    OTHER
+}

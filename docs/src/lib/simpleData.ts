@@ -8,8 +8,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "B",
     "description": "Battery Utils for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.battery/",
-    "version": "0.0.10",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.15",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -33,8 +33,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "C",
     "description": "Capture Plugin for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.capture/",
-    "version": "0.0.9",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.14",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -58,8 +58,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "C",
     "description": "Configurable variables for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.configurables/",
-    "version": "0.0.14",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.21",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "components": [
       {
@@ -78,7 +78,7 @@ export const simpleModules: PluginConfig[] = [
         "filepath": "src/docs/Homepage.svelte"
       },
       {
-        "type": "widget",
+        "type": "docs",
         "id": "DocsPage1",
         "filepath": "src/docs/DocsPage1.svelte"
       }
@@ -93,8 +93,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "D",
     "description": "Docs Plugin for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.docs/",
-    "version": "0.0.7",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.12",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -123,8 +123,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "EP",
     "description": "Example Plugin for Panels",
     "websiteURL": "",
-    "version": "0.0.8",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.13",
+    "pluginsCoreVersion": "link:ftc-panels",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -145,7 +145,50 @@ export const simpleModules: PluginConfig[] = [
       }
     ],
     "templates": [],
-    "includedPluginsIDs": []
+    "includedPluginsIDs": [],
+    "changelog": [
+      {
+        "version": "0.0.1",
+        "release_date": "28.10.2000",
+        "changes": [
+          {
+            "type": "added",
+            "description": "New telemetry implementation.",
+            "upgrading": ""
+          },
+          {
+            "type": "changed",
+            "description": "Renames config class",
+            "upgrading": ""
+          },
+          {
+            "type": "deprecated",
+            "description": "Deprecated old functions",
+            "upgrading": ""
+          },
+          {
+            "type": "removed",
+            "description": "Removed Telemetry class",
+            "upgrading": ""
+          },
+          {
+            "type": "fixed",
+            "description": "Bug with Field",
+            "upgrading": "Reset cookies"
+          },
+          {
+            "type": "docs",
+            "description": "Finished Docs",
+            "upgrading": ""
+          },
+          {
+            "type": "other",
+            "description": "Changed Colors",
+            "upgrading": ""
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "com.bylazar.field",
@@ -153,8 +196,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "F",
     "description": "Field Drawing for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.field/",
-    "version": "0.0.11",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.16",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -183,8 +226,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "FP",
     "description": "Full Panels Installation",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
-    "version": "0.0.40",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.50",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -280,6 +323,7 @@ export const simpleModules: PluginConfig[] = [
       }
     ],
     "includedPluginsIDs": [
+      "com.bylazar.panels",
       "com.bylazar.battery",
       "com.bylazar.capture",
       "com.bylazar.configurables",
@@ -300,8 +344,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "G",
     "description": "Gamepad Plugin for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.gamepad/",
-    "version": "0.0.13",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.18",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -335,13 +379,63 @@ export const simpleModules: PluginConfig[] = [
     "includedPluginsIDs": []
   },
   {
+    "id": "com.bylazar.graph",
+    "name": "Graph",
+    "letterName": "G",
+    "description": "Graphs for Panels",
+    "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.graph",
+    "version": "0.0.2",
+    "pluginsCoreVersion": "1.1.33",
+    "author": "Lazar",
+    "manager": "src/manager.ts",
+    "components": [
+      {
+        "type": "widget",
+        "id": "Graph",
+        "filepath": "src/widgets/Graph.svelte"
+      },
+      {
+        "type": "docs",
+        "id": "Overview",
+        "filepath": "src/docs/Overview.svelte"
+      }
+    ],
+    "templates": [],
+    "includedPluginsIDs": []
+  },
+  {
+    "id": "com.bylazar.lights",
+    "name": "Lights",
+    "letterName": "L",
+    "description": "Gobilda Light-Based Telemetry",
+    "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.lights/",
+    "version": "0.0.1",
+    "pluginsCoreVersion": "1.1.33",
+    "author": "Lazar",
+    "manager": "src/manager.ts",
+    "components": [
+      {
+        "type": "widget",
+        "id": "Lights",
+        "filepath": "src/widgets/Lights.svelte"
+      },
+      {
+        "type": "docs",
+        "id": "Homepage",
+        "filepath": "src/docs/Homepage.svelte"
+      }
+    ],
+    "templates": [],
+    "includedPluginsIDs": []
+  },
+  {
     "id": "com.bylazar.limelightproxy",
     "name": "Limelight Proxy",
     "letterName": "LLP",
     "description": "Limelight Proxy for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
-    "version": "0.0.10",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.16",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -385,8 +479,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "OC",
     "description": "OpMode Control for FTC Robots",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.opmodecontrol/",
-    "version": "0.0.10",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.15",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -407,11 +501,11 @@ export const simpleModules: PluginConfig[] = [
   {
     "id": "com.bylazar.pinger",
     "name": "Pinger",
-    "letterName": "EP",
+    "letterName": "P",
     "description": "Latency Test for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.pinger/",
-    "version": "0.0.6",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.11",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -435,8 +529,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "T",
     "description": "Text-Based Telemetry",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
-    "version": "0.0.8",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.13",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -465,8 +559,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "T",
     "description": "Plugin for Panels that implements custom theming with saving and preset sharing.",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.themes/",
-    "version": "0.0.11",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.16",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -495,8 +589,8 @@ export const simpleModules: PluginConfig[] = [
     "letterName": "U",
     "description": "Utils for Panels",
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.utils/",
-    "version": "0.0.10",
-    "pluginsCoreVersion": "1.1.26",
+    "version": "0.0.15",
+    "pluginsCoreVersion": "1.1.33",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
