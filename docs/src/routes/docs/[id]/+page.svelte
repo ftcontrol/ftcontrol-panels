@@ -1,5 +1,6 @@
 <script lang="ts">
   import { type PluginConfig, SimpleDynamicComponent } from "ftc-panels"
+  import { PluginDetails, ChangeLog } from "ftc-panels/docs"
   import type { PageProps } from "./$types"
   import { modules } from "$lib/data"
   import { importFromSource } from "ftc-panels"
@@ -27,46 +28,8 @@
 </script>
 
 {#key data}
-  <section>
-    <p>{plugin.config.id}</p>
-    <h2>
-      {plugin.config.name} v{plugin.config.version}
-    </h2>
-    <p>by {plugin.config.author}</p>
-    {#if plugin.config.websiteURL}
-      <a href={plugin.config.websiteURL}
-        >Website: {processWebsiteURL(plugin.config.websiteURL)}</a
-      >
-    {:else}
-      <a>No website</a>
-    {/if}
-    <br />
-    {#if plugin.config.includedPluginsIDs.length > 0}
-      <p>Included Plugins</p>
-      {#each plugin.config.includedPluginsIDs as id}
-        <p>{id}</p>
-      {/each}
-    {/if}
-    <p>{plugin.config.description}</p>
-  </section>
-
-  <section>
-    <h3>Changelog</h3>
-    {#each plugin.config.changelog as log}
-      <p><b>{log.version}</b> {log.release_date}</p>
-      <OrderedList>
-        {#each log.changes as change}
-          <ListItem>
-            <p>{change.type}</p>
-            <p><b>Description:</b> {change.description}</p>
-            {#if change.upgrading}
-              <p><b>Upgrading:</b> {change.upgrading}</p>
-            {/if}
-          </ListItem>
-        {/each}
-      </OrderedList>
-    {/each}
-  </section>
+  <PluginDetails plugin={plugin.config} />
+  <ChangeLog changelog={plugin.config.changelog} />
   {#if plugin.config.components.filter((it) => it.type == "docs").length > 0}
     <SimpleDynamicComponent
       info={plugin.config}
