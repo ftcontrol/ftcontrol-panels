@@ -42,7 +42,7 @@
 
 <style>
   svg {
-    height: 32px;
+    height: 64px;
     width: fit-content;
     display: block;
   }
