@@ -10,15 +10,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class LightsPluginConfig : BasePluginConfig() {
-    open var lightsUpdateInterval = 75L
+    open var lightsUpdateInterval = 100L
 }
 
 object Plugin : Plugin<LightsPluginConfig>(LightsPluginConfig()) {
     val manager = LightsManager({ config }, { lightsState -> send("lightsPacket", lightsState) })
 
     override fun onNewClient(client: Socket.ClientSocket) {
-        if(manager.lightsState.isEmpty()) return
-        sendClient(client, "lightsPacket", manager.lightsState)
+        log("Got new client: ${manager.lastLights.size}")
+        if(manager.lastLights.isEmpty()) return
+        sendClient(client, "lightsPacket", manager.lastLights)
     }
 
     override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {

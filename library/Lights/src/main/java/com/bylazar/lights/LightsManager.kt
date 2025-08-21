@@ -57,17 +57,17 @@ class RGBIndicator(override val id: String) : Light<Double>(id, 0.0) {
     override val type = LightType.RGB_INDICATOR
 
     companion object {
-        val OFF = 0.0
-        val RED = 0.2777
-        val ORANGE = 0.333
-        val YELLOW = 0.388
-        val SAGE = 0.444
-        val GREEN = 0.5
-        val AZURE = 0.555
-        val BLUE = 0.611
-        val INDIGO = 0.666
-        val VIOLET = 0.722
-        val WHITE = 1.0
+        val OFF = 0.0 //000000
+        val RED = 0.2777 //ff0300
+        val ORANGE = 0.333 //ff9c00
+        val YELLOW = 0.388 //fdfd00
+        val SAGE = 0.444 //6db600
+        val GREEN = 0.5 //007f0b
+        val AZURE = 0.555 //007582
+        val BLUE = 0.611 //006bfe
+        val INDIGO = 0.666 //3c02ff
+        val VIOLET = 0.722 //7500ff
+        val WHITE = 1.0 //ffffff
     }
 }
 
@@ -82,12 +82,14 @@ class Headlight(override val id: String) : Light<Boolean>(id, false) {
 
 class LightsManager(
     val config: () -> LightsPluginConfig,
-    private val sendLights: (lines: List<LightObject>) -> Unit
+    private val sendLights: (lightsState: List<LightObject>) -> Unit
 ) {
     var lights = listOf<Light<*>>()
 
-    internal val lightsState: List<LightObject>
-        get() = lights.map { it.asObject }
+    val lightsState: List<LightObject>
+        get() = lights.map { it.asObject }.sortedBy { it.type }.sortedBy { it.id }
+
+    var lastLights = lightsState
 
     val updateInterval: Long
         get() = config().lightsUpdateInterval
@@ -98,17 +100,16 @@ class LightsManager(
         get() = timeSinceLastUpdate >= updateInterval
 
     fun initLights(l: List<Light<*>>) {
+        sendLights(listOf<LightObject>())
         lights = l
     }
-
-    fun initLights(vararg l: Light<*>) {
-        lights = l.toList()
-    }
+    fun initLights(vararg l: Light<*>) = initLights(l.toList())
 
     fun update() {
-        if (lights.isEmpty()) return
+        if (lightsState.isEmpty()) return
         if (shouldUpdateLines) {
             sendLights(lightsState)
+            lastLights = lightsState
             lastUpdate = System.currentTimeMillis()
         }
     }
