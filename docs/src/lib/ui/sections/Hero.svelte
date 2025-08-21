@@ -2,26 +2,12 @@
     import Panels from "$lib/ui/Panels.svelte"
     import GitHub from "$lib/ui/GitHub.svelte"
     import GradientImage from "$lib/ui/GradientImage.svelte";
+    import HeroCopy from "$lib/ui/sections/HeroCopy.svelte";
 </script>
 
 <section class="hero">
     <div class="copy">
-        <Panels/>
-        <h2>An intuitive, real-time<br/>dashboard for your FTC Robot.</h2>
-
-        <div class="actions">
-            <a class="button primary" href="/docs">Read the docs</a>
-            <a class="button" href="/docs/com.bylazar.docs/Prerequisites">Install</a>
-            <a
-                    class="icon"
-                    href="https://github.com/ftcontrol/ftcontrol-panels"
-                    aria-label="View on GitHub"
-            >
-                <GitHub/>
-            </a>
-        </div>
-
-        <p class="version">v2.0.0</p>
+       <HeroCopy/>
     </div>
 
     <div class="media">
