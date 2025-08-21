@@ -1,3 +1,6 @@
+<script>
+</script>
+
 <svg
   width="100%"
   height="100%"
@@ -42,11 +45,17 @@
 
 <style>
   svg {
-    height: 64px;
+    height: 52px;
     width: fit-content;
     display: block;
   }
   path {
     fill: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    svg{
+      height: 40px;
+    }
   }
 </style>

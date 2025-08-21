@@ -1,6 +1,7 @@
 <script lang="ts">
     import Panels from "$lib/ui/Panels.svelte"
     import GitHub from "$lib/ui/GitHub.svelte"
+    import GradientImage from "$lib/ui/GradientImage.svelte";
 </script>
 
 <section class="hero">
@@ -13,7 +14,7 @@
             <a class="button" href="/docs/com.bylazar.docs/Prerequisites">Install</a>
             <a
                     class="icon"
-                    href="https://github.com/your/repo"
+                    href="https://github.com/ftcontrol/ftcontrol-panels"
                     aria-label="View on GitHub"
             >
                 <GitHub/>
@@ -24,7 +25,9 @@
     </div>
 
     <div class="media">
-        <img src="/homepage-panels.png" alt="Dashboard panels preview"/>
+        <GradientImage desktopType="right" mobileType="bottom">
+            <img src="/homepage-panels.png" alt="Dashboard panels preview"/>
+        </GradientImage>
     </div>
 </section>
 
@@ -116,6 +119,7 @@
         .copy {
             align-items: center;
             text-align: center;
+            margin-bottom: 4rem;
         }
 
         .actions {
@@ -145,6 +149,10 @@
             height: auto;
             object-fit: contain;
             object-position: center;
+        }
+
+        .hero {
+            margin-top: 16rem;
         }
     }
 </style>
