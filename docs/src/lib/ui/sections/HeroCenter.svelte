@@ -13,7 +13,7 @@
         flex-direction: column;
         align-items: center;
         gap: 0.25rem;
-        margin-block: 8rem;
+        margin-block: 14rem;
     }
     section > :global(h2) {
         text-align: center;
