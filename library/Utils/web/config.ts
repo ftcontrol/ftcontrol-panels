@@ -6,8 +6,10 @@ export const config: PluginConfig = {
   letterName: "U",
   description: "Utils for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.utils/",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:utils:<VERSION>",
   version: "0.0.15",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -29,4 +31,5 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [],
 }

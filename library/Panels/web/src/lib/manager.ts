@@ -13,7 +13,7 @@ export const panelsConfig: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:panels:<VERSION>",
   version: "0.0.29",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "",
   components: [],

@@ -6,8 +6,10 @@ export const config: PluginConfig = {
   letterName: "B",
   description: "Battery Utils for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.battery/",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:battery:<VERSION>",
   version: "0.0.15",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -24,4 +26,5 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [],
 }

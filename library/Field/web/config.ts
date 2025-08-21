@@ -6,8 +6,10 @@ export const config: PluginConfig = {
   letterName: "F",
   description: "Field Drawing for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:field:<VERSION>",
   version: "0.0.16",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -29,4 +31,5 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [],
 }

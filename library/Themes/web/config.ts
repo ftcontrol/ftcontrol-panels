@@ -7,8 +7,10 @@ export const config: PluginConfig = {
   description:
     "Plugin for Panels that implements custom theming with saving and preset sharing.",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.themes/",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:themes:<VERSION>",
   version: "0.0.16",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -30,4 +32,5 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [],
 }

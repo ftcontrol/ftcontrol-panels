@@ -6,8 +6,10 @@ export const config: PluginConfig = {
   letterName: "LLP",
   description: "Limelight Proxy for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:limelightproxy:<VERSION>",
   version: "0.0.16",
-  pluginsCoreVersion: "1.1.33",
+  pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -44,4 +46,5 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
+  changelog: [],
 }
