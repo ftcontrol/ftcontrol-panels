@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.pinger/",
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:pinger:<VERSION>",
-  version: "0.0.11",
+  version: "0.0.12",
   pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   manager: "src/manager.ts",

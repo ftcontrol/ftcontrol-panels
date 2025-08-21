@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.configurables/",
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:configurables:<VERSION>",
-  version: "0.0.21",
+  version: "0.0.22",
   pluginsCoreVersion: "1.1.34",
   author: "Lazar",
   components: [
