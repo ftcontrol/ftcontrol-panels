@@ -8,6 +8,7 @@
   import DocsPage from "$lib/DocsPage.svelte"
   import PluginsWidget from "$lib/plugins/PluginsWidget.svelte"
   import CanvasRender from "$lib/grid/CanvasRender.svelte"
+  import { PluginDetails } from "ftc-panels/docs"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -15,7 +16,7 @@
   )
 </script>
 
-<PluginsWidget {plugin} showDetailsButton={false} />
+<PluginDetails plugin={plugin.details} />
 <h3>Settings</h3>
 <Section margin={true}>
   <pre>{JSON.stringify(plugin.config, null, 2)}</pre>

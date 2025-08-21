@@ -612,5 +612,35 @@ export const simpleModules: PluginConfig[] = [
     ],
     "templates": [],
     "includedPluginsIDs": []
+  },
+  {
+    "id": "com.bylazar.panels",
+    "name": "Panels",
+    "letterName": "P",
+    "description": "Empty Panels Installation ready to be extended",
+    "websiteURL": "https://panels.bylazar.com",
+    "version": "0.0.29",
+    "pluginsCoreVersion": "1.1.33",
+    "author": "Lazar",
+    "manager": "",
+    "components": [],
+    "templates": [],
+    "includedPluginsIDs": [],
+    "changelog": []
+  },
+  {
+    "id": "com.bylazar.pluginsjscore",
+    "name": "Plugins JS Core",
+    "letterName": "PJC",
+    "description": "Plugins Javascript Core",
+    "websiteURL": "https://panels.bylazar.com",
+    "version": "1.1.33",
+    "pluginsCoreVersion": "1.1.33",
+    "author": "Lazar",
+    "manager": "",
+    "components": [],
+    "templates": [],
+    "includedPluginsIDs": [],
+    "changelog": []
   }
 ] as const

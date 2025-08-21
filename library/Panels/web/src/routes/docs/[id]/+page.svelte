@@ -13,7 +13,8 @@
 
 <DocsPage
   pluginID={plugin.details.id}
-  widgetID={plugin.details.components.filter((it) => it.type == "docs")[0].id}
+  widgetID={plugin.details.components.filter((it) => it.type == "docs")[0]
+    ?.id || ""}
 >
   <PluginDetails plugin={plugin.details} />
   <ChangeLog changelog={plugin.details.changelog} />

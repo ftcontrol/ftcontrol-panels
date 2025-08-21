@@ -1,16 +1,18 @@
 import { dev } from "$app/environment"
 import {
+  defaultSettings,
   GlobalSocket,
   type Notification,
   NotificationsManager,
   type PluginConfig,
   type PluginInfo,
+  pluginsCoreConfig,
 } from "ftc-panels"
 import { importFromSource } from "ftc-panels"
 import { PluginSocket } from "ftc-panels"
 import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 import { readValue, storeValue } from "$lib/indexedDB"
-import { panelsConfig, PanelsManager, panelsSettings } from "$lib/manager"
+import { panelsConfig, PanelsManager } from "$lib/manager"
 import type { PluginManager } from "ftc-panels"
 
 export class GlobalState {
@@ -347,7 +349,12 @@ export class GlobalState {
 
       this.plugins.push({
         details: panelsConfig,
-        config: panelsSettings,
+        config: defaultSettings,
+      })
+
+      this.plugins.push({
+        details: pluginsCoreConfig,
+        config: defaultSettings,
       })
 
       this.socket.pluginManagers["com.bylazar.panels"] =

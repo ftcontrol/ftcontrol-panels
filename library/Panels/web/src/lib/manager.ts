@@ -1,4 +1,8 @@
-import type { PluginConfig, PluginSettings } from "ftc-panels"
+import {
+  defaultSettings,
+  type PluginConfig,
+  type PluginSettings,
+} from "ftc-panels"
 
 export const panelsConfig: PluginConfig = {
   id: "com.bylazar.panels",
@@ -7,22 +11,18 @@ export const panelsConfig: PluginConfig = {
   description: "Empty Panels Installation ready to be extended",
   websiteURL: "https://panels.bylazar.com",
   version: "0.0.29",
-  pluginsCoreVersion: "1.1.29",
+  pluginsCoreVersion: "1.1.33",
   author: "Lazar",
   manager: "",
   components: [],
   templates: [],
   includedPluginsIDs: [],
-}
-
-export const panelsSettings: PluginSettings = {
-  isEnabled: true,
-  isDev: false,
+  changelog: [],
 }
 
 export class PanelsManager {
   config: PluginConfig = panelsConfig
-  settings: PluginSettings = panelsSettings
+  settings: PluginSettings = defaultSettings
 
   onInit(): void {}
 
