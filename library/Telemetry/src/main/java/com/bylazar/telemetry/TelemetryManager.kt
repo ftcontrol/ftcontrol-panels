@@ -8,6 +8,8 @@ class TelemetryManager(
 ) {
     var lines = mutableListOf<String>()
 
+    internal var lastLines = mutableListOf<String>()
+
     val updateInterval: Long
         get() = config().telemetryUpdateInterval
     var lastUpdate = 0L
@@ -40,6 +42,7 @@ class TelemetryManager(
         if (lines.isEmpty()) return
         if (shouldUpdateLines) {
             sendLines(lines)
+            lastLines = lines
             lastUpdate = System.currentTimeMillis()
         }
         lines.clear()

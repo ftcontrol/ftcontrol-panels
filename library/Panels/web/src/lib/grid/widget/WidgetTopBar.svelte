@@ -142,6 +142,9 @@
         if (widget.selected < 0) {
           widget.selected = 0
         }
+        if (widget.selected > widget.widgets.length - 1) {
+          widget.selected = widget.widgets.length - 1
+        }
       }
     } else {
       if (dataIndex == movingIndex) {
@@ -175,9 +178,7 @@
         data-widget={widget.id}
         data-index={index}
         class:moving={w.isMoving}
-        class:selected={
-          index === widget.selected && !w.isMoving
-        }
+        class:selected={index === widget.selected && !w.isMoving}
         onmousedown={(e: MouseEvent) => {
           if (widget.widgets.length === 1 && w.widgetID === "") return
           movingIndex = index
@@ -229,7 +230,6 @@
     overflow-y: auto;
   }
 
-
   .tab {
     all: unset;
     cursor: pointer;
@@ -238,7 +238,7 @@
     border-radius: 0.25rem;
     text-wrap: nowrap;
   }
-  .tab.selected{
+  .tab.selected {
     opacity: 1;
   }
   .moving {

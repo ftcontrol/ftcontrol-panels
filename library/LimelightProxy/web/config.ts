@@ -7,7 +7,7 @@ export const config: PluginConfig = {
   description: "Limelight Proxy for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
   version: "0.0.16",
-  pluginsCoreVersion: "1.1.31",
+  pluginsCoreVersion: "1.1.33",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

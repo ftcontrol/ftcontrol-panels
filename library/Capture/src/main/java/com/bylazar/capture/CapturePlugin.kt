@@ -10,6 +10,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class CaptureConfig : BasePluginConfig() {
+    var supportedPlugins = listOf<String>(
+        "com.bylazar.telemetry",
+        "com.bylazar.field",
+        "com.bylazar.graph",
+        "com.bylazar.lights",
+    )
 }
 
 object Plugin : Plugin<CaptureConfig>(CaptureConfig()) {

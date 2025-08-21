@@ -10,7 +10,7 @@ import { importFromSource } from "ftc-panels"
 import { PluginSocket } from "ftc-panels"
 import type { ExtendedTemplateEntry } from "./grid/widgets.svelte"
 import { readValue, storeValue } from "$lib/indexedDB"
-import { panelsConfig, PanelsManager } from "$lib/manager"
+import { panelsConfig, PanelsManager, panelsSettings } from "$lib/manager"
 import type { PluginManager } from "ftc-panels"
 
 export class GlobalState {
@@ -153,12 +153,21 @@ export class GlobalState {
 
         this.socket.pluginSelectors[details.id] = Selector
 
+        var settings = structuredClone(panelsSettings)
+
+        for (const plugin of this.plugins) {
+          if (plugin.details.id == entry.id) {
+            settings = plugin.config
+          }
+        }
+
         if (reloadManager) {
           const Manager = Selector("Manager")
           const oldStateData = this.socket.pluginManagers[details.id].state.data
           this.socket.pluginManagers[details.id] = new Manager(
             new PluginSocket(details.id, this.socket),
             details,
+            settings,
             this.notificationsManager
           )
           this.socket.pluginManagers[details.id].state.data = oldStateData
@@ -338,14 +347,11 @@ export class GlobalState {
 
       this.plugins.push({
         details: panelsConfig,
-        config: {
-          isEnabled: true,
-          isDev: false,
-        },
+        config: panelsSettings,
       })
 
       this.socket.pluginManagers["com.bylazar.panels"] =
-        new PanelsManager() as PluginManager
+        new PanelsManager() as unknown as PluginManager
 
       setTimeout(() => {
         this.createDevServerInterval()

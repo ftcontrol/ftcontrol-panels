@@ -27,6 +27,12 @@
         onclick={() => {
           if (widget.selected >= 0 && widget.widgets.length > 0) {
             widget.widgets.splice(widget.selected, 1)
+            if (widget.selected < 0) {
+              widget.selected = 0
+            }
+            if (widget.selected > widget.widgets.length - 1) {
+              widget.selected = widget.widgets.length - 1
+            }
           }
           close()
         }}

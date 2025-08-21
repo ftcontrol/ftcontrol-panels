@@ -68,12 +68,7 @@
     manager: Manager
   } = $props()
 
-  let ids = [
-    "com.bylazar.telemetry",
-    "com.bylazar.field",
-    "com.bylazar.graph",
-    "com.bylazar.lights",
-  ]
+  let ids = manager.settings["supportedPlugins"]
 
   type PluginData = Record<string, PluginValue>
 

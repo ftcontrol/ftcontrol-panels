@@ -17,8 +17,8 @@ object Plugin : Plugin<TelemetryPluginConfig>(TelemetryPluginConfig()) {
     val manager = TelemetryManager({ config }, { lines -> send("telemetryPacket", lines) })
 
     override fun onNewClient(client: Socket.ClientSocket) {
-        if(manager.lines.isEmpty()) return
-        sendClient(client, "telemetryPacket", manager.lines)
+        if(manager.lastLines.isEmpty()) return
+        sendClient(client, "telemetryPacket", manager.lastLines)
     }
 
     override fun onMessage(client: Socket.ClientSocket, type: String, data: Any?) {

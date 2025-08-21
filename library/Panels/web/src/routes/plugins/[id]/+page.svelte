@@ -13,13 +13,15 @@
   let plugin = $derived(
     global.plugins.find((it) => it.details.id == data.id) as PluginInfo
   )
-
 </script>
 
 <PluginsWidget {plugin} showDetailsButton={false} />
-
+<h3>Settings</h3>
+<Section margin={true}>
+  <pre>{JSON.stringify(plugin.config, null, 2)}</pre>
+</Section>
 <h3>Widgets</h3>
-{#each plugin.details.components.filter(it => it.type === "widget")  as widget}
+{#each plugin.details.components.filter((it) => it.type === "widget") as widget}
   <Section margin={true}>
     <h4>{widget.id}</h4>
     <WidgetContent pluginID={plugin.details.id} widgetID={widget.id} />
@@ -29,7 +31,7 @@
 {/each}
 
 <h3>Navlets</h3>
-{#each plugin.details.components.filter(it => it.type === "navlet") as navlet}
+{#each plugin.details.components.filter((it) => it.type === "navlet") as navlet}
   <Section margin={true}>
     <h4>{navlet.id}</h4>
     <NavletContent pluginID={plugin.details.id} widgetID={navlet.id} />
@@ -39,7 +41,7 @@
 {/each}
 
 <h3>Docs Chapters</h3>
-{#each plugin.details.components.filter(it => it.type === "docs") as chapter}
+{#each plugin.details.components.filter((it) => it.type === "docs") as chapter}
   <Section margin={true}>
     <h4>{chapter.id}</h4>
     <DocsPage pluginID={plugin.details.id} widgetID={chapter.id} />
