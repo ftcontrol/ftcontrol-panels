@@ -10,6 +10,8 @@ export const panelsConfig: PluginConfig = {
   letterName: "P",
   description: "Empty Panels Installation ready to be extended",
   websiteURL: "https://panels.bylazar.com",
+  mavenURL: "https://mymaven.bylazar.com/dev",
+  packageString: "com.bylazar:panels:<VERSION>",
   version: "0.0.29",
   pluginsCoreVersion: "1.1.33",
   author: "Lazar",

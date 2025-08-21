@@ -6,6 +6,8 @@ data class PluginDetails(
     val letterName: String = "",
     val description: String = "",
     val websiteURL: String = "",
+    val mavenURL: String = "",
+    val packageString: String = "",
     val version: String = "",
     val pluginsCoreVersion: String = "",
     val author: String = "",

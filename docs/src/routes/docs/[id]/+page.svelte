@@ -1,6 +1,10 @@
 <script lang="ts">
-  import { type PluginConfig, SimpleDynamicComponent } from "ftc-panels"
-  import { PluginDetails, ChangeLog } from "ftc-panels/docs"
+  import {
+    type PluginConfig,
+    PluginManager,
+    SimpleDynamicComponent,
+  } from "ftc-panels"
+  import { PluginDetails, ChangeLog, Version } from "ftc-panels/docs"
   import type { PageProps } from "./$types"
   import { modules } from "$lib/data"
   import { importFromSource } from "ftc-panels"
@@ -12,23 +16,20 @@
     svelte: string
   }
 
-  function processWebsiteURL(url: string) {
-    try {
-      const parsed = new URL(url)
-      return parsed.hostname
-    } catch (e) {
-      try {
-        const parsed = new URL("http://" + url)
-        return parsed.hostname
-      } catch {
-        return url
-      }
-    }
+  async function fetchVersion(): Promise<string> {
+    const mod = await importFromSource(plugin.svelte)
+
+    const Selector = mod.default
+
+    const Manager = Selector("Manager")
+    const instance = Manager()
+    return await (instance.constructor as typeof PluginManager).getNewVersion()
   }
 </script>
 
 {#key data}
   <PluginDetails plugin={plugin.config} />
+  <Version plugin={plugin.config} fetchFunction={fetchVersion} />
   <ChangeLog changelog={plugin.config.changelog} />
   {#if plugin.config.components.filter((it) => it.type == "docs").length > 0}
     <SimpleDynamicComponent
@@ -47,24 +48,4 @@
 {/key}
 
 <style>
-  b {
-    font-weight: 800;
-  }
-  section {
-    background-color: var(--bgLight);
-    padding: var(--padding);
-    margin-bottom: var(--padding);
-    border-radius: 1rem;
-    overflow: auto;
-  }
-
-  h2,
-  p {
-    margin: 0;
-  }
-
-  p,
-  a {
-    margin: 0.25rem;
-  }
 </style>

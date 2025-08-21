@@ -1,14 +1,13 @@
 <script lang="ts">
   import { global } from "$lib"
-  import type { PluginInfo } from "ftc-panels"
+  import type { PluginInfo, PluginManager } from "ftc-panels"
   import type { PageProps } from "./$types"
   import WidgetContent from "$lib/grid/WidgetContent.svelte"
   import Section from "$lib/Section.svelte"
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import DocsPage from "$lib/DocsPage.svelte"
-  import PluginsWidget from "$lib/plugins/PluginsWidget.svelte"
   import CanvasRender from "$lib/grid/CanvasRender.svelte"
-  import { PluginDetails } from "ftc-panels/docs"
+  import { PluginDetails, Version } from "ftc-panels/docs"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -17,6 +16,15 @@
 </script>
 
 <PluginDetails plugin={plugin.details} />
+
+<Version
+  plugin={plugin.details}
+  fetchFunction={(
+    global.socket.pluginManagers[plugin.details.id]
+      .constructor as typeof PluginManager
+  ).getNewVersion}
+/>
+
 <h3>Settings</h3>
 <Section margin={true}>
   <pre>{JSON.stringify(plugin.config, null, 2)}</pre>
