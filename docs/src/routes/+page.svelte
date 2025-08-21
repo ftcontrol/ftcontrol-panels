@@ -45,7 +45,36 @@
     </div>
 </section>
 
+<footer>
+    <img class="footer" src="/footer.png" alt="Footer"/>
+    <div class="footer">
+        <p>Crafted with love<br> <a href="https://bylazar.com">by Lazar</a> from <a href="https://byteforce.ro">19234</a></p>
+    </div>
+</footer>
+
 <style>
+
+    img.footer{
+        width: calc(100% - 1rem);
+        margin: 0.5rem;
+        margin-bottom: 0.3rem;
+        border-radius: 0.5rem;
+    }
+
+    div.footer {
+        margin-inline: 0.5rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+        background-color: #212222;
+        min-height: 128px;
+        padding: 1rem;
+    }
+
+    .footer > p{
+        margin: 0;
+    }
+
+
+
     :root {
         font-size: clamp(14px, 1.6vw, 18px);
 
@@ -59,8 +88,9 @@
         margin-top: 5rem;
         overflow-x: clip;
         display: flex;
-        gap: 5rem;
-        padding: 1rem
+        gap: 6rem;
+        padding: 2rem;
+        padding-bottom: 14rem;
     }
 
     p{
@@ -72,12 +102,10 @@
         transform: rotate(18deg) translateY(6rem);
         margin-left: auto;
         margin-right: -15vw;
+        z-index: -100;
     }
 
     @media (max-width: 768px) {
-        .all-plugins{
-            z-index: -100;
-        }
         .plugins{
             margin-top: -2rem;
             flex-direction: column-reverse;
