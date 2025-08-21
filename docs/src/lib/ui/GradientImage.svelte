@@ -23,6 +23,9 @@
         position: relative;
         display: inline-block;
         overflow: hidden;
+
+        width: 100%;
+        height: auto;
     }
 
     div::after {
@@ -32,7 +35,6 @@
         pointer-events: none;
     }
 
-    /* --- Desktop variants (active by default) --- */
     .desktop-gradient-top::after {
         background: linear-gradient(to bottom, #0b0d0d 0%, transparent 100%);
     }

@@ -31,6 +31,18 @@
     </div>
 </section>
 
+<section class="plugins">
+    <div class="all-plugins">
+        <GradientImage desktopType="right" mobileType="right">
+            <img  src="/all-plugins.png" alt="Panels plugins list"/>
+        </GradientImage>
+    </div>
+    <h3>The power of<br>Panels Plugins</h3>
+    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</p>
+    <h3>Extend as you wish</h3>
+    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</p>
+</section>
+
 <style>
     :root {
         font-size: clamp(14px, 1.6vw, 18px);
@@ -39,6 +51,33 @@
         --page-pad: 2rem;
         --gap: 1.5rem;
         --radius: 0.5rem;
+    }
+
+    .plugins {
+        margin-top: 10rem;
+        overflow-x: clip;
+    }
+
+    .all-plugins{
+        max-width: 80vw;
+        rotate: 18deg;
+        margin-left: auto;
+        margin-right: -15vw;
+    }
+
+    @media (max-width: 768px) {
+        .all-plugins{
+            max-width: 110vw;
+            rotate: 18deg;
+            margin-left: auto;
+            margin-right: -15vw;
+        }
+    }
+
+
+    img{
+        width: 100%;
+        height: auto;
     }
 
     .hero {
