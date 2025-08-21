@@ -1,18 +1,22 @@
 <script lang="ts">
-    import Panels from "$lib/ui/Panels.svelte";
-    import GitHub from "$lib/ui/GitHub.svelte";
+    import Panels from "$lib/ui/Panels.svelte"
+    import GitHub from "$lib/ui/GitHub.svelte"
 </script>
 
 <section class="hero">
     <div class="copy">
-        <Panels />
-        <h2>An intuitive, real-time<br />dashboard for your FTC Robot.</h2>
+        <Panels/>
+        <h2>An intuitive, real-time<br/>dashboard for your FTC Robot.</h2>
 
         <div class="actions">
             <a class="button primary" href="/docs">Read the docs</a>
-            <a class="button" href="/install">Install</a>
-            <a class="icon" href="https://github.com/your/repo" aria-label="View on GitHub">
-                <GitHub />
+            <a class="button" href="/docs/com.bylazar.docs/Prerequisites">Install</a>
+            <a
+                    class="icon"
+                    href="https://github.com/your/repo"
+                    aria-label="View on GitHub"
+            >
+                <GitHub/>
             </a>
         </div>
 
@@ -20,7 +24,7 @@
     </div>
 
     <div class="media">
-        <img src="/homepage-panels.png" alt="Dashboard panels preview" />
+        <img src="/homepage-panels.png" alt="Dashboard panels preview"/>
     </div>
 </section>
 
@@ -73,7 +77,7 @@
         align-items: center;
     }
 
-    .button{
+    .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -85,9 +89,14 @@
         border-radius: var(--radius);
     }
 
-    .button.primary { background: #001dff; }
+    .button.primary {
+        background: #001dff;
+    }
 
-    .media { margin-right: calc(-1 * var(--page-pad)); }
+    .media {
+        margin-right: calc(-1 * var(--page-pad));
+    }
+
     .media img {
         display: block;
         width: 100%;
@@ -104,15 +113,21 @@
             gap: 1rem;
         }
 
-        .copy { align-items: center; text-align: center; }
-        .actions { justify-content: center; }
+        .copy {
+            align-items: center;
+            text-align: center;
+        }
+
+        .actions {
+            justify-content: center;
+        }
 
         h2 {
             font-size: clamp(1.25rem, 5.5vw + 0.5rem, 1.9rem);
             line-height: 1.2;
         }
 
-        .button{
+        .button {
             font-size: clamp(0.95rem, 3.5vw, 1.05rem);
             padding: 0.55em 1em;
         }
@@ -123,6 +138,7 @@
             display: flex;
             justify-content: center;
         }
+
         .media img {
             max-width: 100%;
             width: 100%;
