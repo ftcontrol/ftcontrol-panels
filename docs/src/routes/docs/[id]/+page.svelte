@@ -31,14 +31,14 @@
   <PluginDetails plugin={plugin.config} />
   <Version plugin={plugin.config} fetchFunction={fetchVersion} />
   <ChangeLog changelog={plugin.config.changelog} />
-  {#if plugin.config.components.filter((it) => it.type == "docs").length > 0}
+  {#if plugin.config.components.filter((it) => it.type === "docs").length > 0}
     <SimpleDynamicComponent
       info={plugin.config}
       loadFunction={async (host, props) => {
         const mod = await importFromSource(plugin.svelte)
         const Selector = mod.default
         Selector(
-          plugin.config.components.filter((it) => it.type == "docs")[0].id,
+          plugin.config.components.filter((it) => it.type === "docs")[0].id,
           host,
           props
         )
