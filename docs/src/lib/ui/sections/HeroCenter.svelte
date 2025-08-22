@@ -14,6 +14,7 @@
         align-items: center;
         gap: 0.25rem;
         margin-block: 14rem;
+        margin-top: 8rem;
     }
     section > :global(h2) {
         text-align: center;

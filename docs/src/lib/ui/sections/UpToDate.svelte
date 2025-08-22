@@ -17,6 +17,10 @@
 </section>
 
 <style>
+    section{
+        margin-block: 6rem;
+    }
+
     .text {
         padding-inline: 1rem;
         display: flex;
