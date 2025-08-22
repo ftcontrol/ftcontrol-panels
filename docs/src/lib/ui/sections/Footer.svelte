@@ -13,7 +13,6 @@
 <style>
     .media{
         width: calc(100% - 1rem);
-        height: 40px;
         margin: 0.5rem;
         margin-bottom: 0.3rem;
         border-radius: 0.5rem;
@@ -21,8 +20,7 @@
     }
 
     img{
-        height: 100%;
-        width: auto;
+        width: 100%;
     }
 
     .footer {
@@ -36,5 +34,15 @@
     p{
         max-width: 300px;
         margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .media{
+            height: 48px;
+        }
+        img{
+            width: auto;
+            height: 48px;
+        }
     }
 </style>
