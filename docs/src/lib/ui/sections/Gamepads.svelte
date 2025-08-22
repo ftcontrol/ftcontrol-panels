@@ -1,8 +1,13 @@
 <script>
+import GradientImage from "$lib/ui/GradientImage.svelte";
 </script>
 
 <section>
-    <img class="showcase" src="/gamepads-showcase.png" alt="Gamepads Showcase"/>
+    <div class="showcase">
+        <GradientImage mobileType="bottom">
+            <img class="g" src="/gamepads-showcase.png" alt="Gamepads Showcase"/>
+        </GradientImage>
+    </div>
     <div class="wrapper">
         <div class="text">
             <h3>Gamepad(s)</h3>
@@ -19,6 +24,9 @@
 </section>
 
 <style>
+    .g{
+        width: 100%;
+    }
     section {
         margin: 6rem auto;
         padding: 1rem;
@@ -56,9 +64,28 @@
 
     .wrapper {
         width: 50vw;
+        min-width: 400px;
     }
 
     .gamepads {
         width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .showcase {
+            max-width: 100%;
+            margin-bottom: -12rem;
+            position: relative;
+            z-index: -10;
+        }
+        .wrapper{
+            padding: 1rem;
+        }
+        .plugin {
+            width: 200px;
+            bottom: -45%;
+            left: calc(-4rem + 5%);
+            rotate: 4deg;
+        }
     }
 </style>

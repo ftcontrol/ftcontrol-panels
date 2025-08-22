@@ -53,6 +53,7 @@
         font-size: clamp(0.9rem, 0.35vw + 0.85rem, 1rem);
         padding: 0.5em 0.9em;
         border-radius: var(--radius);
+        border-radius: 0.5rem;
     }
 
     .button.primary {
