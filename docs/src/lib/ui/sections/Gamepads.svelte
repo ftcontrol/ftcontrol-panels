@@ -1,5 +1,5 @@
 <script>
-import GradientImage from "$lib/ui/GradientImage.svelte";
+    import GradientImage from "$lib/ui/GradientImage.svelte";
 </script>
 
 <section>
@@ -24,10 +24,12 @@ import GradientImage from "$lib/ui/GradientImage.svelte";
 </section>
 
 <style>
-    .g{
+    .g {
         width: 100%;
     }
+
     section {
+        max-width: 100vw;
         margin: 6rem auto;
         padding: 1rem;
 
@@ -44,10 +46,14 @@ import GradientImage from "$lib/ui/GradientImage.svelte";
         max-width: 33vw;
         height: auto;
         object-fit: cover;
+        border-radius: 0.5rem;
+        position: relative;
     }
 
     img {
-        border-radius: 0.5rem;
+        width: 100%;
+        max-height: 100%;
+        object-fit: cover;
     }
 
     .media {
@@ -60,6 +66,7 @@ import GradientImage from "$lib/ui/GradientImage.svelte";
         bottom: -20%;
         left: -25%;
         box-shadow: 10px 10px 16px 0 rgba(0, 0, 0, 0.66);
+        border-radius: 0.5rem;
     }
 
     .wrapper {
@@ -69,23 +76,35 @@ import GradientImage from "$lib/ui/GradientImage.svelte";
 
     .gamepads {
         width: 100%;
+        border-radius: 0.5rem;
     }
 
     @media (max-width: 768px) {
         .showcase {
-            max-width: 100%;
+            max-width: calc(100vw - 1rem);
+            width: 100%;
+            max-height: 400px;
             margin-bottom: -12rem;
             position: relative;
             z-index: -10;
-        }
-        .wrapper{
-            padding: 1rem;
+            overflow: hidden;
         }
         .plugin {
             width: 200px;
             bottom: -45%;
-            left: calc(-4rem + 5%);
+            left: calc(-4rem + 8%);
             rotate: 4deg;
+        }
+        .text {
+            width: fit-content;
+        }
+
+        .wrapper {
+            padding: 1rem;
+        }
+
+        .media {
+            max-width: 80vw;
         }
     }
 </style>
