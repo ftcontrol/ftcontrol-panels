@@ -98,7 +98,7 @@
             max-width: 70vw;
         }
         .plugin{
-            max-width: 200px;
+            max-width: 133px;
             position: relative;
             z-index: 9999;
         }
