@@ -22,7 +22,6 @@
     div {
         position: relative;
         display: inline-block;
-        overflow: hidden;
 
         width: 100%;
         height: auto;
