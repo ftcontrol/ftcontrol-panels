@@ -23,7 +23,7 @@
 
     const Manager = Selector("Manager")
     const instance = Manager()
-    return await (instance.constructor as typeof PluginManager).getNewVersion()
+    return (instance.constructor as typeof PluginManager).getNewVersion();
   }
 </script>
 
