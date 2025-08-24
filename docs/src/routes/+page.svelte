@@ -7,13 +7,15 @@
     import Limelight from "$lib/ui/sections/Limelight.svelte";
     import Gamepads from "$lib/ui/sections/Gamepads.svelte";
     import Themes from "$lib/ui/sections/Themes.svelte";
+    import Debug from "$lib/ui/sections/Debug.svelte";
 </script>
 
 <Hero/>
 <Plugins/>
 <Limelight/>
-<Gamepads />
-<Themes />
+<Gamepads/>
+<Themes/>
+<Debug/>
 <UpToDate/>
 <HeroCenter/>
 <Footer/>
