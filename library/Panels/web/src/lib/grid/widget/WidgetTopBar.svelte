@@ -177,7 +177,7 @@
         class="tab"
         data-widget={widget.id}
         data-index={index}
-        class:moving={w.isMoving}
+        class:emptyMoving={w.isMoving}
         class:selected={index === widget.selected && !w.isMoving}
         onmousedown={(e: MouseEvent) => {
           if (widget.widgets.length === 1 && w.widgetID === "") return
@@ -198,7 +198,7 @@
         <button class="tab moving">{manager.tabName}</button>
       {/if}
     {/each}
-    {#if widget.widgets.length == 0}
+    {#if widget.widgets.length === 0}
       <button class="tab" data-widget={widget.id} data-index={-1}>
         {#if manager.tabWidgetID === widget.id && manager.tabIndex === -1}
           {manager.tabName}
@@ -237,12 +237,16 @@
     border: 1px solid currentColor;
     border-radius: 0.25rem;
     text-wrap: nowrap;
+    opacity: 0.5;
   }
   .tab.selected {
     opacity: 1;
   }
-  .moving {
+  .emptyMoving{
     opacity: 0.25;
+  }
+  .moving {
+    opacity: 0.5;
   }
   .tab.absolute {
     position: absolute;
