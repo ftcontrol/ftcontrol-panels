@@ -25,6 +25,14 @@ class SvelteAssetsPlugin : Plugin<Project> {
         project.plugins.withId("com.android.application") {
             configureAfterEvaluate(project, extension)
         }
+
+        project.afterEvaluate {
+            if (!project.plugins.hasPlugin("com.android.library")
+                && !project.plugins.hasPlugin("com.android.application")
+            ) {
+                configure(project, extension)
+            }
+        }
     }
 
     private fun configureAfterEvaluate(project: Project, extension: SvelteAssetsPluginExtension) {
@@ -38,7 +46,10 @@ class SvelteAssetsPlugin : Plugin<Project> {
         val webDir = File(project.projectDir, extension.webAppPath)
         val outputDir = File(project.projectDir, "src/main/assets/${extension.assetsPath}")
 
-        println("🔧 Configuring SvelteAssetsPlugin with:")
+        val projectSuffix = project.name.replace(Regex("\\W+"), "")
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+
+        println("🔧 Configuring SvelteAssetsPlugin for ${project.path} with:")
         println("   webAppPath: ${extension.webAppPath}")
         println("   buildDirPath: ${extension.buildDirPath}")
         println("   assetsPath: ${extension.assetsPath}")
@@ -46,36 +57,12 @@ class SvelteAssetsPlugin : Plugin<Project> {
         println("   webDir: ${webDir.absolutePath}")
         println("   outputDir: ${outputDir.absolutePath}")
 
-        val clearAssets = project.tasks.register("clearAssets", Delete::class.java) {
-            var pluginsDir = File(project.projectDir, "src/main/assets/plugins")
-            if (pluginsDir.exists()) {
-                delete(pluginsDir.listFiles()?.toList() ?: emptyList<File>())
-            }
-
-            pluginsDir = File(project.projectDir, "src/main/assets/${extension.assetsPath}")
-            if (pluginsDir.exists()) {
-                delete(pluginsDir.listFiles()?.toList() ?: emptyList<File>())
-            }
-        }
-
         val installCmd = when {
-            extension.useNpm && isWindows -> listOf(
-                "cmd", "/c", "npm i"
-            )
-
-            extension.useNpm -> listOf(
-                "sh", "-c", "npm i"
-            )
-
-            !extension.useNpm && isWindows -> listOf(
-                "cmd", "/c", "bun i"
-            )
-
-            else -> listOf(
-                "sh", "-c", "bun i"
-            )
+            extension.useNpm && isWindows -> listOf("cmd", "/c", "npm", "i")
+            extension.useNpm -> listOf("sh", "-c", "npm i")
+            !extension.useNpm && isWindows -> listOf("cmd", "/c", "bun", "i")
+            else -> listOf("sh", "-c", "bun i")
         }
-
         val buildCmd = when {
             extension.useNpm && isWindows -> listOf("cmd", "/c", "npm", "run", "build")
             extension.useNpm -> listOf("sh", "-c", "npm run build")
@@ -83,28 +70,85 @@ class SvelteAssetsPlugin : Plugin<Project> {
             else -> listOf("sh", "-c", "bun run build")
         }
 
-        val installSvelteApp = project.tasks.register("installSvelteApp", Exec::class.java) {
+        val clearAssets = project.tasks.register("clearSvelteAssets$projectSuffix", Delete::class.java) {
+            group = "svelte"
+            description = "Clears web assets for ${project.path}"
+            val pluginsDir1 = File(project.projectDir, "src/main/assets/plugins")
+            if (pluginsDir1.exists()) {
+                delete(pluginsDir1.listFiles()?.toList() ?: emptyList<File>())
+            }
+            val pluginsDir2 = File(project.projectDir, "src/main/assets/${extension.assetsPath}")
+            if (pluginsDir2.exists()) {
+                delete(pluginsDir2.listFiles()?.toList() ?: emptyList<File>())
+            }
+        }
+
+        val installSvelteApp = project.tasks.register("installSvelteApp$projectSuffix", Exec::class.java) {
+            group = "svelte"
+            description = "Installs web dependencies for ${project.path} (${if (extension.useNpm) "npm" else "bun"})"
             dependsOn(clearAssets)
             workingDir = webDir
             commandLine = installCmd
+            isIgnoreExitValue = false
         }
 
-        val buildSvelteApp = project.tasks.register("buildSvelteApp", Exec::class.java) {
+        val buildSvelteApp = project.tasks.register("buildSvelteApp$projectSuffix", Exec::class.java) {
+            group = "svelte"
+            description = "Builds the Svelte app for ${project.path}"
             dependsOn(installSvelteApp)
             workingDir = webDir
             commandLine = buildCmd
+            isIgnoreExitValue = false
         }
 
-        val copySvelteToAssets = project.tasks.register("copySvelteToAssets", Copy::class.java) {
+        val copySvelteToAssets = project.tasks.register("copySvelteToAssets$projectSuffix", Copy::class.java) {
+            group = "svelte"
+            description = "Copies the built Svelte assets into ${outputDir.relativeTo(project.projectDir)} for ${project.path}"
             dependsOn(buildSvelteApp)
             from(File(webDir, extension.buildDirPath))
             into(outputDir)
         }
 
-        project.tasks.matching { it.name == "preBuild" }.configureEach {
+        val buildSvelteAggregate = project.tasks.register("buildSvelte$projectSuffix") {
+            group = "svelte"
+            description = "Installs, builds, and copies Svelte assets for ${project.path}"
             dependsOn(copySvelteToAssets)
         }
 
-        println("✅ SvelteAssetsPlugin applied to ${project.name}")
+        configurePublishingDependencies(project, buildSvelteAggregate)
+
+        val root = project.rootProject
+        val rootTask = root.tasks.findByName("buildAllSvelte")
+            ?: root.tasks.create("buildAllSvelte") {
+                group = "svelte"
+                description = "Builds Svelte assets for all subprojects"
+            }
+        rootTask.dependsOn(buildSvelteAggregate)
+
+        println("✅ SvelteAssetsPlugin tasks created for ${project.path}")
+    }
+
+    private fun configurePublishingDependencies(
+        project: Project,
+        buildSvelteAggregate: org.gradle.api.tasks.TaskProvider<org.gradle.api.Task>
+    ) {
+        project.plugins.withId("maven-publish") {
+            project.tasks.configureEach {
+                val n = this.javaClass.name
+                if (n == "org.gradle.api.publish.tasks.PublishToMavenRepository" ||
+                    n == "org.gradle.api.publish.tasks.PublishToMavenLocal"
+                ) {
+                    dependsOn(buildSvelteAggregate)
+                }
+            }
+
+            project.tasks.matching { it.name == "publish" }.configureEach {
+                dependsOn(buildSvelteAggregate)
+            }
+        }
+
+        project.tasks.matching { it.name.equals("uploadArchives", ignoreCase = true) }.configureEach {
+            dependsOn(buildSvelteAggregate)
+        }
     }
 }
