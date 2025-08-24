@@ -15,6 +15,7 @@
     padding: var(--padding);
     border-radius: 1rem;
     overflow: auto;
+    position: relative;
   }
   section.transparent {
     background-color: transparent;

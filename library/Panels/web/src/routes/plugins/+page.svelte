@@ -7,7 +7,7 @@
 <h1>Plugins</h1>
 <section>
   {#each global.plugins as plugin}
-    <PluginsWidget {plugin} />
+    <PluginsWidget {plugin} isDev={global.devPlugins.includes(plugin.details.id)} />
   {/each}
 
   {#each global.skippedPlugins as plugin}

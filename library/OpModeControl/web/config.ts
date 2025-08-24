@@ -9,7 +9,7 @@ export const config: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:opmodecontrol:<VERSION>",
   version: "0.0.16",
-  pluginsCoreVersion: "1.1.34",
+  pluginsCoreVersion: "1.1.35",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -17,6 +17,11 @@ export const config: PluginConfig = {
       type: "widget",
       id: "OpModes Control",
       filepath: "src/control/ControlWidget.svelte",
+    },
+    {
+      type: "widget",
+      id: "OpModes Timer",
+      filepath: "src/control/TimerWidget.svelte",
     },
     {
       type: "docs",

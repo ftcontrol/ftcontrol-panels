@@ -9,7 +9,7 @@ export const config: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:capture:<VERSION>",
   version: "0.0.15",
-  pluginsCoreVersion: "1.1.34",
+  pluginsCoreVersion: "1.1.35",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

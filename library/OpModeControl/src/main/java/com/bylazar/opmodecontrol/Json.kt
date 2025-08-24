@@ -25,7 +25,8 @@ data class OpModesList(
 
 data class ActiveOpMode(
     val opMode: OpModeDetails,
-    val status: OpModeStatus
+    val status: OpModeStatus,
+    var startTimestamp: Long?
 )
 
 

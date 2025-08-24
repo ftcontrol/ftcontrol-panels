@@ -6,6 +6,7 @@ export default class Manager extends PluginManager {
   OPMODES_KEY = "opModes"
   ACTIVE_OPMODE_KEY = "activeOpMode"
   ACTIVE_OPMODE_STATUS_KEY = "activeOpModeStatus"
+  ACTIVE_OPMODE_START_TIMESTAMP_KEY = "activeOpModeStartTimestamp"
 
   override onInit(): void {
     this.state.update(this.ACTIVE_OPMODE_STATUS_KEY, "stopped")
@@ -15,6 +16,10 @@ export default class Manager extends PluginManager {
     this.socket.addMessageHandler("activeOpMode", (data) => {
       this.state.update(this.ACTIVE_OPMODE_KEY, data.opMode)
       this.state.update(this.ACTIVE_OPMODE_STATUS_KEY, data.status)
+      this.state.update(
+        this.ACTIVE_OPMODE_START_TIMESTAMP_KEY,
+        data.startTimestamp
+      )
     })
   }
 

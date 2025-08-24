@@ -4,7 +4,7 @@
     "": {
       "name": "panels-plugin",
       "dependencies": {
-        "ftc-panels": "^1.1.34",
+        "ftc-panels": "^1.1.35",
         "typescript": "^5.8.3",
       },
     },
@@ -264,7 +264,7 @@
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
-    "ftc-panels": ["ftc-panels@1.1.34", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^5.1.0", "@types/fs-extra": "^11.0.4", "@types/xmldom": "^0.1.34", "chalk": "^5.4.1", "chokidar": "^4.0.3", "commander": "^14.0.0", "execa": "^9.6.0", "fs-extra": "^11.3.0", "highlight.js": "^11.11.1", "inquirer": "^12.6.3", "juice": "^11.0.1", "node-fetch": "^3.3.2", "replace-in-file": "^8.3.0", "sirv": "^3.0.1", "svelte": "^5.38.1", "svelte-portal": "^2.2.1", "vite": "^7.0.3", "xmldom": "^0.6.0" }, "peerDependencies": { "typescript": "^5" }, "bin": { "create-panels-plugin": "cli/bin/create.ts" } }, "sha512-bntI3gHuCrJB7vhuMHiV/NXI5EKvcrL/f74jgkLMS+kFfgbSFkokywWLFUBQ8T5dM6n2qa+5c2yV+J+H4Ym6FA=="],
+    "ftc-panels": ["ftc-panels@1.1.35", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^5.1.0", "@types/fs-extra": "^11.0.4", "@types/xmldom": "^0.1.34", "chalk": "^5.4.1", "chokidar": "^4.0.3", "commander": "^14.0.0", "execa": "^9.6.0", "fs-extra": "^11.3.0", "highlight.js": "^11.11.1", "inquirer": "^12.6.3", "juice": "^11.0.1", "node-fetch": "^3.3.2", "replace-in-file": "^8.3.0", "sirv": "^3.0.1", "svelte": "^5.38.1", "svelte-portal": "^2.2.1", "vite": "^7.0.3", "xmldom": "^0.6.0" }, "peerDependencies": { "typescript": "^5" }, "bin": { "create-panels-plugin": "cli/bin/create.ts" } }, "sha512-A3TXW6iU2W+mhuhZPm81D9/R9FNRaYnvhAgspz/JzJ4Mk1DBG81i9+0OigyMm09rV3zAzeStGjSo5uQ1SAD0vA=="],
 
     "get-caller-file": ["get-caller-file@2.0.5", "", {}, "sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg=="],
 

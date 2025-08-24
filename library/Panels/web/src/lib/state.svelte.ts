@@ -155,7 +155,7 @@ export class GlobalState {
 
         this.socket.pluginSelectors[details.id] = Selector
 
-        var settings = structuredClone(panelsSettings)
+        let settings = structuredClone(defaultSettings);
 
         for (const plugin of this.plugins) {
           if (plugin.details.id == entry.id) {

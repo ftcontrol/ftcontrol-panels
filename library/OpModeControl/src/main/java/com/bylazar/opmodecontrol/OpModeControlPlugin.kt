@@ -2,7 +2,6 @@ package com.bylazar.opmodecontrol
 
 import android.content.Context
 import com.bylazar.panels.Panels
-import com.bylazar.panels.core.OpModeHandler.manager
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
 import com.bylazar.panels.server.Socket
@@ -24,6 +23,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         }
     var status = OpModeStatus.STOPPED
     var activeOpMode: OpMode? = null
+    var activeOpModeStartTimestamp: Long? = null
     var activeOpModeName = ""
 
     val activeOpModeInfo: OpModeDetails
@@ -48,7 +48,8 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         sendClient(
             client, "activeOpMode", ActiveOpMode(
                 opMode = activeOpModeInfo,
-                status = status
+                status = status,
+                startTimestamp = activeOpModeStartTimestamp
             )
         )
     }
@@ -89,15 +90,20 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         opModeList.clear()
         val t = Thread(FetcherRoutine())
         t.start()
+        activeOpModeStartTimestamp = null
     }
 
     fun sendActiveOpMode() {
         log("New active OpMode $status, ${activeOpModeInfo.name}")
         if (activeOpModeName == "\$Stop\$Robot\$") status = OpModeStatus.STOPPED
+        if(status == OpModeStatus.STOPPED){
+            activeOpModeStartTimestamp = null
+        }
         send(
             "activeOpMode", ActiveOpMode(
                 opMode = activeOpModeInfo,
-                status = status
+                status = status,
+                startTimestamp = activeOpModeStartTimestamp
             )
         )
     }
@@ -106,6 +112,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
         activeOpModeName = manager.activeOpModeName
+        activeOpModeStartTimestamp = null
         status = OpModeStatus.INIT
         sendActiveOpMode()
     }
@@ -114,6 +121,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
         activeOpModeName = manager.activeOpModeName
+        activeOpModeStartTimestamp = System.currentTimeMillis()
         status = OpModeStatus.RUNNING
         sendActiveOpMode()
     }
@@ -122,6 +130,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         val manager = opModeManagerRef?.get() ?: return
         activeOpMode = opMode
         activeOpModeName = manager.activeOpModeName
+        activeOpModeStartTimestamp = null
         status = OpModeStatus.STOPPED
         sendActiveOpMode()
     }
@@ -154,7 +163,8 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
             send(
                 "activeOpMode", ActiveOpMode(
                     opMode = activeOpModeInfo,
-                    status = status
+                    status = status,
+                    startTimestamp = activeOpModeStartTimestamp
                 )
             )
         }
