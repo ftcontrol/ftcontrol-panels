@@ -97,7 +97,7 @@ export class GlobalState {
       async () => {
         await this.updateDevPlugins(true)
       },
-      this.hasDevServer ? 1500 : 10000
+      this.hasDevServer ? 500 : 10000
     )
   }
 
@@ -155,7 +155,7 @@ export class GlobalState {
 
         this.socket.pluginSelectors[details.id] = Selector
 
-        let settings = structuredClone(defaultSettings);
+        let settings = structuredClone(defaultSettings)
 
         for (const plugin of this.plugins) {
           if (plugin.details.id == entry.id) {

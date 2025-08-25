@@ -1,6 +1,7 @@
 package com.bylazar.opmodecontrol
 
 import android.content.Context
+import android.os.SystemClock
 import com.bylazar.panels.Panels
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
@@ -11,6 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 import java.lang.ref.WeakReference
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
 open class OpModeControlPluginConfig : BasePluginConfig() {
 }
@@ -24,6 +28,14 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     var status = OpModeStatus.STOPPED
     var activeOpMode: OpMode? = null
     var activeOpModeStartTimestamp: Long? = null
+        set(value) {
+            if(value == null){
+                stopTicker()
+            }else{
+                startTicker(250)
+            }
+            field = value
+        }
     var activeOpModeName = ""
 
     val activeOpModeInfo: OpModeDetails
@@ -42,6 +54,28 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
                 autoTransition = ""
             )
         }
+
+    private val scheduler = Executors.newSingleThreadScheduledExecutor { r ->
+        Thread(r, "OpModeControl-Ticker")
+    }
+    @Volatile private var tickTask: ScheduledFuture<*>? = null
+
+    private fun startTicker(periodMs: Long = 250) {
+        if (tickTask?.isDone == false || tickTask?.isCancelled == false) return
+        tickTask = scheduler.scheduleWithFixedDelay({
+            val deltaMs = activeOpModeStartTimestamp?.let { start ->
+                val now = System.currentTimeMillis()
+                now - start
+            } ?: 0L
+
+            send("deltaMs", deltaMs)
+        }, 0, periodMs, TimeUnit.MILLISECONDS)
+    }
+
+    private fun stopTicker() {
+        tickTask?.cancel(false)
+        tickTask = null
+    }
 
     override fun onNewClient(client: Socket.ClientSocket) {
         sendClient(client, "opModesList", OpModesList(opModeList))
