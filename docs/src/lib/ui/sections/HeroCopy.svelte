@@ -19,7 +19,7 @@
     </a>
 </div>
 
-<p class="version">v2.0.0</p>
+<p class="version">v1.0.0</p>
 
 <style>
     h2 {

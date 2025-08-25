@@ -22,8 +22,8 @@
     }
 
     .hero {
-        max-width: 1000px;
-        margin: 10rem auto 3rem;
+        max-width: 1200px;
+        margin: 10rem auto 15rem;
         padding: 0 1rem;
         display: grid;
         grid-template-columns: 1.05fr 0.95fr;
@@ -37,10 +37,6 @@
         align-items: flex-end;
         text-align: right;
         gap: 0.5rem;
-    }
-
-    .media {
-        margin-right: -1rem;
     }
 
     .media img {
