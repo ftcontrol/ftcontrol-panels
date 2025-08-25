@@ -4,10 +4,10 @@
 
 <section class="plugins">
     <div class="text">
-        <h3>The power of<br>Panels Plugins</h3>
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</p>
-        <h3>The power to<br>extend as you wish</h3>
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</p>
+        <h3>Panels 1.0: Built on Plugins</h3>
+        <p>Panels is now entirely plugin-driven. Out of the box, you get all the essentials delivered as native plugins.</p>
+        <h3>Extend with custom plugins.</h3>
+        <p>Build a Svelte frontend and Kotlin backend, hook into the full Panels UI, and use the JS utilities, components, and FTC SDK to quickly ship new features. Panels becomes your FTC app modding platform.</p>
     </div>
     <div class="all-plugins">
         <GradientImage desktopType="right" mobileType="right">
@@ -76,7 +76,6 @@
             grid-row: 2;
         }
     }
-
 
     img{
         width: 100%;

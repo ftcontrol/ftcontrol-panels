@@ -11,10 +11,7 @@
     <div class="wrapper">
         <div class="text">
             <h3>Gamepad(s)</h3>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim.</p>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim.</p>
+            <p>Panels supports up to two FTC gamepads, giving Driver 1 and Driver 2 full wireless control of the robot. Both controllers are mapped and ready to use right out of the box.</p>
         </div>
         <div class="media">
             <img class="plugin" src="/plugin-gamepad.png" alt="Gamepads plugin"/>

@@ -10,9 +10,12 @@
         </GradientImage>
     </div>
     <div class="text">
-        <h3>Remain Up-To-Date</h3>
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim.</p>
+        <h3>Stay Up-To-Date</h3>
+        <p>
+            Each plugin can automatically check for updates whenever you’re online,
+            keeping your dashboard current with the latest features, fixes, and
+            improvements.
+        </p>
     </div>
 </section>
 

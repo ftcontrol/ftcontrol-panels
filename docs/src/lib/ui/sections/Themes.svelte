@@ -8,16 +8,20 @@
     <img class="red" src="/theme-red.png" alt="Theme"/>
     <img class="green" src="/theme-green.png" alt="Theme"/>
     <div class="points">
-        <p>customizable UI</p>
-        <p>customizable UI</p>
-        <p>customizable UI</p>
-        <p>customizable UI</p>
-        <p>customizable UI</p>
+        <p>Customizable colors</p>
+        <p>Resizable layouts</p>
+        <p>Grid-based widgets</p>
+        <p>Navlets for your navbar</p>
+        <p>Tabbed widget groups</p>
     </div>
     <div class="text">
         <img class="plugin" src="/plugin-themes.png" alt="Themes Plugin"/>
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim.</p>
+        <p>
+            The Themes plugin lets you change the look of Panels with full control over colors,
+            layout, and widgets. Move widgets in a grid structure, insert navlets into your
+            navbar, and preview widgets before adding them. Multiple tabbed widget groups
+            make it easy to organize everything the way you want.
+        </p>
     </div>
     <div class="title">
         <h3>A dashboard<br>for everyone</h3>
@@ -41,6 +45,10 @@
         margin-bottom: 4rem;
         margin-top: 10rem;
         background: #363737;
+    }
+
+    .points > p{
+        font-weight: 600;
     }
 
     .blue {

@@ -26,8 +26,8 @@
     )
   })
 
-  let durations = $state([10_000, 20_000, 30_000, 60_000])
-  let maxDuration = $state(durations[0])
+  let durations = $state([10_000, 20_000, 30_000, 60_000, 120_000])
+  let maxDuration = $state(durations[2])
 
   let isLinkedToOpmode = $state(false)
 

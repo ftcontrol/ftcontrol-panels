@@ -12,10 +12,9 @@
         <div class="text">
             <img class="plugin" src="/plugin-limelight.png" alt="Limelight plugin"/>
             <h3>Wirelessly control your<br><span>Limelight</span></h3>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim.</p>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim.</p>
+            <p>
+                Panels gives you full access to the Limelight 3A dashboard, with built-in widgets for streaming video, tracking camera stats, and logging telemetry, keeping your vision system seamlessly integrated with the rest of your dashboard.
+            </p>
         </div>
         <div class="dash" >
             <GradientImage mobileType="bottom">

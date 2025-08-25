@@ -1,91 +1,107 @@
 <script>
 </script>
-
 <section>
     <h2>And other tools</h2>
+
     <div class="text">
         <div class="flex">
-            <img src="/combined/telemetry.png" alt="Plugin telemetry"/>
+            <img src="/combined/telemetry.png" alt="Telemetry plugin"/>
             <div>
                 <h3>Telemetry</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Text-based telemetry that can mirror Driver Hub telemetry, so data stays
+                    consistent across your dashboard and the field.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/field.png" alt="Plugin field"/>
+            <img src="/combined/field.png" alt="Field plugin"/>
             <div>
                 <h3>Field</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    A drawable canvas of the game field, render any shape or path with mapped
+                    coordinates and support for popular pathing libraries.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/graph.png" alt="Plugin graph"/>
+            <img src="/combined/graph.png" alt="Graph plugin"/>
             <div>
                 <h3>Graph</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Visualize live data over time. Perfect for tuning PIDs and validating
+                    changes at a glance.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/lights.png" alt="Plugin lights"/>
+            <img src="/combined/lights.png" alt="Lights plugin"/>
             <div>
                 <h3>Lights</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Mimics goBILDA-style RGB indicators to provide fast, glanceable feedback
+                    during development.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/capture.png" alt="Plugin capture"/>
+            <img src="/combined/capture.png" alt="Capture plugin"/>
             <div>
                 <h3>Capture</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Record debug data and replay it later, great for diagnosing intermittent
+                    issues without being tethered to the robot.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/configurables.png" alt="Plugin configurables"/>
+            <img src="/combined/configurables.png" alt="Configurables plugin"/>
             <div>
                 <h3>Configurables</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Tunable variables that update in real time and support any data type—perfect for adjusting positions and parameters on the fly.                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/docs.png" alt="Plugin docs"/>
+            <img src="/combined/docs.png" alt="Integrated Docs plugin"/>
             <div>
                 <h3>Integrated Docs</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <p>
+                    Read the docs on the website or directly inside Panels, even when you’re
+                    offline and not connected to Wi-Fi.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/pinger-battery.png" alt="Plugins pinger & battery"/>
+            <img src="/combined/pinger-battery.png" alt="Battery and Pinger plugins"/>
             <div>
-                <h3>Battery + Pinger</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <h3>Battery & Pinger</h3>
+                <p>
+                    Monitor robot battery level and input delay in real-time to keep your
+                    system responsive and reliable.
+                </p>
             </div>
         </div>
+
         <div class="flex">
-            <img src="/combined/opmodecontrol.png" alt="Plugin opmode control"/>
+            <img src="/combined/opmodecontrol.png" alt="OpMode Control plugin"/>
             <div>
-                <h3>Control OpModes</h3>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim.</p>
+                <h3>OpMode Control</h3>
+                <p>
+                    A Driver Station–style layout with dedicated Autos and TeleOps sections, plus built-in timers for safe robot stop.
+                </p>
             </div>
         </div>
     </div>
 </section>
+
 
 <style>
     section {
