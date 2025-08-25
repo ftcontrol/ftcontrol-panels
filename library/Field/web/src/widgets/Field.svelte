@@ -109,6 +109,17 @@
     mouseXIn = wx_px / ppi
     mouseYIn = wy_px / ppi
     hasMouse = true
+
+    // packet.items = [
+    //   {
+    //     type: DrawableType.CIRCLE,
+    //     x: mouseXIn,
+    //     y: mouseYIn,
+    //     r: 5,
+    //     style: { fill: "green" } as Style,
+    //   } as Circle,
+    // ]
+    // scheduleRender()
   }
 
   function leave() {
