@@ -38,11 +38,6 @@ export const config: PluginConfig = {
       id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    {
-      type: "docs",
-      id: "DocsPage1",
-      filepath: "src/docs/DocsPage1.svelte",
-    },
   ],
   templates: [],
   includedPluginsIDs: [],

@@ -18,10 +18,12 @@ function gunzipToUtf8(buf: Buffer): string {
   return zlib.gunzipSync(buf).toString("utf8")
 }
 
-const modulesWithDecompressed = rawModules.map((m) => ({
-  config: m.config,
-  svelte: gunzipToUtf8(m.svelte),
-}))
+const modulesWithDecompressed = rawModules
+  .filter((it) => it.config.id != "com.bylazar.exampleplugin")
+  .map((m) => ({
+    config: m.config,
+    svelte: gunzipToUtf8(m.svelte),
+  }))
 
 modulesWithDecompressed.push({
   config: panelsConfig,
