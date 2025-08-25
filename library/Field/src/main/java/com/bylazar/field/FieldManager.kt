@@ -15,6 +15,9 @@ class FieldManager() {
         defaultBgID = registerImage(config.defaultBg)
         canvas.bgID = defaultBgID
         lastCanvas.bgID = defaultBgID
+
+        canvas.preset = FieldPresets.PANELS
+        lastCanvas.preset = FieldPresets.PANELS
     }
 
     val updateInterval = config.canvasUpdateInterval
@@ -182,11 +185,7 @@ class FieldManager() {
 
             lastCanvas.bgID = canvas.bgID
             lastCanvas.items = canvas.items.toList().toMutableList()
-            lastCanvas.offsetX = canvas.offsetX
-            lastCanvas.offsetY = canvas.offsetY
-            lastCanvas.flipX = canvas.flipX
-            lastCanvas.flipY = canvas.flipY
-            lastCanvas.rotation = canvas.rotation
+            lastCanvas.preset = canvas.preset
         }
 
         canvas.reset()
@@ -195,8 +194,7 @@ class FieldManager() {
         cursorHeading = 0.0
     }
 
-    fun setOffsets(o: CanvasPreset) {
-        canvas.resetOffsets()
-        o.apply(canvas)
+    fun setOffsets(f: FieldPresetParams) {
+        canvas.preset = f
     }
 }

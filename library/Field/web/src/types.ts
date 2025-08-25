@@ -28,23 +28,33 @@ export function rotationToRadians(r: CanvasRotation): number {
 }
 
 export type Packet = {
+  preset: FieldPresetParams
+  items: Drawable[]
+  bgID: string | null
+}
+
+export type FieldPresetParams = {
+  name: string
   offsetX: number
   offsetY: number
   rotation: CanvasRotation
   flipX: boolean
   flipY: boolean
-  items: Drawable[]
-  bgID: string | null
 }
 
 export type Drawable = Circle | Rectangle | Line | ImageDrawable
 
-export const emptyPacket: Packet = {
-  offsetX: 0,
-  offsetY: 0,
+export const emptyPreset: FieldPresetParams = {
+  name: "NONE",
+  offsetX: 0.0,
+  offsetY: 0.0,
   rotation: CanvasRotation.DEG_0,
   flipX: false,
-  flipY: false,
+  flipY: true,
+}
+
+export const emptyPacket: Packet = {
+  preset: emptyPreset,
   items: [],
   bgID: null,
 }

@@ -21,6 +21,8 @@ object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {
         sendClient(client, "canvasPacket", manager.lastCanvas)
         if (manager.images.isNotEmpty()) sendClient(client, "canvasImages", manager.images)
 
+        sendClient(client, "canvasPresets", FieldPresets.allPresets)
+
         log("Images length: ${manager.images.keys.size}")
     }
 

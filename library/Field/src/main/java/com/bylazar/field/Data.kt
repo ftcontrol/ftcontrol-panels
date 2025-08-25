@@ -20,10 +20,6 @@ enum class CanvasRotation {
     DEG_270
 }
 
-fun interface CanvasPreset {
-    fun apply(canvas: Canvas)
-}
-
 data class Style(
     val fill: String,
     val outlineFill: String,
@@ -61,12 +57,17 @@ data class Image(
     val id: UUID
 ) : Drawable(DrawablesTypes.IMAGE)
 
-data class Canvas(
+data class FieldPresetParams(
+    var name: String = "",
     var offsetX: Double = 0.0,
     var offsetY: Double = 0.0,
     var rotation: CanvasRotation = CanvasRotation.DEG_0,
     var flipX: Boolean = false,
     var flipY: Boolean = false,
+)
+
+data class Canvas(
+    var preset: FieldPresetParams = FieldPresetParams(),
     var items: MutableList<Drawable> = mutableListOf(),
     var bgID: UUID? = null
 ) {
@@ -76,10 +77,6 @@ data class Canvas(
     }
 
     fun resetOffsets() {
-        offsetX = 0.0
-        offsetY = 0.0
-        rotation = CanvasRotation.DEG_0
-        flipX = false
-        flipY = false
+        preset = FieldPresetParams()
     }
 }

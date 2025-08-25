@@ -46,11 +46,11 @@ export class Renderer {
   }
 
   setViewport(packet: Packet) {
-    this.offsetX = new Distance(packet.offsetX)
-    this.offsetY = new Distance(packet.offsetY)
-    this.heading = packet.rotation
-    this.flipX = packet.flipX
-    this.flipY = packet.flipY
+    this.offsetX = new Distance(packet.preset.offsetX)
+    this.offsetY = new Distance(packet.preset.offsetY)
+    this.heading = packet.preset.rotation
+    this.flipX = packet.preset.flipX
+    this.flipY = packet.preset.flipY
   }
 
   async draw(packet: Packet, images: ImagesMap): Promise<void> {

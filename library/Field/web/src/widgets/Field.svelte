@@ -2,13 +2,21 @@
   import { onMount, onDestroy } from "svelte"
   import Manager from "../manager"
   import { Renderer } from "./renderer"
-  import { emptyPacket, type Packet, rotationToRadians } from "../types"
+  import {
+    CanvasRotation,
+    emptyPacket,
+    emptyPreset,
+    type FieldPresetParams,
+    type Packet,
+    rotationToRadians,
+  } from "../types"
   import {
     Distance,
     FIELD_HEIGHT,
     FIELD_WIDTH,
     PIXELS_PER_INCH,
   } from "./primitives"
+  import { Overlay } from "ftc-panels"
 
   let canvas: HTMLCanvasElement
   let renderer: Renderer | null = null
@@ -16,7 +24,10 @@
   let { manager }: { manager: Manager } = $props()
 
   let packet: Packet = $state(emptyPacket)
+  let lastPacketPreset: FieldPresetParams = $state(emptyPreset)
   let images: Record<string, string> = $state(manager.images)
+  let presets: FieldPresetParams[] = $state([])
+  let replacePreset = $state<FieldPresetParams>(emptyPreset)
 
   let mouseXIn = $state(0)
   let mouseYIn = $state(0)
@@ -25,7 +36,6 @@
   function updateMouseCoords(ev: PointerEvent) {
     if (!canvas) return
 
-    // CSS → device px (exclude borders)
     const rect = canvas.getBoundingClientRect()
     const cs = getComputedStyle(canvas)
     const bl = parseFloat(cs.borderLeftWidth) || 0
@@ -44,11 +54,11 @@
     const ppi = canvas.width / FIELD_WIDTH.inches
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
-    const offXpx = packet.offsetX * ppi
-    const offYpx = packet.offsetY * ppi
-    const flipX = packet.flipX
-    const flipY = packet.flipY
-    const deg = (rotationToRadians(packet.rotation) * 180) / Math.PI
+    const offXpx = packet.preset.offsetX * ppi
+    const offYpx = packet.preset.offsetY * ppi
+    const flipX = packet.preset.flipX
+    const flipY = packet.preset.flipY
+    const deg = (rotationToRadians(packet.preset.rotation) * 180) / Math.PI
 
     const M = new DOMMatrix()
       .translateSelf(centerX + offXpx, centerY + offYpx)
@@ -89,11 +99,25 @@
 
     manager.state.onChange(manager.PACKETS_KEY, (next) => {
       packet = next
+      if (replacePreset.name != "NONE") packet.preset = replacePreset
+      packet.preset = {
+        name: "NONE",
+        offsetX: 24.0 * 9,
+        offsetY: -24.0 * 9,
+        rotation: CanvasRotation.DEG_270,
+        flipX: false,
+        flipY: true,
+      }
+      lastPacketPreset = next.preset
       scheduleRender()
     })
     manager.state.onChange(manager.IMAGES_KEY, (next) => {
       images = next
       scheduleRender()
+    })
+
+    manager.state.onChange(manager.PRESETS_KEY, (next) => {
+      presets = next
     })
   })
 
@@ -108,18 +132,21 @@
 <canvas bind:this={canvas}></canvas>
 
 <div class="info">
-  <div>
-    <div>offsetX: <b>{packet.offsetX.toFixed(2)}"</b></div>
-    <div>offsetY: <b>{packet.offsetY.toFixed(2)}"</b></div>
+  {#if packet.preset != undefined}
     <div>
-      heading: <b
-        >{Math.round((rotationToRadians(packet.rotation) * 180) / Math.PI) %
-          360}°</b
-      >
+      <div>offsetX: <b>{packet.preset.offsetX.toFixed(2)}"</b></div>
+      <div>offsetY: <b>{packet.preset.offsetY.toFixed(2)}"</b></div>
+      <div>
+        heading: <b
+          >{Math.round(
+            (rotationToRadians(packet.preset.rotation) * 180) / Math.PI
+          ) % 360}°</b
+        >
+      </div>
+      <div>flipX: <b>{packet.preset.flipX}"</b></div>
+      <div>flipY: <b>{packet.preset.flipY}"</b></div>
     </div>
-    <div>flipX: <b>{packet.flipX}"</b></div>
-    <div>flipY: <b>{packet.flipY}"</b></div>
-  </div>
+  {/if}
   {#if hasMouse}
     <div>
       <div>mouseX: <b>{mouseXIn.toFixed(2)}"</b></div>
@@ -127,6 +154,32 @@
     </div>
   {/if}
 </div>
+
+<Overlay>
+  {#snippet trigger()}
+    <button class:disabled={presets.length == 0}>
+      {replacePreset.name}
+    </button>
+  {/snippet}
+  {#snippet overlay({ close }: { close: () => void })}
+    {#each presets.filter((it) => it.name !== replacePreset.name) as p}
+      <button
+        onclick={() => {
+          replacePreset = p
+          if (p.name == "NONE") {
+            packet.preset = lastPacketPreset
+          } else {
+            packet.preset = p
+          }
+          scheduleRender()
+          close()
+        }}
+      >
+        {p.name}
+      </button>
+    {/each}
+  {/snippet}
+</Overlay>
 
 <style>
   canvas {
