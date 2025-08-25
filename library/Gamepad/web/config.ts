@@ -9,7 +9,7 @@ export const config: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:gamepad:<VERSION>",
   version: "0.0.19",
-  pluginsCoreVersion: "1.1.35",
+  pluginsCoreVersion: "1.1.37",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

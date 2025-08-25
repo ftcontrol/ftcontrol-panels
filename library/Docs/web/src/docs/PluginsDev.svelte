@@ -8,5 +8,5 @@
   } = $props()
 </script>
 
-<Title>Example 12</Title>
-<Paragraph>This is an example page.</Paragraph>
+<Title>Coming soon</Title>
+<Paragraph>A guide for how to develop custom plugins.</Paragraph>

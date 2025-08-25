@@ -9,7 +9,7 @@ export const config: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/dev",
   packageString: "com.bylazar:docs:<VERSION>",
   version: "0.0.13",
-  pluginsCoreVersion: "1.1.35",
+  pluginsCoreVersion: "1.1.37",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -25,8 +25,13 @@ export const config: PluginConfig = {
     },
     {
       type: "docs",
-      id: "DocsPage1",
-      filepath: "src/docs/DocsPage1.svelte",
+      id: "Accessing Panels",
+      filepath: "src/docs/Accessing.svelte",
+    },
+    {
+      type: "docs",
+      id: "Plugins Development",
+      filepath: "src/docs/PluginsDev.svelte",
     },
   ],
   templates: [],
