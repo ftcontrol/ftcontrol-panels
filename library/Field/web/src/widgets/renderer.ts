@@ -30,6 +30,7 @@ export class Renderer {
   private heading: CanvasRotation = CanvasRotation.DEG_0
   private flipX = false
   private flipY = false
+  private reverseXY = false
 
   private imageCache = new Map<string, { sig: number; el: HTMLImageElement }>()
 
@@ -46,11 +47,12 @@ export class Renderer {
   }
 
   setViewport(packet: Packet) {
-    this.offsetX = new Distance(packet.preset.offsetX)
-    this.offsetY = new Distance(packet.preset.offsetY)
+    this.offsetX = new Distance(packet.preset.offsetX ?? 0)
+    this.offsetY = new Distance(packet.preset.offsetY ?? 0)
     this.heading = packet.preset.rotation
-    this.flipX = packet.preset.flipX
-    this.flipY = packet.preset.flipY
+    this.flipX = !!packet.preset.flipX
+    this.flipY = !!packet.preset.flipY
+    this.reverseXY = !!packet.preset.reverseXY
   }
 
   async draw(packet: Packet, images: ImagesMap): Promise<void> {
@@ -62,10 +64,14 @@ export class Renderer {
     this.ctx.restore()
 
     if (packet.bgID && images[packet.bgID]) {
+      this.ctx.save()
+      this.applyBackgroundTransform()
       await this.drawFieldImage(packet.bgID, images[packet.bgID])
+      this.ctx.restore()
     }
 
-    this.applyOverlayTransform()
+    this.ctx.save()
+    this.applyItemTransform()
     for (const item of packet.items) {
       switch (item.type) {
         case DrawableType.CIRCLE: {
@@ -118,6 +124,7 @@ export class Renderer {
         }
       }
     }
+    this.ctx.restore()
 
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
   }
@@ -126,7 +133,6 @@ export class Renderer {
     const nextDpr = window.devicePixelRatio || 1
     const expectedW = Math.round(FIELD_WIDTH.pixels * nextDpr)
     const expectedH = Math.round(FIELD_HEIGHT.pixels * nextDpr)
-
     if (
       this.dpr !== nextDpr ||
       this.canvas.width !== expectedW ||
@@ -136,26 +142,78 @@ export class Renderer {
       this.canvas.width = expectedW
       this.canvas.height = expectedH
     }
-
     this.ctx.imageSmoothingEnabled = true
     this.ctx.imageSmoothingQuality = "high"
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
   }
 
-  private applyBaseTransform() {
+  private applyBackgroundTransform() {
+    const W = FIELD_WIDTH.pixels
+    const H = FIELD_HEIGHT.pixels
+    const theta = rotationToRadians(this.heading)
+
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
-    this.ctx.translate(FIELD_WIDTH.pixels / 2, FIELD_HEIGHT.pixels / 2)
-    this.ctx.rotate(rotationToRadians(this.heading))
+    this.ctx.translate(W / 2, H / 2)
+    this.ctx.rotate(theta)
   }
 
-  private applyOverlayTransform() {
-    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
-    this.ctx.translate(
-      FIELD_WIDTH.pixels / 2 + this.offsetX.pixels,
-      FIELD_HEIGHT.pixels / 2 + this.offsetY.pixels
+  private getItemTransform(): [number, number, number, number, number, number] {
+    const W = FIELD_WIDTH.pixels
+    const H = FIELD_HEIGHT.pixels
+
+    const sx = this.flipX ? -1 : 1
+    const sy = this.flipY ? -1 : 1
+
+    const S00 = this.reverseXY ? 0 : 1
+    const S01 = this.reverseXY ? 1 : 0
+    const S10 = this.reverseXY ? 1 : 0
+    const S11 = this.reverseXY ? 0 : 1
+
+    const B00 = S00 * sx
+    const B01 = S01 * sy
+    const B10 = S10 * sx
+    const B11 = S11 * sy
+
+    const mwc_a = 0,
+      mwc_b = 1,
+      mwc_c = -1,
+      mwc_d = 0
+
+    const L_a = mwc_a * B00 + mwc_b * B10
+    const L_b = mwc_a * B01 + mwc_b * B11
+    const L_c = mwc_c * B00 + mwc_d * B10
+    const L_d = mwc_c * B01 + mwc_d * B11
+
+    const ox = this.offsetX.pixels
+    const oy = this.offsetY.pixels
+    const tX = L_a * ox + L_b * oy
+    const tY = L_c * ox + L_d * oy
+
+    const theta = rotationToRadians(this.heading)
+    const cos = Math.cos(theta)
+    const sin = Math.sin(theta)
+
+    const a = cos * L_a + -sin * L_c
+    const b = sin * L_a + cos * L_c
+    const c = cos * L_b + -sin * L_d
+    const d = sin * L_b + cos * L_d
+
+    const e = W / 2 + (cos * tX - sin * tY)
+    const f = H / 2 + (sin * tX + cos * tY)
+
+    return [a, b, c, d, e, f]
+  }
+
+  private applyItemTransform() {
+    const [a, b, c, d, e, f] = this.getItemTransform()
+    this.ctx.setTransform(
+      this.dpr * a,
+      this.dpr * b,
+      this.dpr * c,
+      this.dpr * d,
+      this.dpr * e,
+      this.dpr * f
     )
-    this.ctx.rotate(rotationToRadians(this.heading))
-    this.ctx.scale(this.flipX ? -1 : 1, this.flipY ? -1 : 1)
   }
 
   private async getImage(
@@ -165,14 +223,12 @@ export class Renderer {
     if (!base64) return null
     const normalized = normalizeDataUrl(base64)
     const sig = normalized.length
-
     const cached = this.imageCache.get(key)
     if (cached && cached.sig === sig) return cached.el
-
     const img = new Image()
     img.src = normalized
     try {
-      await img.decode()
+      await (img as any).decode?.()
     } catch {
       await new Promise<void>((res, rej) => {
         img.onload = () => res()
@@ -186,33 +242,22 @@ export class Renderer {
   private async drawBase64Image(
     key: string,
     base64: string | undefined,
-    startX: Distance,
-    startY: Distance,
-    width: Distance,
-    height: Distance
+    x: Distance,
+    y: Distance,
+    w: Distance,
+    h: Distance
   ) {
     const img = await this.getImage(key, base64)
     if (!img) return
-    this.ctx.drawImage(
-      img,
-      startX.pixels,
-      startY.pixels,
-      width.pixels,
-      height.pixels
-    )
+    this.ctx.drawImage(img, x.pixels, y.pixels, w.pixels, h.pixels)
   }
 
   private async drawFieldImage(key: string, base64: string) {
     const img = await this.getImage(key, base64)
     if (!img) return
-
     const W = FIELD_WIDTH.pixels
     const H = FIELD_HEIGHT.pixels
-
-    this.ctx.save()
-    this.applyBaseTransform()
     this.ctx.drawImage(img, -W / 2, -H / 2, W, H)
-    this.ctx.restore()
   }
 
   private drawCircle(

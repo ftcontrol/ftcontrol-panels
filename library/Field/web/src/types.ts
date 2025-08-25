@@ -40,6 +40,7 @@ export type FieldPresetParams = {
   rotation: CanvasRotation
   flipX: boolean
   flipY: boolean
+  reverseXY: boolean
 }
 
 export type Drawable = Circle | Rectangle | Line | ImageDrawable
@@ -51,6 +52,7 @@ export const emptyPreset: FieldPresetParams = {
   rotation: CanvasRotation.DEG_0,
   flipX: false,
   flipY: true,
+  reverseXY: false,
 }
 
 export const emptyPacket: Packet = {

@@ -64,6 +64,7 @@ data class FieldPresetParams(
     var rotation: CanvasRotation = CanvasRotation.DEG_0,
     var flipX: Boolean = false,
     var flipY: Boolean = false,
+    var reverseXY: Boolean = false,
 )
 
 data class Canvas(
