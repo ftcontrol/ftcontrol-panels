@@ -12,7 +12,7 @@ It provides a powerful set of features with minimal boilerplate, using **Kotlin*
 Panels is now entirely plugin-driven. Out of the box, you get all the essentials delivered as native plugins.
 Extend with custom plugins.
 
-## Build a Svelte frontend and Kotlin backend, hook into the full Panels UI, and use the JS utilities, components, and FTC SDK to quickly ship new features. Panels becomes your FTC app modding platform.
+Build a Svelte frontend and Kotlin backend, hook into the full Panels UI, and use the JS utilities, components, and FTC SDK to quickly ship new features. Panels becomes your FTC app modding platform.
 
 Read the full [**docs**](https://panels.bylazar.com).
 
