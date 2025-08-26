@@ -19,12 +19,12 @@
 
 <UnorderedList>
   <ListItem>
-    <Link href="https://github.com/MonsieurLazar/Panels-Quickstart-Kotlin"
+    <Link href="https://github.com/ftcontrol/Panels-Quickstart-Kotlin"
       >Panels Kotlin Quickstart</Link
     >
   </ListItem>
   <ListItem>
-    <Link href="https://github.com/MonsieurLazar/Panels-Quickstart-Java"
+    <Link href="https://github.com/ftcontrol/Panels-Quickstart-Java"
       >Panels Java Quickstart</Link
     >
   </ListItem>
