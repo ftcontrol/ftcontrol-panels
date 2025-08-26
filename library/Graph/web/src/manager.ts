@@ -1,4 +1,5 @@
-import { PluginManager } from "ftc-panels"
+import { PluginManager, getLazarPackageLatestVersion } from "ftc-panels"
+import { config } from "../config"
 import type { GraphEntry } from "./types"
 
 export default class Manager extends PluginManager {
@@ -36,7 +37,7 @@ export default class Manager extends PluginManager {
   }
 
   static async getNewVersion(): Promise<string> {
-    return ""
+    return await getLazarPackageLatestVersion(config.id)
   }
 }
 

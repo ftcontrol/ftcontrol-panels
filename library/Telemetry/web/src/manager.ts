@@ -1,6 +1,5 @@
-import { PluginManager } from "ftc-panels"
-
-export type OpModeStatus = "INIT" | "RUNNING" | "STOPPED"
+import { PluginManager, getLazarPackageLatestVersion } from "ftc-panels"
+import { config } from "../config"
 
 export default class Manager extends PluginManager {
   PACKETS_KEY = "packets"
@@ -13,6 +12,6 @@ export default class Manager extends PluginManager {
   }
 
   static async getNewVersion(): Promise<string> {
-    return ""
+    return await getLazarPackageLatestVersion(config.id)
   }
 }

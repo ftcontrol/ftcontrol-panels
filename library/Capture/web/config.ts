@@ -6,10 +6,10 @@ export const config: PluginConfig = {
   letterName: "C",
   description: "Capture Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.capture/",
-  mavenURL: "https://mymaven.bylazar.com/dev",
+  mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:capture:<VERSION>",
-  version: "0.0.15",
-  pluginsCoreVersion: "1.1.37",
+  version: "1.0.0",
+  pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -26,5 +26,17 @@ export const config: PluginConfig = {
   ],
   templates: [],
   includedPluginsIDs: [],
-  changelog: [],
+  changelog: [
+    {
+      version: "1.0.0",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "other",
+          description: "First release",
+          upgrading: "",
+        },
+      ],
+    },
+  ],
 }

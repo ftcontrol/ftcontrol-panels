@@ -1,5 +1,6 @@
 import {
   defaultSettings,
+  getLazarPackageLatestVersion,
   type PluginConfig,
   type PluginSettings,
 } from "ftc-panels"
@@ -10,16 +11,28 @@ export const panelsConfig: PluginConfig = {
   letterName: "P",
   description: "Empty Panels Installation ready to be extended",
   websiteURL: "https://panels.bylazar.com",
-  mavenURL: "https://mymaven.bylazar.com/dev",
+  mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:panels:<VERSION>",
-  version: "0.0.30",
-  pluginsCoreVersion: "1.1.34",
+  version: "1.0.0",
+  pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "",
   components: [],
   templates: [],
   includedPluginsIDs: [],
-  changelog: [],
+  changelog: [
+    {
+      version: "1.0.0",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "other",
+          description: "First release",
+          upgrading: "",
+        },
+      ],
+    },
+  ],
 }
 
 export class PanelsManager {
@@ -29,21 +42,6 @@ export class PanelsManager {
   onInit(): void {}
 
   static async getNewVersion(): Promise<string> {
-    try {
-      const response = await fetch(
-        `https://raw.githubusercontent.com/lazarcloud/ftcontrol-maven/refs/heads/main/dev/com/bylazar/panels/maven-metadata.xml`
-      )
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-
-      const xmlText = await response.text()
-      const parser = new DOMParser()
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml")
-
-      const latestVersion = xmlDoc.querySelector("latest")?.textContent
-
-      return latestVersion || ""
-    } catch (error) {
-      return ""
-    }
+    return await getLazarPackageLatestVersion(panelsConfig.id)
   }
 }

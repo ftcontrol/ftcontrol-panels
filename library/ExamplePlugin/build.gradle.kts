@@ -84,7 +84,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }

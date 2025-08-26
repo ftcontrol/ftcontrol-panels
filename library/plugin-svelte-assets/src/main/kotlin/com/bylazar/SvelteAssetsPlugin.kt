@@ -21,7 +21,7 @@ open class SvelteAssetsPluginExtension {
     var buildDirPath: String = "build"
     var assetsPath: String = "web"
     var useNpm: Boolean = false
-    var maxParallelSvelteBuilds: Int = 4
+    var maxParallelSvelteBuilds: Int = 2
 }
 
 abstract class SvelteSingleSlotService :
@@ -152,8 +152,6 @@ class SvelteAssetsPlugin : Plugin<Project> {
             usesService(singleSlot)
         }
 
-        configurePublishingDependencies(project, buildSvelteAggregate)
-
         val root = project.rootProject
         val rootTask = root.tasks.findByName("buildAllSvelte")
             ?: root.tasks.create("buildAllSvelte") {
@@ -248,28 +246,6 @@ class SvelteAssetsPlugin : Plugin<Project> {
                     )
                 }
             }
-        }
-    }
-
-    private fun configurePublishingDependencies(
-        project: Project,
-        buildSvelteAggregate: org.gradle.api.tasks.TaskProvider<org.gradle.api.Task>
-    ) {
-        project.plugins.withId("maven-publish") {
-            project.tasks.configureEach {
-                val n = this.javaClass.name
-                if (n == "org.gradle.api.publish.tasks.PublishToMavenRepository" ||
-                    n == "org.gradle.api.publish.tasks.PublishToMavenLocal"
-                ) {
-                    dependsOn(buildSvelteAggregate)
-                }
-            }
-            project.tasks.matching { it.name == "publish" }.configureEach {
-                dependsOn(buildSvelteAggregate)
-            }
-        }
-        project.tasks.matching { it.name.equals("uploadArchives", ignoreCase = true) }.configureEach {
-            dependsOn(buildSvelteAggregate)
         }
     }
 }

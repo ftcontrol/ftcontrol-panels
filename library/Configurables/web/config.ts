@@ -6,10 +6,10 @@ export const config: PluginConfig = {
   letterName: "C",
   description: "Configurable variables for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.configurables/",
-  mavenURL: "https://mymaven.bylazar.com/dev",
+  mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:configurables:<VERSION>",
-  version: "0.0.22",
-  pluginsCoreVersion: "1.1.37",
+  version: "1.0.0",
+  pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   components: [
     {
@@ -41,5 +41,17 @@ export const config: PluginConfig = {
   manager: "src/manager.ts",
   templates: [],
   includedPluginsIDs: [],
-  changelog: [],
+  changelog: [
+    {
+      version: "1.0.0",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "other",
+          description: "First release",
+          upgrading: "",
+        },
+      ],
+    },
+  ],
 }

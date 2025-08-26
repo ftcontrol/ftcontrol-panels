@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.graph"
-val pluginVersion = "0.0.3"
+val pluginVersion = "1.0.0"
 
 plugins {
     id("com.android.library")
@@ -84,7 +84,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }

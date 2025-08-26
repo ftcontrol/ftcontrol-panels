@@ -1,4 +1,5 @@
-import { PluginManager } from "ftc-panels"
+import { PluginManager, getLazarPackageLatestVersion } from "ftc-panels"
+import { config } from "../config"
 
 export default class Manager extends PluginManager {
   FIRST_GAMEPAD_KEY = "gamepad0"
@@ -30,6 +31,6 @@ export default class Manager extends PluginManager {
   }
 
   static async getNewVersion(): Promise<string> {
-    return ""
+    return await getLazarPackageLatestVersion(config.id)
   }
 }

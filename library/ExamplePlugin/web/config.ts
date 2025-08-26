@@ -6,10 +6,10 @@ export const config: PluginConfig = {
   letterName: "EP",
   description: "Example Plugin for Panels",
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar/exampleplugin",
-  mavenURL: "https://mymaven.bylazar.com/dev",
+  mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:exampleplugin:<VERSION>",
   version: "0.0.14",
-  pluginsCoreVersion: "1.1.37",
+  pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [

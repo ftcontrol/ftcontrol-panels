@@ -13,6 +13,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "ftc-panels": "^1.1.37"
+    "ftc-panels": "^1.1.38"
   }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 val pluginNamespace = "com.bylazar.panels"
-val pluginVersion = "0.0.30"
+val pluginVersion = "1.0.0"
 
 svelteAssets {
     webAppPath = "web"
@@ -105,7 +105,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/dev")
+                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }

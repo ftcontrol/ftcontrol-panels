@@ -1,9 +1,10 @@
-import { PluginManager } from "ftc-panels"
+import { PluginManager, getLazarPackageLatestVersion } from "ftc-panels"
+import { config } from "../config"
 
 export default class Manager extends PluginManager {
   override onInit(): void {}
 
   static async getNewVersion(): Promise<string> {
-    return ""
+    return await getLazarPackageLatestVersion(config.id)
   }
 }

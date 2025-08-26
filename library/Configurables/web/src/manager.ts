@@ -1,11 +1,15 @@
-import { PluginManager } from "ftc-panels"
+import { PluginManager, getLazarPackageLatestVersion } from "ftc-panels"
 import type { ChangeJson, GenericTypeJson } from "./types"
+import { config } from "../config"
 
 export default class Manager extends PluginManager {
   INITIAL_CONFIGURABLES_KEY = "initialConfigurables"
   CONFIGURABLES_KEY = "configurables"
 
   override onInit(): void {
+    this.state.update(this.INITIAL_CONFIGURABLES_KEY, [])
+    this.state.update(this.CONFIGURABLES_KEY, [])
+
     this.socket.addMessageHandler("initialConfigurables", (data) => {
       this.state.update(this.INITIAL_CONFIGURABLES_KEY, data)
     })
@@ -42,6 +46,6 @@ export default class Manager extends PluginManager {
   }
 
   static async getNewVersion(): Promise<string> {
-    return ""
+    return await getLazarPackageLatestVersion(config.id)
   }
 }
