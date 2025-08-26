@@ -29,9 +29,9 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     var activeOpMode: OpMode? = null
     var activeOpModeStartTimestamp: Long? = null
         set(value) {
-            if(value == null){
+            if (value == null) {
                 stopTicker()
-            }else{
+            } else {
                 startTicker(250)
             }
             field = value
@@ -58,7 +58,8 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     private val scheduler = Executors.newSingleThreadScheduledExecutor { r ->
         Thread(r, "OpModeControl-Ticker")
     }
-    @Volatile private var tickTask: ScheduledFuture<*>? = null
+    @Volatile
+    private var tickTask: ScheduledFuture<*>? = null
 
     private fun startTicker(periodMs: Long = 250) {
         if (tickTask?.isDone == false || tickTask?.isCancelled == false) return
@@ -130,7 +131,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     fun sendActiveOpMode() {
         log("New active OpMode $status, ${activeOpModeInfo.name}")
         if (activeOpModeName == "\$Stop\$Robot\$") status = OpModeStatus.STOPPED
-        if(status == OpModeStatus.STOPPED){
+        if (status == OpModeStatus.STOPPED) {
             activeOpModeStartTimestamp = null
         }
         send(
@@ -191,16 +192,10 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
 
             opModeList = list.sortedWith(compareBy({ it.group }, { it.name })).toMutableList()
 
-            log("OpModes: ${opModeList.joinToString(", ")}")
+            log("OpModes: ${opModeList.joinToString(", ", transform = { it.name })}")
 
             send("opModesList", OpModesList(opModeList))
-            send(
-                "activeOpMode", ActiveOpMode(
-                    opMode = activeOpModeInfo,
-                    status = status,
-                    startTimestamp = activeOpModeStartTimestamp
-                )
-            )
+            sendActiveOpMode()
         }
     }
 
