@@ -1,5 +1,6 @@
 package com.bylazar.field
 
+import com.bylazar.field.FieldImages
 import java.util.UUID
 
 class FieldManager() {
@@ -145,7 +146,7 @@ class FieldManager() {
     }
 
     fun registerImage(path: String): UUID {
-        val base64 = FieldImages().loadResourceAsBase64(path)
+        val base64 = FieldImages.loadResourceAsBase64(path)
         return registerBase64Image(base64)
     }
 
@@ -166,7 +167,7 @@ class FieldManager() {
     }
 
     fun setBackground(path: String) {
-        val base64 = FieldImages().loadResourceAsBase64(path)
+        val base64 = FieldImages.loadResourceAsBase64(path)
         setBase64Background(base64)
     }
 

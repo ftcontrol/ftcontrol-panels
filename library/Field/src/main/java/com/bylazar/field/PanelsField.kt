@@ -40,5 +40,5 @@ object PanelsField {
     val RED = "red"
     val BLUE = "blue"
 
-    val images = FieldImages()
+    val images = FieldImages
 }

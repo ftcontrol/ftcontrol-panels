@@ -13,7 +13,7 @@ fun interface ImagePreset {
 }
 
 
-class FieldImages {
+object FieldImages {
     fun loadResourceAsBytes(resourceName: String): ByteArray {
         return this::class.java.classLoader?.getResource(resourceName)
             ?.openStream()
