@@ -6,6 +6,7 @@
     CodeBlock,
     InlineCode,
     Image,
+    AutoplayVideo,
   } from "ftc-panels/docs"
   let {
     info,
@@ -15,9 +16,12 @@
 
   import example from "@examples/lights/TestLights.kt?raw"
   import lights from "./lights.png"
+  import lights2 from "./lights.mp4"
 </script>
 
 <Title level={1}>Introduction</Title>
+
+<AutoplayVideo src={lights2} alt={"Lights Showcase"} />
 
 <Paragraph>
   Mimics goBILDA-style RGB indicators to provide fast, glanceable feedback

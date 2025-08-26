@@ -29,8 +29,13 @@ export const config: PluginConfig = {
     },
     {
       type: "docs",
-      id: "DocsPage1",
-      filepath: "src/docs/DocsPage1.svelte",
+      id: "Copy Semantics",
+      filepath: "src/docs/CopySemantics.svelte",
+    },
+    {
+      type: "docs",
+      id: "Examples",
+      filepath: "src/docs/Examples.svelte",
     },
   ],
   manager: "src/manager.ts",

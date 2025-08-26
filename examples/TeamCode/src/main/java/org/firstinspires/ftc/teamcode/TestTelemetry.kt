@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
 @Configurable
-@TeleOp(name = "Test Telemetry", group = "Dev")
+@TeleOp(name = "Test Telemetry 2", group = "Dev")
 class TestTelemetry : OpMode() {
     companion object {
         var test = "lazar"
@@ -32,6 +32,7 @@ class TestTelemetry : OpMode() {
             Config.PANELS -> PanelsField.presets.PANELS
             Config.PEDRO -> PanelsField.presets.PEDRO_PATHING
             Config.RR -> PanelsField.presets.ROAD_RUNNER
+            else -> PanelsField.presets.PANELS
         })
 
         field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
