@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:field:<VERSION>",
-  version: "1.0.0",
+  version: "1.0.1",
   pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -23,15 +23,21 @@ export const config: PluginConfig = {
       id: "Homepage",
       filepath: "src/docs/Homepage.svelte",
     },
-    {
-      type: "docs",
-      id: "DocsPage1",
-      filepath: "src/docs/DocsPage1.svelte",
-    },
   ],
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.1",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "docs",
+          description: "Removed test docs page",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.0",
       release_date: "26.08.2025",
