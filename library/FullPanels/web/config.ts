@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.0",
+  version: "1.0.1",
   pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -100,6 +100,22 @@ export const config: PluginConfig = {
     "com.bylazar.pinger",
   ],
   changelog: [
+    {
+      version: "1.0.1",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "added",
+          description: "Updated Docs to 1.0.1",
+          upgrading: "",
+        },
+        {
+          type: "added",
+          description: "Updated Field to 1.0.1",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.0",
       release_date: "26.08.2025",

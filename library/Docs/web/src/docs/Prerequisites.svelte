@@ -9,10 +9,28 @@
     InlineCode,
     CodeBlock,
     AccentedParagraph,
+    UnorderedList,
   } from "ftc-panels/docs"
 </script>
 
 <Title level={1}>Panels Setup Guide</Title>
+
+<Paragraph>You can get started by using the Quickstarts:</Paragraph>
+
+<UnorderedList>
+  <ListItem>
+    <Link href="https://github.com/MonsieurLazar/Panels-Quickstart-Kotlin"
+      >Panels Kotlin Quickstart</Link
+    >
+  </ListItem>
+  <ListItem>
+    <Link href="https://github.com/MonsieurLazar/Panels-Quickstart-Java"
+      >Panels Java Quickstart</Link
+    >
+  </ListItem>
+</UnorderedList>
+
+<Title level={1}>Panels Manual Setup Guide</Title>
 
 <Paragraph>
   This guide helps you integrate <InlineCode>ftcontrol</InlineCode> into your FTC
@@ -30,7 +48,7 @@
 
 <Title level={2}>[Optional] Enable Kotlin Support</Title>
 
-<AccentedParagraph type={"warn"}>
+<AccentedParagraph tone={"warn"}>
   You only need this if you want to use Kotlin instead of Java.
 </AccentedParagraph>
 
@@ -59,9 +77,23 @@ android {
 `}
 />
 
+<Paragraph>And in the root build.gradle:</Paragraph>
+
+<CodeBlock
+  language={"groovy"}
+  code={`
+buildscript {
+    ...
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0"// [svp! ++]
+    }
+}
+`}
+/>
+
 <Title level={2}>Add FTControl to Your Project</Title>
 
-<AccentedParagraph type={"warn"}>
+<AccentedParagraph tone={"warn"}>
   [if you aren't using Kotlin] Edit TeamCode/build.gradle:
 </AccentedParagraph>
 

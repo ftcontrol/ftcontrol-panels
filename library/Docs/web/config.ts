@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.docs/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:docs:<VERSION>",
-  version: "1.0.0",
+  version: "1.0.1",
   pluginsCoreVersion: "1.1.38",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -37,6 +37,22 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.1",
+      release_date: "26.08.2025",
+      changes: [
+        {
+          type: "docs",
+          description: "Fixed Kotlin Installation Guide",
+          upgrading: "",
+        },
+        {
+          type: "docs",
+          description: "Added Java & Kotlin Quickstarts links",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.0",
       release_date: "26.08.2025",
