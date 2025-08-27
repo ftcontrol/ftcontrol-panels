@@ -38,7 +38,7 @@ export const config: PluginConfig = {
       changes: [
         {
           type: "other",
-          description: "Updated ftc-panels to 1.1.40",
+          description: "Updated ftc-panels to 1.1.43",
           upgrading: "",
         },
       ],

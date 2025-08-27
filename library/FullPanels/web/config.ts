@@ -118,7 +118,7 @@ export const config: PluginConfig = {
         },
         {
           type: "other",
-          description: "Updated ftc-panels to 1.1.40 && all plugins",
+          description: "Updated ftc-panels to 1.1.43 && all plugins",
           upgrading: "",
         },
       ],

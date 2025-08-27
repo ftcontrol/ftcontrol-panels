@@ -14,7 +14,7 @@ export const panelsConfig: PluginConfig = {
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:panels:<VERSION>",
   version: "1.0.1",
-  pluginsCoreVersion: "1.1.42",
+  pluginsCoreVersion: "1.1.43",
   author: "Lazar",
   manager: "",
   components: [],
@@ -32,7 +32,7 @@ export const panelsConfig: PluginConfig = {
         },
         {
           type: "other",
-          description: "Updated ftc-panels to 1.1.40",
+          description: "Updated ftc-panels to 1.1.43",
           upgrading: "",
         },
       ],
