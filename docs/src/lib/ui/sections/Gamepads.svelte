@@ -111,5 +111,8 @@
     .media {
       max-width: 80vw;
     }
+    section {
+      margin-bottom: -1rem;
+    }
   }
 </style>
