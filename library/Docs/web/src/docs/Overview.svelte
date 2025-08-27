@@ -1,12 +1,24 @@
 <script lang="ts">
   import type { PluginInfo } from "ftc-panels"
-  import { Title, Paragraph, Accent, Link, ListItem } from "ftc-panels/docs"
+  import {
+    Title,
+    Paragraph,
+    Accent,
+    Link,
+    ListItem,
+    AccentedParagraph,
+  } from "ftc-panels/docs"
   let {
     info,
   }: {
     info: PluginInfo
   } = $props()
 </script>
+
+<AccentedParagraph tone="danger">
+  This is just the version of the Docs Plugin, for full install of Panels please
+  read the entire Prerequisites section.
+</AccentedParagraph>
 
 <Title>FTControl Panels</Title>
 <Paragraph>

@@ -45,6 +45,7 @@
     margin-bottom: 4rem;
     margin-top: 10rem;
     background: #363737;
+    overflow-x: none;
   }
 
   .points > p {
@@ -126,7 +127,7 @@
       display: flex;
       flex-direction: column;
       background: transparent;
-      margin-bottom: -4rem;
+      margin-bottom: 0rem;
     }
 
     .plugin {
@@ -149,6 +150,8 @@
       display: inline-block;
       position: relative;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      max-width: 90vw;
+      margin: 0 auto;
     }
     .theme:not(:first-of-type) {
       margin-top: -50%;

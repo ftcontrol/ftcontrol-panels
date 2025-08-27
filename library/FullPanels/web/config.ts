@@ -8,8 +8,8 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.2",
-  pluginsCoreVersion: "1.1.38",
+  version: "1.0.3",
+  pluginsCoreVersion: "1.1.41",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -98,8 +98,31 @@ export const config: PluginConfig = {
     "com.bylazar.themes",
     "com.bylazar.utils",
     "com.bylazar.pinger",
+    "com.bylazar.graph",
+    "com.bylazar.lights",
   ],
   changelog: [
+    {
+      version: "1.0.3",
+      release_date: "27.08.2025",
+      changes: [
+        {
+          type: "docs",
+          description: "Removed old version fetcher from docs",
+          upgrading: "",
+        },
+        {
+          type: "added",
+          description: "Added graph & lights to full-panels",
+          upgrading: "",
+        },
+        {
+          type: "other",
+          description: "Updated ftc-panels to 1.1.40 && all plugins",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.2",
       release_date: "26.08.2025",

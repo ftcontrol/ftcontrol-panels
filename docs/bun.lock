@@ -5,8 +5,8 @@
       "name": "docs",
       "dependencies": {
         "@sveltejs/adapter-static": "^3.0.9",
-        "ftc-panels": "^1.1.39",
-        "ftc-panels-docs": "^0.0.1",
+        "ftc-panels": "^1.1.41",
+        "ftc-panels-docs": "^0.0.3",
         "path": "^0.12.7",
       },
       "devDependencies": {
@@ -173,9 +173,9 @@
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
-    "ftc-panels": ["ftc-panels@1.1.39", "", { "dependencies": { "path": "^0.12.7", "svelte-portal": "^2.2.1", "zlib": "^1.0.5" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-J0uJEL+n9ter/CI3H/529OFD5QaLTvb4kqd+39M9vPELoK5bBhk4kcTwUqLFbnltExfdKtHDRPKdodq4wIxEMg=="],
+    "ftc-panels": ["ftc-panels@1.1.41", "", { "dependencies": { "path": "^0.12.7", "svelte-portal": "^2.2.1", "zlib": "^1.0.5" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-HxZoxG3L8lbBZUNpDkknT6RdXhtVEtuE6oxXPLJaiq+b99NL7w6VX32Pmk7vu+hXn35Zg+4QGSvo8g7JcR6T6Q=="],
 
-    "ftc-panels-docs": ["ftc-panels-docs@0.0.1", "", { "dependencies": { "ftc-panels": "^1.1.39" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-jVhVJLyZSMoNa9OAOh1NREYQ9X2nttkLO8SQhYJMC+zJ/ydxm5B/xSDjbzALDpBuHXs9vjmdjxQin1h9o8Di7Q=="],
+    "ftc-panels-docs": ["ftc-panels-docs@0.0.3", "", { "dependencies": { "ftc-panels": "^1.1.41" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-C9jbn+tDMAE1TSvPTvxe9W3LwMt84IBfUWrOry/NyAtu82CncUlfCJn6wQtRoP5TB8mkPIiZpzTJOah3By/qng=="],
 
     "inherits": ["inherits@2.0.3", "", {}, "sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw=="],
 

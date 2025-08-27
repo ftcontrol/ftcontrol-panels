@@ -8,8 +8,8 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:field:<VERSION>",
-  version: "1.0.1",
-  pluginsCoreVersion: "1.1.38",
+  version: "1.0.2",
+  pluginsCoreVersion: "1.1.41",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -27,6 +27,17 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.2",
+      release_date: "27.08.2025",
+      changes: [
+        {
+          type: "other",
+          description: "Updated ftc-panels to 1.1.40",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.1",
       release_date: "26.08.2025",

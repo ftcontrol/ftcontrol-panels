@@ -10,10 +10,4 @@
 <div></div>
 
 <style>
-  p {
-    margin: 0;
-  }
-  p {
-    margin: 0.25rem;
-  }
 </style>

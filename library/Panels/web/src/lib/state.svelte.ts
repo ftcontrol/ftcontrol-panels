@@ -533,13 +533,13 @@ export class GlobalState {
             `Plugin ${id} has a new version: ${version}`,
             [
               {
-                text: "Check Website",
+                text: "Website",
                 task: () => {
                   window.open(plugin.details.websiteURL, "_blank")
                 },
               },
               {
-                text: "Remind me later",
+                text: "Skip",
                 task: () => {},
               },
             ]

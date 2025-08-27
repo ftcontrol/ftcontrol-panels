@@ -1,7 +1,7 @@
 import org.gradle.kotlin.dsl.implementation
 
 val pluginNamespace = "com.bylazar.limelightproxy"
-val pluginVersion = "1.0.0"
+val pluginVersion = "1.0.1"
 
 plugins {
     id("com.android.library")

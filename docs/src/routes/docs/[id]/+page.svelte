@@ -20,9 +20,8 @@
 
     const Selector = mod.default
 
-    const Manager = Selector("Manager")
-    const instance = Manager()
-    return (instance.constructor as typeof PluginManager).getNewVersion()
+    const Manager = Selector("Manager") as typeof PluginManager
+    return await Manager.getNewVersion()
   }
 </script>
 

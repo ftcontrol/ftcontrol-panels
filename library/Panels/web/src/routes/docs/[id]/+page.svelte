@@ -3,7 +3,7 @@
   import type { PluginInfo, PluginManager } from "ftc-panels"
   import type { PageProps } from "./$types"
   import DocsPage from "$lib/DocsPage.svelte"
-  import {PluginDetails, ChangeLog, Version} from "ftc-panels/docs"
+  import { PluginDetails, ChangeLog, Version } from "ftc-panels-docs"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
@@ -12,7 +12,7 @@
 
   async function fetchVersion(): Promise<string> {
     const instance = global.socket.pluginManagers[plugin.details.id]
-    return (instance.constructor as typeof PluginManager).getNewVersion();
+    return (instance.constructor as typeof PluginManager).getNewVersion()
   }
 </script>
 

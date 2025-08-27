@@ -21,6 +21,12 @@
   var manager = getContext("manager") as Manager
 
   let jsonPreset = $state("")
+
+  import { getFirstPlugin } from "ftc-panels-docs"
+
+  const first = getFirstPlugin(global.plugins.map((it) => it.details))
+
+  const url = first ? `/docs/${first}` : "/docs"
 </script>
 
 <nav>
@@ -57,7 +63,7 @@
     {/snippet}
   </Overlay>
 
-  <a href="/docs">
+  <a href={url}>
     <Docs />
   </a>
 

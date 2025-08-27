@@ -17,7 +17,6 @@
     content={"An intuitive, real-time dashboard for your FTC Robot."}
   />
 </svelte:head>
-
 <Hero />
 <Plugins />
 <Limelight />

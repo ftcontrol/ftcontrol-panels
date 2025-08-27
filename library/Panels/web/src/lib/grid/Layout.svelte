@@ -80,50 +80,52 @@
   let section: HTMLElement
 </script>
 
-<section
-  bind:this={section}
-  onmousemove={onMouseMove}
-  onmouseleave={onMouseLeave}
-  role="grid"
-  tabindex="0"
-  style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
->
-  {#if manager.isEmpty}
-    <div
-      class="item"
-      style="--w:{manager.MAX_GRID_WIDTH};--h:{manager.MAX_GRID_HEIGHT};"
-    >
-      <TemplatesChoose
-        set={(t) => {
-          manager.replaceCurrentWith(t)
-        }}
-      />
-    </div>
-  {:else}
-    {#if manager.isMoving}
-      {#each gridCells as { x, y } (x + "-" + y)}
-        <Overlay {x} {y} />
-      {/each}
-      {#each manager.possibleWidgets as widget, index}
-        <WidgetItem
-          isPossible={true}
-          bind:widget={manager.possibleWidgets[index]}
+<div class="wrapper">
+  <section
+    bind:this={section}
+    onmousemove={onMouseMove}
+    onmouseleave={onMouseLeave}
+    role="grid"
+    tabindex="0"
+    style="--width:{manager.WIDTH}px;--wCount:{manager.MAX_GRID_WIDTH};--height:{manager.HEIGHT}px;--hCount:{manager.MAX_GRID_HEIGHT};"
+  >
+    {#if manager.isEmpty}
+      <div
+        class="item"
+        style="--w:{manager.MAX_GRID_WIDTH};--h:{manager.MAX_GRID_HEIGHT};"
+      >
+        <TemplatesChoose
+          set={(t) => {
+            manager.replaceCurrentWith(t)
+          }}
         />
-      {/each}
-    {/if}
-    <PlaceOverlay />
-
-    {#each manager.widgets as widget, index}
-      {#if !manager.isMoving || widget.isMoving}
-        <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
+      </div>
+    {:else}
+      {#if manager.isMoving}
+        {#each gridCells as { x, y } (x + "-" + y)}
+          <Overlay {x} {y} />
+        {/each}
+        {#each manager.possibleWidgets as widget, index}
+          <WidgetItem
+            isPossible={true}
+            bind:widget={manager.possibleWidgets[index]}
+          />
+        {/each}
       {/if}
-    {/each}
+      <PlaceOverlay />
 
-    {#if mouseGridPos != null && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
-      <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+      {#each manager.widgets as widget, index}
+        {#if !manager.isMoving || widget.isMoving}
+          <WidgetItem isPossible={false} bind:widget={manager.widgets[index]} />
+        {/if}
+      {/each}
+
+      {#if mouseGridPos != null && !(manager.isMoving && manager.placeStart == null) && manager.tabName == ""}
+        <Overlay x={mouseGridPos.x} y={mouseGridPos.y} isMouse={true} />
+      {/if}
     {/if}
-  {/if}
-</section>
+  </section>
+</div>
 
 <style>
   .item {
@@ -137,6 +139,10 @@
     flex-direction: column;
     padding: var(--spacing);
   }
+  .wrapper {
+    overflow-x: auto;
+    height: 100%;
+  }
   section {
     --spacing: 0.25rem;
     position: relative;
@@ -144,5 +150,7 @@
     flex-grow: 1;
     overflow: hidden;
     margin: var(--spacing);
+    min-width: 1200px;
+    height: calc(100% - 2 * var(--spacing));
   }
 </style>

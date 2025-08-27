@@ -22,8 +22,9 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "ftc-panels": "^1.1.38",
     "@sveltejs/adapter-static": "^3.0.8",
+    "ftc-panels": "^1.1.41",
+    "ftc-panels-docs": "^0.0.3",
     "html2canvas": "^1.4.1",
     "svelte-portal": "^2.2.1",
     "uuid": "^11.1.0"
