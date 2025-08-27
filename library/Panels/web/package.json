@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@sveltejs/adapter-static": "^3.0.8",
-    "ftc-panels": "^1.1.41",
+    "ftc-panels": "^1.1.42",
     "ftc-panels-docs": "^0.0.4",
     "html2canvas": "^1.4.1",
     "svelte-portal": "^2.2.1",

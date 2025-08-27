@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@sveltejs/adapter-static": "^3.0.9",
-    "ftc-panels": "^1.1.41",
+    "ftc-panels": "^1.1.42",
     "ftc-panels-docs": "^0.0.4",
     "path": "^0.12.7"
   }
