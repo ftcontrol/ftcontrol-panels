@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PanelsWidget, PluginConfig, PluginInfo } from "ftc-panels"
+  import type { PluginConfig } from "ftc-panels"
   import { SimpleDynamicComponent } from "ftc-panels"
   import type { PageProps } from "./$types"
   import { modules } from "$lib/data"
@@ -13,6 +13,11 @@
     }
   )
 </script>
+
+<svelte:head>
+  <title>PanelsDocs: {data.page}</title>
+  <meta name="description" content={plugin.config.description} />
+</svelte:head>
 
 {#key data}
   <SimpleDynamicComponent

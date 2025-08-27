@@ -4,11 +4,10 @@
     PluginManager,
     SimpleDynamicComponent,
   } from "ftc-panels"
-  import { PluginDetails, ChangeLog, Version } from "ftc-panels/docs"
+  import { PluginDetails, ChangeLog, Version } from "ftc-panels-docs"
   import type { PageProps } from "./$types"
   import { modules } from "$lib/data"
   import { importFromSource } from "ftc-panels"
-  import { ListItem, OrderedList } from "ftc-panels/docs"
 
   let { data }: PageProps = $props()
   let plugin = $derived(modules.find((it) => it.config.id == data.id)) as {
@@ -23,9 +22,14 @@
 
     const Manager = Selector("Manager")
     const instance = Manager()
-    return (instance.constructor as typeof PluginManager).getNewVersion();
+    return (instance.constructor as typeof PluginManager).getNewVersion()
   }
 </script>
+
+<svelte:head>
+  <title>PanelsDocs: {plugin.config.name}</title>
+  <meta name="description" content={plugin.config.description} />
+</svelte:head>
 
 {#key data}
   <PluginDetails plugin={plugin.config} />
