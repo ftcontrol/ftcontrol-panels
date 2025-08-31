@@ -26,7 +26,11 @@
 </script>
 
 <svelte:head>
-  <title>PanelsDocs: {plugin.config.name}</title>
+  <title
+    >Panels: {plugin.config.id == "com.bylazar.docs"
+      ? "Core"
+      : plugin.config.name}</title
+  >
   <meta name="description" content={plugin.config.description} />
 </svelte:head>
 
