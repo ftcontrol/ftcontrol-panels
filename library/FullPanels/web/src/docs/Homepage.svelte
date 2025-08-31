@@ -24,22 +24,6 @@
   installation and setup.
 </Paragraph>
 
-<OrderedList>
-  <ListItem>com.bylazar.battery</ListItem>
-  <ListItem>com.bylazar.capture</ListItem>
-  <ListItem>com.bylazar.configurables</ListItem>
-  <ListItem>com.bylazar.docs</ListItem>
-  <ListItem>com.bylazar.exampleplugin</ListItem>
-  <ListItem>com.bylazar.field</ListItem>
-  <ListItem>com.bylazar.gamepad</ListItem>
-  <ListItem>com.bylazar.limelightproxy</ListItem>
-  <ListItem>com.bylazar.opmodecontrol</ListItem>
-  <ListItem>com.bylazar.telemetry</ListItem>
-  <ListItem>com.bylazar.themes</ListItem>
-  <ListItem>com.bylazar.utils</ListItem>
-  <ListItem>com.bylazar.pinger</ListItem>
-</OrderedList>
-
 <Title level={1}>Templates</Title>
 
 <Paragraph>
