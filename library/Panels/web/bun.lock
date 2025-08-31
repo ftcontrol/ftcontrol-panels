@@ -6,7 +6,7 @@
       "dependencies": {
         "@sveltejs/adapter-static": "^3.0.8",
         "ftc-panels": "^1.1.43",
-        "ftc-panels-docs": "^0.0.5",
+        "ftc-panels-docs": "^0.0.7",
         "html2canvas": "^1.4.1",
         "svelte-portal": "^2.2.1",
         "uuid": "^11.1.0",
@@ -234,7 +234,7 @@
 
     "ftc-panels": ["ftc-panels@1.1.43", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^6.0.0", "chokidar": "^4.0.3", "path": "^0.12.7", "svelte-portal": "^2.2.1", "vite": "^7.0.4", "zlib": "^1.0.5" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-TPh6l7VQSSNIOrZeDpUXWgrgJRfeTb8rNOsAbl0xgeVhW1FyZpJmdmdn58scOcBC0fa/CYw7wNPgrFbHXV1L4A=="],
 
-    "ftc-panels-docs": ["ftc-panels-docs@0.0.5", "", { "dependencies": { "ftc-panels": "^1.1.41", "highlight.js": "^11.11.1", "juice": "^11.0.1" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-U6PysMP3wEZ6SiP2quIBAlWWnb/DO61oN4gnUi1iyY/R/Vv5LRAySHRWJxFRCv7rxe5u6SAec1vCzWayETae0Q=="],
+    "ftc-panels-docs": ["ftc-panels-docs@0.0.7", "", { "dependencies": { "ftc-panels": "^1.1.41", "highlight.js": "^11.11.1", "juice": "^11.0.1" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-2NkHqiOGao8IxQsmMl8Er+5zKuiLHoAfB+zHC2JT7dT4G9AZK6UiCh0v2aQNtQBOjxt57HI4s7byuabC8u5caw=="],
 
     "highlight.js": ["highlight.js@11.11.1", "", {}, "sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w=="],
 
