@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.4",
+  version: "1.0.5",
   pluginsCoreVersion: "1.1.43",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -102,6 +102,17 @@ export const config: PluginConfig = {
     "com.bylazar.lights",
   ],
   changelog: [
+    {
+      version: "1.0.5",
+      release_date: "04.09.2025",
+      changes: [
+        {
+          type: "added",
+          description: "Updated Telemetry to 1.0.2",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.4",
       release_date: "31.08.2025",

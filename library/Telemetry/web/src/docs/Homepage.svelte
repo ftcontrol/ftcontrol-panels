@@ -7,7 +7,9 @@
     info: PluginConfig
   } = $props()
 
-  import code from "@examples/telemetry/TestTelemetry.kt?raw"
+  import panelsStyle from "@examples/telemetry/TestTelemetryPanelsStyle.kt?raw"
+  import ftcStyle from "@examples/telemetry/TestTelemetryFTCStyle.kt?raw"
+  import joined from "@examples/telemetry/TestJoinedTelemetry.kt?raw"
 </script>
 
 <Title level={1}>Telemetry</Title>
@@ -17,5 +19,17 @@
 </Paragraph>
 
 <Title level={1}>Example Usage</Title>
+<Title level={2}>Panels Style</Title>
+<Paragraph>The Panels telemetry interface.</Paragraph>
 
-<CodeBlock language={"kotlin"} {code} />
+<CodeBlock language={"kotlin"} code={panelsStyle} />
+
+<Title level={2}>FTC Style</Title>
+<Paragraph>The FTC telemetry interface wrapper.</Paragraph>
+
+<CodeBlock language={"kotlin"} code={ftcStyle} />
+
+<Title level={2}>Joined Wrapper</Title>
+<Paragraph>A class for joining multiple telemetries.</Paragraph>
+
+<CodeBlock language={"kotlin"} code={joined} />

@@ -1,6 +1,8 @@
 package com.bylazar.telemetry
 
+import org.firstinspires.ftc.robotcore.external.Func
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import java.util.Locale
 
 class TelemetryManager(
     val config: () -> TelemetryPluginConfig,
@@ -52,5 +54,81 @@ class TelemetryManager(
         lines.forEach { telemetry.addLine(it) }
         telemetry.update()
         update()
+    }
+
+    val wrapper = TelemetryWrapper()
+
+    inner class TelemetryWrapper : Telemetry {
+        private var itemSeparator: String = ", "
+        private var captionValueSeparator: String = ": "
+
+        override fun addData(caption: String?, format: String?, vararg args: Any?): Telemetry.Item? {
+            val cap = caption ?: ""
+            val fmt = format ?: "%s"
+            val formatted = try {
+                String.format(Locale.getDefault(), fmt, *args)
+            } catch (_: Exception) {
+                listOf(fmt, *args).joinToString(" ")
+            }
+            this@TelemetryManager.addData(cap, formatted)
+            return null
+        }
+
+        override fun addData(caption: String?, value: Any?): Telemetry.Item? {
+            val cap = caption ?: ""
+            this@TelemetryManager.addData(cap, value?.toString() ?: "null")
+            return null
+        }
+
+        override fun <T : Any?> addData(caption: String?, valueProducer: Func<T?>?): Telemetry.Item? {
+            val cap = caption ?: ""
+            this@TelemetryManager.addData(cap, valueProducer?.value()?.toString() ?: "null")
+            return null
+        }
+
+        override fun <T : Any?> addData(caption: String?, format: String?, valueProducer: Func<T?>?): Telemetry.Item? {
+            val cap = caption ?: ""
+            val fmt = format ?: "%s"
+            val produced = valueProducer?.value()
+            val formatted = try {
+                String.format(Locale.getDefault(), fmt, produced)
+            } catch (_: Exception) {
+                "$fmt $produced"
+            }
+            this@TelemetryManager.addData(cap, formatted)
+            return null
+        }
+
+        override fun update(): Boolean {
+            this@TelemetryManager.update()
+            return true
+        }
+
+        override fun getItemSeparator(): String = itemSeparator
+        override fun setItemSeparator(itemSeparator: String?) {
+            this.itemSeparator = itemSeparator ?: ", "
+        }
+
+        override fun getCaptionValueSeparator(): String = captionValueSeparator
+        override fun setCaptionValueSeparator(captionValueSeparator: String?) {
+            this.captionValueSeparator = captionValueSeparator ?: ": "
+        }
+
+        override fun removeItem(item: Telemetry.Item?) = false
+        override fun clear() = this@TelemetryManager.lines.clear()
+        override fun clearAll() = this@TelemetryManager.lines.clear()
+        override fun addLine(): Telemetry.Line? = null
+        override fun addLine(lineCaption: String?): Telemetry.Line? = null
+        override fun removeLine(line: Telemetry.Line?) = false
+        override fun isAutoClear() = true
+        override fun setAutoClear(autoClear: Boolean) {}
+        override fun getMsTransmissionInterval() = updateInterval.toInt()
+        override fun setMsTransmissionInterval(msTransmissionInterval: Int) {}
+        override fun setDisplayFormat(displayFormat: Telemetry.DisplayFormat?) {}
+        override fun log(): Telemetry.Log? = null
+        override fun addAction(action: Runnable?): Any? = null
+        override fun removeAction(token: Any?): Boolean = false
+        override fun speak(text: String?) {}
+        override fun speak(text: String?, languageCode: String?, countryCode: String?) {}
     }
 }

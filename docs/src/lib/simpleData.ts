@@ -334,7 +334,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:fullpanels:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -449,6 +449,17 @@ export const simpleModules: PluginConfig[] = [
     ],
     "changelog": [
       {
+        "version": "1.0.5",
+        "release_date": "04.09.2025",
+        "changes": [
+          {
+            "type": "added",
+            "description": "Updated Telemetry to 1.0.2",
+            "upgrading": ""
+          }
+        ]
+      },
+      {
         "version": "1.0.4",
         "release_date": "31.08.2025",
         "changes": [
@@ -528,7 +539,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.gamepad/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:gamepad:<VERSION>",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -557,6 +568,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.2",
+        "release_date": "31.08.2025",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Fixed gamepad front asset",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.1",
         "release_date": "27.08.2025",
@@ -869,7 +891,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:telemetry:<VERSION>",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -888,6 +910,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.2",
+        "release_date": "04.09.2025",
+        "changes": [
+          {
+            "type": "added",
+            "description": "FTC Style telemetry & Joined Wrapper",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.1",
         "release_date": "27.08.2025",
@@ -1033,7 +1066,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:panels:<VERSION>",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "",
@@ -1041,6 +1074,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.2",
+        "release_date": "27.08.2025",
+        "changes": [
+          {
+            "type": "docs",
+            "description": "Added a Core Plugins Section & Fixed UI on Safari",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.1",
         "release_date": "27.08.2025",
