@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.lights/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:lights:<VERSION>",
-  version: "1.0.1",
+  version: "1.0.2",
   pluginsCoreVersion: "1.1.43",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -27,6 +27,17 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.2",
+      release_date: "9.09.2025",
+      changes: [
+        {
+          type: "other",
+          description: "Updated SDK to 11.0.0",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.1",
       release_date: "27.08.2025",

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 
 open class FieldPluginConfig : BasePluginConfig() {
     open var canvasUpdateInterval = 100L
-    open var defaultBg: ImagePreset = PanelsField.images.INTO_THE_DEEP.DARK
+    open var defaultBg: ImagePreset = PanelsField.images.DECODE.DARK
 }
 
 object Plugin : Plugin<FieldPluginConfig>(FieldPluginConfig()) {

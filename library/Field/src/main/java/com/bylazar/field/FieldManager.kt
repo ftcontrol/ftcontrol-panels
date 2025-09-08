@@ -1,6 +1,5 @@
 package com.bylazar.field
 
-import com.bylazar.field.FieldImages
 import java.util.UUID
 
 class FieldManager() {

@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.5",
+  version: "1.0.6",
   pluginsCoreVersion: "1.1.43",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -102,6 +102,17 @@ export const config: PluginConfig = {
     "com.bylazar.lights",
   ],
   changelog: [
+    {
+      version: "1.0.6",
+      release_date: "9.09.2025",
+      changes: [
+        {
+          type: "other",
+          description: "Updated SDK to 11.0.0 & Decode Field Images",
+          upgrading: "",
+        },
+      ],
+    },
     {
       version: "1.0.5",
       release_date: "04.09.2025",

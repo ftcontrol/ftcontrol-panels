@@ -6,7 +6,7 @@ plugins {
 }
 
 val pluginNamespace = "com.bylazar.panels"
-val pluginVersion = "1.0.2"
+val pluginVersion = "1.0.3"
 
 svelteAssets {
     webAppPath = "web"
@@ -58,14 +58,14 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
-    compileOnly("org.firstinspires.ftc:Inspection:10.3.0")
-    compileOnly("org.firstinspires.ftc:Blocks:10.3.0")
-    compileOnly("org.firstinspires.ftc:RobotCore:10.3.0")
-    compileOnly("org.firstinspires.ftc:RobotServer:10.3.0")
-    compileOnly("org.firstinspires.ftc:OnBotJava:10.3.0")
-    compileOnly("org.firstinspires.ftc:Hardware:10.3.0")
-    compileOnly("org.firstinspires.ftc:FtcCommon:10.3.0")
-    compileOnly("org.firstinspires.ftc:Vision:10.3.0")
+    compileOnly("org.firstinspires.ftc:Inspection:11.0.0")
+    compileOnly("org.firstinspires.ftc:Blocks:11.0.0")
+    compileOnly("org.firstinspires.ftc:RobotCore:11.0.0")
+    compileOnly("org.firstinspires.ftc:RobotServer:11.0.0")
+    compileOnly("org.firstinspires.ftc:OnBotJava:11.0.0")
+    compileOnly("org.firstinspires.ftc:Hardware:11.0.0")
+    compileOnly("org.firstinspires.ftc:FtcCommon:11.0.0")
+    compileOnly("org.firstinspires.ftc:Vision:11.0.0")
 
     implementation("org.nanohttpd:nanohttpd-websocket:2.3.1") {
         exclude(module = "nanohttpd")

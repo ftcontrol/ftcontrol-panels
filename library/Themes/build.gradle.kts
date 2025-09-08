@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.themes"
-val pluginVersion = "1.0.1"
+val pluginVersion = "1.0.2"
 
 plugins {
     id("com.android.library")
@@ -43,14 +43,14 @@ android {
 }
 
 dependencies {
-    compileOnly("org.firstinspires.ftc:Inspection:10.3.0")
-    compileOnly("org.firstinspires.ftc:Blocks:10.3.0")
-    compileOnly("org.firstinspires.ftc:RobotCore:10.3.0")
-    compileOnly("org.firstinspires.ftc:RobotServer:10.3.0")
-    compileOnly("org.firstinspires.ftc:OnBotJava:10.3.0")
-    compileOnly("org.firstinspires.ftc:Hardware:10.3.0")
-    compileOnly("org.firstinspires.ftc:FtcCommon:10.3.0")
-    compileOnly("org.firstinspires.ftc:Vision:10.3.0")
+    compileOnly("org.firstinspires.ftc:Inspection:11.0.0")
+    compileOnly("org.firstinspires.ftc:Blocks:11.0.0")
+    compileOnly("org.firstinspires.ftc:RobotCore:11.0.0")
+    compileOnly("org.firstinspires.ftc:RobotServer:11.0.0")
+    compileOnly("org.firstinspires.ftc:OnBotJava:11.0.0")
+    compileOnly("org.firstinspires.ftc:Hardware:11.0.0")
+    compileOnly("org.firstinspires.ftc:FtcCommon:11.0.0")
+    compileOnly("org.firstinspires.ftc:Vision:11.0.0")
 
     compileOnly(project(":Panels"))
 }

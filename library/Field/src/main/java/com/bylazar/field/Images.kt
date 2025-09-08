@@ -26,8 +26,8 @@ object FieldImages {
         return Base64.encodeToString(bytes, Base64.NO_WRAP)
     }
 
-    val INTO_THE_DEEP = FieldImage(
-        DARK = ImagePreset { loadResourceAsBase64("into-the-deep-dark.png") },
-        LIGHT = ImagePreset { loadResourceAsBase64("into-the-deep-light.png") }
+    val DECODE = FieldImage(
+        DARK = ImagePreset { loadResourceAsBase64("decode-dark.png") },
+        LIGHT = ImagePreset { loadResourceAsBase64("decode-light.png") }
     )
 }

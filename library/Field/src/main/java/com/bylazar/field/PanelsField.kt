@@ -13,7 +13,7 @@ object FieldPresets {
         name = "Pedro Pathing",
         offsetX = 24.0 * -3,
         offsetY = 24.0 * -3,
-        flipX = true,
+        flipY = true,
         reverseXY = false,
         rotation = CanvasRotation.DEG_90,
     )

@@ -25,7 +25,7 @@ class TestTelemetry : OpMode() {
     val telemetry = PanelsTelemetry.telemetry
     val field = PanelsField.field
 
-    val imgID = field.registerImage(PanelsField.images.INTO_THE_DEEP.DARK)
+    val imgID = field.registerImage(PanelsField.images.DECODE.DARK)
 
     override fun init() {
         field.setOffsets(when(config){
@@ -35,7 +35,7 @@ class TestTelemetry : OpMode() {
             else -> PanelsField.presets.PANELS
         })
 
-        field.setBackground(PanelsField.images.INTO_THE_DEEP.LIGHT)
+        field.setBackground(PanelsField.images.DECODE.LIGHT)
 
         field.moveCursor(0.0, 0.0)
         field.setStyle(PanelsField.RED, PanelsField.BLUE, 0.1)
