@@ -99,6 +99,17 @@ class TelemetryManager(
             return null
         }
 
+        override fun addLine(): Telemetry.Line? {
+            this@TelemetryManager.addLine("")
+            return null
+        }
+
+        override fun addLine(lineCaption: String?): Telemetry.Line? {
+            val cap = lineCaption ?: ""
+            this@TelemetryManager.addLine(cap)
+            return null
+        }
+
         override fun update(): Boolean {
             this@TelemetryManager.update()
             return true
@@ -117,8 +128,6 @@ class TelemetryManager(
         override fun removeItem(item: Telemetry.Item?) = false
         override fun clear() = this@TelemetryManager.lines.clear()
         override fun clearAll() = this@TelemetryManager.lines.clear()
-        override fun addLine(): Telemetry.Line? = null
-        override fun addLine(lineCaption: String?): Telemetry.Line? = null
         override fun removeLine(line: Telemetry.Line?) = false
         override fun isAutoClear() = true
         override fun setAutoClear(autoClear: Boolean) {}
