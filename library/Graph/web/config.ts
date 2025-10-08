@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.graph",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:graph:<VERSION>",
-  version: "1.0.2",
+  version: "1.0.3",
   pluginsCoreVersion: "1.1.43",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -27,6 +27,23 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.3",
+      release_date: "8.10.2025",
+      changes: [
+        {
+          type: "changed",
+          description: "Graph Rewrite",
+          upgrading: "",
+        },
+        {
+          type: "deprecated",
+          description: "Removed GraphManager",
+          upgrading:
+            "Change your code to only use Telemetry for printing graph variables.",
+        },
+      ],
+    },
     {
       version: "1.0.2",
       release_date: "9.09.2025",

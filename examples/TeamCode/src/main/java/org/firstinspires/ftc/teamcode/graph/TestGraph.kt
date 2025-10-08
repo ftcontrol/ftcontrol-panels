@@ -43,7 +43,7 @@ class TestGraph : OpMode() {
 
         squareWave = if (sin(2 * Math.PI * 0.5 * t) > 0) 1.0 else -1.0
 
-        //Panels Graph finds data from Telemetry in format: <NAME>:<NUMBER VALUE>
+        // Panels Graph finds data from Telemetry in format: <NAME>:<NUMBER VALUE>
         panelsTelemetry.addData("sin", sinVariable)
         panelsTelemetry.addData("cos", cosVariable)
         panelsTelemetry.addData("dampedSine", dampedSine)

@@ -3,6 +3,7 @@
   import type Manager from "../manager.js"
   import { onMount } from "svelte"
   import { Chart } from "chart.js/auto"
+  import { Button, Overlay } from "ftc-panels"
 
   let { info, manager }: { info: PluginInfo; manager: Manager } = $props()
 
@@ -11,8 +12,8 @@
 
   const RE =
     /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?)/g
-  let timeWindowS = $state(15)
 
+  let timeWindowS = $state(15)
   const TARGET_SAMPLES = 1000
   let SAMPLE_MS = $derived(
     Math.max(10, Math.floor((timeWindowS * 1000) / TARGET_SAMPLES))
@@ -54,35 +55,50 @@
   function appendSnapshot(snapshot: ParsedVar[]) {
     const t = +nowSec().toFixed(3)
     for (const { name, value } of snapshot) {
-      if (!series.has(name)) {
-        series.set(name, [{ x: 0, y: value }])
+      let arr = series.get(name)
+      if (!arr) {
+        arr = [{ x: 0, y: value }]
+        series.set(name, arr)
         if (!allVarNames.includes(name)) allVarNames = [...allVarNames, name]
       }
-      series.get(name)!.push({ x: t, y: value })
+      const last = arr[arr.length - 1]
+      if (last && last.x === t) {
+        last.y = value
+      } else {
+        arr.push({ x: t, y: value })
+      }
     }
   }
 
   function trimToWindow() {
     const cutoff = nowSec() - timeWindowS
-    for (const [, arr] of series)
-      while (arr.length && arr[0].x < cutoff) arr.shift()
+    for (const [, arr] of series) {
+      let i = 0
+      while (i < arr.length && arr[i].x < cutoff) i++
+      if (i > 1) {
+        arr.splice(0, i - 1)
+      }
+    }
   }
 
   function toDisplay(arr: Pt[]) {
     const now = nowSec()
     const Wsec = timeWindowS
     const out: Pt[] = []
+    if (!arr.length) return out
 
     if (now < Wsec) {
       for (const p of arr) {
-        if (p.x < 0 || p.x > now) continue
-        out.push({ x: p.x, y: p.y })
+        if (p.x >= 0 && p.x <= now) out.push(p)
       }
     } else {
       const offs = now - Wsec
       for (const p of arr) {
-        if (p.x < offs || p.x > now) continue
-        out.push({ x: p.x - offs, y: p.y })
+        if (p.x >= offs && p.x <= now) out.push({ x: p.x - offs, y: p.y })
+      }
+      if (out.length === 0) {
+        const last = arr[arr.length - 1]
+        if (last) out.push({ x: Wsec, y: last.y })
       }
     }
     return out
@@ -90,17 +106,31 @@
 
   function rebuildDatasets() {
     if (!chart) return
-    chart.data.datasets = selectedVars.map((name) => ({
-      label: name,
-      data: toDisplay(series.get(name) ?? [{ x: 0, y: 0 }]),
-      parsing: false,
-      borderColor: colorFor(name),
-      backgroundColor: colorFor(name),
-      tension: 0,
-      cubicInterpolationMode: "default",
-      spanGaps: true,
-      pointRadius: 0,
-    })) as any
+    const wanted = new Set(selectedVars)
+    const current = new Set(
+      chart.data.datasets.map((d: any) => d.label as string)
+    )
+
+    for (const name of selectedVars) {
+      if (!current.has(name)) {
+        const lineColor = colorFor(name)
+        chart.data.datasets.push({
+          label: name,
+          data: [],
+          parsing: false,
+          borderColor: lineColor,
+          backgroundColor: lineColor,
+          tension: 0,
+          cubicInterpolationMode: "default",
+          spanGaps: true,
+          pointRadius: 0,
+          stepped: true,
+        } as any)
+      }
+    }
+    chart.data.datasets = chart.data.datasets.filter((d: any) =>
+      wanted.has(d.label as string)
+    )
   }
 
   function applyXAxisWindow() {
@@ -109,10 +139,22 @@
     chart.options.scales!.x!.max = timeWindowS
   }
 
-  function requestChartUpdate() {
+  let rafId: number | null = null
+  let lastPaint = 0
+  const PAINT_INTERVAL_MS = 1000 / 30
+
+  function paintLoop(ts: number) {
     if (!chart) return
-    applyXAxisWindow()
-    chart.update("none")
+    if (ts - lastPaint >= PAINT_INTERVAL_MS) {
+      applyXAxisWindow()
+      for (const ds of chart.data.datasets as any[]) {
+        const arr = series.get(ds.label as string) ?? []
+        ds.data = toDisplay(arr)
+      }
+      chart.update("none")
+      lastPaint = ts
+    }
+    rafId = requestAnimationFrame(paintLoop)
   }
 
   function setAll(on: boolean) {
@@ -141,12 +183,10 @@
   }
 
   let pollTimer: number | null = null
-
   function startPoll(ms: number) {
     stopPoll()
     pollTimer = window.setInterval(poll, ms)
   }
-
   function stopPoll() {
     if (pollTimer != null) {
       clearInterval(pollTimer)
@@ -193,38 +233,38 @@
         },
       })
       applyXAxisWindow()
+      rafId = requestAnimationFrame(paintLoop)
     }
 
     return () => {
       stopPoll()
+      if (rafId != null) cancelAnimationFrame(rafId)
+      rafId = null
       chart?.destroy()
       chart = null
     }
   })
 
   $effect(() => {
-    if (!latest || !chart) return
+    if (!latest) return
     appendSnapshot(latest)
     trimToWindow()
-    rebuildDatasets()
-    requestChartUpdate()
   })
 
   $effect(() => {
     selectedVars
     rebuildDatasets()
-    requestChartUpdate()
   })
 
   $effect(() => {
     timeWindowS
     trimToWindow()
     rebuildDatasets()
-    requestChartUpdate()
+    applyXAxisWindow()
   })
-
-  import { Button, Overlay } from "ftc-panels"
 </script>
+
+<canvas bind:this={chartCanvas}></canvas>
 
 <div class="controls">
   <div class="picker">
@@ -266,16 +306,17 @@
         {/each}
       {/snippet}
     </Overlay>
-    <div class="hint">Sampling every {SAMPLE_MS} ms</div>
-    <div class="hint">X-axis: 0 -> {timeWindowS}s</div>
+    <div class="hint">Sampling every: {SAMPLE_MS} ms</div>
+    <div class="hint">X-axis: 0s-{timeWindowS}s</div>
   </div>
 </div>
 
-<canvas bind:this={chartCanvas}></canvas>
 <details style="margin-top:0.5rem;cursor:pointer;">
   <summary>Parsed variables (raw)</summary>
   <pre>{JSON.stringify(latest, null, 2)}</pre>
 </details>
+
+<br />
 
 <style>
   button {
@@ -299,11 +340,11 @@
   }
   .vars {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 0.25rem;
     max-height: 220px;
-    overflow: auto;
-    padding: 0.25rem;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .var {
     display: flex;
