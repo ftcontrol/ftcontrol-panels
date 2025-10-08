@@ -11,20 +11,24 @@
 
   const RE =
     /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?)/g
-  const SAMPLE_MS = 25
+  let timeWindowS = $state(60)
+
+  const TARGET_SAMPLES = 1000
+  let SAMPLE_MS = $derived(
+    Math.max(10, Math.floor((timeWindowS * 1000) / TARGET_SAMPLES))
+  )
 
   let vars: ParsedVar[][] = $state([])
   let chartCanvas: HTMLCanvasElement
   let chart: Chart | null = null
 
   const series = new Map<string, Pt[]>()
-  let timeWindowMs = $state(60_000)
   const windowOptions = [
-    { label: "15s", value: 15_000 },
-    { label: "30s", value: 30_000 },
-    { label: "1m", value: 60_000 },
-    { label: "5m", value: 300_000 },
-    { label: "10m", value: 600_000 },
+    { label: "15s", value: 15 },
+    { label: "30s", value: 30 },
+    { label: "1m", value: 60 },
+    { label: "5m", value: 300 },
+    { label: "10m", value: 600 },
   ]
 
   let allVarNames = $state<string[]>([])
@@ -35,7 +39,6 @@
     if (t0 == null) t0 = performance.now()
     return (performance.now() - t0) / 1000
   }
-  const W = () => timeWindowMs / 1000
 
   const colorFor = (name: string) => {
     let h = 0
@@ -56,14 +59,14 @@
   }
 
   function trimToWindow() {
-    const cutoff = nowSec() - W()
+    const cutoff = nowSec() - timeWindowS
     for (const [, arr] of series)
       while (arr.length && arr[0].x < cutoff) arr.shift()
   }
 
   function toDisplay(arr: Pt[]) {
     const now = nowSec()
-    const Wsec = W()
+    const Wsec = timeWindowS
     const out: Pt[] = []
 
     if (now < Wsec) {
@@ -99,7 +102,7 @@
   function applyXAxisWindow() {
     if (!chart) return
     chart.options.scales!.x!.min = 0
-    chart.options.scales!.x!.max = W()
+    chart.options.scales!.x!.max = timeWindowS
   }
 
   function requestChartUpdate() {
@@ -112,29 +115,48 @@
     selectedVars = on ? [...allVarNames] : []
   }
 
-  onMount(() => {
-    const i = setInterval(() => {
-      const mgr =
-        manager?.socket?.socket?.pluginManagers?.["com.bylazar.telemetry"]
-      const raw = mgr?.state?.get?.("packets") as string[] | undefined
-      if (!Array.isArray(raw)) return
+  function poll() {
+    const mgr =
+      manager?.socket?.socket?.pluginManagers?.["com.bylazar.telemetry"]
+    const raw = mgr?.state?.get?.("packets") as string[] | undefined
+    if (!Array.isArray(raw)) return
 
-      const snapshot: ParsedVar[] = []
-      for (const line of raw) {
-        if (typeof line !== "string") continue
-        RE.lastIndex = 0
-        let m: RegExpExecArray | null
-        while ((m = RE.exec(line)) !== null) {
-          const name = m[1].trim()
-          const value = Number(m[2])
-          if (!Number.isFinite(value)) continue
-
-          snapshot.push({ name, value })
-        }
+    const snapshot: ParsedVar[] = []
+    for (const line of raw) {
+      if (typeof line !== "string") continue
+      RE.lastIndex = 0
+      let m: RegExpExecArray | null
+      while ((m = RE.exec(line)) !== null) {
+        const name = m[1].trim()
+        const value = Number(m[2])
+        if (!Number.isFinite(value)) continue
+        snapshot.push({ name, value })
       }
-      if (snapshot.length) vars.push(snapshot)
-    }, SAMPLE_MS)
+    }
+    if (snapshot.length) vars.push(snapshot)
+  }
 
+  let pollTimer: number | null = null
+
+  function startPoll(ms: number) {
+    stopPoll()
+    pollTimer = window.setInterval(poll, ms)
+  }
+
+  function stopPoll() {
+    if (pollTimer != null) {
+      clearInterval(pollTimer)
+      pollTimer = null
+    }
+  }
+
+  $effect(() => {
+    const ms = SAMPLE_MS
+    startPoll(ms)
+    return () => stopPoll()
+  })
+
+  onMount(() => {
     const ctx = chartCanvas.getContext("2d")
     if (ctx) {
       chart = new Chart(ctx, {
@@ -159,7 +181,7 @@
                 callback: (v) => `${Number(v).toFixed(2)}s`,
               },
               min: 0,
-              max: W(),
+              max: timeWindowS,
             },
             y: { beginAtZero: false },
           },
@@ -170,7 +192,7 @@
     }
 
     return () => {
-      clearInterval(i)
+      stopPoll()
       chart?.destroy()
       chart = null
     }
@@ -192,7 +214,7 @@
   })
 
   $effect(() => {
-    timeWindowMs
+    timeWindowS
     trimToWindow()
     rebuildDatasets()
     requestChartUpdate()
@@ -219,13 +241,13 @@
 
   <div class="window">
     <div class="label">Time window</div>
-    <select bind:value={timeWindowMs}>
+    <select bind:value={timeWindowS}>
       {#each windowOptions as o}
         <option value={o.value}>{o.label}</option>
       {/each}
     </select>
     <div class="hint">Sampling {SAMPLE_MS} ms</div>
-    <div class="hint">X-axis fixed: 0 → {W()}s</div>
+    <div class="hint">X-axis fixed: 0 → {timeWindowS}s</div>
   </div>
 </div>
 
