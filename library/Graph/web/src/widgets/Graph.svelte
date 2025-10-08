@@ -9,7 +9,8 @@
   type ParsedVar = { name: string; value: number }
   type Pt = { x: number; y: number }
 
-  const RE = /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+))/g
+  const RE =
+    /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?)/g
   const SAMPLE_MS = 25
 
   let vars: ParsedVar[][] = $state([])
@@ -88,8 +89,8 @@
       parsing: false,
       borderColor: colorFor(name),
       backgroundColor: colorFor(name),
-      tension: 0.35,
-      cubicInterpolationMode: "monotone",
+      tension: 0,
+      cubicInterpolationMode: "default",
       spanGaps: true,
       pointRadius: 0,
     })) as any
@@ -124,7 +125,11 @@
         RE.lastIndex = 0
         let m: RegExpExecArray | null
         while ((m = RE.exec(line)) !== null) {
-          snapshot.push({ name: m[1].trim(), value: parseFloat(m[2]) })
+          const name = m[1].trim()
+          const value = Number(m[2])
+          if (!Number.isFinite(value)) continue
+
+          snapshot.push({ name, value })
         }
       }
       if (snapshot.length) vars.push(snapshot)
@@ -140,7 +145,10 @@
           responsive: true,
           normalized: true,
           interaction: { mode: "nearest", intersect: false },
-          plugins: { legend: { position: "bottom" } },
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: { enabled: true },
+          },
           scales: {
             x: {
               type: "linear",
