@@ -18,7 +18,7 @@
     Math.max(10, Math.floor((timeWindowS * 1000) / TARGET_SAMPLES))
   )
 
-  let vars: ParsedVar[][] = $state([])
+  let latest: ParsedVar[] | null = $state(null)
   let chartCanvas: HTMLCanvasElement
   let chart: Chart | null = null
 
@@ -42,11 +42,13 @@
     return (performance.now() - t0) / 1000
   }
 
-  const colorFor = (name: string) => {
-    let h = 0
-    for (let i = 0; i < name.length; i++)
-      h = (h * 31 + name.charCodeAt(i)) >>> 0
-    return `hsl(${h % 360},70%,50%)`
+  function colorFor(name: string, s = 65, l = 55): string {
+    let h = 2166136261 >>> 0
+    for (let i = 0; i < name.length; i++) {
+      h ^= name.charCodeAt(i)
+      h = Math.imul(h, 16777619)
+    }
+    return `hsl(${h % 360}, ${s}%, ${l}%)`
   }
 
   function appendSnapshot(snapshot: ParsedVar[]) {
@@ -124,7 +126,7 @@
     if (!Array.isArray(raw)) return
 
     const snapshot: ParsedVar[] = []
-    for (const line of raw) {
+    for (const line of raw ?? []) {
       if (typeof line !== "string") continue
       RE.lastIndex = 0
       let m: RegExpExecArray | null
@@ -135,7 +137,7 @@
         snapshot.push({ name, value })
       }
     }
-    if (snapshot.length) vars.push(snapshot)
+    if (snapshot.length) latest = snapshot
   }
 
   let pollTimer: number | null = null
@@ -201,7 +203,6 @@
   })
 
   $effect(() => {
-    const latest = vars[vars.length - 1]
     if (!latest || !chart) return
     appendSnapshot(latest)
     trimToWindow()
@@ -221,14 +222,21 @@
     rebuildDatasets()
     requestChartUpdate()
   })
+
+  import { Button, Overlay } from "ftc-panels"
 </script>
 
 <div class="controls">
   <div class="picker">
     <div class="label">Variables</div>
     <div class="buttons">
-      <button type="button" onclick={() => setAll(true)}>All</button>
-      <button type="button" onclick={() => setAll(false)}>None</button>
+      <Button
+        onclick={() => setAll(true)}
+        disabled={selectedVars.length == allVarNames.length}>All</Button
+      >
+      <Button onclick={() => setAll(false)} disabled={selectedVars.length == 0}
+        >None</Button
+      >
     </div>
     <div class="vars">
       {#each allVarNames as name (name)}
@@ -243,35 +251,47 @@
 
   <div class="window">
     <div class="label">Time window</div>
-    <select bind:value={timeWindowS}>
-      {#each windowOptions as o}
-        <option value={o.value}>{o.label}</option>
-      {/each}
-    </select>
-    <div class="hint">Sampling {SAMPLE_MS} ms</div>
-    <div class="hint">X-axis fixed: 0 → {timeWindowS}s</div>
+    <Overlay>
+      {#snippet trigger()}
+        <button style="border: 1px solid currentColor">{timeWindowS}s</button>
+      {/snippet}
+      {#snippet overlay({ close }: { close: () => void })}
+        {#each windowOptions.filter((it) => it.value != timeWindowS) as s}
+          <button
+            onclick={() => {
+              timeWindowS = s.value
+              close()
+            }}>{s.label}</button
+          >
+        {/each}
+      {/snippet}
+    </Overlay>
+    <div class="hint">Sampling every {SAMPLE_MS} ms</div>
+    <div class="hint">X-axis: 0 -> {timeWindowS}s</div>
   </div>
 </div>
 
-<details style="margin-top:0.5rem;">
+<canvas bind:this={chartCanvas}></canvas>
+<details style="margin-top:0.5rem;cursor:pointer;">
   <summary>Parsed variables (raw)</summary>
-  <pre>{JSON.stringify(vars[vars.length - 1], null, 2)}</pre>
+  <pre>{JSON.stringify(latest, null, 2)}</pre>
 </details>
 
-<canvas bind:this={chartCanvas} id="myChart"></canvas>
-
 <style>
+  button {
+    all: unset;
+    cursor: pointer;
+    padding: 0.25em 1em;
+  }
+
   .controls {
     display: flex;
-    gap: 1rem;
+    gap: var(--padding);
     align-items: flex-start;
     flex-wrap: wrap;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--padding);
   }
-  .label {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-  }
+
   .picker .buttons {
     display: flex;
     gap: 0.5rem;
@@ -284,8 +304,6 @@
     max-height: 220px;
     overflow: auto;
     padding: 0.25rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
   }
   .var {
     display: flex;

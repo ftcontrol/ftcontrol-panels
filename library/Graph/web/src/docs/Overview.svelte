@@ -18,6 +18,8 @@
   at a glance.
 </Paragraph>
 
+<Paragraph>Requires Telemetry plugin.</Paragraph>
+
 <Title level={1}>Example Usage</Title>
 
 <CodeBlock language={"kotlin"} {code} />
