@@ -310,6 +310,9 @@
     gap: 0.5rem;
     align-items: center;
   }
+  .label {
+    margin-bottom: 0.25rem;
+  }
   .swatch {
     width: 10px;
     height: 10px;
