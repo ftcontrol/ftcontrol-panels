@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button, Overlay } from "ftc-panels"
-  import type Manager from "../manager"
+  import type Manager from "../manager.ts"
   import { onDestroy, onMount } from "svelte"
   import { PluginStateManager, type PluginValue } from "ftc-panels"
 

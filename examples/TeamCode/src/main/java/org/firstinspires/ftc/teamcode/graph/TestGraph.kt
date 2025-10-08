@@ -41,6 +41,7 @@ class TestGraph : OpMode() {
         panelsTelemetry.addData("sin", sinVariable)
         panelsTelemetry.addData("cos", cosVariable)
         panelsTelemetry.addData("const", constVariable)
+        panelsTelemetry.addLine("extra1: 1.0 extra2: 2.0 extra3: 7.0")
         panelsTelemetry.update(telemetry)
     }
 }

@@ -1,291 +1,267 @@
 <script lang="ts">
   import { type PluginInfo } from "ftc-panels"
-  import type Manager from "../manager"
+  import type Manager from "../manager.js"
   import { onMount } from "svelte"
-  import type { GraphEntry } from "../types"
+  import { Chart } from "chart.js/auto"
 
-  let {
-    info,
-    manager,
-  }: {
-    info: PluginInfo
-    manager: Manager
-  } = $props()
+  let { info, manager }: { info: PluginInfo; manager: Manager } = $props()
 
-  let entries: GraphEntry[] = $state([])
-  let timeWindow = $state(10)
-  const colors = ["red", "lime", "cyan", "yellow", "magenta", "orange"]
+  type ParsedVar = { name: string; value: number }
+  type Pt = { x: number; y: number }
 
-  const selectedKeys = $state<Record<string, boolean>>({})
+  const RE = /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+))/g
+  const SAMPLE_MS = 25
+
+  let vars: ParsedVar[][] = $state([])
+  let chartCanvas: HTMLCanvasElement
+  let chart: Chart | null = null
+
+  const series = new Map<string, Pt[]>()
+  let timeWindowMs = $state(60_000)
+  const windowOptions = [
+    { label: "15s", value: 15_000 },
+    { label: "30s", value: 30_000 },
+    { label: "1m", value: 60_000 },
+    { label: "5m", value: 300_000 },
+    { label: "10m", value: 600_000 },
+  ]
+
+  let allVarNames = $state<string[]>([])
+  let selectedVars = $state<string[]>([])
+
+  let t0: number | null = null
+  const nowSec = () => {
+    if (t0 == null) t0 = performance.now()
+    return (performance.now() - t0) / 1000
+  }
+  const W = () => timeWindowMs / 1000
+
+  const colorFor = (name: string) => {
+    let h = 0
+    for (let i = 0; i < name.length; i++)
+      h = (h * 31 + name.charCodeAt(i)) >>> 0
+    return `hsl(${h % 360},70%,50%)`
+  }
+
+  function appendSnapshot(snapshot: ParsedVar[]) {
+    const t = +nowSec().toFixed(3)
+    for (const { name, value } of snapshot) {
+      if (!series.has(name)) {
+        series.set(name, [{ x: 0, y: value }])
+        if (!allVarNames.includes(name)) allVarNames = [...allVarNames, name]
+      }
+      series.get(name)!.push({ x: t, y: value })
+    }
+  }
+
+  function trimToWindow() {
+    const cutoff = nowSec() - W()
+    for (const [, arr] of series)
+      while (arr.length && arr[0].x < cutoff) arr.shift()
+  }
+
+  function toDisplay(arr: Pt[]) {
+    const now = nowSec()
+    const offs = now - W()
+    const out: Pt[] = []
+    for (const p of arr) {
+      if (p.x < offs) continue
+      if (p.x > now) continue
+      const x = p.x - offs
+      out.push({ x, y: p.y })
+    }
+    return out
+  }
+
+  function rebuildDatasets() {
+    if (!chart) return
+    chart.data.datasets = selectedVars.map((name) => ({
+      label: name,
+      data: toDisplay(series.get(name) ?? [{ x: 0, y: 0 }]),
+      parsing: false,
+      borderColor: colorFor(name),
+      backgroundColor: colorFor(name),
+      tension: 0.35,
+      cubicInterpolationMode: "monotone",
+      spanGaps: true,
+      pointRadius: 0,
+    })) as any
+  }
+
+  function applyXAxisWindow() {
+    if (!chart) return
+    chart.options.scales!.x!.min = 0
+    chart.options.scales!.x!.max = W()
+  }
+
+  function requestChartUpdate() {
+    if (!chart) return
+    applyXAxisWindow()
+    chart.update("none")
+  }
+
+  function setAll(on: boolean) {
+    selectedVars = on ? [...allVarNames] : []
+  }
 
   onMount(() => {
-    manager.state.onChange(manager.GRAPH_PACKET_KEY, (data: GraphEntry[]) => {
-      entries = Array.isArray(data) ? data : []
-      for (const id of new Set(entries.map((e) => e.id))) {
-        if (selectedKeys[id] === undefined) selectedKeys[id] = false
+    const i = setInterval(() => {
+      const mgr =
+        manager?.socket?.socket?.pluginManagers?.["com.bylazar.telemetry"]
+      const raw = mgr?.state?.get?.("packets") as string[] | undefined
+      if (!Array.isArray(raw)) return
+
+      const snapshot: ParsedVar[] = []
+      for (const line of raw) {
+        if (typeof line !== "string") continue
+        RE.lastIndex = 0
+        let m: RegExpExecArray | null
+        while ((m = RE.exec(line)) !== null) {
+          snapshot.push({ name: m[1].trim(), value: parseFloat(m[2]) })
+        }
       }
-    })
+      if (snapshot.length) vars.push(snapshot)
+    }, SAMPLE_MS)
+
+    const ctx = chartCanvas.getContext("2d")
+    if (ctx) {
+      chart = new Chart(ctx, {
+        type: "line",
+        data: { datasets: [] },
+        options: {
+          animation: false,
+          responsive: true,
+          normalized: true,
+          interaction: { mode: "nearest", intersect: false },
+          plugins: { legend: { position: "bottom" } },
+          scales: {
+            x: {
+              type: "linear",
+              bounds: "ticks",
+              title: { display: true, text: `Time (s) in window` },
+              ticks: {
+                autoSkip: false,
+                callback: (v) => `${Number(v).toFixed(2)}s`,
+              },
+              min: 0,
+              max: W(),
+            },
+            y: { beginAtZero: false },
+          },
+          elements: { point: { radius: 0 }, line: { borderWidth: 2 } },
+        },
+      })
+      applyXAxisWindow()
+    }
+
+    return () => {
+      clearInterval(i)
+      chart?.destroy()
+      chart = null
+    }
   })
 
-  function toggleKey(key: string) {
-    selectedKeys[key] = !selectedKeys[key]
-  }
+  $effect(() => {
+    const latest = vars[vars.length - 1]
+    if (!latest || !chart) return
+    appendSnapshot(latest)
+    trimToWindow()
+    rebuildDatasets()
+    requestChartUpdate()
+  })
 
-  interface Point {
-    x: number
-    y: number
-  }
-  interface GraphPoint {
-    timestamp: number
-    value: number
-  }
+  $effect(() => {
+    selectedVars
+    rebuildDatasets()
+    requestChartUpdate()
+  })
 
-  function normalize(
-    values: number[],
-    min: number,
-    max: number,
-    range: [number, number] = [0, 1]
-  ): number[] {
-    if (values.length === 0) return []
-    if (max === min) return values.map(() => (range[0] + range[1]) / 2)
-    const [r0, r1] = range
-    return values.map((v) => ((v - min) / (max - min)) * (r1 - r0) + r0)
-  }
-
-  function getWindowedEntries(entries: GraphEntry[]): GraphEntry[] {
-    const now = Date.now()
-    const start = now - timeWindow * 1000
-    return entries.filter(
-      (e) => typeof e.timestamp === "number" && e.timestamp >= start
-    )
-  }
-
-  function getGroupedWindowed(
-    entries: GraphEntry[]
-  ): Record<string, GraphPoint[]> {
-    const grouped: Record<string, GraphPoint[]> = {}
-    for (const e of getWindowedEntries(entries)) {
-      const v = typeof e.value === "number" ? e.value : parseFloat(e.value)
-      if (!Number.isFinite(v)) continue
-      if (!grouped[e.id]) grouped[e.id] = []
-      grouped[e.id].push({ timestamp: e.timestamp, value: v })
-    }
-    for (const key of Object.keys(grouped)) {
-      grouped[key].sort((a, b) => a.timestamp - b.timestamp)
-    }
-    return grouped
-  }
-
-  let grouped = $derived(getGroupedWindowed(entries))
-
-  let active = $derived(
-    Object.fromEntries(Object.entries(grouped).filter(([k]) => selectedKeys[k]))
-  )
-
-  function getSelectedValueRange(
-    selectedGraphs: Record<string, GraphPoint[]>
-  ): [number, number] {
-    const values = Object.values(selectedGraphs)
-      .flat()
-      .map((p) => p.value)
-    if (values.length === 0) return [0, 1]
-    return [Math.min(...values), Math.max(...values)]
-  }
-
-  function getNormalizedGraphPoints(
-    selectedGraphs: Record<string, GraphPoint[]>
-  ): Record<string, Point[]> {
-    const all = Object.values(selectedGraphs).flat()
-    if (all.length === 0) return {}
-
-    const now = Date.now()
-    const timeStart = now - timeWindow * 1000
-    const timeEnd = now
-
-    const globalDataMin = Math.min(...all.map((p) => p.value))
-    const globalDataMax = Math.max(...all.map((p) => p.value))
-
-    const normalized: Record<string, Point[]> = {}
-    for (const [key, list] of Object.entries(selectedGraphs)) {
-      const xs = normalize(
-        list.map((p) => p.timestamp),
-        timeStart,
-        timeEnd,
-        [0, 100]
-      )
-      const ys = normalize(
-        list.map((p) => p.value),
-        globalDataMin,
-        globalDataMax,
-        [0, 100]
-      )
-      normalized[key] = list.map((_, i) => ({
-        x: Math.min(100, Math.max(0, xs[i] ?? 0)),
-        y: 100 - Math.min(100, Math.max(0, ys[i] ?? 50)),
-      }))
-    }
-    return normalized
-  }
-
-  function getAllKeys(): string[] {
-    return Array.from(new Set(entries.map((e) => e.id))).sort()
-  }
-
-  function getSeriesStats(id: string): {
-    count: number
-    lastValue: number | null
-  } {
-    const list = entries.filter((e) => e.id === id)
-    const last = list[list.length - 1]
-    const v = last
-      ? typeof last.value === "number"
-        ? last.value
-        : parseFloat(last.value)
-      : NaN
-    return { count: list.length, lastValue: Number.isFinite(v) ? v : null }
-  }
+  $effect(() => {
+    timeWindowMs
+    trimToWindow()
+    rebuildDatasets()
+    requestChartUpdate()
+  })
 </script>
 
-<div class="flex">
-  <input
-    type="range"
-    min="1"
-    max="60"
-    bind:value={timeWindow}
-    aria-label="Time window"
-  />
-  <p>(last {timeWindow}s)</p>
+<div class="controls">
+  <div class="picker">
+    <div class="label">Variables</div>
+    <div class="buttons">
+      <button type="button" onclick={() => setAll(true)}>All</button>
+      <button type="button" onclick={() => setAll(false)}>None</button>
+    </div>
+    <div class="vars">
+      {#each allVarNames as name (name)}
+        <label class="var">
+          <input type="checkbox" value={name} bind:group={selectedVars} />
+          <span class="swatch" style={`background:${colorFor(name)}`}></span>
+          <span>{name}</span>
+        </label>
+      {/each}
+    </div>
+  </div>
+
+  <div class="window">
+    <div class="label">Time window</div>
+    <select bind:value={timeWindowMs}>
+      {#each windowOptions as o}
+        <option value={o.value}>{o.label}</option>
+      {/each}
+    </select>
+    <div class="hint">Sampling {SAMPLE_MS} ms</div>
+    <div class="hint">X-axis fixed: 0 → {W()}s</div>
+  </div>
 </div>
 
-<ul>
-  {#each getAllKeys() as key, i}
-    {@const stats = getSeriesStats(key)}
-    <li>
-      <button
-        onclick={() => toggleKey(key)}
-        class:selected={selectedKeys[key]}
-        aria-pressed={selectedKeys[key]}
-      >
-        {key}
-      </button>
-      – {stats.count} entries{#if stats.lastValue !== null}
-        / {stats.lastValue.toFixed(3)}{/if}
-    </li>
-  {/each}
-</ul>
+<details style="margin-top:0.5rem;">
+  <summary>Parsed variables (raw)</summary>
+  <pre>{JSON.stringify(vars[vars.length - 1], null, 2)}</pre>
+</details>
 
-<div class="graph">
-  <svg viewBox="-10 -10 120 120" preserveAspectRatio="none">
-    <!-- <rect x="0" y="0" width="100" height="100" fill="var(--bgLight)" /> -->
-
-    {#each [0, 25, 50, 75, 100] as x}
-      <text
-        {x}
-        y="-2"
-        font-size="2.5"
-        fill="white"
-        stroke="currentColor"
-        stroke-width="0.1"
-        text-anchor="middle"
-      >
-        {Math.round((x / 100) * timeWindow)}s
-      </text>
-    {/each}
-
-    {#if Object.keys(active).length > 0}
-      {@const [min, max] = getSelectedValueRange(active)}
-      {#each [0, 25, 50, 75, 100] as y}
-        <text
-          x="-2"
-          y={100 - y}
-          font-size="2.5"
-          fill="white"
-          stroke="currentColor"
-          stroke-width="0.1"
-          text-anchor="end"
-        >
-          {(min + (y / 100) * (max - min)).toFixed(2)}
-        </text>
-      {/each}
-    {/if}
-
-    {#each [25, 50, 75] as value}
-      <line
-        x1="0"
-        y1={value}
-        x2="100"
-        y2={value}
-        stroke="currentColor"
-        stroke-width="0.2"
-      />
-      <line
-        x1={value}
-        y1="0"
-        x2={value}
-        y2="100"
-        stroke="currentColor"
-        stroke-width="0.2"
-      />
-    {/each}
-
-    {#if Object.keys(active).length > 0}
-      {@const pointsMap = getNormalizedGraphPoints(active)}
-      {#each Object.entries(pointsMap) as [key, points], index}
-        <polyline
-          fill="none"
-          stroke={colors[index % colors.length]}
-          stroke-width="0.6"
-          points={points.map((p) => `${p.x},${p.y}`).join(" ")}
-        />
-      {/each}
-    {/if}
-  </svg>
-</div>
+<canvas bind:this={chartCanvas} id="myChart"></canvas>
 
 <style>
-  p {
-    margin: 0;
-    margin-block: calc(var(--padding) / 2);
-  }
-  .flex {
+  .controls {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
   }
-  .graph {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    border: 1px solid currentColor;
-    margin-top: var(--padding);
-    background-color: var(--bgDark);
-    margin-bottom: var(--padding);
+  .label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
   }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
-  }
-  li {
+  .picker .buttons {
     display: flex;
-    align-items: center;
     gap: 0.5rem;
-    margin: 0.25rem 0;
+    margin-bottom: 0.25rem;
   }
-  button {
-    background: transparent;
-    border: 1px solid currentColor;
-    color: inherit;
-    border-radius: 0.25rem;
-    padding: 0.2rem 0.5rem;
-    cursor: pointer;
-    font-family: monospace;
-    display: inline-flex;
-    align-items: center;
+  .vars {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 0.25rem;
-    opacity: 0.5;
+    max-height: 220px;
+    overflow: auto;
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
   }
-  button.selected {
-    opacity: 1;
+  .var {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .hint {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-top: 0.25rem;
   }
 </style>
