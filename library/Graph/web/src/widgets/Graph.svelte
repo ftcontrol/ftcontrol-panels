@@ -11,7 +11,7 @@
 
   const RE =
     /\s*([^:]+?)\s*:\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?)/g
-  let timeWindowS = $state(60)
+  let timeWindowS = $state(15)
 
   const TARGET_SAMPLES = 1000
   let SAMPLE_MS = $derived(
@@ -24,6 +24,8 @@
 
   const series = new Map<string, Pt[]>()
   const windowOptions = [
+    { label: "1s", value: 1 },
+    { label: "5s", value: 5 },
     { label: "15s", value: 15 },
     { label: "30s", value: 30 },
     { label: "1m", value: 60 },

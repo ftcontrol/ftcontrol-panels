@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.graph
 
-import com.bylazar.graph.PanelsGraph
 import com.bylazar.telemetry.PanelsTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -10,7 +9,6 @@ import kotlin.math.sin
 
 @TeleOp(name = "Test Graph")
 class TestGraph : OpMode() {
-    private val graphManager = PanelsGraph.manager
     private val panelsTelemetry = PanelsTelemetry.telemetry
 
     private val timer = ElapsedTime()
@@ -33,15 +31,11 @@ class TestGraph : OpMode() {
         sinVariable = sin(t)
         cosVariable = cos(t)
 
-        graphManager.addData("sin", sinVariable)
-        graphManager.addData("cos", cosVariable)
-        graphManager.addData("const", constVariable)
-        graphManager.update()
-
+        //Panels Graph finds data from Telemetry in format: <NAME>:<NUMBER VALUE>
         panelsTelemetry.addData("sin", sinVariable)
         panelsTelemetry.addData("cos", cosVariable)
         panelsTelemetry.addData("const", constVariable)
-        panelsTelemetry.addLine("extra1: 1.0 extra2: 2.0 extra3: 7.0")
+        panelsTelemetry.addLine("extra1: 1.0 extra2: 2.0 extra3: 7.0") // you can have multiple entries on one line
         panelsTelemetry.update(telemetry)
     }
 }
