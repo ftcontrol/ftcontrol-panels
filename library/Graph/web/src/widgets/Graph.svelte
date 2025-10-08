@@ -62,13 +62,20 @@
 
   function toDisplay(arr: Pt[]) {
     const now = nowSec()
-    const offs = now - W()
+    const Wsec = W()
     const out: Pt[] = []
-    for (const p of arr) {
-      if (p.x < offs) continue
-      if (p.x > now) continue
-      const x = p.x - offs
-      out.push({ x, y: p.y })
+
+    if (now < Wsec) {
+      for (const p of arr) {
+        if (p.x < 0 || p.x > now) continue
+        out.push({ x: p.x, y: p.y })
+      }
+    } else {
+      const offs = now - Wsec
+      for (const p of arr) {
+        if (p.x < offs || p.x > now) continue
+        out.push({ x: p.x - offs, y: p.y })
+      }
     }
     return out
   }
