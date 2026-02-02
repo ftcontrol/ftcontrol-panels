@@ -1,5 +1,6 @@
 # dependencies (rm -rf bun.lock && bun install --no-cachenstall)
 node_modules
+.bun
 
 # output
 out

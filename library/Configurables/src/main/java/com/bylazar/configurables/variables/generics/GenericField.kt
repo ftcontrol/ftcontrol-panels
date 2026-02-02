@@ -10,12 +10,13 @@ import com.bylazar.configurables.variables.processValue
 import java.lang.reflect.Field
 
 class GenericField(
+    classLoader: ClassLoader,
     var className: String,
     var reference: Field,
 ) {
 
-    val type = getType(reference.type, convertToMyField(reference), null)
-    val value: GenericVariable = processValue(0, className, type, convertToMyField(reference), null)
+    val type = getType(reference.type, convertToMyField(classLoader, reference), null)
+    val value: GenericVariable = processValue(0, className, classLoader, type, convertToMyField(classLoader, reference), null)
 
     val isNull: Boolean
         get() = toJsonType.type == BaseTypes.JSON_ERROR

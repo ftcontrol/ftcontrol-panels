@@ -36,11 +36,15 @@ abstract class Plugin<T : BasePluginConfig>(baseConfig: T) {
     }
 
     fun log(message: String) {
-        Logger.log("${Logger.PLUGINS_PREFIX}/${id}", message)
+        Logger.log("${Logger.PLUGINS_PREFIX}/${id.ifBlank { "UNKNOWN" }}", message)
     }
 
     fun error(message: String) {
-        Logger.error("${Logger.PLUGINS_PREFIX}/${id}", message)
+        Logger.error("${Logger.PLUGINS_PREFIX}/${id.ifBlank { "UNKNOWN" }}", message)
+    }
+
+    fun error(message: String, e: Throwable) {
+        Logger.error("${Logger.PLUGINS_PREFIX}/${id.ifBlank { "UNKNOWN" }}", message, e)
     }
 
     fun send(type: String, data: Any) {

@@ -1,19 +1,16 @@
 package com.bylazar.panels
 
 import android.content.Context
-import androidx.core.app.PendingIntentCompat.send
-import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.core.OpModeHandler
 import com.bylazar.panels.core.PreferencesHandler
+import com.bylazar.panels.core.TextHandler
 import com.bylazar.panels.plugins.PluginsManager
-import com.bylazar.panels.plugins.PluginsManager.contextRef
 import com.bylazar.panels.reflection.ClassFinder
 import com.bylazar.panels.server.Socket
 import com.bylazar.panels.server.StaticServer
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager
-import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier.Notifications
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar
 import com.qualcomm.robotcore.util.WebHandlerManager
@@ -22,10 +19,7 @@ import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
 import org.firstinspires.ftc.ftccommon.external.OnDestroy
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService
-import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
-import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
-import java.lang.ref.WeakReference
 
 
 object Panels : Notifications {
@@ -83,7 +77,7 @@ object Panels : Notifications {
                 server = StaticServer(context, 8001, "web")
                 socket = Socket(8002)
             } catch (e: Exception) {
-                Logger.coreLog("Failed to start webserver: " + e.message)
+                Logger.coreError("Failed to start webserver", e)
             }
 
             if (PreferencesHandler.isEnabled) {

@@ -5,7 +5,8 @@ plugins {
 ftc {
     kotlin()
     sdk.TeamCode()
-    dairy.ftControl {
-        implementation(fullpanels(""))
-    }
+}
+
+dependencies {
+    implementation(project(":FullPanels"))
 }

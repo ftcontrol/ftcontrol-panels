@@ -62,9 +62,8 @@ class TestCompression {
         return output.toByteArray()
     }
 
-    private fun decompressGzip(input: ByteArray, originalSize: Int): ByteArray {
-        val inputStream = ByteArrayInputStream(input)
-        return GZIPInputStream(inputStream).readAllBytes()
+    private fun decompressGzip(input: ByteArray, originalSize: Int) = ByteArrayInputStream(input).use {
+        GZIPInputStream(it).readBytes()
     }
 
     fun compressLzma(input: ByteArray): ByteArray {
@@ -74,9 +73,8 @@ class TestCompression {
         return baos.toByteArray()
     }
 
-    fun decompressLzma(input: ByteArray): ByteArray {
-        val bais = ByteArrayInputStream(input)
-        return LZMAInputStream(bais).readAllBytes()
+    fun decompressLzma(input: ByteArray) = ByteArrayInputStream(input).use {
+        LZMAInputStream(it).readBytes()
     }
 
     fun compressDeflate(input: ByteArray): ByteArray {

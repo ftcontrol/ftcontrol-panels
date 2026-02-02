@@ -10,9 +10,10 @@ import java.util.Locale
 import java.util.UUID
 import kotlin.text.*
 
-class MyField(
+class MyField constructor(
     val name: String,
     val type: Class<*>,
+    val classLoader: ClassLoader,
     var isAccessible: Boolean,
     var get: (instance: Any?) -> Any?,
     var set: (instance: Any?, newValue: Any?) -> Unit,
@@ -32,6 +33,7 @@ class MyField(
     init {
         if (ref != null) ref.isAccessible = true
         GlobalConfigurables.fieldsMap[id] = this
+        GlobalConfigurables.loadedFieldsMap.getOrPut(classLoader, ::mutableListOf).add(id)
     }
 
     fun getValue(recursionDepth: Int = 0): Any? {
@@ -79,10 +81,11 @@ class MyField(
         }
 }
 
-fun convertToMyField(field: Field): MyField {
+fun convertToMyField(classLoader: ClassLoader, field: Field): MyField {
     return MyField(
         name = field.name,
         type = field.type,
+        classLoader = classLoader,
         isAccessible = field.isAccessible,
         get = field::get,
         set = field::set,
@@ -95,6 +98,7 @@ fun convertToMyField(field: MyField, parentField: MyField?, className: String): 
     return MyField(
         name = field.name,
         type = field.type,
+        classLoader = field.classLoader,
         isAccessible = field.isAccessible,
         get = field.get,
         set = field.set,

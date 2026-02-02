@@ -2,10 +2,12 @@ pluginManagement {
     includeBuild("plugin-svelte-assets")
     repositories {
         gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven("https://repo.dairy.foundation/releases")
     }
 }
 
-include(":FtcRobotController")
 include(":TeamCode")
 include(":OpModeControl")
 include(":ExamplePlugin")
@@ -24,3 +26,4 @@ include(":Utils")
 include(":Pinger")
 include(":Graph")
 include(":Lights")
+include(":CameraStream")

@@ -2,56 +2,48 @@ val pluginNamespace = "com.bylazar.configurables"
 val pluginVersion = "1.0.5"
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    id("dev.frozenmilk.android-library") version "11.1.0-1.1.1"
     id("com.bylazar.svelte-assets")
+    id("dev.frozenmilk.publish") version "0.0.5"
+    id("dev.frozenmilk.doc") version "0.0.5"
+    id("dev.frozenmilk.build-meta-data") version "0.0.2"
 }
+
+android.namespace = pluginNamespace
 
 svelteAssets {
-    webAppPath = "web"
-    buildDirPath = "dist"
-    assetsPath = "web/plugins/$pluginNamespace"
+    assetsPath = assetPathForPlugin(pluginNamespace)
 }
 
-android {
-    namespace = pluginNamespace
+dairyPublishing {
+    gitDir = file("..")
+}
 
-    defaultConfig {
-        compileSdk = 34
-        minSdk = 24
+version = "${dairyPublishing.version}+$pluginVersion"
+
+meta {
+    packagePath = pluginNamespace
+    name = "Configurables"
+    registerField("name", "String", "\"$pluginNamespace\"")
+    registerField("clean", "Boolean") { "${dairyPublishing.clean}" }
+    registerField("gitRef", "String") { "\"${dairyPublishing.gitRef}\"" }
+    registerField("snapshot", "Boolean") { "${dairyPublishing.snapshot}" }
+    registerField("version", "String") { "\"${dairyPublishing.version}\"" }
+}
+
+ftc {
+    kotlin()
+    sdk {
+        compileOnly(RobotCore)
+        compileOnly(FtcCommon)
+        compileOnly(RobotServer)
     }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    publishing {
-        singleVariant("release") {}
+    dairy {
+        implementation(Sloth)
     }
 }
 
 dependencies {
-    compileOnly("org.firstinspires.ftc:Inspection:11.0.0")
-    compileOnly("org.firstinspires.ftc:Blocks:11.0.0")
-    compileOnly("org.firstinspires.ftc:RobotCore:11.0.0")
-    compileOnly("org.firstinspires.ftc:RobotServer:11.0.0")
-    compileOnly("org.firstinspires.ftc:OnBotJava:11.0.0")
-    compileOnly("org.firstinspires.ftc:Hardware:11.0.0")
-    compileOnly("org.firstinspires.ftc:FtcCommon:11.0.0")
-    compileOnly("org.firstinspires.ftc:Vision:11.0.0")
-
     compileOnly(project(":Panels"))
 }
 
@@ -61,9 +53,11 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = pluginNamespace.substringBeforeLast('.')
+                groupId = pluginNamespace.substringBeforeLast('.') + ".sloth"
                 artifactId = pluginNamespace.substringAfterLast('.')
-                version = pluginVersion
+
+                artifact(dairyDoc.dokkaHtmlJar)
+                artifact(dairyDoc.dokkaJavadocJar)
 
                 pom {
                     description.set("Panels Configurables Plugin")
@@ -78,13 +72,6 @@ afterEvaluate {
                         }
                     }
                 }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }
