@@ -22,7 +22,7 @@
   </a>
 </div>
 
-<p class="version">v1.0.12</p>
+<p class="version">v1.0.13</p>
 
 <style>
   h2 {

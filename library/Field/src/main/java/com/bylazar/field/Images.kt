@@ -30,4 +30,9 @@ object FieldImages {
         DARK = ImagePreset { loadResourceAsBase64("decode-dark.png") },
         LIGHT = ImagePreset { loadResourceAsBase64("decode-light.png") }
     )
+
+    val BIOBUZZ = FieldImage(
+        DARK = ImagePreset { loadResourceAsBase64("biobuzz-dark.png") },
+        LIGHT = ImagePreset { loadResourceAsBase64("biobuzz-light.png") }
+    )
 }

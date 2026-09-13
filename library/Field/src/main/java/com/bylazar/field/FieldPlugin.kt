@@ -13,7 +13,7 @@ open class FieldPluginConfig : BasePluginConfig() {
     @Transient
     open var canvasUpdateInterval = 100L
     @Transient
-    open var defaultBg: ImagePreset = PanelsField.images.DECODE.DARK
+    open var defaultBg: ImagePreset = PanelsField.images.BIOBUZZ.DARK
     @Transient
     open var extraPresets: List<FieldPresetParams> = listOf()
 }

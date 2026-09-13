@@ -1,11 +1,12 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "docs",
       "dependencies": {
         "@sveltejs/adapter-static": "^3.0.9",
-        "ftc-panels": "^1.1.43",
+        "ftc-panels": "^1.1.44",
         "ftc-panels-docs": "^0.0.7",
         "path": "^0.12.7",
       },
@@ -201,7 +202,7 @@
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
-    "ftc-panels": ["ftc-panels@1.1.43", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^6.0.0", "chokidar": "^4.0.3", "path": "^0.12.7", "svelte-portal": "^2.2.1", "vite": "^7.0.4", "zlib": "^1.0.5" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-TPh6l7VQSSNIOrZeDpUXWgrgJRfeTb8rNOsAbl0xgeVhW1FyZpJmdmdn58scOcBC0fa/CYw7wNPgrFbHXV1L4A=="],
+    "ftc-panels": ["ftc-panels@1.1.44", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^6.0.0", "chokidar": "^4.0.3", "svelte-portal": "^2.2.1", "vite": "^7.0.4" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-ul7FYBbRvyW+xPkVy2iEHJDJrmBjCv6lN2KKr+B19iWWOvtzDhyiyIjM+UcTzq7CsXQgVEQshEMsbKJIHwS4zg=="],
 
     "ftc-panels-docs": ["ftc-panels-docs@0.0.7", "", { "dependencies": { "ftc-panels": "^1.1.41", "highlight.js": "^11.11.1", "juice": "^11.0.1" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-2NkHqiOGao8IxQsmMl8Er+5zKuiLHoAfB+zHC2JT7dT4G9AZK6UiCh0v2aQNtQBOjxt57HI4s7byuabC8u5caw=="],
 
@@ -302,6 +303,8 @@
     "zimmerframe": ["zimmerframe@1.1.2", "", {}, "sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w=="],
 
     "zlib": ["zlib@1.0.5", "", {}, "sha512-40fpE2II+Cd3k8HWTWONfeKE2jL+P42iWJ1zzps5W51qcTsOUKM5Q5m2PFb0CLxlmFAaUuUdJGc3OfZy947v0w=="],
+
+    "ftc-panels-docs/ftc-panels": ["ftc-panels@1.1.43", "", { "dependencies": { "@sveltejs/vite-plugin-svelte": "^6.0.0", "chokidar": "^4.0.3", "path": "^0.12.7", "svelte-portal": "^2.2.1", "vite": "^7.0.4", "zlib": "^1.0.5" }, "peerDependencies": { "svelte": "^5.0.0" } }, "sha512-TPh6l7VQSSNIOrZeDpUXWgrgJRfeTb8rNOsAbl0xgeVhW1FyZpJmdmdn58scOcBC0fa/CYw7wNPgrFbHXV1L4A=="],
 
     "htmlparser2/entities": ["entities@6.0.1", "", {}, "sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g=="],
 

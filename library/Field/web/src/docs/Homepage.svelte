@@ -20,6 +20,15 @@
   coordinates and support for popular pathing libraries.
 </Paragraph>
 
+<Title level={1}>Field Images</Title>
+<Paragraph>
+  BIOBUZZ field images are available through <code>PanelsField.images.BIOBUZZ</code>.
+  Images created by Team Juice 16236 and shared in the
+  <a
+    href="https://www.reddit.com/r/FTC/comments/1weleaj/biobuzz_custom_field_images_meepmeep_compatible/"
+  >original FTC community post</a>.
+</Paragraph>
+
 <Title level={1}>Guide</Title>
 <Paragraph>An example class for drawing.</Paragraph>
 

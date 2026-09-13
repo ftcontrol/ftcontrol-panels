@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:field:<VERSION>",
-  version: "1.0.6",
+  version: "1.0.7",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -27,6 +27,17 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.7",
+      release_date: "13.09.2026",
+      changes: [
+        {
+          type: "added",
+          description: "Added BIOBUZZ light and dark field images",
+          upgrading: "BIOBUZZ is now the default field image. DECODE images remain available.",
+        },
+      ],
+    },
     {
       version: "1.0.6",
       release_date: "6.12.2025",
