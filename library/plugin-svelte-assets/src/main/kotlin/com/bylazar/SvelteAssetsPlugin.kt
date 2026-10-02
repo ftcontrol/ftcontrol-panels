@@ -2,7 +2,6 @@ package com.bylazar
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.GradleException
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Copy
@@ -109,6 +108,7 @@ class SvelteAssetsPlugin : Plugin<Project> {
         val clearSvelte = project.tasks.register("clearSvelteAssets$projectSuffix", Delete::class.java) {
             group = "svelte"
             description = "Clears web assets for ${project.path}"
+            delete(File(webDir, extension.buildDirPath))
             val pluginsDir1 = File(project.projectDir, "src/main/assets/plugins")
             if (pluginsDir1.exists()) delete(pluginsDir1.listFiles()?.toList() ?: emptyList<File>())
             val pluginsDir2 = File(project.projectDir, "src/main/assets/${extension.assetsPath}")
@@ -137,13 +137,39 @@ class SvelteAssetsPlugin : Plugin<Project> {
         }
         attachExecLogging(project, buildSvelteApp, "build")
 
+        val verifySvelteAssets = project.tasks.register("verifySvelteAssets$projectSuffix") {
+            group = "svelte"
+            description = "Checks required web build outputs for ${project.path}"
+            dependsOn(buildSvelteApp)
+            doLast {
+                val buildDir = File(webDir, extension.buildDirPath)
+                val requiredFiles = if (File(webDir, "config.ts").isFile) {
+                    listOf("config.json", "svelte.js")
+                } else {
+                    listOf("index.html")
+                }
+                requiredFiles.forEach { filename ->
+                    val file = File(buildDir, filename)
+                    if (!file.isFile || file.length() == 0L) {
+                        throw GradleException("[svelte] ${project.path}: missing or empty build output: $file")
+                    }
+                }
+            }
+        }
+
         val copySvelteToAssets = project.tasks.register("copySvelteToAssets$projectSuffix", Copy::class.java) {
             group = "svelte"
             description = "Copies the built Svelte assets into ${outputDir.relativeTo(project.projectDir)} for ${project.path}"
-            dependsOn(buildSvelteApp)
+            dependsOn(verifySvelteAssets)
             from(File(webDir, extension.buildDirPath))
             into(outputDir)
         }
+
+        // Asset generation must finish before Android snapshots assets for the AAR/APK.
+        project.tasks.matching {
+            (it.name.startsWith("merge") || it.name.startsWith("package")) && it.name.endsWith("Assets")
+        }
+            .configureEach { dependsOn(copySvelteToAssets) }
 
         val buildSvelteAggregate = project.tasks.register("buildSvelte$projectSuffix") {
             group = "svelte"
@@ -160,40 +186,8 @@ class SvelteAssetsPlugin : Plugin<Project> {
             }
         rootTask.dependsOn(buildSvelteAggregate)
 
-        val extra = root.extensions.extraProperties
-        val keyAggregates = "svelteAggregates"
-        val keyWired = "svelteAggregatesWired"
-
-        @Suppress("UNCHECKED_CAST")
-        val aggregates: MutableList<org.gradle.api.tasks.TaskProvider<Task>> =
-            if (extra.has(keyAggregates)) {
-                extra.get(keyAggregates) as MutableList<org.gradle.api.tasks.TaskProvider<Task>>
-            } else {
-                mutableListOf<org.gradle.api.tasks.TaskProvider<Task>>().also {
-                    extra.set(keyAggregates, it)
-                }
-            }
-        aggregates.add(buildSvelteAggregate)
-
-        if (!extra.has(keyWired)) {
-            extra.set(keyWired, true)
-            root.gradle.projectsEvaluated {
-                @Suppress("UNCHECKED_CAST")
-                val allProviders = (extra.get(keyAggregates)
-                        as MutableList<org.gradle.api.tasks.TaskProvider<Task>>).toList()
-                if (allProviders.isNotEmpty()) {
-                    val allTasks = allProviders.map { it.get() }.sortedWith(
-                        compareBy<Task> { it.project.path }.thenBy { it.name }
-                    )
-                    for (i in 1 until allTasks.size) {
-                        allTasks[i].dependsOn(allTasks[i - 1])
-                    }
-                    rootTask.setDependsOn(listOf(allTasks.last()))
-                }
-                root.tasks.matching { it.name == "publish" }.configureEach {
-                    dependsOn(rootTask)
-                }
-            }
+        root.tasks.matching { it.name == "publish" }.configureEach {
+            dependsOn(rootTask)
         }
     }
 

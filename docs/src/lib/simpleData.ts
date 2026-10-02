@@ -411,8 +411,8 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.field/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:field:<VERSION>",
-    "version": "1.0.7",
-    "pluginsCoreVersion": "1.1.44",
+    "version": "1.0.8",
+    "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -430,6 +430,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.8",
+        "release_date": "2.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Restored packaged web assets and compatibility with the published Panels core so the BIOBUZZ Field widget is available",
+            "upgrading": "Update FullPanels to 1.0.14 or Field to 1.0.8."
+          }
+        ]
+      },
       {
         "version": "1.0.7",
         "release_date": "13.09.2026",
@@ -533,8 +544,8 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:fullpanels:<VERSION>",
-    "version": "1.0.13",
-    "pluginsCoreVersion": "1.1.44",
+    "version": "1.0.14",
+    "pluginsCoreVersion": "1.1.43",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -648,6 +659,17 @@ export const simpleModules: PluginConfig[] = [
       "com.bylazar.camerastream"
     ],
     "changelog": [
+      {
+        "version": "1.0.14",
+        "release_date": "2.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Restored packaged web assets and updated Field to 1.0.8 to restore the BIOBUZZ Field widget",
+            "upgrading": "Update the FullPanels dependency to 1.0.14."
+          }
+        ]
+      },
       {
         "version": "1.0.13",
         "release_date": "13.09.2026",
