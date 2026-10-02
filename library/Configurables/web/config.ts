@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.configurables/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:configurables:<VERSION>",
-  version: "1.0.5",
+  version: "1.0.6",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   components: [
@@ -32,6 +32,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.6",
+      release_date: "3.10.2026",
+      changes: [{ type: "other", description: "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44", upgrading: "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15." }],
+    },
     {
       version: "1.0.5",
       release_date: "6.12.2025",

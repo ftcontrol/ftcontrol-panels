@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "chart.js": "^4.5.0",
-    "ftc-panels": "^1.1.44",
+    "ftc-panels": "1.1.44",
     "typescript": "^5.8.3"
   }
 }

@@ -13,7 +13,7 @@ export const panelsConfig: PluginConfig = {
   websiteURL: "https://panels.bylazar.com",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:panels:<VERSION>",
-  version: "1.0.5",
+  version: "1.0.6",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "",
@@ -21,6 +21,11 @@ export const panelsConfig: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.6",
+      release_date: "3.10.2026",
+      changes: [{ type: "other", description: "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44", upgrading: "Update the FTC SDK to 12.0.0 and use plugins compatible with frontend core 1.1.44." }],
+    },
     {
       version: "1.0.5",
       release_date: "12.12.2025",

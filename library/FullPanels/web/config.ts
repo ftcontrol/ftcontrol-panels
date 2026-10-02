@@ -8,8 +8,8 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.14",
-  pluginsCoreVersion: "1.1.43",
+  version: "1.0.15",
+  pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
   components: [
@@ -103,6 +103,11 @@ export const config: PluginConfig = {
     "com.bylazar.camerastream",
   ],
   changelog: [
+    {
+      version: "1.0.15",
+      release_date: "3.10.2026",
+      changes: [{ type: "other", description: "Updated Panels and all included plugins for FTC SDK 12.0.0 with pinned frontend core 1.1.44", upgrading: "Update the FTC SDK to 12.0.0 and the FullPanels dependency to 1.0.15." }],
+    },
     {
       version: "1.0.14",
       release_date: "2.10.2026",

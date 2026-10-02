@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.docs"
-val pluginVersion = "1.0.5"
+val pluginVersion = "1.0.6"
 
 plugins {
     id("com.android.library")
@@ -43,14 +43,9 @@ android {
 }
 
 dependencies {
-    compileOnly("org.firstinspires.ftc:Inspection:11.0.0")
-    compileOnly("org.firstinspires.ftc:Blocks:11.0.0")
-    compileOnly("org.firstinspires.ftc:RobotCore:11.0.0")
-    compileOnly("org.firstinspires.ftc:RobotServer:11.0.0")
-    compileOnly("org.firstinspires.ftc:OnBotJava:11.0.0")
-    compileOnly("org.firstinspires.ftc:Hardware:11.0.0")
-    compileOnly("org.firstinspires.ftc:FtcCommon:11.0.0")
-    compileOnly("org.firstinspires.ftc:Vision:11.0.0")
+    listOf("Inspection", "Blocks", "RobotCore", "RobotServer", "OnBotJava", "Hardware", "FtcCommon", "Vision").forEach {
+        compileOnly("org.firstinspires.ftc:$it:12.0.0")
+    }
 
     compileOnly(project(":Panels"))
 }

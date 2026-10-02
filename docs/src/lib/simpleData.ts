@@ -10,7 +10,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.battery/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:battery:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -29,6 +29,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -83,7 +94,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.camerastream/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:camerastream:<VERSION>",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -102,6 +113,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.1",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.0",
         "release_date": "1.11.2025",
@@ -123,7 +145,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.capture/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:capture:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -142,6 +164,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -196,7 +229,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.configurables/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:configurables:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "components": [
@@ -220,6 +253,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "6.12.2025",
@@ -296,7 +340,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.docs/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:docs:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -325,6 +369,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "1.11.2025",
@@ -411,8 +466,8 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.field/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:field:<VERSION>",
-    "version": "1.0.8",
-    "pluginsCoreVersion": "1.1.43",
+    "version": "1.0.9",
+    "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -430,6 +485,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.9",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.8",
         "release_date": "2.10.2026",
@@ -544,8 +610,8 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:fullpanels:<VERSION>",
-    "version": "1.0.14",
-    "pluginsCoreVersion": "1.1.43",
+    "version": "1.0.15",
+    "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
     "components": [
@@ -659,6 +725,17 @@ export const simpleModules: PluginConfig[] = [
       "com.bylazar.camerastream"
     ],
     "changelog": [
+      {
+        "version": "1.0.15",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Updated Panels and all included plugins for FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and the FullPanels dependency to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.14",
         "release_date": "2.10.2026",
@@ -854,7 +931,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.gamepad/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:gamepad:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -883,6 +960,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "1.11.2025",
@@ -948,7 +1036,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.graph",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:graph:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -967,6 +1055,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "1.11.2025",
@@ -1042,7 +1141,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.lights/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:lights:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1061,6 +1160,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -1115,7 +1225,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:limelightproxy:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1149,6 +1259,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "6.12.2025",
@@ -1214,7 +1335,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.opmodecontrol/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:opmodecontrol:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1238,6 +1359,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -1292,7 +1424,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.pinger/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:pinger:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1311,6 +1443,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -1365,7 +1508,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:telemetry:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1384,6 +1527,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "1.11.2025",
@@ -1470,7 +1624,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.themes/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:themes:<VERSION>",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1494,6 +1648,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.4",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.3",
         "release_date": "1.11.2025",
@@ -1548,7 +1713,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.utils/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:utils:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1562,6 +1727,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and Panels to 1.0.6 or FullPanels to 1.0.15."
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "1.11.2025",
@@ -1627,7 +1803,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:panels:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "",
@@ -1635,6 +1811,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Built against FTC SDK 12.0.0 with pinned frontend core 1.1.44",
+            "upgrading": "Update the FTC SDK to 12.0.0 and use plugins compatible with frontend core 1.1.44."
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "12.12.2025",

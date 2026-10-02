@@ -1,12 +1,11 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "docs",
       "dependencies": {
         "@sveltejs/adapter-static": "^3.0.9",
-        "ftc-panels": "^1.1.44",
+        "ftc-panels": "1.1.44",
         "ftc-panels-docs": "^0.0.7",
         "path": "^0.12.7",
       },
