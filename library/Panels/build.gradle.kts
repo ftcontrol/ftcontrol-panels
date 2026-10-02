@@ -1,72 +1,61 @@
-plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("maven-publish")
-    id("com.bylazar.svelte-assets")
-}
-
 val pluginNamespace = "com.bylazar.panels"
 val pluginVersion = "1.0.6"
 
-svelteAssets {
-    webAppPath = "web"
-    buildDirPath = "build"
-    assetsPath = "web"
+plugins {
+    id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"
+    id("com.bylazar.svelte-assets")
+    id("dev.frozenmilk.publish") version "0.1.0"
+    id("dev.frozenmilk.doc") version "0.1.0"
+    id("dev.frozenmilk.build-meta-data") version "0.1.0"
 }
 
-android {
-    namespace = "com.bylazar.panels"
+android.namespace = pluginNamespace
 
-    defaultConfig {
-        compileSdk = 34
-        minSdk = 24
+svelteAssets {
+    assetsPath = "web"
+    buildDirPath = "build"
+}
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
+dairyPublishing {
+    gitDir = file("..")
+}
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
+afterEvaluate {
+    version = "${dairyPublishing.version}+$pluginVersion"
+}
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
+meta {
+    packagePath = pluginNamespace
+    name = "Panels"
+    registerField("name", "String", "\"$pluginNamespace\"")
+    registerField("clean", "Boolean") { "${dairyPublishing.clean}" }
+    registerField("gitRef", "String") { "\"${dairyPublishing.gitRef}\"" }
+    registerField("snapshot", "Boolean") { "${dairyPublishing.snapshot}" }
+    registerField("version", "String") { "\"$version\"" }
+}
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    publishing {
-        singleVariant("release") {}
+ftc {
+    kotlin()
+    sdk {
+        compileOnly(RobotCore)
+        compileOnly(FtcCommon)
+        compileOnly(RobotServer)
+        implementation(appcompat)
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.core:core-ktx:1.2.0")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
-    listOf("Inspection", "Blocks", "RobotCore", "RobotServer", "OnBotJava", "Hardware", "FtcCommon", "Vision").forEach {
-        compileOnly("org.firstinspires.ftc:$it:12.0.0")
-    }
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    //androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     implementation("org.nanohttpd:nanohttpd-websocket:2.3.1") {
         exclude(module = "nanohttpd")
     }
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
 
     implementation("org.tukaani:xz:1.9")
 }
@@ -77,9 +66,11 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = pluginNamespace.substringBeforeLast('.')
+                groupId = pluginNamespace.substringBeforeLast('.') + ".sloth"
                 artifactId = pluginNamespace.substringAfterLast('.')
-                version = pluginVersion
+
+                artifact(dairyDoc.dokkaJavadocJar)
+                artifact(dairyDoc.dokkaHtmlJar)
 
                 pom {
                     description.set("All in one toolbox dashboard for FTC.")
@@ -94,13 +85,6 @@ afterEvaluate {
                         }
                     }
                 }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }

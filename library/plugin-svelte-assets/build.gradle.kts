@@ -12,6 +12,11 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    //noinspection AndroidGradlePluginVersion
+    compileOnly("com.android.tools.build:gradle:8.7.0")
+}
+
 gradlePlugin {
     plugins {
         create("svelteAssetsPlugin") {

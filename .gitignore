@@ -6,3 +6,4 @@
 *.log
 **/.gradle
 **/local.properties
+**/node_modules

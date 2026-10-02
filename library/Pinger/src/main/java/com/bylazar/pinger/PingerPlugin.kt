@@ -9,7 +9,6 @@ import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
-import com.sun.tools.doclint.Entity.delta
 
 open class ExamplePluginConfig : BasePluginConfig() {
 }

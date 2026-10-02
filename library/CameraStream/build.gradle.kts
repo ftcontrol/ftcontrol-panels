@@ -1,55 +1,49 @@
-import org.gradle.kotlin.dsl.implementation
-
 val pluginNamespace = "com.bylazar.camerastream"
 val pluginVersion = "1.0.1"
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"
     id("com.bylazar.svelte-assets")
+    id("dev.frozenmilk.publish") version "0.1.0"
+    id("dev.frozenmilk.doc") version "0.1.0"
+    id("dev.frozenmilk.build-meta-data") version "0.1.0"
 }
+
+android.namespace = pluginNamespace
 
 svelteAssets {
-    webAppPath = "web"
-    buildDirPath = "dist"
-    assetsPath = "web/plugins/$pluginNamespace"
+    assetsPath = assetPathForPlugin(pluginNamespace)
 }
 
-android {
-    namespace = pluginNamespace
+dairyPublishing {
+    gitDir = file("..")
+}
 
-    defaultConfig {
-        compileSdk = 34
-        minSdk = 24
-    }
+afterEvaluate {
+    version = "${dairyPublishing.version}+$pluginVersion"
+}
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+meta {
+    packagePath = pluginNamespace
+    name = "CameraStream"
+    registerField("name", "String", "\"$pluginNamespace\"")
+    registerField("clean", "Boolean") { "${dairyPublishing.clean}" }
+    registerField("gitRef", "String") { "\"$version\"" }
+    registerField("snapshot", "Boolean") { "${dairyPublishing.snapshot}" }
+    registerField("version", "String") { "\"${dairyPublishing.version}\"" }
+}
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    publishing {
-        singleVariant("release") {}
+ftc {
+    kotlin()
+    sdk {
+        compileOnly(RobotCore)
+        compileOnly(FtcCommon)
     }
 }
 
 dependencies {
-    listOf("Inspection", "Blocks", "RobotCore", "RobotServer", "OnBotJava", "Hardware", "FtcCommon", "Vision").forEach {
-        compileOnly("org.firstinspires.ftc:$it:12.0.0")
-    }
-
     compileOnly(project(":Panels"))
+    // TODO: remove?
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 }
 
@@ -59,9 +53,11 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = pluginNamespace.substringBeforeLast('.')
+                groupId = pluginNamespace.substringBeforeLast('.') + ".sloth"
                 artifactId = pluginNamespace.substringAfterLast('.')
-                version = pluginVersion
+
+                artifact(dairyDoc.dokkaJavadocJar)
+                artifact(dairyDoc.dokkaHtmlJar)
 
                 pom {
                     description.set("Panels Camera Stream Plugin")
@@ -76,13 +72,6 @@ afterEvaluate {
                         }
                     }
                 }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }
