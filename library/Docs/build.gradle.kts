@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.docs"
-val pluginVersion = "1.0.7"
+val pluginVersion = "1.0.8"
 
 plugins {
     id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"

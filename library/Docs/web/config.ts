@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.docs/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:docs:<VERSION>",
-  version: "1.0.7",
+  version: "1.0.8",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -37,6 +37,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.8",
+      release_date: "3.10.2026",
+      changes: [{ type: "fixed", description: "Prerequisites now document the required Dairy Maven repository for Sloth, no longer instruct changing compileSdk/minSdk, and include clearer update steps", upgrading: "" }],
+    },
     {
       version: "1.0.7",
       release_date: "3.10.2026",

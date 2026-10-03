@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.16",
+  version: "1.0.17",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -103,6 +103,11 @@ export const config: PluginConfig = {
     "com.bylazar.camerastream",
   ],
   changelog: [
+    {
+      version: "1.0.17",
+      release_date: "3.10.2026",
+      changes: [{ type: "fixed", description: "Updated Docs to 1.0.8 with corrected Prerequisites (Dairy repository for Sloth, default compileSdk guidance, clearer update steps)", upgrading: "Update the FullPanels dependency to 1.0.17. No compileSdk/minSdk changes are needed." }],
+    },
     {
       version: "1.0.16",
       release_date: "3.10.2026",
