@@ -38,7 +38,7 @@ abstract class BunTask @Inject constructor(
      */
     fun bunExec(cmd: String, action: ExecSpec.() -> Unit = {}) {
         execOperations.exec {
-            commandLine = if (isWindows) listOf("powershell", "-c", cmd)
+            commandLine = if (isWindows) listOf("cmd", "/c", cmd)
             else listOf("sh", "-c", cmd)
             if (bunInstalledLocally) {
                 environment["BUN_INSTALL"] = BUN_INSTALL.absolutePath

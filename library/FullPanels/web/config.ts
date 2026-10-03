@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.15",
+  version: "1.0.16",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -103,6 +103,11 @@ export const config: PluginConfig = {
     "com.bylazar.camerastream",
   ],
   changelog: [
+    {
+      version: "1.0.16",
+      release_date: "3.10.2026",
+      changes: [{ type: "added", description: "Integrated Sloth support and Dairy build improvements contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15; updated all included modules while retaining official com.bylazar Maven coordinates and frontend core 1.1.44", upgrading: "Update FullPanels to 1.0.16 and add maven { url = uri(\"https://repo.dairy.foundation/releases\") } to your repositories for Sloth dependencies. FTC SDK 12.0.0 is required." }],
+    },
     {
       version: "1.0.15",
       release_date: "3.10.2026",

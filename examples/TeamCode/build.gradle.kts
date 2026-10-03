@@ -1,11 +1,12 @@
 plugins {
-    id("dev.frozenmilk.teamcode") version "11.1.0-1.1.1"
+    id("dev.frozenmilk.teamcode") version "12.0.0-1.2.2"
 }
 
 ftc {
     kotlin()
     sdk.TeamCode()
-    dairy.ftControl {
-        implementation(fullpanels(""))
-    }
+}
+
+dependencies {
+    implementation("com.bylazar:fullpanels:1.0.16")
 }

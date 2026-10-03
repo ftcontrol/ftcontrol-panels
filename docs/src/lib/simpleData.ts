@@ -10,7 +10,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.battery/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:battery:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -29,6 +29,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -94,7 +105,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.camerastream/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:camerastream:<VERSION>",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -113,6 +124,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.2",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.1",
         "release_date": "3.10.2026",
@@ -145,7 +167,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.capture/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:capture:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -164,6 +186,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -229,7 +262,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.configurables/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:configurables:<VERSION>",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "components": [
@@ -253,6 +286,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.7",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "added",
+            "description": "Sloth-aware configurable scanning and unloading, with class-based refresh APIs, contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15",
+            "upgrading": "Use refreshClass(Class) in Java or refreshClass(KClass) in Kotlin; add the Dairy releases repository to resolve Sloth dependencies."
+          }
+        ]
+      },
       {
         "version": "1.0.6",
         "release_date": "3.10.2026",
@@ -340,7 +384,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.docs/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:docs:<VERSION>",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -369,6 +413,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.7",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.6",
         "release_date": "3.10.2026",
@@ -466,7 +521,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.field/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:field:<VERSION>",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -485,6 +540,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.10",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling while retaining validated frontend assets and BIOBUZZ field presets",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.9",
         "release_date": "3.10.2026",
@@ -610,7 +676,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:fullpanels:<VERSION>",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -725,6 +791,17 @@ export const simpleModules: PluginConfig[] = [
       "com.bylazar.camerastream"
     ],
     "changelog": [
+      {
+        "version": "1.0.16",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "added",
+            "description": "Integrated Sloth support and Dairy build improvements contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15; updated all included modules while retaining official com.bylazar Maven coordinates and frontend core 1.1.44",
+            "upgrading": "Update FullPanels to 1.0.16 and add maven { url = uri(\"https://repo.dairy.foundation/releases\") } to your repositories for Sloth dependencies. FTC SDK 12.0.0 is required."
+          }
+        ]
+      },
       {
         "version": "1.0.15",
         "release_date": "3.10.2026",
@@ -931,7 +1008,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.gamepad/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:gamepad:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -960,6 +1037,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "3.10.2026",
@@ -1036,7 +1124,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.graph",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:graph:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1055,6 +1143,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "3.10.2026",
@@ -1141,7 +1240,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.lights/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:lights:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1160,6 +1259,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -1225,7 +1335,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.limelightproxy/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:limelightproxy:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1259,6 +1369,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "3.10.2026",
@@ -1335,7 +1456,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.opmodecontrol/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:opmodecontrol:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1359,6 +1480,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "added",
+            "description": "Sloth-aware OpMode discovery and list updates after class loading and unloading, contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15",
+            "upgrading": "Add the Dairy releases repository to resolve Sloth dependencies."
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -1424,7 +1556,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.pinger/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:pinger:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1443,6 +1575,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -1508,7 +1651,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.telemetry/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:telemetry:<VERSION>",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1527,6 +1670,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.7",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.6",
         "release_date": "3.10.2026",
@@ -1624,7 +1778,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.themes/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:themes:<VERSION>",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1648,6 +1802,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.5",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.4",
         "release_date": "3.10.2026",
@@ -1713,7 +1878,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.utils/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:utils:<VERSION>",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -1727,6 +1892,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.6",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "other",
+            "description": "Migrated to Dairy build tooling with explicit versions and official Maven publishing",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.5",
         "release_date": "3.10.2026",
@@ -1803,7 +1979,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:panels:<VERSION>",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "",
@@ -1811,6 +1987,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.7",
+        "release_date": "3.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Improved startup handling and FTC RobotLog diagnostics; integrated Dairy build and publishing improvements contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15",
+            "upgrading": ""
+          }
+        ]
+      },
       {
         "version": "1.0.6",
         "release_date": "3.10.2026",

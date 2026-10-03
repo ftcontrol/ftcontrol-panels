@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.battery"
-val pluginVersion = "1.0.4"
+val pluginVersion = "1.0.5"
 
 plugins {
     id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"
@@ -20,7 +20,7 @@ dairyPublishing {
 }
 
 afterEvaluate {
-    version = "${dairyPublishing.version}+$pluginVersion"
+    version = pluginVersion
 }
 
 meta {
@@ -53,7 +53,8 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = pluginNamespace.substringBeforeLast('.') + ".sloth"
+                groupId = pluginNamespace.substringBeforeLast('.')
+                version = pluginVersion
                 artifactId = pluginNamespace.substringAfterLast('.')
 
                 artifact(dairyDoc.dokkaJavadocJar)

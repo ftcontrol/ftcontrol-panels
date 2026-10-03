@@ -35,9 +35,8 @@ val modules = listOf(
 //    project(":$name").projectDir = file("../library/$name")
 //}
 
-includeBuild("../library") {
+includeBuild("../../library") {
     dependencySubstitution {
-        substitute(module("com.bylazar.sloth:fullpanels")).using(project(":FullPanels"))
         substitute(module("com.bylazar:fullpanels")).using(project(":FullPanels"))
     }
 }

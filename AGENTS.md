@@ -75,12 +75,12 @@ clear outputs -> install dependencies -> build frontend -> verify outputs
 
 ## Local build environment
 
-Use Bun, a suitable JDK for the project's Android Gradle Plugin, and an installed Android SDK. Check the Gradle wrapper and SDK configuration before changing tool versions.
+Use Bun, JDK 25 (required by the Dairy Gradle plugins), and an installed Android SDK. The library uses Gradle 9.1.0. Check the Gradle wrapper and SDK configuration before changing tool versions.
 
-On this Windows development machine, Android Studio's bundled JDK can be selected for the current PowerShell session:
+Select an installed JDK 25 for the current PowerShell session. Android Studio's bundled JDK 21 cannot load the current Dairy Gradle plugins:
 
 ```powershell
-$env:JAVA_HOME = 'C:\Program Files\Android\Android Studio\jbr'
+$env:JAVA_HOME = 'C:\path\to\jdk-25'
 $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 ```
 
@@ -125,7 +125,9 @@ Use this order for a release spanning these repositories:
 5. Update both quickstarts' FullPanels dependency to the released version, build/verify them, and commit when requested.
 6. Push the requested repositories to their correct remotes/branches.
 
-The `localDevRepo` URL is configured in module Gradle files and currently points to the sibling Maven checkout through an absolute Windows path. Verify it before publishing, particularly on another machine.
+The `localDevRepo` URL is configured centrally in `library/build.gradle.kts` and resolves to the sibling `ftcontrol-maven/releases` folder. Publications retain `com.bylazar` coordinates and explicit module versions; Git metadata is diagnostic only. Verify the destination before publishing, particularly on another machine.
+
+`publishAllReleasePublicationsToLocalDevRepoRepository` publishes all library modules except ExamplePlugin. Prefer individual module publication tasks for targeted changes. FullPanels consumers need `https://repo.dairy.foundation/releases` in their dependency repositories to resolve Sloth (`dev.frozenmilk.sinister:Sloth:0.3.2`).
 
 Example targeted publication, run from `library/`:
 

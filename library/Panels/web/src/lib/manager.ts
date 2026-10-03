@@ -13,7 +13,7 @@ export const panelsConfig: PluginConfig = {
   websiteURL: "https://panels.bylazar.com",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:panels:<VERSION>",
-  version: "1.0.6",
+  version: "1.0.7",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "",
@@ -21,6 +21,11 @@ export const panelsConfig: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.7",
+      release_date: "3.10.2026",
+      changes: [{ type: "fixed", description: "Improved startup handling and FTC RobotLog diagnostics; integrated Dairy build and publishing improvements contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15", upgrading: "" }],
+    },
     {
       version: "1.0.6",
       release_date: "3.10.2026",

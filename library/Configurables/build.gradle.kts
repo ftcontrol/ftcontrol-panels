@@ -1,5 +1,5 @@
 val pluginNamespace = "com.bylazar.configurables"
-val pluginVersion = "1.0.6"
+val pluginVersion = "1.0.7"
 
 plugins {
     id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"
@@ -20,7 +20,7 @@ dairyPublishing {
 }
 
 afterEvaluate {
-    version = "${dairyPublishing.version}+$pluginVersion"
+    version = pluginVersion
 }
 
 meta {
@@ -30,7 +30,7 @@ meta {
     registerField("clean", "Boolean") { "${dairyPublishing.clean}" }
     registerField("gitRef", "String") { "\"${dairyPublishing.gitRef}\"" }
     registerField("snapshot", "Boolean") { "${dairyPublishing.snapshot}" }
-    registerField("version", "String") { "\"${dairyPublishing.version}\"" }
+    registerField("version", "String") { "\"$version\"" }
 }
 
 ftc {
@@ -55,7 +55,8 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = pluginNamespace.substringBeforeLast('.') + ".sloth"
+                groupId = pluginNamespace.substringBeforeLast('.')
+                version = pluginVersion
                 artifactId = pluginNamespace.substringAfterLast('.')
 
                 artifact(dairyDoc.dokkaHtmlJar)
