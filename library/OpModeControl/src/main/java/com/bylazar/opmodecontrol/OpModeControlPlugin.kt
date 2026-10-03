@@ -1,7 +1,6 @@
 package com.bylazar.opmodecontrol
 
 import android.content.Context
-import android.os.SystemClock
 import com.bylazar.panels.Panels
 import com.bylazar.panels.plugins.BasePluginConfig
 import com.bylazar.panels.plugins.Plugin
@@ -9,22 +8,35 @@ import com.bylazar.panels.server.Socket
 import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl
+import dev.frozenmilk.sinister.Scanner
+import dev.frozenmilk.sinister.sdk.apphooks.SDKOpModeRegistrar
+import dev.frozenmilk.sinister.sdk.opmodes.OpModeScanner
+import dev.frozenmilk.sinister.sdk.opmodes.SinisterRegisteredOpModes
+import dev.frozenmilk.sinister.targeting.NarrowSearch
+import dev.frozenmilk.util.graph.rule.dependsOn
+import dev.frozenmilk.util.graph.rule.dependsOnClass
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
-import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-open class OpModeControlPluginConfig : BasePluginConfig() {
-}
+open class OpModeControlPluginConfig : BasePluginConfig() {}
 
-object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
-    var opModeList: MutableList<OpModeDetails> = mutableListOf()
-        set(value) {
-            field = value
-            send("opModesList", OpModesList(value))
-        }
+object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()), Scanner {
+    val opModeList: List<OpModeDetails>
+        get() = SinisterRegisteredOpModes.opModes.mapNotNull { opModeMeta ->
+            if (opModeMeta.flavor == OpModeMeta.Flavor.SYSTEM) null
+            else OpModeDetails(
+                name = opModeMeta.name,
+                group = opModeMeta.group,
+                flavour = opModeMeta.flavor,
+                source = opModeMeta.source ?: OpModeMeta.Source.ANDROID_STUDIO,
+                defaultGroup = OpModeMeta.DefaultGroup,
+                autoTransition = opModeMeta.autoTransition ?: ""
+            )
+        }.sortedWith(compareBy({ it.group }, { it.name }))
+
     var status = OpModeStatus.STOPPED
     var activeOpMode: OpMode? = null
     var activeOpModeStartTimestamp: Long? = null
@@ -58,6 +70,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     private val scheduler = Executors.newSingleThreadScheduledExecutor { r ->
         Thread(r, "OpModeControl-Ticker")
     }
+
     @Volatile
     private var tickTask: ScheduledFuture<*>? = null
 
@@ -107,8 +120,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
     }
 
     override fun onRegister(
-        panelsInstance: Panels,
-        context: Context
+        panelsInstance: Panels, context: Context
     ) {
 
     }
@@ -122,9 +134,6 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         opModeManagerRef = WeakReference(o)
         activeOpMode = null
         activeOpModeName = ""
-        opModeList.clear()
-        val t = Thread(FetcherRoutine())
-        t.start()
         activeOpModeStartTimestamp = null
     }
 
@@ -170,39 +179,32 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()) {
         sendActiveOpMode()
     }
 
-    class FetcherRoutine : Runnable {
-        override fun run() {
-            RegisteredOpModes.getInstance().waitOpModesRegistered()
-
-            var list = ArrayList<OpModeDetails>()
-            for (opModeMeta in RegisteredOpModes.getInstance().opModes) {
-                if (opModeMeta.flavor != OpModeMeta.Flavor.SYSTEM) {
-                    list.add(
-                        OpModeDetails(
-                            name = opModeMeta.name,
-                            group = opModeMeta.group,
-                            flavour = opModeMeta.flavor,
-                            source = opModeMeta.source ?: OpModeMeta.Source.ANDROID_STUDIO,
-                            defaultGroup = OpModeMeta.DefaultGroup,
-                            autoTransition = opModeMeta.autoTransition ?: ""
-                        )
-                    )
-                }
-            }
-
-            opModeList = list.sortedWith(compareBy({ it.group }, { it.name })).toMutableList()
-
-            log("OpModes: ${opModeList.joinToString(", ", transform = { it.name })}")
-
-            send("opModesList", OpModesList(opModeList))
-            sendActiveOpMode()
-        }
-    }
-
 
     override fun onEnablePanels() {
     }
 
     override fun onDisablePanels() {
+    }
+
+    override val loadAdjacencyRule =
+        dependsOnClass(OpModeScanner::class.java).and(dependsOn(SDKOpModeRegistrar))
+    override val unloadAdjacencyRule =
+        dependsOnClass(OpModeScanner::class.java).and(dependsOn(SDKOpModeRegistrar))
+    override val targets = NarrowSearch()
+
+    override fun scan(loader: ClassLoader, cls: Class<*>) {}
+    override fun afterScan(loader: ClassLoader) {
+        val opModeList = opModeList
+        log("OpModes: ${opModeList.joinToString(", ", transform = { it.name })}")
+        send("opModesList", OpModesList(opModeList))
+        sendActiveOpMode()
+    }
+
+    override fun unload(loader: ClassLoader, cls: Class<*>) {}
+    override fun afterUnload(loader: ClassLoader) {
+        val opModeList = opModeList
+        log("OpModes: ${opModeList.joinToString(", ", transform = { it.name })}")
+        send("opModesList", OpModesList(opModeList))
+        sendActiveOpMode()
     }
 }

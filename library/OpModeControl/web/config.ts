@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.opmodecontrol/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:opmodecontrol:<VERSION>",
-  version: "1.0.4",
+  version: "1.0.5",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -32,6 +32,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.5",
+      release_date: "3.10.2026",
+      changes: [{ type: "added", description: "Sloth-aware OpMode discovery and list updates after class loading and unloading, contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15", upgrading: "Add the Dairy releases repository to resolve Sloth dependencies." }],
+    },
     {
       version: "1.0.4",
       release_date: "3.10.2026",

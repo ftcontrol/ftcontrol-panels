@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.field/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:field:<VERSION>",
-  version: "1.0.9",
+  version: "1.0.10",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -27,6 +27,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.10",
+      release_date: "3.10.2026",
+      changes: [{ type: "other", description: "Migrated to Dairy build tooling while retaining validated frontend assets and BIOBUZZ field presets", upgrading: "" }],
+    },
     {
       version: "1.0.9",
       release_date: "3.10.2026",

@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.utils/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:utils:<VERSION>",
-  version: "1.0.5",
+  version: "1.0.6",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -22,6 +22,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.6",
+      release_date: "3.10.2026",
+      changes: [{ type: "other", description: "Migrated to Dairy build tooling with explicit versions and official Maven publishing", upgrading: "" }],
+    },
     {
       version: "1.0.5",
       release_date: "3.10.2026",

@@ -12,6 +12,11 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    //noinspection AndroidGradlePluginVersion
+    compileOnly("com.android.tools.build:gradle:8.7.0")
+}
+
 gradlePlugin {
     plugins {
         create("svelteAssetsPlugin") {
@@ -54,4 +59,13 @@ afterEvaluate {
             }
         }
     }
+}
+
+kotlin {
+    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }

@@ -25,6 +25,7 @@ class StaticServer(
     init {
         var files = listWebFiles(baseFolder)
 
+        Logger.serverLog("Found ${files.size} web files")
         files.forEach {
             Logger.serverLog("Found file: $it")
         }
@@ -280,15 +281,15 @@ class StaticServer(
             Logger.serverLog("Success")
             return newChunkedResponse(Response.Status.OK, mime, inputStream).allowCors()
         } catch (e: Exception) {
-            Logger.serverLog("Primary asset not found: $path — ${e.message}")
+            Logger.serverError("Primary asset not found: $path", e)
 
             return try {
                 val fallbackStream = assets.open("$baseFolder/index.html")
                 Logger.serverLog("Fallback to index.html")
                 newChunkedResponse(Response.Status.OK, "text/html", fallbackStream)
             } catch (fallbackException: Exception) {
-                val message = "Fallback also failed: ${fallbackException.message}"
-                Logger.serverLog(message)
+                val message = "Fallback also failed, check logcat for more info"
+                Logger.serverError(message, fallbackException)
                 getResponse(message, status = Response.Status.INTERNAL_ERROR)
             }
         }
@@ -299,7 +300,7 @@ class StaticServer(
             start()
             Logger.serverLog("Server started on port $listeningPort")
         } catch (e: IOException) {
-            Logger.serverLog("Failed to start server: ${e.message}")
+            Logger.serverError("Failed to start server", e)
         }
     }
 

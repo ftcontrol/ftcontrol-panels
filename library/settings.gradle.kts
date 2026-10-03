@@ -2,10 +2,16 @@ pluginManagement {
     includeBuild("plugin-svelte-assets")
     repositories {
         gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven("https://repo.dairy.foundation/releases")
     }
 }
 
-include(":FtcRobotController")
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention").version("1.0.0")
+}
+
 include(":TeamCode")
 include(":OpModeControl")
 include(":ExamplePlugin")

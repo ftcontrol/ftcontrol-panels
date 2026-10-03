@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.configurables/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:configurables:<VERSION>",
-  version: "1.0.6",
+  version: "1.0.7",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   components: [
@@ -32,6 +32,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.7",
+      release_date: "3.10.2026",
+      changes: [{ type: "added", description: "Sloth-aware configurable scanning and unloading, with class-based refresh APIs, contributed by Oscar Chevalier (@Froze-N-Milk) via PR #15", upgrading: "Use refreshClass(Class) in Java or refreshClass(KClass) in Kotlin; add the Dairy releases repository to resolve Sloth dependencies." }],
+    },
     {
       version: "1.0.6",
       release_date: "3.10.2026",

@@ -1,52 +1,48 @@
 val pluginNamespace = "com.bylazar.fullpanels"
-val pluginVersion = "1.0.15"
+val pluginVersion = "1.0.16"
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    id("dev.frozenmilk.android-library") version "12.0.0-1.2.2"
     id("com.bylazar.svelte-assets")
+    id("dev.frozenmilk.publish") version "0.1.0"
+    id("dev.frozenmilk.doc") version "0.1.0"
+    id("dev.frozenmilk.build-meta-data") version "0.1.0"
 }
+
+android.namespace = pluginNamespace
 
 svelteAssets {
-    webAppPath = "web"
-    buildDirPath = "dist"
-    assetsPath = "web/plugins/$pluginNamespace"
+    assetsPath = assetPathForPlugin(pluginNamespace)
 }
 
-android {
-    namespace = pluginNamespace
+dairyPublishing {
+    gitDir = file("..")
+}
 
-    defaultConfig {
-        compileSdk = 34
-        minSdk = 24
-    }
+afterEvaluate {
+    version = pluginVersion
+}
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+meta {
+    packagePath = pluginNamespace
+    name = "FullPanels"
+    registerField("name", "String", "\"$pluginNamespace\"")
+    registerField("clean", "Boolean") { "${dairyPublishing.clean}" }
+    registerField("gitRef", "String") { "\"${dairyPublishing.gitRef}\"" }
+    registerField("snapshot", "Boolean") { "${dairyPublishing.snapshot}" }
+    registerField("version", "String") { "\"$version\"" }
+}
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    publishing {
-        singleVariant("release") {}
+ftc {
+    kotlin()
+    sdk {
+        compileOnly(RobotCore)
+        compileOnly(FtcCommon)
+        compileOnly(RobotServer)
     }
 }
 
 dependencies {
-    listOf("Inspection", "Blocks", "RobotCore", "RobotServer", "OnBotJava", "Hardware", "FtcCommon", "Vision").forEach {
-        compileOnly("org.firstinspires.ftc:$it:12.0.0")
-    }
-
     api(project(":Panels"))
 
     api(project(":OpModeControl"))
@@ -73,8 +69,11 @@ afterEvaluate {
                 from(components["release"])
 
                 groupId = pluginNamespace.substringBeforeLast('.')
-                artifactId = pluginNamespace.substringAfterLast('.')
                 version = pluginVersion
+                artifactId = pluginNamespace.substringAfterLast('.')
+
+                artifact(dairyDoc.dokkaJavadocJar)
+                artifact(dairyDoc.dokkaHtmlJar)
 
                 pom {
                     description.set("All in one toolbox dashboard for FTC with core plugins.")
@@ -89,13 +88,6 @@ afterEvaluate {
                         }
                     }
                 }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "localDevRepo"
-                url = uri("file:///C:/Users/lazar/Documents/GitHub/ftcontrol-maven/releases")
             }
         }
     }

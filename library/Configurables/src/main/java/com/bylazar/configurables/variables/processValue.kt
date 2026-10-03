@@ -23,6 +23,7 @@ class RecursionDetectedException(val fieldName: String) : RuntimeException()
 fun processValue(
     recursionDepth: Int,
     className: String,
+    classLoader: ClassLoader,
     type: BaseTypes,
     reference: MyField,
     parentReference: MyField?,
@@ -58,7 +59,8 @@ fun processValue(
         if (type == BaseTypes.CUSTOM) {
             reference.isAccessible = true
             val customValues = reference.type.declaredFields.sortedBy { field ->
-                field.getAnnotation(com.bylazar.configurables.annotations.Sorter::class.java)?.sort ?: Int.MAX_VALUE
+                field.getAnnotation(com.bylazar.configurables.annotations.Sorter::class.java)?.sort
+                    ?: Int.MAX_VALUE
             }.mapNotNull { field ->
                 try {
                     field.isAccessible = true
@@ -75,13 +77,15 @@ fun processValue(
 //                    return@mapNotNull null
 //                }
                     if (field.type == reference.type) {
-                        val newField = GenericField(reference.type.toString(), field)
-                        val alreadyExists = GlobalConfigurables.jvmFields.any {
-                            it.className == newField.className && it.reference.name == newField.reference.name
+                        val newField = GenericField(classLoader, reference.type.toString(), field)
+                        val alreadyExists = GlobalConfigurables.jvmFields.any { (_, fields) ->
+                            fields.any {
+                                it.className == newField.className && it.reference.name == newField.reference.name
+                            }
                         }
 
                         if (!alreadyExists) {
-                            GlobalConfigurables.jvmFields.add(newField)
+                            GlobalConfigurables.jvmFields.getOrPut(classLoader, ::mutableListOf).add(newField)
                             ConfigurablesLogger.log("Moved field to global configurable: ${reference.name} ${reference.type} ${field.name}")
                         } else {
                             ConfigurablesLogger.log("Skipped duplicate configurable: ${reference.name} ${reference.type} ${field.name}")
@@ -90,11 +94,12 @@ fun processValue(
                         return@mapNotNull null
                     }
 
-                    val customNewField = convertToMyField(field)
+                    val customNewField = convertToMyField(classLoader, field)
 
                     processValue(
                         recursionDepth + 1,
                         className,
+                        classLoader,
                         getType(field.type, customNewField, reference),
                         customNewField,
                         currentManager,
@@ -134,6 +139,7 @@ fun processValue(
                         val currentElementReference = MyField(
                             name = i.toString(),
                             type = cType,
+                            classLoader = classLoader,
                             isAccessible = true,
                             get = { instance ->
                                 Array.get(instance, i)
@@ -147,6 +153,7 @@ fun processValue(
                         processValue(
                             recursionDepth + 1,
                             className,
+                            classLoader,
                             itemType,
                             currentElementReference,
                             currentManager,
@@ -186,6 +193,7 @@ fun processValue(
                         val currentElementReference = MyField(
                             name = index.toString(),
                             type = cType,
+                            classLoader = classLoader,
                             isAccessible = true,
                             get = { instance ->
                                 listInstance.getOrNull(index)
@@ -203,6 +211,7 @@ fun processValue(
                         processValue(
                             recursionDepth + 1,
                             className,
+                            classLoader,
                             itemType,
                             currentElementReference,
                             currentManager,
@@ -228,6 +237,7 @@ fun processValue(
                         val currentElementReference = MyField(
                             name = key.toString(),
                             type = mapInstance[key]?.javaClass ?: Any::class.java,
+                            classLoader = classLoader,
                             isAccessible = true,
                             get = { instance ->
                                 mapInstance[key]
@@ -241,6 +251,7 @@ fun processValue(
                         processValue(
                             recursionDepth + 1,
                             className,
+                            classLoader,
                             itemType,
                             currentElementReference,
                             currentManager,

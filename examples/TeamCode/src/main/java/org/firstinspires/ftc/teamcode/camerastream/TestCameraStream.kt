@@ -13,7 +13,6 @@ import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.VisionProcessor
 import org.opencv.android.Utils
 import org.opencv.core.Mat
-import androidx.core.graphics.createBitmap
 import com.bylazar.camerastream.PanelsCameraStream
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 
@@ -23,14 +22,14 @@ class TestCameraStream : OpMode() {
     class Processor : VisionProcessor, CameraStreamSource {
 
         private val lastFrame =
-            AtomicReference(createBitmap(1, 1, Bitmap.Config.RGB_565))
+            AtomicReference(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565))
 
         override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
-            lastFrame.set(createBitmap(width, height, Bitmap.Config.RGB_565))
+            lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565))
         }
 
         override fun processFrame(frame: Mat, captureTimeNanos: Long): Any? {
-            val b = createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565)
+            val b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565)
             Utils.matToBitmap(frame, b)
 
             lastFrame.set(b)
