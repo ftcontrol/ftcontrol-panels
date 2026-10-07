@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.docs/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:docs:<VERSION>",
-  version: "1.0.8",
+  version: "1.0.9",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -37,6 +37,11 @@ export const config: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.9",
+      release_date: "7.10.2026",
+      changes: [{ type: "fixed", description: "Kotlin Setup Guide now requires kotlin-gradle-plugin 2.4.10 or newer, matching the Kotlin version Panels is built with", upgrading: "Kotlin users must update kotlin-gradle-plugin to 2.4.10 or newer to consume Panels/FullPanels." }],
+    },
     {
       version: "1.0.8",
       release_date: "3.10.2026",

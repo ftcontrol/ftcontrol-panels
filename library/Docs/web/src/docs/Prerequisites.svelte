@@ -81,11 +81,17 @@ android {
 buildscript {
     ...
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0"// [svp! ++]
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.10"// [svp! ++]
     }
 }
 `}
 />
+
+<AccentedParagraph tone={"warn"}>
+  Panels is built with Kotlin 2.4.10. Kotlin consumers must use Kotlin
+  2.4.10 or newer (<InlineCode>kotlin-gradle-plugin</InlineCode> >= 2.4.10), or
+  the compiler will reject Panels classes with an incompatible metadata version.
+</AccentedParagraph>
 
 <Title level={2}>Add FTControl to Your Project</Title>
 
