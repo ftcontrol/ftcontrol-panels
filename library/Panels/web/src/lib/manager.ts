@@ -13,7 +13,7 @@ export const panelsConfig: PluginConfig = {
   websiteURL: "https://panels.bylazar.com",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:panels:<VERSION>",
-  version: "1.0.7",
+  version: "1.0.8",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "",
@@ -21,6 +21,11 @@ export const panelsConfig: PluginConfig = {
   templates: [],
   includedPluginsIDs: [],
   changelog: [
+    {
+      version: "1.0.8",
+      release_date: "19.10.2026",
+      changes: [{ type: "fixed", description: "Preserve the Enable/Disable Panels OpMode's saved state across robot restarts instead of automatically re-enabling Panels (issue #21)", upgrading: "Update Panels to 1.0.8 or FullPanels to 1.0.19, then disable Panels once using the Enable/Disable Panels OpMode." }],
+    },
     {
       version: "1.0.7",
       release_date: "3.10.2026",

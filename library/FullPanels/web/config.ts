@@ -8,7 +8,7 @@ export const config: PluginConfig = {
   websiteURL: "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
   mavenURL: "https://mymaven.bylazar.com/releases",
   packageString: "com.bylazar:fullpanels:<VERSION>",
-  version: "1.0.18",
+  version: "1.0.19",
   pluginsCoreVersion: "1.1.44",
   author: "Lazar",
   manager: "src/manager.ts",
@@ -103,6 +103,11 @@ export const config: PluginConfig = {
     "com.bylazar.camerastream",
   ],
   changelog: [
+    {
+      version: "1.0.19",
+      release_date: "19.10.2026",
+      changes: [{ type: "fixed", description: "Updated Panels core to 1.0.8 so the Enable/Disable Panels OpMode's saved state survives robot restarts (issue #21)", upgrading: "Update FullPanels to 1.0.19, then disable Panels once using the Enable/Disable Panels OpMode. Frontend core compatibility remains 1.1.44." }],
+    },
     {
       version: "1.0.18",
       release_date: "7.10.2026",

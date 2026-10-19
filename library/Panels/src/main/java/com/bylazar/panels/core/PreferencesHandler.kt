@@ -11,8 +11,13 @@ object PreferencesHandler {
 
     private lateinit var prefs: SharedPreferences
 
-    fun init(context: Context) {
+    @JvmOverloads
+    fun init(context: Context, isDisabled: Boolean = false) {
         prefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+        // Otherwise preserve the OpMode's saved choice across robot restarts.
+        if (isDisabled) {
+            isEnabled = false
+        }
         Logger.coreLog("Initialized Preferences")
     }
 

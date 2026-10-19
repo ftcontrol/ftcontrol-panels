@@ -64,14 +64,7 @@ object Panels : Notifications {
             }
             Logger.coreLog("Config is $config")
 
-            PreferencesHandler.init(context)
-
-            if (config.isDisabled) {
-                PreferencesHandler.isEnabled = false
-                disable()
-            } else {
-                enable()
-            }
+            PreferencesHandler.init(context, config.isDisabled)
 
             try {
                 server = StaticServer(context, 8001, "web")

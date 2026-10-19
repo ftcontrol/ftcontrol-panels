@@ -384,7 +384,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.docs/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:docs:<VERSION>",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -413,6 +413,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.9",
+        "release_date": "7.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Kotlin Setup Guide now requires kotlin-gradle-plugin 2.4.10 or newer, matching the Kotlin version Panels is built with",
+            "upgrading": "Kotlin users must update kotlin-gradle-plugin to 2.4.10 or newer to consume Panels/FullPanels."
+          }
+        ]
+      },
       {
         "version": "1.0.8",
         "release_date": "3.10.2026",
@@ -687,7 +698,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:fullpanels:<VERSION>",
-    "version": "1.0.17",
+    "version": "1.0.19",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "src/manager.ts",
@@ -802,6 +813,28 @@ export const simpleModules: PluginConfig[] = [
       "com.bylazar.camerastream"
     ],
     "changelog": [
+      {
+        "version": "1.0.19",
+        "release_date": "19.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Updated Panels core to 1.0.8 so the Enable/Disable Panels OpMode's saved state survives robot restarts (issue #21)",
+            "upgrading": "Update FullPanels to 1.0.19, then disable Panels once using the Enable/Disable Panels OpMode. Frontend core compatibility remains 1.1.44."
+          }
+        ]
+      },
+      {
+        "version": "1.0.18",
+        "release_date": "7.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Updated Docs to 1.0.9, which now requires kotlin-gradle-plugin 2.4.10 or newer for Kotlin consumers",
+            "upgrading": "Update the FullPanels dependency to 1.0.18. Kotlin users must use kotlin-gradle-plugin 2.4.10 or newer."
+          }
+        ]
+      },
       {
         "version": "1.0.17",
         "release_date": "3.10.2026",
@@ -2001,7 +2034,7 @@ export const simpleModules: PluginConfig[] = [
     "websiteURL": "https://panels.bylazar.com",
     "mavenURL": "https://mymaven.bylazar.com/releases",
     "packageString": "com.bylazar:panels:<VERSION>",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "pluginsCoreVersion": "1.1.44",
     "author": "Lazar",
     "manager": "",
@@ -2009,6 +2042,17 @@ export const simpleModules: PluginConfig[] = [
     "templates": [],
     "includedPluginsIDs": [],
     "changelog": [
+      {
+        "version": "1.0.8",
+        "release_date": "19.10.2026",
+        "changes": [
+          {
+            "type": "fixed",
+            "description": "Preserve the Enable/Disable Panels OpMode's saved state across robot restarts instead of automatically re-enabling Panels (issue #21)",
+            "upgrading": "Update Panels to 1.0.8 or FullPanels to 1.0.19, then disable Panels once using the Enable/Disable Panels OpMode."
+          }
+        ]
+      },
       {
         "version": "1.0.7",
         "release_date": "3.10.2026",
