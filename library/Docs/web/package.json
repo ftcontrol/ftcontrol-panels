@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "ftc-panels": "1.1.44",
+    "ftc-panels-docs": "^0.0.7",
     "typescript": "^5.8.3"
   }
 }
