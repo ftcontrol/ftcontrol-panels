@@ -7,13 +7,15 @@
   import NavletContent from "$lib/navlets/NavletContent.svelte"
   import DocsPage from "$lib/DocsPage.svelte"
   import CanvasRender from "$lib/grid/CanvasRender.svelte"
-  import { PluginDetails, Version } from "ftc-panels-docs"
+  import { CodeFormatter, PluginDetails, Version } from "ftc-panels-docs"
 
   let { data }: PageProps = $props()
   let plugin = $derived(
     global.plugins.find((it) => it.details.id == data.id) as PluginInfo
   )
 </script>
+
+<CodeFormatter />
 
 <PluginDetails plugin={plugin.details} />
 

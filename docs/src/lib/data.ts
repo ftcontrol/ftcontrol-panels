@@ -717,7 +717,7 @@ export const modules: {config: PluginConfig, svelte: string}[] = [
       "websiteURL": "https://panels.bylazar.com/docs/com.bylazar.fullpanels/",
       "mavenURL": "https://mymaven.bylazar.com/releases",
       "packageString": "com.bylazar:fullpanels:<VERSION>",
-      "version": "1.0.19",
+      "version": "1.0.20",
       "pluginsCoreVersion": "1.1.44",
       "author": "Lazar",
       "manager": "src/manager.ts",
@@ -832,6 +832,17 @@ export const modules: {config: PluginConfig, svelte: string}[] = [
         "com.bylazar.camerastream"
       ],
       "changelog": [
+        {
+          "version": "1.0.20",
+          "release_date": "7.11.2026",
+          "changes": [
+            {
+              "type": "fixed",
+              "description": "Updated Panels core to 1.0.9, which keeps the dashboard working after Restart Robot (issue #24) and renders code snippets on plugin documentation pages (issue #22)",
+              "upgrading": "Update FullPanels to 1.0.20. Frontend core compatibility remains 1.1.44."
+            }
+          ]
+        },
         {
           "version": "1.0.19",
           "release_date": "19.10.2026",
@@ -2083,7 +2094,7 @@ export const modules: {config: PluginConfig, svelte: string}[] = [
       "websiteURL": "https://panels.bylazar.com",
       "mavenURL": "https://mymaven.bylazar.com/releases",
       "packageString": "com.bylazar:panels:<VERSION>",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "pluginsCoreVersion": "1.1.44",
       "author": "Lazar",
       "manager": "",
@@ -2091,6 +2102,22 @@ export const modules: {config: PluginConfig, svelte: string}[] = [
       "templates": [],
       "includedPluginsIDs": [],
       "changelog": [
+        {
+          "version": "1.0.9",
+          "release_date": "7.11.2026",
+          "changes": [
+            {
+              "type": "fixed",
+              "description": "Stop the existing HTTP and WebSocket servers before rebinding on robot restart, so Panels keeps working after Restart Robot (issue #24)",
+              "upgrading": ""
+            },
+            {
+              "type": "fixed",
+              "description": "Render code snippets on plugin documentation pages by mounting the docs CodeFormatter on the plugin details page (issue #22)",
+              "upgrading": "Update Panels to 1.0.9 or FullPanels to 1.0.20."
+            }
+          ]
+        },
         {
           "version": "1.0.8",
           "release_date": "19.10.2026",

@@ -15,7 +15,10 @@
     Table,
     CodeBlock,
   } from "ftc-panels/docs"
+  import { CodeFormatter } from "ftc-panels-docs"
 </script>
+
+<CodeFormatter />
 
 <Title level={1}>Docs Components Demo</Title>
 
