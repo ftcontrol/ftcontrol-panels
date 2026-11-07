@@ -81,7 +81,7 @@ class MyField constructor(
         }
 }
 
-fun convertToMyField(classLoader: ClassLoader, field: Field): MyField {
+fun convertToMyField(classLoader: ClassLoader, field: Field, parentField: MyField? = null): MyField {
     return MyField(
         name = field.name,
         type = field.type,
@@ -90,11 +90,12 @@ fun convertToMyField(classLoader: ClassLoader, field: Field): MyField {
         get = field::get,
         set = field::set,
         genericType = field.genericType,
-        ref = field
+        ref = field,
+        parentField = parentField,
     )
 }
 
-fun convertToMyField(field: MyField, parentField: MyField?, className: String): MyField {
+fun convertToMyField(field: MyField, className: String, parentField: MyField? = null): MyField {
     return MyField(
         name = field.name,
         type = field.type,
@@ -104,7 +105,7 @@ fun convertToMyField(field: MyField, parentField: MyField?, className: String): 
         set = field.set,
         genericType = field.genericType,
         ref = field.ref,
-        parentField = parentField,
         className = className,
+        parentField = parentField,
     )
 }

@@ -47,7 +47,7 @@ fun processValue(
             return UnknownVariable(className, reference.name)
             throw RecursionDetectedException(reference.name)
         }
-        val currentManager = convertToMyField(reference, parentReference, className)
+        val currentManager = convertToMyField(reference, className, parentReference)
         if (type in listOf(
                 BaseTypes.INT, BaseTypes.DOUBLE, BaseTypes.FLOAT,
                 BaseTypes.LONG, BaseTypes.STRING, BaseTypes.BOOLEAN, BaseTypes.ENUM
@@ -94,7 +94,7 @@ fun processValue(
                         return@mapNotNull null
                     }
 
-                    val customNewField = convertToMyField(classLoader, field)
+                    val customNewField = convertToMyField(classLoader, field, reference)
 
                     processValue(
                         recursionDepth + 1,
@@ -147,7 +147,8 @@ fun processValue(
                             set = { instance, newValue ->
                                 Array.set(instance, i, newValue)
                             },
-                            genericType = componentType
+                            genericType = componentType,
+                            parentField = reference
                         )
 
                         processValue(
@@ -206,6 +207,8 @@ fun processValue(
                                 }
                             },
                             genericType = reference.type.componentType
+                                ?: getGeneric(reference.genericType).lastOrNull(),
+                            parentField = reference
                         )
 
                         processValue(
@@ -246,6 +249,8 @@ fun processValue(
                                 (mapInstance as MutableMap<Any, Any>)[key as Any] = newValue as Any
                             },
                             genericType = reference.type.componentType
+                                ?: getGeneric(reference.genericType).lastOrNull(),
+                            parentField = reference
                         )
 
                         processValue(
