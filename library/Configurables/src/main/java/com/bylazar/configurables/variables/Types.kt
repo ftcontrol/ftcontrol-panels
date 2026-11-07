@@ -1,8 +1,7 @@
 package com.bylazar.configurables.variables
 
 import com.bylazar.configurables.annotations.GenericValue
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.TypeVariable
+import java.lang.reflect.*
 import kotlin.collections.get
 import kotlin.jvm.java
 
@@ -82,4 +81,15 @@ private fun resolveGenericType(reference: MyField?, parentReference: MyField?): 
     }
 
     return BaseTypes.GENERIC
+}
+
+fun getGeneric(type: Type?): Array<Type> {
+    return when (type) {
+        is ParameterizedType -> type.actualTypeArguments
+        is Class<*> if type.isArray -> arrayOf(type.componentType)
+        is GenericArrayType -> arrayOf(type.genericComponentType)
+        is WildcardType -> type.upperBounds
+        is TypeVariable<*> -> type.bounds // TODO: Should this look for @GenericValue?
+        else -> emptyArray()
+    }
 }
