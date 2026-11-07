@@ -167,11 +167,15 @@ class Socket(
     }
 
     fun startServer() {
+        if (isAlive()) {
+            Logger.serverLog("Socket already running on port $listeningPort")
+            return
+        }
         try {
             start()
             Logger.serverLog("Socket started on port $listeningPort")
         } catch (e: IOException) {
-            Logger.serverLog("Failed to start server: ${e.message}")
+            Logger.serverError("Failed to start server", e)
         }
     }
 

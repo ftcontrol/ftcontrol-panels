@@ -296,6 +296,10 @@ class StaticServer(
     }
 
     fun startServer() {
+        if (isAlive()) {
+            Logger.serverLog("Server already running on port $listeningPort")
+            return
+        }
         try {
             start()
             Logger.serverLog("Server started on port $listeningPort")

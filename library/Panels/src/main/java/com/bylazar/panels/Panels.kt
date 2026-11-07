@@ -66,12 +66,7 @@ object Panels : Notifications {
 
             PreferencesHandler.init(context, config.isDisabled)
 
-            try {
-                server = StaticServer(context, 8001, "web")
-                socket = Socket(8002)
-            } catch (e: Exception) {
-                Logger.coreError("Failed to start webserver", e)
-            }
+            restartServers(context)
 
             if (PreferencesHandler.isEnabled) {
                 server?.startServer()
@@ -88,6 +83,17 @@ object Panels : Notifications {
             PluginsManager.plugins.values.forEach { it.onOpModeManager(eventLoop.opModeManager) }
 
             wasStarted = true
+        }
+    }
+
+    private fun restartServers(context: Context) {
+        try {
+            server?.stopServer()
+            socket?.stopServer()
+            server = StaticServer(context, 8001, "web")
+            socket = Socket(8002)
+        } catch (e: Exception) {
+            Logger.coreError("Failed to start webserver", e)
         }
     }
 
@@ -131,6 +137,9 @@ object Panels : Notifications {
         TextHandler.removeText()
         server?.stopServer()
         socket?.stopServer()
+        server = null
+        socket = null
+        wasStarted = false
     }
 
     override fun onOpModePreInit(opMode: OpMode) {
