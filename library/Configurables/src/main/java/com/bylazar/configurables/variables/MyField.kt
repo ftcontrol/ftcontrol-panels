@@ -23,9 +23,10 @@ class MyField constructor(
     override val className: String = ""
 ) : GenericVariable(className) {
     val myType = getType(type, this, parentField)
+    val enumConstants: Array<out Any>? = type.enumConstants ?: type.superclass?.enumConstants
     val possibleValues = when (myType) {
         BaseTypes.BOOLEAN -> listOf("true", "false")
-        BaseTypes.ENUM -> ref?.type?.enumConstants?.map { it.toString() }
+        BaseTypes.ENUM -> enumConstants?.map { it.toString() }
         else -> null
     }
     val id = UUID.randomUUID().toString()
@@ -48,7 +49,7 @@ class MyField constructor(
     }
 
     fun setValue(newValue: String): Boolean {
-        return setValue(convertValue(newValue, myType, ref?.type?.enumConstants) ?: return false)
+        return setValue(convertValue(newValue, myType, enumConstants) ?: return false)
     }
 
     fun setValue(newValue: Any): Boolean {
