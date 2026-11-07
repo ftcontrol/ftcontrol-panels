@@ -226,46 +226,50 @@ fun processValue(
             }
         }
 
-        if (type == BaseTypes.MAP) {
-            val mapInstance = currentManager.getValue() as? MutableMap<*, *>
-            if (mapInstance != null) {
-                ConfigurablesLogger.log("Map keys: ${mapInstance.map { (key, value) -> "$key.$value" }}")
-                val mapValues: List<GenericVariable> = mapInstance.mapNotNull { (key, _) ->
-                    try {
-                        ConfigurablesLogger.log("Map key: $key")
-                        val itemType = getType(mapInstance[key]?.javaClass)
-                        val currentElementReference = MyField(
-                            name = key.toString(),
-                            type = mapInstance[key]?.javaClass ?: Any::class.java,
-                            classLoader = classLoader,
-                            isAccessible = true,
-                            get = { instance ->
-                                mapInstance[key]
-                            },
-                            set = { instance, newValue ->
+        run {
+            if (type != BaseTypes.MAP) return@run
+            var mapInstance = currentManager.getValue() as? MutableMap<*, *> ?: return@run
+            ConfigurablesLogger.log("Map keys: ${mapInstance.map { (key, value) -> "$key.$value" }}")
+            val mapValues: List<GenericVariable> = mapInstance.mapNotNull { (key, _) ->
+                try {
+                    ConfigurablesLogger.log("Map key: $key")
+                    val itemType = getType(mapInstance[key]?.javaClass)
+                    val currentElementReference = MyField(
+                        name = key.toString(),
+                        type = mapInstance[key]?.javaClass ?: Any::class.java,
+                        classLoader = classLoader,
+                        isAccessible = true,
+                        get = { instance ->
+                            mapInstance[key]
+                        },
+                        set = { instance, newValue ->
+                            try {
                                 (mapInstance as MutableMap<Any, Any>)[key as Any] = newValue as Any
-                            },
-                            genericType = reference.type.componentType
-                        )
+                            } catch (_: UnsupportedOperationException) {
+                                mapInstance = mapInstance.toMutableMap()
+                                mapInstance[key] = newValue
+                            }
+                        },
+                        genericType = reference.type.componentType
+                    )
 
-                        processValue(
-                            recursionDepth + 1,
-                            className,
-                            classLoader,
-                            itemType,
-                            currentElementReference,
-                            currentManager,
-                            recursionItems.toMutableList(),
-                        )
-                    } catch (t: Throwable) {
-                        null
-                    }
+                    processValue(
+                        recursionDepth + 1,
+                        className,
+                        classLoader,
+                        itemType,
+                        currentElementReference,
+                        currentManager,
+                        recursionItems.toMutableList(),
+                    )
+                } catch (t: Throwable) {
+                    null
                 }
-
-                ConfigurablesLogger.log("Map keys2: ${mapValues.map { it.toJsonType }}")
-
-                return CustomVariable(reference.name, className, mapValues, BaseTypes.MAP)
             }
+
+            ConfigurablesLogger.log("Map keys2: ${mapValues.map { it.toJsonType }}")
+
+            return CustomVariable(reference.name, className, mapValues, BaseTypes.MAP)
         }
 
         return UnknownVariable(className, reference.name)
