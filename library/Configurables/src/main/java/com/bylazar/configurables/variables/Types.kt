@@ -34,6 +34,7 @@ fun getType(
         classType == null -> BaseTypes.UNKNOWN
         typeMapping.containsKey(classType) -> typeMapping[classType] ?: BaseTypes.UNKNOWN
         classType.isEnum -> BaseTypes.ENUM
+        classType.superclass?.isEnum == true -> BaseTypes.ENUM
         classType.isArray -> BaseTypes.ARRAY
         Map::class.java.isAssignableFrom(classType) -> BaseTypes.MAP
         List::class.java.isAssignableFrom(classType) -> BaseTypes.LIST
