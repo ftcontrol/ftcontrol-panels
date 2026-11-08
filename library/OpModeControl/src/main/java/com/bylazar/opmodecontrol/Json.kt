@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta.Flavor
 data class OpModeDetails(
     var name: String,
     var group: String,
+    var description: String,
     var flavour: Flavor,
     var source: OpModeMeta.Source,
     var defaultGroup: String,
