@@ -30,6 +30,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()), Scanner {
             else OpModeDetails(
                 name = opModeMeta.name,
                 group = opModeMeta.group,
+                description = opModeMeta.description ?: "",
                 flavour = opModeMeta.flavor,
                 source = opModeMeta.source ?: OpModeMeta.Source.ANDROID_STUDIO,
                 defaultGroup = OpModeMeta.DefaultGroup,
@@ -60,6 +61,7 @@ object Plugin : Plugin<BasePluginConfig>(OpModeControlPluginConfig()), Scanner {
             return OpModeDetails(
                 name = "",
                 group = "",
+                description = "",
                 flavour = OpModeMeta.Flavor.AUTONOMOUS,
                 source = OpModeMeta.Source.ANDROID_STUDIO,
                 defaultGroup = OpModeMeta.DefaultGroup,

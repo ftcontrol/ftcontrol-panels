@@ -15,6 +15,7 @@
   let activeOpMode: OpMode = $state({
     name: "",
     group: "",
+    description: "",
     flavour: "AUTONOMOUS",
     source: "EXTERNAL_LIBRARY",
     defaultGroup: "",
@@ -79,6 +80,29 @@
           </div>
         {/each}
         {#if opModes.filter((it) => it.flavour == "AUTONOMOUS").length == 0}
+          <p>No OpModes found.</p>
+        {/if}
+      </section>
+    {/snippet}
+  </Overlay>
+
+  <Overlay>
+    {#snippet trigger()}
+      <Button transparent={true}>Utilities <Arrow /></Button>
+    {/snippet}
+    {#snippet overlay({ close }: { close: () => void })}
+      <section class="items">
+        {#each opModes.filter((it) => it.flavour == "UTILITY") as opMode}
+          <div>
+            <button
+              onclick={() => {
+                selectOpMode(opMode)
+                close()
+              }}>{opMode.name} / {opMode.description}</button
+            >
+          </div>
+        {/each}
+        {#if opModes.filter((it) => it.flavour == "UTILITY").length == 0}
           <p>No OpModes found.</p>
         {/if}
       </section>
