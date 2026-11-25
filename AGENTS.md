@@ -151,6 +151,21 @@ Before committing, inspect status, diff, and recent history; stage only intended
 
 Report commit hashes, released versions, verification performed, and whether changes are only committed locally or also pushed. Distinguish local Maven publication from availability on the hosted Maven server.
 
+## Testing with hub-sim
+
+`hub-sim` (https://github.com/ftcontrol/hub-sim, normally checked out as a sibling repository) runs the unmodified Robot Controller app on an Android emulator that presents itself as FTC hardware with an embedded REV hub. The hub's firmware is simulated, so `hardwareMap` returns working motors, servos and an IMU backed by a drivetrain physics model. Use it to smoke-test a plugin against real SDK code paths when no robot is available.
+
+```sh
+cd ../hub-sim
+scripts/setup.sh                                  # once
+scripts/start.sh --apk <path>/TeamCode-debug.apk  # emulator + hub firmware + port forwards
+```
+
+It forwards `8001`, `8002` and `8080`, so the browser checks below apply unchanged. Limitations to remember:
+
+- The Robot Controller only initialises and starts OpModes when a Driver Station tells it to; without one, use the app's **Configure Robot** screen to confirm the hub is enumerated, and drive OpModes through whatever OpMode-control path you are testing.
+- Camera, Wi-Fi access point and Driver Station behaviour are not simulated. `scripts/start.sh --identity controlhub` is available but stops before OpModes because the app waits for its own access point.
+
 ## Browser smoke testing over ADB
 
 Panels serves HTTP on port `8001` and WebSocket updates on `8002`. Forward both ports to the device running the Robot Controller app:
